@@ -261,22 +261,6 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "父[ちち]は 銀行[ぎんこう]で" },
-          { text: "働[はたら]いて", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
-        ],
-        notes: "働いている as a single chunk",
-      },
-      {
-        segments: [
-          { text: "父[ちち]が 銀行[ぎんこう]で" },
-          { text: "働[はたら]いて", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
-        ],
-        notes: "が + single-chunk 働いている",
-      },
-      {
-        segments: [
           { text: "父[ちち]は 銀行[ぎんこう]に 勤[つと]めて" },
           {
             text: "いる",
@@ -421,40 +405,6 @@ export const questions: Question[] = [
         ],
         notes: "今 at front + が",
       },
-      {
-        segments: [
-          { text: "けんじさんは 今[いま] 車[くるま]の 中[なか]で" },
-          { text: "寝[ね]て", blank: true },
-          {
-            text: "いる",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "寝ている as a single chunk",
-      },
-      {
-        segments: [
-          { text: "けんじさんは 今[いま] 車[くるま]で" },
-          { text: "寝[ね]て", blank: true },
-          {
-            text: "いる",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "寝ている single chunk + 車で",
-      },
     ],
   },
   {
@@ -466,13 +416,6 @@ export const questions: Question[] = [
           { text: "死[し]んで", blank: true },
           { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-      },
-      {
-        segments: [
-          { text: "犬[いぬ]は" },
-          { text: "死[し]んでいます", blank: true },
-        ],
-        notes: "Polite",
       },
       {
         segments: [
@@ -549,22 +492,6 @@ export const questions: Question[] = [
           },
         ],
         notes: "Using 聴く (listen attentively) instead of 聞く",
-      },
-      {
-        segments: [
-          { text: "いつも 勉強[べんきょう]しながら 音楽[おんがく]を 聞[き]いて" },
-          {
-            text: "いる",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "〜ながら (while) for concurrent action, subject dropped",
       },
     ],
   },

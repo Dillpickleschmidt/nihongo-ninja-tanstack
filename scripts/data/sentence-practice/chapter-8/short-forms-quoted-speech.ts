@@ -1,5 +1,40 @@
 import type { Question } from "../types"
 
+const omouPos = {
+  pos: "Godan verb with 'u' ending" as const,
+  form: "normal" as const,
+  polarity: "positive" as const,
+  tense: "non-past" as const,
+}
+
+const omouNeg = {
+  pos: "Godan verb with 'u' ending" as const,
+  form: "normal" as const,
+  polarity: "negative" as const,
+  tense: "non-past" as const,
+}
+
+const kikuPos = {
+  pos: "Godan verb with 'ku' ending" as const,
+  form: "normal" as const,
+  polarity: "positive" as const,
+  tense: "non-past" as const,
+}
+
+const kikuPast = {
+  pos: "Godan verb with 'ku' ending" as const,
+  form: "normal" as const,
+  polarity: "positive" as const,
+  tense: "past" as const,
+}
+
+const iuPast = {
+  pos: "Godan verb with 'u' ending" as const,
+  form: "normal" as const,
+  polarity: "positive" as const,
+  tense: "past" as const,
+}
+
 export const questions: Question[] = [
   {
     english: "I think it's going to rain tomorrow.",
@@ -7,7 +42,7 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "明日[あした]は 雨[あめ]が 降[ふ]ると", blank: true },
-          { text: "思[おも]う", blank: true },
+          { text: "思[おも]う", blank: true, conjugation: omouPos },
         ],
       },
       {
@@ -16,21 +51,21 @@ export const questions: Question[] = [
             text: "私[わたし]は 明日[あした]は 雨[あめ]が 降[ふ]ると",
             blank: true,
           },
-          { text: "思[おも]う", blank: true },
+          { text: "思[おも]う", blank: true, conjugation: omouPos },
         ],
         notes: "Explicit 私は",
       },
       {
         segments: [
           { text: "明日[あした] 雨[あめ]が 降[ふ]ると", blank: true },
-          { text: "思[おも]う", blank: true },
+          { text: "思[おも]う", blank: true, conjugation: omouPos },
         ],
         notes: "Without は after 明日",
       },
       {
         segments: [
           { text: "明日[あした]は 雨[あめ]だと", blank: true },
-          { text: "思[おも]う", blank: true },
+          { text: "思[おも]う", blank: true, conjugation: omouPos },
         ],
         notes: "雨だ (noun predicate) instead of 降る",
       },
@@ -46,7 +81,7 @@ export const questions: Question[] = [
             text: "私[わたし]はけんじさんは 今晩[こんばん] 早[はや]く 帰[かえ]ると",
             blank: true,
           },
-          { text: "思[おも]う", blank: true },
+          { text: "思[おも]う", blank: true, conjugation: omouPos },
         ],
       },
       {
@@ -55,7 +90,7 @@ export const questions: Question[] = [
             text: "私[わたし]はけんじさんが 今晩[こんばん] 早[はや]く 帰[かえ]ると",
             blank: true,
           },
-          { text: "思[おも]う", blank: true },
+          { text: "思[おも]う", blank: true, conjugation: omouPos },
         ],
         notes: "けんじさんが instead of けんじさんは",
       },
@@ -65,7 +100,7 @@ export const questions: Question[] = [
             text: "私[わたし]はけんじさんは 今夜[こんや] 早[はや]く 帰[かえ]ると",
             blank: true,
           },
-          { text: "思[おも]う", blank: true },
+          { text: "思[おも]う", blank: true, conjugation: omouPos },
         ],
         notes: "今夜 instead of 今晩",
       },
@@ -75,7 +110,7 @@ export const questions: Question[] = [
             text: "私[わたし]はけんじさんが 今夜[こんや] 早[はや]く 帰[かえ]ると",
             blank: true,
           },
-          { text: "思[おも]う", blank: true },
+          { text: "思[おも]う", blank: true, conjugation: omouPos },
         ],
         notes: "今夜 + けんじさんが",
       },
@@ -85,7 +120,7 @@ export const questions: Question[] = [
             text: "今晩[こんばん]、 私[わたし]はけんじさんは 早[はや]く 帰[かえ]ると",
             blank: true,
           },
-          { text: "思[おも]う", blank: true },
+          { text: "思[おも]う", blank: true, conjugation: omouPos },
         ],
         notes: "今晩 fronted",
       },
@@ -95,7 +130,7 @@ export const questions: Question[] = [
             text: "今晩[こんばん]、 私[わたし]はけんじさんが 早[はや]く 帰[かえ]ると",
             blank: true,
           },
-          { text: "思[おも]う", blank: true },
+          { text: "思[おも]う", blank: true, conjugation: omouPos },
         ],
         notes: "今晩 fronted + が",
       },
@@ -107,27 +142,27 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "日本[にほん]の 夏[なつ]はとても 暑[あつ]いと", blank: true },
-          { text: "聞[き]いた", blank: true },
+          { text: "聞[き]く", blank: true, conjugation: kikuPast },
         ],
       },
       {
         segments: [
           { text: "日本[にほん]の 夏[なつ]はすごく 暑[あつ]いと", blank: true },
-          { text: "聞[き]いた", blank: true },
+          { text: "聞[き]く", blank: true, conjugation: kikuPast },
         ],
         notes: "すごく instead of とても",
       },
       {
         segments: [
           { text: "日本[にほん]の 夏[なつ]はとても 暑[あつ]いと", blank: true },
-          { text: "聞[き]く", blank: true },
+          { text: "聞[き]く", blank: true, conjugation: kikuPos },
         ],
         notes: "聞く (non-past) instead of 聞いた",
       },
       {
         segments: [
           { text: "日本[にほん]の 夏[なつ]はすごく 暑[あつ]いと", blank: true },
-          { text: "聞[き]く", blank: true },
+          { text: "聞[き]く", blank: true, conjugation: kikuPos },
         ],
         notes: "聞く + すごく",
       },
@@ -139,20 +174,20 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "明日[あした]は 休[やす]みだと", blank: true },
-          { text: "思[おも]う", blank: true },
+          { text: "思[おも]う", blank: true, conjugation: omouPos },
         ],
       },
       {
         segments: [
           { text: "明日[あした]が 休[やす]みだと", blank: true },
-          { text: "思[おも]う", blank: true },
+          { text: "思[おも]う", blank: true, conjugation: omouPos },
         ],
         notes: "が instead of は",
       },
       {
         segments: [
           { text: "私[わたし]は 明日[あした]は 休[やす]みだと", blank: true },
-          { text: "思[おも]う", blank: true },
+          { text: "思[おも]う", blank: true, conjugation: omouPos },
         ],
         notes: "Explicit 私は",
       },
@@ -164,7 +199,7 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "兄[あに]は 今[いま] 会社[かいしゃ]で 働[はたら]いて", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "いる", blank: true },
           { text: "と", blank: true },
           { text: "言[い]って", blank: true },
           { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "past" } },
@@ -173,7 +208,7 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "兄[あに]が 今[いま] 会社[かいしゃ]で 働[はたら]いて", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "いる", blank: true },
           { text: "と", blank: true },
           { text: "言[い]って", blank: true },
           { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "past" } },
@@ -183,7 +218,7 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "兄[あに]は 会社[かいしゃ]で 今[いま] 働[はたら]いて", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "いる", blank: true },
           { text: "と", blank: true },
           { text: "言[い]って", blank: true },
           { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "past" } },
@@ -193,20 +228,22 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "兄[あに]は 今[いま] 会社[かいしゃ]で 働[はたら]いて", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "いる", blank: true },
           { text: "と", blank: true },
-          { text: "言[い]った", blank: true },
+          { text: "言[い]う", blank: true, conjugation: iuPast },
         ],
         notes: "〜と言った (simple past) instead of 〜と言っていた",
       },
       {
         segments: [
           { text: "兄[あに]は 今[いま] 会社[かいしゃ]で 働[はたら]いて", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "いる", blank: true },
           { text: "って", blank: true },
-          { text: "言[い]ってた", blank: true },
+          { text: "言[い]って", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "past" } },
         ],
-        notes: "って (casual quote particle) + 言ってた (contracted 言っていた)",
+        register: "casual",
+        notes: "って quote particle + 言っていた",
       },
     ],
   },
@@ -216,41 +253,41 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "このかばんは 安[やす]くないと", blank: true },
-          { text: "思[おも]う", blank: true },
+          { text: "思[おも]う", blank: true, conjugation: omouPos },
         ],
       },
       {
         segments: [
           { text: "私[わたし]はこのかばんは 安[やす]くないと", blank: true },
-          { text: "思[おも]う", blank: true },
+          { text: "思[おも]う", blank: true, conjugation: omouPos },
         ],
         notes: "Explicit 私は",
       },
       {
         segments: [
           { text: "このかばんが 安[やす]くないと", blank: true },
-          { text: "思[おも]う", blank: true },
+          { text: "思[おも]う", blank: true, conjugation: omouPos },
         ],
         notes: "が instead of は",
       },
       {
         segments: [
           { text: "このかばんは 安[やす]いと", blank: true },
-          { text: "思[おも]わない", blank: true },
+          { text: "思[おも]う", blank: true, conjugation: omouNeg },
         ],
         notes: "Negating 思う instead: 安いと思わない",
       },
       {
         segments: [
           { text: "私[わたし]はこのかばんは 安[やす]いと", blank: true },
-          { text: "思[おも]わない", blank: true },
+          { text: "思[おも]う", blank: true, conjugation: omouNeg },
         ],
         notes: "私は + negating 思う",
       },
       {
         segments: [
           { text: "このバッグは 安[やす]いとは", blank: true },
-          { text: "思[おも]わない", blank: true },
+          { text: "思[おも]う", blank: true, conjugation: omouNeg },
         ],
         notes: "バッグ (loanword) + とは (emphasis particle)",
       },
@@ -266,7 +303,7 @@ export const questions: Question[] = [
             text: "みかさんのお 母[かあ]さんは 有名[ゆうめい]なシェフだと",
             blank: true,
           },
-          { text: "聞[き]いた", blank: true },
+          { text: "聞[き]く", blank: true, conjugation: kikuPast },
         ],
       },
       {
@@ -275,7 +312,7 @@ export const questions: Question[] = [
             text: "みかさんのお 母[かあ]さんが 有名[ゆうめい]なシェフだと",
             blank: true,
           },
-          { text: "聞[き]いた", blank: true },
+          { text: "聞[き]く", blank: true, conjugation: kikuPast },
         ],
         notes: "が instead of は",
       },
@@ -342,22 +379,20 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "そうたさんは 毎日[まいにち] 遅[おそ]くまで 働[はたら]いて", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "いる", blank: true },
           { text: "と", blank: true },
-          { text: "思[おも]う", blank: true },
+          { text: "思[おも]う", blank: true, conjugation: omouPos },
         ],
-        register: "casual",
         notes: "遅くまで (until late) + 働いている + 思う",
       },
       {
         segments: [
           { text: "そうたさんは 毎日[まいにち] 遅[おそ]くまで 働[はたら]いて", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "いる", blank: true },
           { text: "と", blank: true },
           { text: "思[おも]って", blank: true },
           { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        register: "casual",
         notes: "遅くまで + 働いている",
       },
     ],
@@ -371,13 +406,13 @@ export const questions: Question[] = [
             text: "今週末[こんしゅうまつ]、 海[うみ]に 行[い]くと",
             blank: true,
           },
-          { text: "思[おも]う", blank: true },
+          { text: "思[おも]う", blank: true, conjugation: omouPos },
         ],
       },
       {
         segments: [
           { text: "週末[しゅうまつ]、 海[うみ]に 行[い]くと", blank: true },
-          { text: "思[おも]う", blank: true },
+          { text: "思[おも]う", blank: true, conjugation: omouPos },
         ],
         notes: "週末 instead of 今週末",
       },
@@ -387,14 +422,14 @@ export const questions: Question[] = [
             text: "今週末[こんしゅうまつ]、 海[うみ]へ 行[い]くと",
             blank: true,
           },
-          { text: "思[おも]う", blank: true },
+          { text: "思[おも]う", blank: true, conjugation: omouPos },
         ],
         notes: "へ instead of に",
       },
       {
         segments: [
           { text: "週末[しゅうまつ]、 海[うみ]へ 行[い]くと", blank: true },
-          { text: "思[おも]う", blank: true },
+          { text: "思[おも]う", blank: true, conjugation: omouPos },
         ],
         notes: "週末 + へ",
       },
@@ -404,7 +439,7 @@ export const questions: Question[] = [
             text: "私[わたし]は 今週末[こんしゅうまつ]、 海[うみ]に 行[い]くと",
             blank: true,
           },
-          { text: "思[おも]う", blank: true },
+          { text: "思[おも]う", blank: true, conjugation: omouPos },
         ],
         notes: "Explicit 私は",
       },
@@ -414,7 +449,7 @@ export const questions: Question[] = [
             text: "今週末[こんしゅうまつ]は 海[うみ]に 行[い]こうと",
             blank: true,
           },
-          { text: "思[おも]う", blank: true },
+          { text: "思[おも]う", blank: true, conjugation: omouPos },
         ],
         notes: "Volitional 行こう (first-person intention) + は topic",
       },
@@ -424,9 +459,8 @@ export const questions: Question[] = [
             text: "今週末[こんしゅうまつ] 海[うみ]に 行[い]こうと",
             blank: true,
           },
-          { text: "思[おも]う", blank: true },
+          { text: "思[おも]う", blank: true, conjugation: omouPos },
         ],
-        register: "casual",
         notes: "Volitional 行こう without は",
       },
     ],
@@ -438,7 +472,7 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "はなさんは 今[いま] 犬[いぬ]と 住[す]んで", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "いる", blank: true },
           { text: "と", blank: true },
           { text: "言[い]って", blank: true },
           { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "past" } },
@@ -447,7 +481,7 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "はなさんが 今[いま] 犬[いぬ]と 住[す]んで", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "いる", blank: true },
           { text: "と", blank: true },
           { text: "言[い]って", blank: true },
           { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "past" } },
@@ -457,7 +491,7 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "はなさんは 犬[いぬ]と 今[いま] 住[す]んで", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "いる", blank: true },
           { text: "と", blank: true },
           { text: "言[い]って", blank: true },
           { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "past" } },
@@ -467,7 +501,7 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "はなさんは 今[いま] 犬[いぬ]と 一緒[いっしょ]に 住[す]んで", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "いる", blank: true },
           { text: "と", blank: true },
           { text: "言[い]って", blank: true },
           { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "past" } },
@@ -477,31 +511,29 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "はなさんは 今[いま] 犬[いぬ]と 住[す]んで", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "いる", blank: true },
           { text: "と", blank: true },
-          { text: "聞[き]いた", blank: true },
+          { text: "聞[き]く", blank: true, conjugation: kikuPast },
         ],
         notes: "と聞いた instead of と言っていた",
       },
       {
         segments: [
           { text: "はなさんは 今[いま] 犬[いぬ]と 暮[く]らして", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "いる", blank: true },
           { text: "と", blank: true },
-          { text: "言[い]った", blank: true },
+          { text: "言[い]う", blank: true, conjugation: iuPast },
         ],
-        register: "casual",
         notes: "暮らしている (live, synonym of 住む) + 言った",
       },
       {
         segments: [
           { text: "はなさんは 今[いま] 犬[いぬ]と 暮[く]らして", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "いる", blank: true },
           { text: "と", blank: true },
           { text: "言[い]って", blank: true },
           { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "past" } },
         ],
-        register: "casual",
         notes: "暮らしている + 言っていた",
       },
     ],
@@ -558,7 +590,7 @@ export const questions: Question[] = [
           { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "か" },
         ],
-        notes: "大変だ (tough) — な-adj + だ",
+        notes: "大変だ (tough)",
       },
       {
         segments: [
@@ -590,7 +622,7 @@ export const questions: Question[] = [
             text: "ゆきさんは 料理[りょうり]がすごく 上手[じょうず]だと",
             blank: true,
           },
-          { text: "思[おも]う", blank: true },
+          { text: "思[おも]う", blank: true, conjugation: omouPos },
         ],
       },
       {
@@ -599,7 +631,7 @@ export const questions: Question[] = [
             text: "ゆきさんは 料理[りょうり]がとても 上手[じょうず]だと",
             blank: true,
           },
-          { text: "思[おも]う", blank: true },
+          { text: "思[おも]う", blank: true, conjugation: omouPos },
         ],
         notes: "とても instead of すごく",
       },
@@ -609,7 +641,7 @@ export const questions: Question[] = [
             text: "私[わたし]はゆきさんは 料理[りょうり]がすごく 上手[じょうず]だと",
             blank: true,
           },
-          { text: "思[おも]う", blank: true },
+          { text: "思[おも]う", blank: true, conjugation: omouPos },
         ],
         notes: "Explicit 私は",
       },
@@ -619,7 +651,7 @@ export const questions: Question[] = [
             text: "ゆきさんが 料理[りょうり]がすごく 上手[じょうず]だと",
             blank: true,
           },
-          { text: "思[おも]う", blank: true },
+          { text: "思[おも]う", blank: true, conjugation: omouPos },
         ],
         notes: "が instead of は for ゆきさん",
       },
@@ -634,7 +666,7 @@ export const questions: Question[] = [
             text: "この 宿題[しゅくだい]はすごく 難[むずか]しいと",
             blank: true,
           },
-          { text: "思[おも]う", blank: true },
+          { text: "思[おも]う", blank: true, conjugation: omouPos },
         ],
       },
       {
@@ -643,7 +675,7 @@ export const questions: Question[] = [
             text: "この 宿題[しゅくだい]はとても 難[むずか]しいと",
             blank: true,
           },
-          { text: "思[おも]う", blank: true },
+          { text: "思[おも]う", blank: true, conjugation: omouPos },
         ],
         notes: "とても instead of すごく",
       },
@@ -653,7 +685,7 @@ export const questions: Question[] = [
             text: "この 宿題[しゅくだい]がすごく 難[むずか]しいと",
             blank: true,
           },
-          { text: "思[おも]う", blank: true },
+          { text: "思[おも]う", blank: true, conjugation: omouPos },
         ],
         notes: "が instead of は",
       },
@@ -663,7 +695,7 @@ export const questions: Question[] = [
             text: "この 宿題[しゅくだい]がとても 難[むずか]しいと",
             blank: true,
           },
-          { text: "思[おも]う", blank: true },
+          { text: "思[おも]う", blank: true, conjugation: omouPos },
         ],
         notes: "が + とても",
       },
@@ -673,7 +705,7 @@ export const questions: Question[] = [
             text: "この 宿題[しゅくだい]は 結構[けっこう] 難[むずか]しいと",
             blank: true,
           },
-          { text: "思[おも]う", blank: true },
+          { text: "思[おも]う", blank: true, conjugation: omouPos },
         ],
         notes: "結構 (quite/pretty) — more natural for \"pretty difficult\"",
       },
@@ -689,7 +721,7 @@ export const questions: Question[] = [
             text: "れんさんの 新[あたら]しい 部屋[へや]はすごく 静[しず]かだと",
             blank: true,
           },
-          { text: "聞[き]いた", blank: true },
+          { text: "聞[き]く", blank: true, conjugation: kikuPast },
         ],
       },
       {
@@ -698,7 +730,7 @@ export const questions: Question[] = [
             text: "れんさんの 新[あたら]しい 部屋[へや]はとても 静[しず]かだと",
             blank: true,
           },
-          { text: "聞[き]いた", blank: true },
+          { text: "聞[き]く", blank: true, conjugation: kikuPast },
         ],
         notes: "とても instead of すごく",
       },
@@ -708,7 +740,7 @@ export const questions: Question[] = [
             text: "れんさんの 新[あたら]しい 部屋[へや]は 本当[ほんとう]に 静[しず]かだと",
             blank: true,
           },
-          { text: "聞[き]いた", blank: true },
+          { text: "聞[き]く", blank: true, conjugation: kikuPast },
         ],
         notes: "本当に instead of すごく",
       },
@@ -767,9 +799,8 @@ export const questions: Question[] = [
             text: "そうたさんははなさんは 歌[うた]が 上手[じょうず]だと",
             blank: true,
           },
-          { text: "思[おも]う", blank: true },
+          { text: "思[おも]う", blank: true, conjugation: omouPos },
         ],
-        register: "casual",
         notes: "思う (plain) instead of 思っている",
       },
     ],
@@ -781,7 +812,7 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "あみさんは 今日[きょう] 食堂[しょくどう]で 昼[ひる]ご 飯[はん]を 食[た]べて", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "いる", blank: true },
           { text: "と", blank: true },
           { text: "言[い]って", blank: true },
           { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "past" } },
@@ -790,7 +821,7 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "あみさんは 食堂[しょくどう]で 今日[きょう] 昼[ひる]ご 飯[はん]を 食[た]べて", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "いる", blank: true },
           { text: "と", blank: true },
           { text: "言[い]って", blank: true },
           { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "past" } },
@@ -800,7 +831,7 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "あみさんは 今日[きょう] 昼[ひる]ご 飯[はん]を 食堂[しょくどう]で 食[た]べて", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "いる", blank: true },
           { text: "と", blank: true },
           { text: "言[い]って", blank: true },
           { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "past" } },
@@ -810,7 +841,7 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "あみさんが 今日[きょう] 食堂[しょくどう]で 昼[ひる]ご 飯[はん]を 食[た]べて", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "いる", blank: true },
           { text: "と", blank: true },
           { text: "言[い]って", blank: true },
           { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "past" } },
@@ -820,18 +851,18 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "あみさんは 今日[きょう] 食堂[しょくどう]で 昼[ひる]ご 飯[はん]を 食[た]べて", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "いる", blank: true },
           { text: "と", blank: true },
-          { text: "聞[き]いた", blank: true },
+          { text: "聞[き]く", blank: true, conjugation: kikuPast },
         ],
         notes: "と聞いた instead of と言っていた",
       },
       {
         segments: [
           { text: "あみさんは 今日[きょう] 食堂[しょくどう]で 昼[ひる]ご 飯[はん]を 食[た]べて", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "いる", blank: true },
           { text: "って", blank: true },
-          { text: "言[い]った", blank: true },
+          { text: "言[い]う", blank: true, conjugation: iuPast },
         ],
         register: "casual",
         notes: "って (casual quote) + 言った",
@@ -848,7 +879,7 @@ export const questions: Question[] = [
             text: "メアリーさんは 今晩[こんばん] パーティーに 来[こ]ないと",
             blank: true,
           },
-          { text: "思[おも]う", blank: true },
+          { text: "思[おも]う", blank: true, conjugation: omouPos },
         ],
       },
       {
@@ -857,7 +888,7 @@ export const questions: Question[] = [
             text: "メアリーさんが 今晩[こんばん] パーティーに 来[こ]ないと",
             blank: true,
           },
-          { text: "思[おも]う", blank: true },
+          { text: "思[おも]う", blank: true, conjugation: omouPos },
         ],
         notes: "が instead of は",
       },
@@ -867,7 +898,7 @@ export const questions: Question[] = [
             text: "メアリーさんは 今夜[こんや] パーティーに 来[こ]ないと",
             blank: true,
           },
-          { text: "思[おも]う", blank: true },
+          { text: "思[おも]う", blank: true, conjugation: omouPos },
         ],
         notes: "今夜 instead of 今晩",
       },
@@ -877,7 +908,7 @@ export const questions: Question[] = [
             text: "今晩[こんばん]、 メアリーさんは パーティーに 来[こ]ないと",
             blank: true,
           },
-          { text: "思[おも]う", blank: true },
+          { text: "思[おも]う", blank: true, conjugation: omouPos },
         ],
         notes: "今晩 fronted",
       },
@@ -887,7 +918,7 @@ export const questions: Question[] = [
             text: "私[わたし]はメアリーさんは 今晩[こんばん] パーティーに 来[こ]ないと",
             blank: true,
           },
-          { text: "思[おも]う", blank: true },
+          { text: "思[おも]う", blank: true, conjugation: omouPos },
         ],
         notes: "Explicit 私は",
       },
@@ -900,7 +931,7 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "みかさんは 生物学[せいぶつがく]を 勉強[べんきょう]して", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "いる", blank: true },
           { text: "と", blank: true },
           { text: "言[い]って", blank: true },
           { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "past" } },
@@ -909,7 +940,7 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "みかさんが 生物学[せいぶつがく]を 勉強[べんきょう]して", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "いる", blank: true },
           { text: "と", blank: true },
           { text: "言[い]って", blank: true },
           { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "past" } },
@@ -919,18 +950,18 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "みかさんは 生物学[せいぶつがく]を 勉強[べんきょう]して", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "いる", blank: true },
           { text: "と", blank: true },
-          { text: "言[い]った", blank: true },
+          { text: "言[い]う", blank: true, conjugation: iuPast },
         ],
         notes: "と言った (simple past)",
       },
       {
         segments: [
           { text: "みかさんは 生物学[せいぶつがく]を 勉強[べんきょう]して", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "いる", blank: true },
           { text: "と", blank: true },
-          { text: "聞[き]いた", blank: true },
+          { text: "聞[き]く", blank: true, conjugation: kikuPast },
         ],
         notes: "と聞いた instead of と言っていた",
       },
@@ -946,7 +977,7 @@ export const questions: Question[] = [
             text: "そらさんは 今週末[こんしゅうまつ] デートに 行[い]くと",
             blank: true,
           },
-          { text: "聞[き]いた", blank: true },
+          { text: "聞[き]く", blank: true, conjugation: kikuPast },
         ],
       },
       {
@@ -955,7 +986,7 @@ export const questions: Question[] = [
             text: "そらさんが 今週末[こんしゅうまつ] デートに 行[い]くと",
             blank: true,
           },
-          { text: "聞[き]いた", blank: true },
+          { text: "聞[き]く", blank: true, conjugation: kikuPast },
         ],
         notes: "が instead of は",
       },
@@ -965,7 +996,7 @@ export const questions: Question[] = [
             text: "そらさんは 週末[しゅうまつ] デートに 行[い]くと",
             blank: true,
           },
-          { text: "聞[き]いた", blank: true },
+          { text: "聞[き]く", blank: true, conjugation: kikuPast },
         ],
         notes: "週末 instead of 今週末",
       },
@@ -1049,7 +1080,6 @@ export const questions: Question[] = [
           { text: "思[おも]って", blank: true },
           { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        register: "casual",
         notes: "部屋が + 小さすぎる (too small) — self-possession implicit",
       },
       {
@@ -1058,9 +1088,8 @@ export const questions: Question[] = [
             text: "はなさんは 部屋[へや]が 小[ちい]さすぎると",
             blank: true,
           },
-          { text: "思[おも]う", blank: true },
+          { text: "思[おも]う", blank: true, conjugation: omouPos },
         ],
-        register: "casual",
         notes: "部屋が + 小さすぎる + 思う",
       },
     ],

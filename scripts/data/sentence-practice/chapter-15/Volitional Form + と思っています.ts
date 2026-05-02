@@ -1,4 +1,32 @@
-import type { Question } from "../types";
+import type { Question } from "../types"
+
+const toOmotteIru = [
+  { text: "と 思[おも]って", blank: true },
+  {
+    text: "いる",
+    blank: true,
+    conjugation: {
+      pos: "Ichidan verb",
+      form: "normal",
+      polarity: "positive",
+      tense: "non-past",
+    },
+  },
+] as const
+
+const toOmou = [
+  { text: "と", blank: true },
+  {
+    text: "思[おも]う",
+    blank: true,
+    conjugation: {
+      pos: "Godan verb with 'u' ending",
+      form: "normal",
+      polarity: "positive",
+      tense: "non-past",
+    },
+  },
+] as const
 
 export const questions: Question[] = [
   {
@@ -8,14 +36,14 @@ export const questions: Question[] = [
         segments: [
           { text: "来月[らいげつ]、アルバイトを" },
           { text: "やめよう", blank: true },
-          { text: "と" },
-          { text: "思[おも]っています", blank: true },
+          ...toOmotteIru,
         ],
       },
       {
         segments: [
-          { text: "アルバイトを来月[らいげつ]やめようと" },
-          { text: "思[おも]っています", blank: true },
+          { text: "アルバイトを 来月[らいげつ]" },
+          { text: "やめよう", blank: true },
+          ...toOmotteIru,
         ],
         notes: "Time word placed after the object (mid-sentence position)",
       },
@@ -23,17 +51,15 @@ export const questions: Question[] = [
         segments: [
           { text: "来月[らいげつ]、アルバイトを" },
           { text: "やめよう", blank: true },
-          { text: "と" },
-          { text: "思[おも]います", blank: true },
+          ...toOmou,
         ],
-        notes: "Using と思います (simple volitional + と思う) instead of と思っています",
+        notes: "Using と思う (simple intention) instead of と思っている",
       },
       {
         segments: [
           { text: "来月[らいげつ]、アルバイトは" },
           { text: "やめよう", blank: true },
-          { text: "と" },
-          { text: "思[おも]っています", blank: true },
+          ...toOmotteIru,
         ],
         notes: "は instead of を (topicalizing アルバイト)",
       },
@@ -41,10 +67,9 @@ export const questions: Question[] = [
         segments: [
           { text: "来月[らいげつ]、アルバイトは" },
           { text: "やめよう", blank: true },
-          { text: "と" },
-          { text: "思[おも]います", blank: true },
+          ...toOmou,
         ],
-        notes: "は instead of を, with と思います (simple form)",
+        notes: "は + simple と思う",
       },
     ],
   },
@@ -54,161 +79,42 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "今年[ことし]の 夏[なつ]、富士山[ふじさん]に 登[のぼ]ろうと" },
-          { text: "思[おも]ってい", blank: true },
-          { text: "ます" },
-        ],
-      },
-      {
-        segments: [
-          { text: "この 夏[なつ]、富士山[ふじさん]に 登[のぼ]ろうと" },
-          { text: "思[おも]ってい", blank: true },
-          { text: "ます" },
-        ],
-        notes: "この夏 instead of 今年の夏 for \"this summer\"",
-      },
-      {
-        segments: [
-          { text: "今年[ことし]の 夏[なつ]、富士山[ふじさん]に 登[のぼ]ろうと" },
-          { text: "思[おも]って", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
-        ],
-        notes: "Casual form with と思っている (plain), no ます ending",
-      },
-      {
-        segments: [
-          { text: "この 夏[なつ]、富士山[ふじさん]に 登[のぼ]ろうと" },
-          { text: "思[おも]って", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
-        ],
-        notes: "この夏 + casual と思っている",
-      },
-      {
-        segments: [
-          { text: "今年[ことし]の 夏[なつ]に 富士山[ふじさん]に 登[のぼ]ろうと" },
-          { text: "思[おも]って", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
-        ],
-        notes: "今年の夏に + casual と思っている",
-      },
-      {
-        segments: [
-          { text: "今年[ことし]の 夏[なつ]、富士山[ふじさん]を 登[のぼ]ろうと" },
-          { text: "思[おも]ってい", blank: true },
-          { text: "ます" },
-        ],
-        notes: "富士山を登る (を instead of に) - を marks the path/space traversed, polite",
-      },
-      {
-        segments: [
-          { text: "この 夏[なつ]、富士山[ふじさん]を 登[のぼ]ろうと" },
-          { text: "思[おも]ってい", blank: true },
-          { text: "ます" },
-        ],
-        notes: "この夏 + 富士山を (を particle) + polite",
-      },
-      {
-        segments: [
-          { text: "今年[ことし]の 夏[なつ]、富士山[ふじさん]を 登[のぼ]ろうと" },
-          { text: "思[おも]って", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
-        ],
-        notes: "富士山を + casual と思っている",
-      },
-      {
-        segments: [
-          { text: "この 夏[なつ]、富士山[ふじさん]を 登[のぼ]ろうと" },
-          { text: "思[おも]って", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
-        ],
-        notes: "この夏 + 富士山を + casual と思っている",
-      },
-      {
-        segments: [
           { text: "今年[ことし]の 夏[なつ]、富士山[ふじさん]に" },
           { text: "登[のぼ]ろう", blank: true },
-          { text: "と思[おも]っています" },
+          ...toOmotteIru,
         ],
       },
       {
         segments: [
           { text: "この 夏[なつ]、富士山[ふじさん]に" },
           { text: "登[のぼ]ろう", blank: true },
-          { text: "と思[おも]っています" },
+          ...toOmotteIru,
         ],
-        notes: "この夏 instead of 今年の夏 for \"this summer\"",
+        notes: "この夏 instead of 今年の夏",
       },
       {
         segments: [
-          { text: "今年[ことし]の 夏[なつ]、富士山[ふじさん]に" },
+          { text: "今年[ことし]の 夏[なつ]に 富士山[ふじさん]に" },
           { text: "登[のぼ]ろう", blank: true },
-          { text: "と思[おも]っている" },
+          ...toOmotteIru,
         ],
-        notes: "今年の夏、富士山に + casual と思っている",
-      },
-      {
-        segments: [
-          { text: "この 夏[なつ]、富士山[ふじさん]に" },
-          { text: "登[のぼ]ろう", blank: true },
-          { text: "と思[おも]っている" },
-        ],
-        notes: "この夏 + casual と思っている",
-      },
-      {
-        segments: [
-          { text: "事年[ことし]の 夏[なつ]に、富士山[ふじさん]に" },
-          { text: "登[のぼ]ろう", blank: true },
-          { text: "と思[おも]っています" },
-        ],
-        notes: "今年の夏に (with に particle after time expression) + polite",
-      },
-      {
-        segments: [
-          { text: "今年[ことし]の 夏[なつ]に、富士山[ふじさん]に" },
-          { text: "登[のぼ]ろう", blank: true },
-          { text: "と思[おも]っている" },
-        ],
-        notes: "今年の夏に + casual と思っている",
-      },
-      {
-        segments: [
-          { text: "今年[ことし]の 夏[なつ]に、富士山[ふじさん]に" },
-          { text: "登[のぼ]ろう", blank: true },
-          { text: "と思[おも]っています" },
-        ],
-        notes: "今年の夏に (with に particle after time expression) + polite",
+        notes: "今年の夏に — に particle after time expression",
       },
       {
         segments: [
           { text: "今年[ことし]の 夏[なつ]、富士山[ふじさん]を" },
           { text: "登[のぼ]ろう", blank: true },
-          { text: "と思[おも]っています" },
+          ...toOmotteIru,
         ],
-        notes: "富士山を登る (を instead of に) - を marks the path/space traversed, polite",
+        notes: "を instead of に — を marks the path/space traversed",
       },
       {
         segments: [
           { text: "この 夏[なつ]、富士山[ふじさん]を" },
           { text: "登[のぼ]ろう", blank: true },
-          { text: "と思[おも]っています" },
+          ...toOmotteIru,
         ],
-        notes: "この夏 + 富士山を (を particle) + polite",
-      },
-      {
-        segments: [
-          { text: "今年[ことし]の 夏[なつ]、富士山[ふじさん]を" },
-          { text: "登[のぼ]ろう", blank: true },
-          { text: "と思[おも]っている" },
-        ],
-        notes: "富士山を + casual と思っている",
-      },
-      {
-        segments: [
-          { text: "この 夏[なつ]、富士山[ふじさん]を" },
-          { text: "登[のぼ]ろう", blank: true },
-          { text: "と思[おも]っている" },
-        ],
-        notes: "この夏 + 富士山を + casual と思っている",
+        notes: "この夏 + を",
       },
     ],
   },
@@ -217,45 +123,27 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "古[ふる]い 車[くるま]を 売[う]って、代[か]わりに バイクを" },
-          { text: "買[か]おうと 思[おも]っています", blank: true },
+          { text: "古[ふる]い 車[くるま]を 売[う]って、代[か]わりにバイクを" },
+          { text: "買[か]おう", blank: true },
+          ...toOmotteIru,
         ],
-        notes: "Basic version: て-form connects selling→buying, 代わりに (instead), と思っています",
-      },
-      {
-        segments: [
-          { text: "古[ふる]い 車[くるま]を" },
-          { text: "売[う]ろうと 思[おも]っていて、代[か]わりに バイクを 買[か]おうと 思[おも]っています", blank: true },
-        ],
-        notes: "Two separate volitional expressions: 売ろうと思っていて、代わりにバイクを買おうと思っています — both intentions stated explicitly",
+        notes: "て-form connects selling→buying, 代わりに (instead)",
       },
       {
         segments: [
           { text: "古[ふる]い 車[くるま]を 売[う]って、バイクを" },
-          { text: "買[か]おうと 思[おも]っています", blank: true },
+          { text: "買[か]おう", blank: true },
+          ...toOmotteIru,
         ],
-        notes: "Without 代わりに — simpler, still natural",
+        notes: "Without 代わりに",
       },
       {
         segments: [
-          { text: "古[ふる]い 車[くるま]を" },
-          { text: "売[う]ろうと 思[おも]っていて、バイクを 買[か]おうと 思[おも]っています", blank: true },
+          { text: "古[ふる]い 車[くるま]を 売[う]って、そのかわりにバイクを" },
+          { text: "買[か]おう", blank: true },
+          ...toOmotteIru,
         ],
-        notes: "Two separate volitional expressions without 代わりに",
-      },
-      {
-        segments: [
-          { text: "古[ふる]い 車[くるま]を 売[う]って、そのかわりに バイクを" },
-          { text: "買[か]おうと 思[おも]っています", blank: true },
-        ],
-        notes: "そのかわりに (in its place/instead) instead of 代わりに",
-      },
-      {
-        segments: [
-          { text: "古[ふる]い 車[くるま]を" },
-          { text: "売[う]ろうと 思[おも]っていて、そのかわりに バイクを 買[か]おうと 思[おも]っています", blank: true },
-        ],
-        notes: "Two volitional expressions with そのかわりに",
+        notes: "そのかわりに instead of 代わりに",
       },
     ],
   },
@@ -267,44 +155,40 @@ export const questions: Question[] = [
         segments: [
           { text: "けんじさんは ギターを" },
           { text: "習[なら]おう", blank: true },
-          { text: "と" },
-          { text: "思[おも]っている", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          ...toOmotteIru,
         ],
       },
       {
         segments: [
           { text: "けんじさんは ギターを" },
           { text: "弾[ひ]こう", blank: true },
-          { text: "と" },
-          { text: "思[おも]っている", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          ...toOmotteIru,
         ],
-        notes: "Using 弾く (to play a string instrument) instead of 習う, は particle",
+        notes: "Using 弾く (to play a string instrument) instead of 習う",
       },
       {
         segments: [
           { text: "けんじさんが ギターを" },
           { text: "習[なら]おう", blank: true },
-          { text: "と" },
-          { text: "思[おも]っている", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          ...toOmotteIru,
         ],
-        notes: "Using が instead of は for subject particle",
+        notes: "が instead of は",
       },
       {
         segments: [
           { text: "けんじさんが ギターを" },
           { text: "弾[ひ]こう", blank: true },
-          { text: "と" },
-          { text: "思[おも]っている", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          ...toOmotteIru,
         ],
-        notes: "が instead of は, and 弾く instead of 習う",
+        notes: "が + 弾く",
       },
       {
         segments: [
           { text: "けんじさんは ギターを" },
-          { text: "練[れん]習[しゅう]しよう", blank: true },
-          { text: "と" },
-          { text: "思[おも]っている", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "練習[れんしゅう]しよう", blank: true },
+          ...toOmotteIru,
         ],
+        notes: "練習する (to practice) instead of 習う",
       },
     ],
   },
@@ -314,56 +198,56 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "来年[らいねん]、イタリアに 留学[りゅうがく]しようと", blank: true },
-          { text: "思[おも]って" },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "来年[らいねん]、イタリアに" },
+          { text: "留学[りゅうがく]しよう", blank: true },
+          ...toOmotteIru,
         ],
       },
       {
         segments: [
-          { text: "来年[らいねん]、イタリアへ 留学[りゅうがく]しようと", blank: true },
-          { text: "思[おも]って" },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "来年[らいねん]、イタリアへ" },
+          { text: "留学[りゅうがく]しよう", blank: true },
+          ...toOmotteIru,
         ],
-        notes: "Using へ instead of に for destination",
+        notes: "へ instead of に for destination",
       },
       {
         segments: [
-          { text: "イタリアに 来年[らいねん] 留学[りゅうがく]しようと", blank: true },
-          { text: "思[おも]って" },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "イタリアに 来年[らいねん]" },
+          { text: "留学[りゅうがく]しよう", blank: true },
+          ...toOmotteIru,
         ],
-        notes: "Reversed word order: イタリアに来年 first",
+        notes: "Reversed word order: イタリアに first",
       },
       {
         segments: [
-          { text: "イタリアへ 来年[らいねん] 留学[りゅうがく]しようと", blank: true },
-          { text: "思[おも]って" },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "イタリアへ 来年[らいねん]" },
+          { text: "留学[りゅうがく]しよう", blank: true },
+          ...toOmotteIru,
         ],
-        notes: "Reversed word order with へ: イタリアへ来年 first",
+        notes: "Reversed word order with へ",
       },
     ],
   },
   {
-    english: "I've been thinking of giving my landlady some chocolates as a thank-you gift.",
+    english:
+      "I've been thinking of giving my landlady some chocolates as a thank-you gift.",
     hint: "大家さん = おおやさん",
     answers: [
       {
         segments: [
           { text: "大家[おおや]さんに お返[かえ]しに チョコレートを" },
           { text: "あげよう", blank: true },
-          { text: "と 思[おも]って" },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          ...toOmotteIru,
         ],
-        notes: "Core answer: お返しに + 大家さんに + チョコレートを + あげよう + と思っている/います",
+        notes:
+          "Core word order: 大家さんに + お返しに + チョコレートを + あげよう",
       },
       {
         segments: [
           { text: "お返[かえ]しに 大家[おおや]さんに チョコレートを" },
           { text: "あげよう", blank: true },
-          { text: "と 思[おも]って" },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          ...toOmotteIru,
         ],
         notes: "お返しに fronted before 大家さんに",
       },
@@ -371,144 +255,114 @@ export const questions: Question[] = [
         segments: [
           { text: "大家[おおや]さんに チョコレートを お返[かえ]しに" },
           { text: "あげよう", blank: true },
-          { text: "と 思[おも]って" },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          ...toOmotteIru,
         ],
-        notes: "お返しに placed after チョコレートを (closer to verb)",
+        notes: "お返しに placed after チョコレートを",
       },
     ],
   },
   {
-    english: "I've been thinking of going on a diet, but I just can't give up sweets.",
+    english:
+      "I've been thinking of going on a diet, but I just can't give up sweets.",
     answers: [
       {
         segments: [
-          { text: "ダイエットしようと", blank: true },
-          { text: "思[おも]っているけど、お 菓子[かし]がやめられない" },
+          { text: "ダイエット" },
+          { text: "しよう", blank: true },
+          ...toOmotteIru,
+          { text: "けど、お 菓子[かし]がやめられない" },
         ],
       },
       {
         segments: [
-          { text: "ダイエットしようと", blank: true },
-          { text: "思[おも]っているけど、甘[あま]い 物[もの]がやめられない" },
+          { text: "ダイエット" },
+          { text: "しよう", blank: true },
+          ...toOmotteIru,
+          { text: "けど、甘[あま]い 物[もの]がやめられない" },
         ],
         notes: "甘い物 (sweet things) instead of お菓子",
       },
       {
         segments: [
-          { text: "ダイエットしようと", blank: true },
-          { text: "思[おも]っているんだけど、お 菓子[かし]がやめられない" },
+          { text: "ダイエット" },
+          { text: "しよう", blank: true },
+          ...toOmotteIru,
+          { text: "けど、お 菓子[かし]があきらめられない" },
         ],
-        notes: "Using んだけど (explanatory nuance) instead of plain けど",
+        notes: "あきらめられない (can't give up) instead of やめられない",
       },
       {
         segments: [
-          { text: "ダイエットしようと", blank: true },
-          { text: "思[おも]っているんだけど、甘[あま]い 物[もの]がやめられない" },
-        ],
-        notes: "んだけど with 甘い物",
-      },
-      {
-        segments: [
-          { text: "ダイエットしようと", blank: true },
-          { text: "思[おも]っているけど、お 菓子[かし]があきらめられない" },
-        ],
-        notes: "あきらめられない (can't give up/abandon) instead of やめられない, お菓子",
-      },
-      {
-        segments: [
-          { text: "ダイエットしようと", blank: true },
-          { text: "思[おも]っているけど、甘[あま]い 物[もの]があきらめられない" },
+          { text: "ダイエット" },
+          { text: "しよう", blank: true },
+          ...toOmotteIru,
+          { text: "けど、甘[あま]い 物[もの]があきらめられない" },
         ],
         notes: "あきらめられない with 甘い物",
       },
       {
         segments: [
-          { text: "ダイエットしようと", blank: true },
-          { text: "思[おも]っている。でも、お 菓子[かし]がやめられない" },
+          { text: "ダイエット" },
+          { text: "しよう", blank: true },
+          ...toOmotteIru,
+          { text: "が、お 菓子[かし]がやめられない" },
         ],
-        notes: "でも as sentence-initial conjunction (two sentences), お菓子, やめられない",
+        notes: "が as contrastive conjunction instead of けど",
       },
       {
         segments: [
-          { text: "ダイエットしようと", blank: true },
-          { text: "思[おも]っている。でも、甘[あま]い 物[もの]がやめられない" },
+          { text: "ダイエット" },
+          { text: "しよう", blank: true },
+          ...toOmotteIru,
+          { text: "が、甘[あま]い 物[もの]がやめられない" },
         ],
-        notes: "でも as sentence-initial conjunction, 甘い物, やめられない",
-      },
-      {
-        segments: [
-          { text: "ダイエットしようと", blank: true },
-          { text: "思[おも]っているが、お 菓子[かし]がやめられない" },
-        ],
-        notes: "が as contrastive conjunction within one sentence, お菓子, やめられない",
-      },
-      {
-        segments: [
-          { text: "ダイエットしようと", blank: true },
-          { text: "思[おも]っているが、甘[あま]い 物[もの]がやめられない" },
-        ],
-        notes: "が as contrastive conjunction, 甘い物, やめられない",
+        notes: "が contrastive + 甘い物",
       },
     ],
   },
   {
-    english: "I'm thinking of going to see the autumn leaves in Kyoto this year.",
+    english:
+      "I think I'll go see the autumn leaves in Kyoto this year.",
     hint: "Kyoto = きょうと",
     answers: [
       {
         segments: [
           { text: "今年[ことし]は、きょうとに 紅葉[こうよう]を 見[み]に" },
-          { text: "行[い]こうと思[おも]って", blank: true },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "行[い]こう", blank: true },
+          ...toOmou,
         ],
       },
       {
         segments: [
           { text: "今年[ことし]、きょうとに 紅葉[こうよう]を 見[み]に" },
-          { text: "行[い]こうと思[おも]って", blank: true },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "行[い]こう", blank: true },
+          ...toOmou,
         ],
-        notes: "No は after 今年 — equally natural",
+        notes: "No は after 今年",
       },
       {
         segments: [
           { text: "今年[ことし]は、きょうとへ 紅葉[こうよう]を 見[み]に" },
-          { text: "行[い]こうと思[おも]って", blank: true },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "行[い]こう", blank: true },
+          ...toOmou,
         ],
-        notes: "Using へ instead of に for destination (京都へ), with は",
+        notes: "へ instead of に for destination",
       },
       {
         segments: [
           { text: "今年[ことし]、きょうとへ 紅葉[こうよう]を 見[み]に" },
-          { text: "行[い]こうと思[おも]って", blank: true },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "行[い]こう", blank: true },
+          ...toOmou,
         ],
-      },
-      {
-        segments: [
-          { text: "今年[ことし]は、きょうとに 紅葉[こゆう]を 見[み]に" },
-          { text: "行[い]こうと", blank: true },
-          { text: "思[おも]う", conjugation: { pos: "Godan verb with 'u' ending", form: "normal", polarity: "positive", tense: "non-past" } },
-        ],
-        notes: "Non-progressive と思う (simple intention), は after 今年, に for destination",
-      },
-      {
-        segments: [
-          { text: "今年[ことし]、きょうとに 紅葉[こゆう]を 見[み]に" },
-          { text: "行[い]こうと", blank: true },
-          { text: "思[おも]う", conjugation: { pos: "Godan verb with 'u' ending", form: "normal", polarity: "positive", tense: "non-past" } },
-        ],
-        notes: "Non-progressive と思う, no は after 今年, に for destination",
+        notes: "No は + へ",
       },
       {
         segments: [
           { text: "今年[ことし]は、きょうとの 紅葉[こうよう]を 見[み]に" },
-          { text: "行[い]こうと思[おも]って", blank: true },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "行[い]こう", blank: true },
+          ...toOmou,
         ],
-        notes: "Using きょうとの紅葉 (Kyoto's autumn leaves) — の instead of destination particle に, progressive form",
+        notes: "きょうとの紅葉 (の-modifier) instead of destination に",
       },
     ],
   },
@@ -518,61 +372,67 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "私[わたし]は 好[す]きな 作家[さっか]に 手紙[てがみ]を" },
-          { text: "書[か]こうと 思[おも]って", blank: true },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "書[か]こう", blank: true },
+          ...toOmotteIru,
         ],
       },
       {
         segments: [
-          { text: "私[わたし]は 大好[だいす]きな 作家[さっか]に 手紙[てがみ]を" },
-          { text: "書[か]こうと 思[おも]って", blank: true },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          {
+            text: "私[わたし]は 大好[だいす]きな 作家[さっか]に 手紙[てがみ]を",
+          },
+          { text: "書[か]こう", blank: true },
+          ...toOmotteIru,
         ],
-        notes: "大好きな instead of 好きな — stronger affection for the author",
+        notes: "大好きな instead of 好きな — stronger affection",
       },
       {
         segments: [
           { text: "私[わたし]は 好[す]きな 作家[さっか]へ 手紙[てがみ]を" },
-          { text: "書[か]こうと 思[おも]って", blank: true },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "書[か]こう", blank: true },
+          ...toOmotteIru,
         ],
-        notes: "へ instead of に for the recipient (directional nuance)",
+        notes: "へ instead of に for the recipient",
       },
       {
         segments: [
-          { text: "私[わたし]は 大好[だいす]きな 作家[さっか]へ 手紙[てがみ]を" },
-          { text: "書[か]こうと 思[おも]って", blank: true },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          {
+            text: "私[わたし]は 大好[だいす]きな 作家[さっか]へ 手紙[てがみ]を",
+          },
+          { text: "書[か]こう", blank: true },
+          ...toOmotteIru,
         ],
-        notes: "大好きな + へ combination",
+        notes: "大好きな + へ",
       },
       {
         segments: [
           { text: "私[わたし]は 好[す]きな 作家[さっか]に 手紙[てがみ]を" },
-          { text: "送[おく]ろうと 思[おも]って", blank: true },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "送[おく]ろう", blank: true },
+          ...toOmotteIru,
         ],
-        notes: "送ろう instead of 書こう — \"thinking of sending a letter\"",
+        notes: "送る (to send) instead of 書く",
       },
       {
         segments: [
-          { text: "私[わたし]は 大好[だいす]きな 作家[さっか]に 手紙[てがみ]を" },
-          { text: "送[おく]ろうと 思[おも]って", blank: true },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          {
+            text: "私[わたし]は 大好[だいす]きな 作家[さっか]に 手紙[てがみ]を",
+          },
+          { text: "送[おく]ろう", blank: true },
+          ...toOmotteIru,
         ],
-        notes: "大好きな + 送ろう combination",
+        notes: "大好きな + 送る",
       },
     ],
   },
   {
-    english: "I've been thinking of giving up on the guitar — I'm just not getting any better.",
+    english:
+      "I've been thinking of giving up on the guitar — I'm just not getting any better.",
     answers: [
       {
         segments: [
           { text: "ギターを" },
           { text: "あきらめよう", blank: true },
-          { text: "と思[おも]って" },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          ...toOmotteIru,
           { text: "。全然[ぜんぜん]うまくならないから" },
         ],
       },
@@ -580,8 +440,7 @@ export const questions: Question[] = [
         segments: [
           { text: "ギターを" },
           { text: "やめよう", blank: true },
-          { text: "と思[おも]って" },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          ...toOmotteIru,
           { text: "。全然[ぜんぜん]うまくならないから" },
         ],
         notes: "やめる instead of あきらめる",
@@ -590,18 +449,16 @@ export const questions: Question[] = [
         segments: [
           { text: "ギターを" },
           { text: "あきらめよう", blank: true },
-          { text: "と思[おも]って" },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          ...toOmotteIru,
           { text: "。全然[ぜんぜん]上手[じょうず]にならないから" },
         ],
-        notes: "上手になる instead of うまくなる",
+        notes: "上手にならない instead of うまくならない",
       },
       {
         segments: [
           { text: "ギターを" },
           { text: "やめよう", blank: true },
-          { text: "と思[おも]って" },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          ...toOmotteIru,
           { text: "。全然[ぜんぜん]上手[じょうず]にならないから" },
         ],
         notes: "やめる + 上手にならない",
@@ -610,8 +467,7 @@ export const questions: Question[] = [
         segments: [
           { text: "ギターを" },
           { text: "あきらめよう", blank: true },
-          { text: "と思[おも]って" },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          ...toOmotteIru,
           { text: "。あまりうまくならないから" },
         ],
         notes: "あまり instead of 全然 (softer)",
@@ -620,8 +476,7 @@ export const questions: Question[] = [
         segments: [
           { text: "ギターを" },
           { text: "やめよう", blank: true },
-          { text: "と思[おも]って" },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          ...toOmotteIru,
           { text: "。あまりうまくならないから" },
         ],
         notes: "やめる + あまり",
@@ -630,8 +485,7 @@ export const questions: Question[] = [
         segments: [
           { text: "全然[ぜんぜん]うまくならないから、ギターを" },
           { text: "あきらめよう", blank: true },
-          { text: "と思[おも]って" },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          ...toOmotteIru,
         ],
         notes: "Reversed order: reason first",
       },
@@ -639,26 +493,15 @@ export const questions: Question[] = [
         segments: [
           { text: "全然[ぜんぜん]うまくならないから、ギターを" },
           { text: "やめよう", blank: true },
-          { text: "と思[おも]って" },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          ...toOmotteIru,
         ],
         notes: "Reversed order with やめる",
       },
       {
         segments: [
-          { text: "全然[ぜんぜん]上手[じょうず]にならないから、ギターを" },
-          { text: "あきらめよう", blank: true },
-          { text: "と思[おも]って" },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
-        ],
-        notes: "Reversed order: 上手にならない",
-      },
-      {
-        segments: [
           { text: "ギターを" },
           { text: "あきらめよう", blank: true },
-          { text: "と思[おも]って" },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          ...toOmotteIru,
           { text: "。全然[ぜんぜん]うまくならないので" },
         ],
         notes: "ので instead of から",
@@ -667,20 +510,10 @@ export const questions: Question[] = [
         segments: [
           { text: "ギターを" },
           { text: "やめよう", blank: true },
-          { text: "と思[おも]って" },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          ...toOmotteIru,
           { text: "。全然[ぜんぜん]うまくならないので" },
         ],
         notes: "やめる + ので",
-      },
-      {
-        segments: [
-          { text: "全然[ぜんぜん]うまくならないので、ギターを" },
-          { text: "あきらめよう", blank: true },
-          { text: "と思[おも]って" },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
-        ],
-        notes: "ので + reversed order",
       },
     ],
   },
@@ -691,405 +524,364 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "来年[らいねん]の 春[はる]、九州[きゅうしゅう]に" },
-          { text: "旅行[りょこう]しようと思[おも]って", blank: true },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "旅行[りょこう]しよう", blank: true },
+          ...toOmotteIru,
         ],
       },
       {
         segments: [
-          { text: "来年[らいねん]の 春[はる]、九州[きゅうしゅう]に" },
-          { text: "旅行[りょこう]に行[い]こうと思[おも]って", blank: true },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          {
+            text: "来年[らいねん]の 春[はる]、九州[きゅうしゅう]に 旅行[りょこう]に",
+          },
+          { text: "行[い]こう", blank: true },
+          ...toOmotteIru,
         ],
-        notes: "旅行に行こう (go on a trip) instead of 旅行しよう, with に for destination",
+        notes: "旅行に行く (go on a trip) instead of 旅行する",
       },
       {
         segments: [
           { text: "来年[らいねん]の 春[はる]に 九州[きゅうしゅう]へ" },
-          { text: "旅行[りょこう]しようと思[おも]って", blank: true },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "旅行[りょこう]しよう", blank: true },
+          ...toOmotteIru,
         ],
-        notes: "Using 春に and へ instead of に for destination, 旅行しよう",
+        notes: "春に + へ for destination",
       },
       {
         segments: [
-          { text: "来年[らいねん]の 春[はる]、九州[きゅうしゅう]へ" },
-          { text: "旅行[りょこう]に行[い]こうと思[おも]って", blank: true },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          {
+            text: "来年[らいねん]の 春[はる]、九州[きゅうしゅう]へ 旅行[りょこう]に",
+          },
+          { text: "行[い]こう", blank: true },
+          ...toOmotteIru,
         ],
-        notes: "旅行に行こう with へ for destination",
-      },
-      {
-        segments: [
-          { text: "来春[らいしゅん]、九州[きゅうしゅう]に" },
-          { text: "旅行[りょこう]しようと思[おも]って", blank: true },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
-        ],
-        notes: "来春 (more literary/formal \"next spring\") instead of 来年の春, with に and 旅行しよう",
+        notes: "旅行に行く + へ",
       },
       {
         segments: [
           { text: "来春[らいしゅん]、九州[きゅうしゅう]に" },
-          { text: "旅行[りょこう]に行[い]こうと思[おも]って", blank: true },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "旅行[りょこう]しよう", blank: true },
+          ...toOmotteIru,
         ],
-        notes: "来春 with 旅行に行こう and に for destination",
+        notes: '来春 (more literary "next spring") instead of 来年の春',
+      },
+      {
+        segments: [
+          { text: "来春[らいしゅん]、九州[きゅうしゅう]に 旅行[りょこう]に" },
+          { text: "行[い]こう", blank: true },
+          ...toOmotteIru,
+        ],
+        notes: "来春 + 旅行に行く",
       },
     ],
   },
   {
-    english: "I've been thinking of inviting Sakura to my birthday party — do you think that's a good idea?",
+    english:
+      "I've been thinking of inviting Sakura to my birthday party — do you think that's a good idea?",
     hint: "Sakura = さくら",
     answers: [
       {
         segments: [
-          { text: "さくらを 誕生日[たんじょうび]パーティーに" },
+          { text: "さくらさんを 誕生日[たんじょうび]パーティーに" },
           { text: "誘[さそ]おう", blank: true },
-          { text: "と思[おも]っているんだけど、いいと" },
-          { text: "思[おも]う", conjugation: { pos: "Godan verb with 'u' ending", form: "normal", polarity: "positive", tense: "non-past" } },
-        ],
-      },
-      {
-        segments: [
-          { text: "誕生日[たんじょうび]パーティーにさくらを" },
-          { text: "誘[さそ]おう", blank: true },
-          { text: "と思[おも]っているんだけど、いいと" },
-          { text: "思[おも]う", conjugation: { pos: "Godan verb with 'u' ending", form: "normal", polarity: "positive", tense: "non-past" } },
-        ],
-        notes: "Object and destination reordered: 誕生日パーティーにさくらを (party first, then Sakura)",
-      },
-      {
-        segments: [
-          { text: "私[わたし]の 誕生日[たんじょうび]パーティーにさくらを" },
-          { text: "誘[さそ]おう", blank: true },
-          { text: "と思[おも]っているんだけど、どう" },
-          { text: "思[おも]う", conjugation: { pos: "Godan verb with 'u' ending", form: "normal", polarity: "positive", tense: "non-past" } },
-        ],
-        notes: "Using 私の誕生日パーティー (my birthday party explicit), and どう思う (what do you think?) instead of いいと思う",
-      },
-      {
-        segments: [
-          { text: "さくらを 誕生日[たんじょうび]パーティーに" },
-          { text: "誘[さそ]おう", blank: true },
-          { text: "と思[おも]っているんだけど、いいと思[おも]わない" },
-          { text: "か" },
-        ],
-        notes: "Second clause uses いいと思わない？ (don't you think it's good?) — negative question for seeking agreement",
-      },
-      {
-        segments: [
-          { text: "さくらを 誕生日[たんじょうび]パーティーに" },
-          { text: "誘[さそ]おう", blank: true },
-          { text: "と思[おも]っているんだけど、いいと思[おも]うよね" },
-        ],
-        notes: "Adding よね at the end to seek confirmation: \"I think it's good, right?\"",
-      },
-      {
-        segments: [
-          { text: "さくらを 誕生日[たんじょうび]パーティーに" },
-          { text: "誘[さそ]おう", blank: true },
-          { text: "と思[おも]っているんですが、いいと思[おも]いますよね" },
-        ],
-        notes: "Polite with よね at the end for seeking confirmation",
-      },
-      {
-        segments: [
-          { text: "さくらを 誕生日[たんじょうび]パーティーに" },
-          { text: "誘[さそ]おう", blank: true },
-          { text: "と" },
-          { text: "思[おも]って", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
-          { text: "んですが、どう" },
-          { text: "思[おも]う", conjugation: { pos: "Godan verb with 'u' ending", form: "normal", polarity: "positive", tense: "non-past" } },
-        ],
-        notes: "Polite register with んですが, どう思う (what do you think?) conjugated for polite/casual",
-      },
-      {
-        segments: [
-          { text: "さくらを 誕生日[たんじょうび]パーティーに" },
-          { text: "誘[さそ]おう", blank: true },
-          { text: "と" },
-          { text: "思[おも]って", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          ...toOmotteIru,
           { text: "んだけど、いいと" },
-          { text: "思[おも]う", conjugation: { pos: "Godan verb with 'u' ending", form: "normal", polarity: "positive", tense: "non-past" } },
+          {
+            text: "思[おも]う",
+            conjugation: {
+              pos: "Godan verb with 'u' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+      },
+      {
+        segments: [
+          { text: "誕生日[たんじょうび]パーティーに さくらさんを" },
+          { text: "誘[さそ]おう", blank: true },
+          ...toOmotteIru,
+          { text: "んだけど、いいと" },
+          {
+            text: "思[おも]う",
+            conjugation: {
+              pos: "Godan verb with 'u' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Object and destination reordered",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]の 誕生日[たんじょうび]パーティーに さくらさんを",
+          },
+          { text: "誘[さそ]おう", blank: true },
+          ...toOmotteIru,
+          { text: "んだけど、どう" },
+          {
+            text: "思[おも]う",
+            conjugation: {
+              pos: "Godan verb with 'u' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "私の誕生日パーティー + どう思う (what do you think?)",
+      },
+      {
+        segments: [
+          { text: "さくらさんを 誕生日[たんじょうび]パーティーに" },
+          { text: "誘[さそ]おう", blank: true },
+          ...toOmotteIru,
+          { text: "んだけど、いいと 思[おも]わない" },
           { text: "か" },
         ],
-        notes: "Second clause uses いいと思うか — asking opinion with か particle",
+        notes: "Negative question いいと思わないか — seeking agreement",
       },
     ],
   },
   {
-    english: "I've been thinking of moving out of the dormitory and living alone.",
+    english:
+      "I've been thinking of moving out of the dormitory and living alone.",
     answers: [
       {
         segments: [
-          { text: "寮[りょう]を 出[で]て 一人[ひとり]で 住[す]もうと", blank: true },
-          { text: "思[おも]っています" },
+          { text: "寮[りょう]を 出[で]て 一人[ひとり]で" },
+          { text: "住[す]もう", blank: true },
+          ...toOmotteIru,
         ],
       },
       {
         segments: [
-          { text: "寮[りょう]を 出[で]て 一人[ひとり]暮[ぐ]らしを しようと", blank: true },
-          { text: "思[おも]っています" },
+          { text: "寮[りょう]を 出[で]て 一人[ひとり]暮[ぐ]らしを" },
+          { text: "しよう", blank: true },
+          ...toOmotteIru,
         ],
-        notes: "Using 一人暮らしをする (living alone as a suru-noun phrase) instead of 一人で住む",
+        notes:
+          "一人暮らしをする (living alone as suru-noun phrase) instead of 一人で住む",
       },
       {
         segments: [
-          { text: "寮[りょう]から 出[で]て 一人[ひとり]で 住[す]もうと", blank: true },
-          { text: "思[おも]っています" },
+          { text: "寮[りょう]から 出[で]て 一人[ひとり]で" },
+          { text: "住[す]もう", blank: true },
+          ...toOmotteIru,
         ],
-        notes: "Using から instead of を with 出る (寮から出る = leave from the dormitory)",
+        notes: "から instead of を with 出る",
       },
       {
         segments: [
-          { text: "寮[りょう]から 出[で]て 一人[ひとり]暮[ぐ]らしを しようと", blank: true },
-          { text: "思[おも]っています" },
+          { text: "寮[りょう]から 出[で]て 一人[ひとり]暮[ぐ]らしを" },
+          { text: "しよう", blank: true },
+          ...toOmotteIru,
         ],
-        notes: "から + 出て with 一人暮らしをしよう",
+        notes: "から + 一人暮らしをする",
       },
       {
         segments: [
-          { text: "寮[りょう]を 出[で]て、 一人[ひとり]で 住[す]もうと", blank: true },
-          { text: "思[おも]っています" },
+          { text: "寮[りょう]を 出[で]て、一人[ひとり]で" },
+          { text: "住[す]もう", blank: true },
+          ...toOmotteIru,
         ],
-        notes: "With a comma after 出て for clarity/natural pacing",
+        notes: "Comma after 出て for natural pacing",
       },
       {
         segments: [
-          { text: "寮[りょう]を 出[で]て、 一人[ひとり]暮[ぐ]らしを しようと", blank: true },
-          { text: "思[おも]っています" },
+          { text: "寮[りょう]を 出[で]て、一人[ひとり]暮[ぐ]らしを" },
+          { text: "しよう", blank: true },
+          ...toOmotteIru,
         ],
-        notes: "Comma after 出て + 一人暮らしをしよう",
-      },
-      {
-        segments: [
-          { text: "寮[りょう]を 出[で]て 一人[ひとり]で 住[す]もうと 思[おも]って", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
-        ],
-        notes: "Casual form with と思っている (plain/casual ending)",
-      },
-      {
-        segments: [
-          { text: "寮[りょう]を 出[で]て 一人[ひとり]暮[ぐ]らしを しようと 思[おも]って", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
-        ],
-        notes: "Casual with 一人暮らしをしよう + と思っている",
-      },
-      {
-        segments: [
-          { text: "寮[りょう]から 出[で]て 一人[ひとり]で 住[す]もうと 思[おも]って", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
-        ],
-        notes: "Casual, から version",
-      },
-      {
-        segments: [
-          { text: "寮[りょう]から 出[で]て 一人[ひとり]暮[ぐ]らしを しようと 思[おも]って", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
-        ],
-        notes: "Casual, から + 一人暮らしをしよう",
+        notes: "Comma + 一人暮らしをする",
       },
     ],
   },
   {
-    english: "I've been thinking of getting a cat — I've been feeling pretty lonely lately.",
+    english:
+      "I've been thinking of getting a cat — I've been feeling pretty lonely lately.",
     hint: "Two separate statements joined naturally; express loneliness with 寂しい",
     answers: [
       {
         segments: [
           { text: "最近[さいきん]けっこう 寂[さび]しいから、猫[ねこ]を" },
           { text: "飼[か]おう", blank: true },
-          { text: "と" },
-          { text: "思[おも]って", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          ...toOmotteIru,
         ],
-        notes: "Two blanks: volitional 飼おう + と + 思っている (conjugated); loneliness clause first with から; けっこう for \"pretty\"",
+        notes: 'Reason first with から; けっこう for "pretty"',
       },
       {
         segments: [
           { text: "猫[ねこ]を" },
           { text: "飼[か]おう", blank: true },
-          { text: "と" },
-          { text: "思[おも]って", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          ...toOmotteIru,
           { text: "。最近[さいきん]けっこう 寂[さび]しくて" },
         ],
-        notes: "Cat clause first, then reason after using 寂しくて (て-form of い-adj as reason)",
+        notes: "Cat clause first, reason after with 寂しくて (て-form)",
       },
       {
         segments: [
           { text: "最近[さいきん]すごく 寂[さび]しいから、猫[ねこ]を" },
           { text: "飼[か]おう", blank: true },
-          { text: "と" },
-          { text: "思[おも]って", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          ...toOmotteIru,
         ],
-        notes: "すごく instead of けっこう — stronger emphasis on loneliness",
+        notes: "すごく instead of けっこう — stronger emphasis",
       },
       {
         segments: [
           { text: "最近[さいきん]ちょっと 寂[さび]しいから、猫[ねこ]を" },
           { text: "飼[か]おう", blank: true },
-          { text: "と" },
-          { text: "思[おも]って", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          ...toOmotteIru,
         ],
-        notes: "ちょっと instead of けっこう — softer/more understated expression of loneliness",
+        notes: "ちょっと instead of けっこう — softer",
       },
       {
         segments: [
           { text: "最近[さいきん]けっこう 寂[さび]しいし、猫[ねこ]を" },
           { text: "飼[か]おう", blank: true },
-          { text: "と" },
-          { text: "思[おも]って", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          ...toOmotteIru,
         ],
-        notes: "し instead of から — listing loneliness as one reason among possibly others",
+        notes: "し instead of から — listing reasons",
       },
       {
         segments: [
           { text: "猫[ねこ]を" },
           { text: "飼[か]おう", blank: true },
-          { text: "と" },
-          { text: "思[おも]って", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          ...toOmotteIru,
           { text: "。最近[さいきん]けっこう 寂[さび]しいから" },
         ],
-        notes: "Cat intention first, then reason appended as trailing から clause",
+        notes: "Cat first, trailing から clause",
       },
       {
         segments: [
           { text: "最近[さいきん]けっこう 寂[さび]しくて、猫[ねこ]を" },
           { text: "飼[か]おう", blank: true },
-          { text: "と" },
-          { text: "思[おも]って", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          ...toOmotteIru,
         ],
-        notes: "寂しくて (て-form) leading into intention clause — loneliness as causal te-form",
+        notes: "寂しくて (causal te-form) leading into intention",
       },
       {
         segments: [
           { text: "最近[さいきん]けっこう 寂[さび]しいので、猫[ねこ]を" },
           { text: "飼[か]おう", blank: true },
-          { text: "と" },
-          { text: "思[おも]って", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          ...toOmotteIru,
         ],
-        notes: "ので instead of から — slightly more formal/written reason connector",
+        notes: "ので instead of から",
       },
     ],
   },
   {
-    english: "Mika, are you thinking of participating in the barbecue this weekend?",
+    english:
+      "Mika, are you thinking of participating in the barbecue this weekend?",
     hint: "Mika = みか",
     answers: [
       {
         segments: [
-          { text: "みか、今週末[こんしゅうまつ]のバーベキューに" },
-          { text: "参加[さんか]しようと思[おも]って", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "みかさん、今週末[こんしゅうまつ]のバーベキューに" },
+          { text: "参加[さんか]しよう", blank: true },
+          ...toOmotteIru,
           { text: "？" },
         ],
       },
       {
         segments: [
-          { text: "みか、今週末[こんしゅうまつ]のバーベキューに" },
-          { text: "参加[さんか]しようと思[おも]って", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "みかさん、今週末[こんしゅうまつ]のバーベキューに" },
+          { text: "参加[さんか]しよう", blank: true },
+          ...toOmotteIru,
           { text: "の？" },
         ],
-        notes: "Adds の at the end for a softer, more inquisitive casual question",
+        notes: "の at the end for softer, more inquisitive question",
       },
       {
         segments: [
-          { text: "みか、今週末[こんしゅうまつ]のバーベキューに" },
-          { text: "参加[さんか]しようと思[おも]って", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
-          { text: "んですか" },
+          { text: "みかさん、今週末[こんしゅうまつ]のバーベキューに" },
+          { text: "参加[さんか]しよう", blank: true },
+          ...toOmotteIru,
+          { text: "ん", blank: true },
+          { text: "ですか" },
         ],
+        notes: "Polite んですか variant",
       },
       {
         segments: [
-          { text: "みか、バーベキューに" },
-          { text: "参加[さんか]しようと思[おも]って", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "みかさん、バーベキューに" },
+          { text: "参加[さんか]しよう", blank: true },
+          ...toOmotteIru,
           { text: "？" },
         ],
-        notes: "Drops 今週末 — context may make \"this weekend\" implied, or shorter natural phrasing",
+        notes: "Drops 今週末 — shorter natural phrasing",
       },
       {
         segments: [
-          { text: "みか、今週末[こんしゅうまつ]のバーベキューに" },
-          { text: "参加[さんか]しようと思[おも]ってる", blank: true },
+          { text: "みかさん、週末[しゅうまつ]のバーベキューに" },
+          { text: "参加[さんか]しよう", blank: true },
+          ...toOmotteIru,
           { text: "？" },
         ],
-        notes: "Uses と思ってる (contracted casual form instead of と思っている)",
-        register: "casual",
-      },
-      {
-        segments: [
-          { text: "みか、今週末[こんしゅうまつ]のバーベキューに" },
-          { text: "参加[さんか]しようと思[おも]ってる", blank: true },
-          { text: "の？" },
-        ],
-        notes: "Contracted と思ってる with の at end for softer question",
-        register: "casual",
-      },
-      {
-        segments: [
-          { text: "みか、週末[しゅうまつ]のバーベキューに" },
-          { text: "参加[さんか]しようと思[おも]って", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
-          { text: "？" },
-        ],
-        notes: "Uses 週末 instead of 今週末 — \"the weekend\" rather than \"this weekend\" (still natural in context)",
+        notes: "週末 instead of 今週末",
       },
     ],
   },
   {
-    english: "I've been thinking of proposing to Naomi — I've already bought the ring.",
+    english:
+      "I've been thinking of proposing to Naomi — I've already bought the ring.",
     hint: "Naomi = なおみ",
     answers: [
       {
         segments: [
-          { text: "なおみに" },
-          { text: "プロポーズしようと思[おも]って", blank: true },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
-          { text: "、もう 指輪[ゆびわ]も" },
-          { text: "買[か]う", conjugation: { pos: "Godan verb with 'u' ending", form: "normal", polarity: "positive", tense: "past" } },
+          { text: "なおみさんに" },
+          { text: "プロポーズしよう", blank: true },
+          ...toOmotteIru,
+          { text: "。もう 指輪[ゆびわ]も" },
+          {
+            text: "買[か]う",
+            conjugation: {
+              pos: "Godan verb with 'u' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
         ],
       },
       {
         segments: [
-          { text: "なおみに" },
-          { text: "プロポーズしようと思[おも]って", blank: true },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
-          { text: "。指輪[ゆびわ]は もう" },
-          { text: "買[か]う", conjugation: { pos: "Godan verb with 'u' ending", form: "normal", polarity: "positive", tense: "past" } },
+          { text: "なおみさんに" },
+          { text: "プロポーズしよう", blank: true },
+          ...toOmotteIru,
+          { text: "。指輪[ゆびわ]はもう" },
+          {
+            text: "買[か]う",
+            conjugation: {
+              pos: "Godan verb with 'u' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
         ],
-        notes: "Two sentences; second uses 指輪は (topicalizing the ring) instead of 指輪も",
-      },
-      {
-        segments: [
-          { text: "なおみに" },
-          { text: "プロポーズしようと思[おも]って", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
-          { text: "んだけど", blank: true },
-          { text: "、もう 指輪[ゆびわ]も 買[か]った" },
-        ],
-        notes: "Casual-locked variant with んだけど connector",
+        notes: "指輪は (topicalized) instead of 指輪も",
       },
       {
         segments: [
           { text: "もう 指輪[ゆびわ]も" },
-          { text: "買[か]う", conjugation: { pos: "Godan verb with 'u' ending", form: "normal", polarity: "positive", tense: "past" } },
-          { text: "し、なおみに" },
-          { text: "プロポーズしようと思[おも]って", blank: true },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          {
+            text: "買[か]う",
+            conjugation: {
+              pos: "Godan verb with 'u' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+          { text: "し、なおみさんに" },
+          { text: "プロポーズしよう", blank: true },
+          ...toOmotteIru,
         ],
-        notes: "Reversed clause order — \"already bought the ring\" mentioned first with し, then the intention",
+        notes: 'Reversed order — "already bought ring" first with し',
       },
     ],
   },
@@ -1099,63 +891,46 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "たけるさん、今週[こんしゅう]の 日曜日[にちようび]に 映画[えいが]を 見[み]に 行[い]こうと" },
-          { text: "思[おも]って", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          {
+            text: "たけるさん、今週[こんしゅう]の 日曜日[にちようび]に 映画[えいが]を 見[み]に",
+          },
+          { text: "行[い]こう", blank: true },
+          ...toOmotteIru,
           { text: "？" },
         ],
       },
       {
         segments: [
-          { text: "たけるさん、今週[こんしゅう]の 日曜日[にちようび]、映画[えいが]を 見[み]に 行[い]こうと" },
-          { text: "思[おも]ってる", blank: true },
+          {
+            text: "たけるさん、今週[こんしゅう]の 日曜日[にちようび]、映画[えいが]を 見[み]に",
+          },
+          { text: "行[い]こう", blank: true },
+          ...toOmotteIru,
           { text: "？" },
         ],
-        notes: "Same but with a comma after the time expression (slightly more natural spoken rhythm)",
-        register: "casual",
+        notes: "Comma after time expression for spoken rhythm",
       },
       {
         segments: [
-          { text: "たけるさん、映画[えいが]を 見[み]に 行[い]こうと" },
-          { text: "思[おも]ってる", blank: true },
-          { text: "、今週[こんしゅう]の 日曜日[にちようび]に？" },
+          {
+            text: "たけるさん、今度[こんど]の 日曜日[にちようび]に 映画[えいが]を 見[み]に",
+          },
+          { text: "行[い]こう", blank: true },
+          ...toOmotteIru,
+          { text: "？" },
         ],
-        notes: "Time expression moved to end of sentence for emphasis",
-        register: "casual",
+        notes: "今度の日曜日 (this coming Sunday)",
       },
       {
         segments: [
-          { text: "たけるさん、今週[こんしゅう]の 日曜日[にちようび]に 映画[えいが]を 見[み]に 行[い]こうと" },
-          { text: "思[おも]って", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          {
+            text: "たけるさん、今週[こんしゅう]の 日曜日[にちようび]に 映画[えいが]を 見[み]に",
+          },
+          { text: "行[い]こう", blank: true },
+          ...toOmotteIru,
           { text: "ん？" },
         ],
-      },
-      {
-        segments: [
-          { text: "たけるさん、今週[こんしゅう]の 日曜日[にちようび]に 映画[えいが]を 見[み]に 行[い]こうと" },
-          { text: "思[おも]っています", blank: true },
-          { text: "か？" },
-        ],
-        notes: "Polite form with か",
-      },
-      {
-        segments: [
-          { text: "たけるさん、今度[こんど]の 日曜日[にちようび]に 映画[えいが]を 見[み]に 行[い]こうと" },
-          { text: "思[おも]って", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
-          { text: "？" },
-        ],
-        notes: "今度の日曜日 instead of 今週の日曜日 (this coming Sunday)",
-      },
-      {
-        segments: [
-          { text: "たけるさん、今度[こんど]の 日曜日[にちようび]に 映画[えいが]を 見[み]に 行[い]こうと" },
-          { text: "思[おも]ってる", blank: true },
-          { text: "ん？" },
-        ],
-        notes: "今度の日曜日 with ん？ ending",
-        register: "casual",
+        notes: "ん？ casual explanatory ending",
       },
     ],
   },
@@ -1166,184 +941,123 @@ export const questions: Question[] = [
         segments: [
           { text: "家[いえ]で カレーを" },
           { text: "作[つく]ろう", blank: true },
-          { text: "と思[おも]って" },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          ...toOmotteIru,
         ],
       },
       {
         segments: [
           { text: "うちで カレーを" },
           { text: "作[つく]ろう", blank: true },
-          { text: "と思[おも]って" },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          ...toOmotteIru,
         ],
-        notes: "うち instead of 家 for \"at home\"",
+        notes: "うち instead of 家",
       },
       {
         segments: [
           { text: "カレーを 家[いえ]で" },
           { text: "作[つく]ろう", blank: true },
-          { text: "と思[おも]って" },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          ...toOmotteIru,
         ],
-        notes: "Word order: object (カレーを) before location (家で)",
+        notes: "Object before location",
       },
       {
         segments: [
           { text: "カレーを うちで" },
           { text: "作[つく]ろう", blank: true },
-          { text: "と思[おも]って" },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          ...toOmotteIru,
         ],
-        notes: "Word order: object first + うち for home",
+        notes: "Object before location + うち",
       },
     ],
   },
   {
-    english: "I've been thinking of taking a walk along the river this evening.",
+    english:
+      "I've been thinking of taking a walk along the river this evening.",
     answers: [
       {
         segments: [
-          { text: "今晩[こんばん]、川[かわ]のそばを 散歩[さんぽ]しようと", blank: true },
-          { text: "思[おも]っています" },
+          { text: "今晩[こんばん]、川[かわ]のそばを" },
+          { text: "散歩[さんぽ]しよう", blank: true },
+          ...toOmotteIru,
         ],
       },
       {
         segments: [
-          { text: "今夜[こんや]、川[かわ]のそばを 散歩[さんぽ]しようと", blank: true },
-          { text: "思[おも]っています" },
+          { text: "今夜[こんや]、川[かわ]のそばを" },
+          { text: "散歩[さんぽ]しよう", blank: true },
+          ...toOmotteIru,
         ],
-        notes: "今夜 instead of 今晩 for \"this evening\"",
+        notes: "今夜 instead of 今晩",
       },
       {
         segments: [
-          { text: "今晩[こんばん]、川[かわ]の 近[ちか]くを 散歩[さんぽ]しようと", blank: true },
-          { text: "思[おも]っています" },
+          { text: "今晩[こんばん]、川[かわ]の 近[ちか]くを" },
+          { text: "散歩[さんぽ]しよう", blank: true },
+          ...toOmotteIru,
         ],
         notes: "川の近くを (near the river) instead of 川のそばを",
       },
       {
         segments: [
-          { text: "今夜[こんや]、川[かわ]の 近[ちか]くを 散歩[さんぽ]しようと", blank: true },
-          { text: "思[おも]っています" },
+          { text: "今夜[こんや]、川[かわ]の 近[ちか]くを" },
+          { text: "散歩[さんぽ]しよう", blank: true },
+          ...toOmotteIru,
         ],
-        notes: "今夜 + 川の近くを combination",
+        notes: "今夜 + 川の近くを",
       },
       {
         segments: [
-          { text: "川[かわ]のそばを 散歩[さんぽ]しようと", blank: true },
-          { text: "思[おも]っています。今晩[こんばん]" },
+          { text: "今晩[こんばん]、川[かわ]のそばで" },
+          { text: "散歩[さんぽ]しよう", blank: true },
+          ...toOmotteIru,
         ],
-        notes: "Time phrase moved to end of sentence",
+        notes: "川のそばで (で instead of を) — at the riverside location",
       },
       {
         segments: [
-          { text: "川[かわ]のそばを 散歩[さんぽ]しようと", blank: true },
-          { text: "思[おも]っています。今夜[こんや]" },
+          { text: "今夜[こんや]、川[かわ]のそばで" },
+          { text: "散歩[さんぽ]しよう", blank: true },
+          ...toOmotteIru,
         ],
-        notes: "今夜 at the end of sentence",
-      },
-      {
-        segments: [
-          { text: "川[かわ]の 近[ちか]くを 散歩[さんぽ]しようと", blank: true },
-          { text: "思[おも]っています。今晩[こんばん]" },
-        ],
-        notes: "川の近くを + 今晩 at end",
-      },
-      {
-        segments: [
-          { text: "今晩[こんばん]、川[かわ]のそばで 散歩[さんぽ]しようと", blank: true },
-          { text: "思[おも]っています" },
-        ],
-        notes: "川のそばで (at/by the river) with で instead of を — walking at the riverside location",
-      },
-      {
-        segments: [
-          { text: "今夜[こんや]、川[かわ]のそばで 散歩[さんぽ]しようと", blank: true },
-          { text: "思[おも]っています" },
-        ],
-        notes: "今夜 + 川のそばで combination",
+        notes: "今夜 + 川のそばで",
       },
     ],
   },
   {
-    english: "I've been thinking of selling all my furniture and going traveling.",
+    english:
+      "I've been thinking of selling all my furniture and going traveling.",
     answers: [
       {
         segments: [
-          { text: "家具[かぐ]を 全部[ぜんぶ]" },
-          { text: "売[う]って" },
-          { text: "、旅行[りょこう]" },
+          { text: "家具[かぐ]を 全部[ぜんぶ] 売[う]って、旅行[りょこう]" },
           { text: "しよう", blank: true },
-          { text: "と思[おも]っています" },
+          ...toOmotteIru,
         ],
       },
       {
         segments: [
-          { text: "家具[かぐ]を 全部[ぜんぶ]" },
-          { text: "売[う]って" },
-          { text: "、旅行[りょこう]に行[い]こう", blank: true },
-          { text: "と思[おも]っています" },
+          { text: "家具[かぐ]を 全部[ぜんぶ] 売[う]って、旅行[りょこう]に" },
+          { text: "行[い]こう", blank: true },
+          ...toOmotteIru,
         ],
-        notes: "Using 旅行に行こう instead of 旅行しよう",
+        notes: "旅行に行く instead of 旅行する",
       },
       {
         segments: [
-          { text: "全部[ぜんぶ]の 家具[かぐ]を" },
-          { text: "売[う]って" },
-          { text: "、旅行[りょこう]" },
+          { text: "全部[ぜんぶ]の 家具[かぐ]を 売[う]って、旅行[りょこう]" },
           { text: "しよう", blank: true },
-          { text: "と思[おも]っています" },
+          ...toOmotteIru,
         ],
         notes: "全部の家具を word order (の modifying 家具)",
       },
       {
         segments: [
-          { text: "全部[ぜんぶ]の 家具[かぐ]を" },
-          { text: "売[う]って" },
-          { text: "、旅行[りょこう]に行[い]こう", blank: true },
-          { text: "と思[おも]っています" },
+          { text: "全部[ぜんぶ]の 家具[かぐ]を 売[う]って、旅行[りょこう]に" },
+          { text: "行[い]こう", blank: true },
+          ...toOmotteIru,
         ],
-        notes: "全部の家具を + 旅行に行こう",
-      },
-      {
-        segments: [
-          { text: "家具[かぐ]を 全部[ぜんぶ]" },
-          { text: "売[う]って" },
-          { text: "、旅行[りょこう]" },
-          { text: "しよう", blank: true },
-          { text: "と思[おも]っている" },
-        ],
-        notes: "と思っている (plain form) instead of と思っています",
-      },
-      {
-        segments: [
-          { text: "家具[かぐ]を 全部[ぜんぶ]" },
-          { text: "売[う]って" },
-          { text: "、旅行[りょこう]に行[い]こう", blank: true },
-          { text: "と思[おも]っている" },
-        ],
-        notes: "旅行に行こう + と思っている (plain)",
-      },
-      {
-        segments: [
-          { text: "全部[ぜんぶ]の 家具[かぐ]を" },
-          { text: "売[う]って" },
-          { text: "、旅行[りょこう]" },
-          { text: "しよう", blank: true },
-          { text: "と思[おも]っている" },
-        ],
-        notes: "全部の家具を + 旅行しよう + と思っている (plain)",
-      },
-      {
-        segments: [
-          { text: "全部[ぜんぶ]の 家具[かぐ]を" },
-          { text: "売[う]って" },
-          { text: "、旅行[りょこう]に行[い]こう", blank: true },
-          { text: "と思[おも]っている" },
-        ],
-        notes: "全部の家具を + 旅行に行こう + と思っている (plain)",
+        notes: "全部の家具を + 旅行に行く",
       },
     ],
   },
-];
+]

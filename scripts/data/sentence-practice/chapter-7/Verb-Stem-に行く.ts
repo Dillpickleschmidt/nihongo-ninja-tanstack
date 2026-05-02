@@ -196,7 +196,8 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Particle を dropped (casual)",
+        register: "casual",
+        notes: "を omitted",
       },
     ],
   },
@@ -255,7 +256,8 @@ export const questions: Question[] = [
           },
           { text: "か" },
         ],
-        notes: "を dropped (casual)",
+        register: "casual",
+        notes: "を omitted",
       },
       {
         segments: [
@@ -273,7 +275,8 @@ export const questions: Question[] = [
           },
           { text: "か" },
         ],
-        notes: "へ + を dropped",
+        register: "casual",
+        notes: "へ + を omitted",
       },
       {
         segments: [
@@ -1014,7 +1017,9 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "今週末[こんしゅうまつ]は 友[とも]だちの 家[いえ]に ゲームを" },
+          {
+            text: "今週末[こんしゅうまつ]は 友[とも]だちの 家[いえ]に ゲームを",
+          },
           { text: "しに", blank: true },
           {
             text: "行[い]く",
@@ -1167,7 +1172,8 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "見舞いに行く (visit sick person) — idiomatic for \"see a friend at hospital\"",
+        notes:
+          '見舞いに行く (visit sick person) — idiomatic for "see a friend at hospital"',
       },
     ],
   },
@@ -1257,7 +1263,8 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "を dropped (casual)",
+        register: "casual",
+        notes: "を omitted",
       },
       {
         segments: [
@@ -1274,7 +1281,8 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "を dropped + へ",
+        register: "casual",
+        notes: "を omitted + へ",
       },
       {
         segments: [
