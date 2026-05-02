@@ -18,6 +18,7 @@ export function prepareQuestion(
     seq: RichSegment[],
     sourceIndex: number,
     isPolite: boolean,
+    notes: string | undefined,
   ) => {
     const key = joinSegments(seq)
     if (!seenSequences.has(key)) {
@@ -25,7 +26,7 @@ export function prepareQuestion(
       processedAnswers.push(seq)
     }
     for (const answer of generateValidAnswers(seq, sourceIndex, isPolite)) {
-      validAnswers.set(answer.original, answer)
+      validAnswers.set(answer.original, { ...answer, notes })
     }
   }
 
@@ -36,13 +37,13 @@ export function prepareQuestion(
 
     if (runPolite) {
       for (const seq of processSegments(rawAnswer.segments, true)) {
-        addSequence(seq, sourceIndex, true)
+        addSequence(seq, sourceIndex, true, rawAnswer.notes)
       }
     }
 
     if (runCasual) {
       for (const seq of processSegments(rawAnswer.segments, false)) {
-        addSequence(seq, sourceIndex, false)
+        addSequence(seq, sourceIndex, false, rawAnswer.notes)
       }
     }
   }
