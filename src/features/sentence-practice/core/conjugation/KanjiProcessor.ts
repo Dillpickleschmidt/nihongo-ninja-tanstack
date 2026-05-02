@@ -1,4 +1,5 @@
 // core/conjugation/KanjiProcessor.ts
+import { createKanjiFuriganaGroupRegex } from "@/data/utils/text/furigana"
 import type { ConjugatedWord } from "./types"
 
 export class KanjiProcessor {
@@ -13,7 +14,7 @@ export class KanjiProcessor {
 
     // Regular kanji processing
     const kanjiMatches = [
-      ...originalWord.word.matchAll(/([^[\]]+)\[([^\]]+)\]/g),
+      ...originalWord.word.matchAll(createKanjiFuriganaGroupRegex()),
     ]
     if (kanjiMatches.length === 0) return conjugatedHiragana
 
