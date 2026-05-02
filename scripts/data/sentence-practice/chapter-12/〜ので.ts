@@ -6,36 +6,47 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "熱[ねつ]が", blank: true },
-          { text: "ある", blank: true },
-          { text: "ので、今日[きょう]は" },
-          { text: "休[やす]む", conjugation: { pos: "Godan verb with 'mu' ending", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "熱[ねつ]があるので", blank: true },
+          { text: "、今日[きょう]は 休[やす]みます" },
         ],
+        register: "polite",
       },
       {
         segments: [
-          { text: "熱[ねつ]がある", blank: true },
-          { text: "ので、今日[きょう]" },
-          { text: "休[やす]む", conjugation: { pos: "Godan verb with 'mu' ending", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "熱[ねつ]があるので", blank: true },
+          { text: "、今日[きょう]は 休[やす]む" },
         ],
-        notes: "今日 without は — no topic particle on 今日.",
+        register: "casual",
       },
       {
         segments: [
           { text: "今日[きょう]は" },
-          { text: "熱[ねつ]がある", blank: true },
-          { text: "ので、" },
-          { text: "休[やす]む", conjugation: { pos: "Godan verb with 'mu' ending", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "熱[ねつ]があるので", blank: true },
+          { text: "、休[やす]みます" },
         ],
-        notes: "今日は moved to the front as the topic, before the reason clause.",
+        register: "polite",
       },
       {
         segments: [
-          { text: "熱[ねつ]がある", blank: true },
-          { text: "ので、今日[きょう]は" },
-          { text: "寝[ねる]", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "今日[きょう]は" },
+          { text: "熱[ねつ]があるので", blank: true },
+          { text: "、休[やす]む" },
         ],
-        notes: "Using 寝る (sleep/lie down to rest) instead of 休む as the result clause.",
+        register: "casual",
+      },
+      {
+        segments: [
+          { text: "熱[ねつ]があるので", blank: true },
+          { text: "、今日[きょう]は 寝[ね]ます" },
+        ],
+        register: "polite",
+      },
+      {
+        segments: [
+          { text: "熱[ねつ]があるので", blank: true },
+          { text: "、今日[きょう]は 寝[ね]る" },
+        ],
+        register: "casual",
       },
     ],
   },
@@ -45,50 +56,42 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "今週末[こんしゅうまつ]は" },
-          { text: "暇[ひま]な", blank: true },
-          { text: "ので、一緒[いっしょ]に 映画[えいが]を 見[み]に 行[い]きませんか" },
+          { text: "暇[ひま]なので", blank: true },
+          { text: "、一緒[いっしょ]に 映画[えいが]を 見[み]に 行[い]きませんか" },
         ],
-        notes: "Base answer: 暇 (な-adj) + なので, invitation with ませんか",
+        register: "polite",
       },
       {
         segments: [
           { text: "今週末[こんしゅうまつ]は" },
-          { text: "暇[ひま]な", blank: true },
-          { text: "ので、一緒[いっしょ]に 映画[えいが]を 見[み]に 行[い]きましょうか" },
+          { text: "暇[ひま]なので", blank: true },
+          { text: "、一緒[いっしょ]に 映画[えいが]を 見[み]に 行[い]きましょうか" },
         ],
-        notes: "Using ましょうか instead of ませんか for the invitation",
+        register: "polite",
       },
       {
         segments: [
           { text: "週末[しゅうまつ]は" },
-          { text: "暇[ひま]な", blank: true },
-          { text: "ので、一緒[いっしょ]に 映画[えいが]を 見[み]に 行[い]きませんか" },
+          { text: "暇[ひま]なので", blank: true },
+          { text: "、一緒[いっしょ]に 映画[えいが]を 見[み]に 行[い]きませんか" },
         ],
-        notes: "Using 週末 (without 今) instead of 今週末",
-      },
-      {
-        segments: [
-          { text: "今週末[こんしゅうまつ]に" },
-          { text: "暇[ひま]な", blank: true },
-          { text: "ので、一緒[いっしょ]に 映画[えいが]を 見[み]に 行[い]きませんか" },
-        ],
-        notes: "Using に instead of は after 今週末",
+        register: "polite",
       },
       {
         segments: [
           { text: "今週末[こんしゅうまつ]が" },
-          { text: "暇[ひま]な", blank: true },
-          { text: "ので、一緒[いっしょ]に 映画[えいが]を 見[み]に 行[い]きませんか" },
+          { text: "暇[ひま]なので", blank: true },
+          { text: "、一緒[いっしょ]に 映画[えいが]を 見[み]に 行[い]きませんか" },
         ],
-        notes: "Using が instead of は after 今週末",
+        register: "polite",
       },
       {
         segments: [
           { text: "今週末[こんしゅうまつ]は" },
-          { text: "暇[ひま]な", blank: true },
-          { text: "ので、映画[えいが]を 一緒[いっしょ]に 見[み]に 行[い]きませんか" },
+          { text: "暇[ひま]なので", blank: true },
+          { text: "、映画[えいが]を 一緒[いっしょ]に 見[み]に 行[い]きませんか" },
         ],
-        notes: "Different word order: 映画を一緒に (instead of 一緒に映画を)",
+        register: "polite",
       },
     ],
   },
@@ -99,46 +102,49 @@ export const questions: Question[] = [
         segments: [
           { text: "このカフェは" },
           { text: "静[しず]かなので", blank: true },
-          { text: "、ここでよく 勉強[べんきょう]" },
-          { text: "する", conjugation: { pos: "Suru verb - special class", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "、ここでよく 勉強[べんきょう]します" },
         ],
-        notes: "Base answer: な-adjective + なので. よく before 勉強する, ここで after ので clause.",
+        register: "polite",
       },
       {
         segments: [
           { text: "このカフェは" },
           { text: "静[しず]かなので", blank: true },
-          { text: "、よくここで 勉強[べんきょう]" },
-          { text: "する", conjugation: { pos: "Suru verb - special class", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "、ここでよく 勉強[べんきょう]する" },
         ],
-        notes: "よく moved before ここで (adverb placement variation)",
+        register: "casual",
       },
       {
         segments: [
           { text: "このカフェは" },
           { text: "静[しず]かなので", blank: true },
-          { text: "、私[わたし]はここでよく 勉強[べんきょう]" },
-          { text: "する", conjugation: { pos: "Suru verb - special class", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "、よくここで 勉強[べんきょう]します" },
         ],
-        notes: "Explicit 私は added in the result clause for emphasis",
+        register: "polite",
       },
       {
         segments: [
           { text: "このカフェは" },
           { text: "静[しず]かなので", blank: true },
-          { text: "、ここでよく 勉強[べんきょう]を" },
-          { text: "する", conjugation: { pos: "Suru verb - special class", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "、私[わたし]はここでよく 勉強[べんきょう]します" },
         ],
-        notes: "勉強をする (with を particle) instead of 勉強する",
+        register: "polite",
+      },
+      {
+        segments: [
+          { text: "このカフェは" },
+          { text: "静[しず]かなので", blank: true },
+          { text: "、ここでよく 勉強[べんきょう]をします" },
+        ],
+        register: "polite",
       },
       {
         segments: [
           { text: "このカフェが" },
           { text: "静[しず]かなので", blank: true },
-          { text: "、ここでよく 勉強[べんきょう]" },
-          { text: "する", conjugation: { pos: "Suru verb - special class", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "、ここでよく 勉強[べんきょう]します" },
         ],
-        notes: "が instead of は — neutral subject marker highlighting the café as the reason",
+        register: "polite",
       },
     ],
   },
@@ -147,80 +153,59 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "明日[あした]は 試験[しけん]", blank: true },
-          { text: "なので、今晩[こんばん]は" },
-          { text: "出[で]かける", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
+          { text: "明日[あした]は 試験[しけん]なので", blank: true },
+          { text: "、今晩[こんばん]は 出[で]かけません" },
         ],
-        notes: "Base answer: noun + なので, 今晩 for \"tonight\"",
+        register: "polite",
       },
       {
         segments: [
-          { text: "明日[あした]は 試験[しけん]", blank: true },
-          { text: "なので、今夜[こんや]は" },
-          { text: "出[で]かける", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
+          { text: "明日[あした]は 試験[しけん]なので", blank: true },
+          { text: "、今晩[こんばん]は 出[で]かけない" },
         ],
-        notes: "今夜 instead of 今晩 for \"tonight\"",
+        register: "casual",
       },
       {
         segments: [
-          { text: "明日[あした]試験[しけん]がある", blank: true },
-          { text: "ので、今晩[こんばん]は" },
-          { text: "出[で]かける", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
+          { text: "明日[あした]は 試験[しけん]なので", blank: true },
+          { text: "、今夜[こんや]は 出[で]かけません" },
         ],
+        register: "polite",
       },
       {
         segments: [
-          { text: "明日[あした]試験[しけん]がある", blank: true },
-          { text: "ので、今夜[こんや]は" },
-          { text: "出[で]かける", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
+          { text: "明日[あした]試験[しけん]があるので", blank: true },
+          { text: "、今晩[こんばん]は 出[で]かけません" },
         ],
-        notes: "がある construction with 今夜",
+        register: "polite",
       },
       {
         segments: [
-          { text: "明日[あした]はテスト", blank: true },
-          { text: "なので、今晩[こんばん]は" },
-          { text: "出[で]かける", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
+          { text: "明日[あした]はテストなので", blank: true },
+          { text: "、今晩[こんばん]は 出[で]かけません" },
         ],
-        notes: "テスト instead of 試験 for \"exam\", 今晩",
+        register: "polite",
       },
       {
         segments: [
-          { text: "明日[あした]はテスト", blank: true },
-          { text: "なので、今夜[こんや]は" },
-          { text: "出[で]かける", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
+          { text: "明日[あした]テストがあるので", blank: true },
+          { text: "、今夜[こんや]は 出[で]かけません" },
         ],
-        notes: "テスト with 今夜",
+        register: "polite",
       },
       {
         segments: [
-          { text: "明日[あした]テストがある", blank: true },
-          { text: "ので、今晩[こんばん]は" },
-          { text: "出[で]かける", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
+          { text: "明日[あした]は 試験[しけん]なので", blank: true },
+          { text: "、今夜[こんや]は 外[そと]に 出[で]ません" },
         ],
-        notes: "テストがある (verb + ので) with 今晩",
+        register: "polite",
       },
       {
         segments: [
-          { text: "明日[あした]テストがある", blank: true },
-          { text: "ので、今夜[こんや]は" },
-          { text: "出[で]かける", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
+          { text: "明日[あした]は 試験[しけん]なので", blank: true },
+          { text: "、今晩[こんばん]は 外[そと]に 出[で]ない" },
         ],
-        notes: "テストがある with 今夜",
-      },
-      {
-        segments: [
-          { text: "明日[あした]は 試験[しけん]なので、今夜[こんや]は 外[そと]に" },
-          { text: "出[で]る", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
-        ],
-        notes: "外に出る instead of 出かける for \"go out\", with 今夜",
-      },
-      {
-        segments: [
-          { text: "明日[あした]は 試験[しけん]なので、今晩[こんばん]は 外[そと]に" },
-          { text: "出[で]る", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
-        ],
-        notes: "外に出る with 今晩",
+        register: "casual",
       },
     ],
   },
@@ -230,33 +215,65 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "おなかがすいて", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
-          { text: "ので、サンドイッチを 買[か]いに" },
-          { text: "行[い]く", conjugation: { pos: "Godan verb - Iku/Yuku special class", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "おなかがすいているので", blank: true },
+          { text: "、サンドイッチを 買[か]いに 行[い]きます" },
         ],
+        register: "polite",
       },
       {
         segments: [
-          { text: "おなかがすく", blank: true },
-          { text: "ので、サンドイッチを 買[か]いに" },
-          { text: "行[い]く", conjugation: { pos: "Godan verb - Iku/Yuku special class", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "おなかがすいているので", blank: true },
+          { text: "、サンドイッチを 買[か]いに 行[い]く" },
         ],
-        notes: "おなかがすく (dictionary form) as blank — \"stomach gets empty so...\"",
+        register: "casual",
       },
       {
         segments: [
-          { text: "おなかがすいた", blank: true },
-          { text: "ので、サンドイッチを 買[か]いに" },
-          { text: "行[い]く", conjugation: { pos: "Godan verb - Iku/Yuku special class", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "おなかがすいたので", blank: true },
+          { text: "、サンドイッチを 買[か]いに 行[い]きます" },
         ],
-        notes: "おなかがすいた (past/resulting state) — \"got hungry so...\"",
+        register: "polite",
+      },
+      {
+        segments: [
+          { text: "おなかがすいたので", blank: true },
+          { text: "、サンドイッチを 買[か]いに 行[い]く" },
+        ],
+        register: "casual",
       },
     ],
   },
   {
     english: "I forgot my wallet, so I can't buy anything.",
     answers: [
+      {
+        segments: [
+          { text: "財布[さいふ]を 忘[わす]れたので", blank: true },
+          { text: "、何[なに]も 買[か]えません" },
+        ],
+        register: "polite",
+      },
+      {
+        segments: [
+          { text: "財布[さいふ]を 忘[わす]れたので", blank: true },
+          { text: "、何[なに]も 買[か]えない" },
+        ],
+        register: "casual",
+      },
+      {
+        segments: [
+          { text: "財布[さいふ]を 忘[わす]れたので", blank: true },
+          { text: "、何[なに]も 買[か]うことができません" },
+        ],
+        register: "polite",
+      },
+      {
+        segments: [
+          { text: "財布[さいふ]を 忘[わす]れたので", blank: true },
+          { text: "、何[なに]も 買[か]うことができない" },
+        ],
+        register: "casual",
+      },
     ],
   },
 ];

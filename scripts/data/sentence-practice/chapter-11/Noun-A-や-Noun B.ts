@@ -14,20 +14,6 @@ const kiitaPos = {
   tense: "past" as const,
 }
 
-const suruPos = {
-  pos: "Suru verb - special class" as const,
-  form: "normal" as const,
-  polarity: "positive" as const,
-  tense: "non-past" as const,
-}
-
-const suruTai = {
-  pos: "Suru verb - special class" as const,
-  form: "tai-form" as const,
-  polarity: "positive" as const,
-  tense: "non-past" as const,
-}
-
 const oishiiPos = {
   pos: "I-adjective" as const,
   form: "normal" as const,
@@ -37,31 +23,34 @@ const oishiiPos = {
 
 export const questions: Question[] = [
   {
-    english: "On weekends I do things like go to the park or swim in the sea.",
+    english: "On weekends I go to places like parks and the sea.",
     answers: [
       {
         segments: [
           {
-            text: "週末[しゅうまつ]は 公園[こうえん]に 行[い]くとか 海[うみ]で 泳[およ]ぐとか",
+            text: "週末[しゅうまつ]は 公園[こうえん]や 海[うみ]に",
+            blank: true,
           },
-          { text: "する", blank: true, conjugation: suruPos },
+          { text: "行[い]く", conjugation: { pos: "Godan verb - Iku/Yuku special class", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
       },
       {
         segments: [
           {
-            text: "週末[しゅうまつ]に 公園[こうえん]に 行[い]くとか 海[うみ]で 泳[およ]ぐとか",
+            text: "週末[しゅうまつ]に 公園[こうえん]や 海[うみ]に",
+            blank: true,
           },
-          { text: "する", blank: true, conjugation: suruPos },
+          { text: "行[い]く", conjugation: { pos: "Godan verb - Iku/Yuku special class", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "週末に with に",
       },
       {
         segments: [
           {
-            text: "週末[しゅうまつ]は 海[うみ]で 泳[およ]ぐとか 公園[こうえん]に 行[い]くとか",
+            text: "週末[しゅうまつ]は 海[うみ]や 公園[こうえん]に",
+            blank: true,
           },
-          { text: "する", blank: true, conjugation: suruPos },
+          { text: "行[い]く", conjugation: { pos: "Godan verb - Iku/Yuku special class", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "Reversed order",
       },
@@ -73,27 +62,31 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "この 町[まち]には お 寺[てら]や 神社[じんじゃ]が あると" },
+          { text: "この 町[まち]には お 寺[てら]や 神社[じんじゃ]が あると",
+            blank: true },
           { text: "聞[き]く", blank: true, conjugation: kiitaPos },
         ],
       },
       {
         segments: [
-          { text: "この 町[まち]には 神社[じんじゃ]や お 寺[てら]が あると" },
+          { text: "この 町[まち]には 神社[じんじゃ]や お 寺[てら]が あると",
+            blank: true },
           { text: "聞[き]く", blank: true, conjugation: kiitaPos },
         ],
         notes: "Reversed order",
       },
       {
         segments: [
-          { text: "この 町[まち]に お 寺[てら]や 神社[じんじゃ]が あると" },
+          { text: "この 町[まち]に お 寺[てら]や 神社[じんじゃ]が あると",
+            blank: true },
           { text: "聞[き]く", blank: true, conjugation: kiitaPos },
         ],
         notes: "に instead of には",
       },
       {
         segments: [
-          { text: "この 町[まち]には お 寺[てら]や 神社[じんじゃ]などが あると" },
+          { text: "この 町[まち]には お 寺[てら]や 神社[じんじゃ]などが あると",
+            blank: true },
           { text: "聞[き]く", blank: true, conjugation: kiitaPos },
         ],
         notes: "など (etc.) added — common with 〜や listing",
@@ -105,36 +98,41 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "かばんの 中[なか]に 財布[さいふ]や 辞書[じしょ]が" },
+          { text: "かばんの 中[なか]に 財布[さいふ]や 辞書[じしょ]が",
+            blank: true },
           { text: "ある", blank: true, conjugation: aruPos },
         ],
       },
       {
         segments: [
-          { text: "かばんの 中[なか]には 財布[さいふ]や 辞書[じしょ]が" },
+          { text: "かばんの 中[なか]には 財布[さいふ]や 辞書[じしょ]が",
+            blank: true },
           { text: "ある", blank: true, conjugation: aruPos },
         ],
         notes: "には instead of に",
       },
       {
         segments: [
-          { text: "かばんに 財布[さいふ]や 辞書[じしょ]が" },
+          { text: "かばんに 財布[さいふ]や 辞書[じしょ]が",
+            blank: true },
           { text: "ある", blank: true, conjugation: aruPos },
         ],
         notes: "に instead of の中に",
       },
       {
         segments: [
-          { text: "かばんの 中[なか]に 辞書[じしょ]や 財布[さいふ]が" },
+          { text: "かばんの 中[なか]に 辞書[じしょ]や 財布[さいふ]が",
+            blank: true },
           { text: "ある", blank: true, conjugation: aruPos },
         ],
         notes: "Reversed order",
       },
       {
         segments: [
-          { text: "かばんには 財布[さいふ]や 辞書[じしょ]などが" },
-          { text: "入[はい]って", blank: true },
-          { text: "いる", conjugation: aruPos },
+          { text: "かばんには 財布[さいふ]や 辞書[じしょ]などが",
+            blank: true },
+          { text: "入[はい]って" },
+          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "入っている (is contained inside) instead of ある",
       },
@@ -142,13 +140,14 @@ export const questions: Question[] = [
   },
   {
     english:
-      "I've heard that Kenji wants to do things like study abroad or get a part-time job next semester.",
+      "I've heard that Kenji wants to do things like study abroad and part-time work next semester.",
     hint: "Kenji = けんじ",
     answers: [
       {
         segments: [
           {
-            text: "けんじさんは 来学期[らいがっき]、留学[りゅうがく]するとか アルバイトするとか したいと",
+            text: "けんじさんは 来学期[らいがっき]、留学[りゅうがく]や アルバイトを したいと",
+            blank: true,
           },
           { text: "聞[き]く", blank: true, conjugation: kiitaPos },
         ],
@@ -156,7 +155,8 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "けんじさんは 来学期[らいがっき]、アルバイトするとか 留学[りゅうがく]するとか したいと",
+            text: "けんじさんは 来学期[らいがっき]、アルバイトや 留学[りゅうがく]を したいと",
+            blank: true,
           },
           { text: "聞[き]く", blank: true, conjugation: kiitaPos },
         ],
@@ -165,7 +165,8 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "けんじさんは 来学期[らいがっき]に 留学[りゅうがく]するとか アルバイトするとか したいと",
+            text: "けんじさんは 来学期[らいがっき]に 留学[りゅうがく]や アルバイトを したいと",
+            blank: true,
           },
           { text: "聞[き]く", blank: true, conjugation: kiitaPos },
         ],
@@ -178,34 +179,39 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "私[わたし]の 部屋[へや]には ギターや カメラが" },
+          { text: "私[わたし]の 部屋[へや]には ギターや カメラが",
+            blank: true },
           { text: "ある", blank: true, conjugation: aruPos },
         ],
       },
       {
         segments: [
-          { text: "私[わたし]の 部屋[へや]に ギターや カメラが" },
+          { text: "私[わたし]の 部屋[へや]に ギターや カメラが",
+            blank: true },
           { text: "ある", blank: true, conjugation: aruPos },
         ],
         notes: "に instead of には",
       },
       {
         segments: [
-          { text: "部屋[へや]には ギターや カメラが" },
+          { text: "部屋[へや]には ギターや カメラが",
+            blank: true },
           { text: "ある", blank: true, conjugation: aruPos },
         ],
-        notes: "No 私の",
+        notes: "部屋には without 私の",
       },
       {
         segments: [
-          { text: "私[わたし]の 部屋[へや]には カメラや ギターが" },
+          { text: "私[わたし]の 部屋[へや]には カメラや ギターが",
+            blank: true },
           { text: "ある", blank: true, conjugation: aruPos },
         ],
         notes: "Reversed order",
       },
       {
         segments: [
-          { text: "私[わたし]の 部屋[へや]には ギターや カメラなどが" },
+          { text: "私[わたし]の 部屋[へや]には ギターや カメラなどが",
+            blank: true },
           { text: "ある", blank: true, conjugation: aruPos },
         ],
         notes: "など (etc.) added to listing",
@@ -218,20 +224,23 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "あのカフェでは コーヒーや ケーキが 人気[にんき]があると" },
+          { text: "あのカフェでは コーヒーや ケーキが 人気[にんき]があると",
+            blank: true },
           { text: "聞[き]く", blank: true, conjugation: kiitaPos },
         ],
       },
       {
         segments: [
-          { text: "あのカフェには コーヒーや ケーキが 人気[にんき]があると" },
+          { text: "あのカフェには コーヒーや ケーキが 人気[にんき]があると",
+            blank: true },
           { text: "聞[き]く", blank: true, conjugation: kiitaPos },
         ],
         notes: "には instead of では",
       },
       {
         segments: [
-          { text: "あのカフェでは ケーキや コーヒーが 人気[にんき]があると" },
+          { text: "あのカフェでは ケーキや コーヒーが 人気[にんき]があると",
+            blank: true },
           { text: "聞[き]く", blank: true, conjugation: kiitaPos },
         ],
         notes: "Reversed order",
@@ -240,31 +249,34 @@ export const questions: Question[] = [
   },
   {
     english:
-      "I want to do things like visit an art museum or climb a mountain this summer vacation.",
+      "I want to visit places like art museums and mountains this summer vacation.",
     answers: [
       {
         segments: [
           {
-            text: "今年[ことし]の 夏休[なつやす]みは 美術館[びじゅつかん]に 行[い]くとか 山[やま]に 登[のぼ]るとか",
+            text: "今年[ことし]の 夏休[なつやす]みは 美術館[びじゅつかん]や 山[やま]に",
+            blank: true,
           },
-          { text: "する", blank: true, conjugation: suruTai },
+          { text: "行[い]く", conjugation: { pos: "Godan verb - Iku/Yuku special class", form: "tai-form", polarity: "positive", tense: "non-past" } },
         ],
       },
       {
         segments: [
           {
-            text: "夏休[なつやす]みは 美術館[びじゅつかん]に 行[い]くとか 山[やま]に 登[のぼ]るとか",
+            text: "夏休[なつやす]みは 美術館[びじゅつかん]や 山[やま]に",
+            blank: true,
           },
-          { text: "する", blank: true, conjugation: suruTai },
+          { text: "行[い]く", conjugation: { pos: "Godan verb - Iku/Yuku special class", form: "tai-form", polarity: "positive", tense: "non-past" } },
         ],
         notes: "Without 今年の",
       },
       {
         segments: [
           {
-            text: "今年[ことし]の 夏休[なつやす]みは 山[やま]に 登[のぼ]るとか 美術館[びじゅつかん]に 行[い]くとか",
+            text: "今年[ことし]の 夏休[なつやす]みは 山[やま]や 美術館[びじゅつかん]に",
+            blank: true,
           },
-          { text: "する", blank: true, conjugation: suruTai },
+          { text: "行[い]く", conjugation: { pos: "Godan verb - Iku/Yuku special class", form: "tai-form", polarity: "positive", tense: "non-past" } },
         ],
         notes: "Reversed order",
       },
@@ -276,13 +288,21 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "はなさんは 踊[おど]ることや 歌[うた]うことが 好[す]きだと" },
+          { text: "はなさんは 踊[おど]ることや 歌[うた]うことが",
+            blank: true },
+          { text: " 好[す]き" },
+          { text: "です" },
+          { text: "と" },
           { text: "聞[き]く", blank: true, conjugation: kiitaPos },
         ],
       },
       {
         segments: [
-          { text: "はなさんは 歌[うた]うことや 踊[おど]ることが 好[す]きだと" },
+          { text: "はなさんは 歌[うた]うことや 踊[おど]ることが",
+            blank: true },
+          { text: " 好[す]き" },
+          { text: "です" },
+          { text: "と" },
           { text: "聞[き]く", blank: true, conjugation: kiitaPos },
         ],
         notes: "Reversed order",
@@ -291,13 +311,14 @@ export const questions: Question[] = [
   },
   {
     english:
-      "I've heard that Sota's future dream is something like becoming an astronaut or a singer.",
+      "I've heard that Sota wants to become something like an astronaut or a singer in the future.",
     hint: "Sota = そうた",
     answers: [
       {
         segments: [
           {
-            text: "そうたさんの 将来[しょうらい]の 夢[ゆめ]は 宇宙飛行士[うちゅうひこうし]になるとか 歌手[かしゅ]になるとかだと",
+            text: "そうたさんは 将来[しょうらい]、宇宙飛行士[うちゅうひこうし]や 歌手[かしゅ]に なりたいと",
+            blank: true,
           },
           { text: "聞[き]く", blank: true, conjugation: kiitaPos },
         ],
@@ -305,7 +326,8 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "そうたさんの 将来[しょうらい]の 夢[ゆめ]は 歌手[かしゅ]になるとか 宇宙飛行士[うちゅうひこうし]になるとかだと",
+            text: "そうたさんは 将来[しょうらい]、歌手[かしゅ]や 宇宙飛行士[うちゅうひこうし]に なりたいと",
+            blank: true,
           },
           { text: "聞[き]く", blank: true, conjugation: kiitaPos },
         ],
@@ -314,20 +336,20 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Things like cats and dogs are popular as pets, aren't they?",
+    english: "Things like cats and dogs are popular as pets.",
     answers: [
       {
         segments: [
-          { text: "猫[ねこ]や 犬[いぬ]は 人気[にんき]が" },
+          { text: "猫[ねこ]や 犬[いぬ]は 人気[にんき]が",
+            blank: true },
           { text: "ある", blank: true, conjugation: aruPos },
-          { text: "ね" },
         ],
       },
       {
         segments: [
-          { text: "犬[いぬ]や 猫[ねこ]は 人気[にんき]が" },
+          { text: "犬[いぬ]や 猫[ねこ]は 人気[にんき]が",
+            blank: true },
           { text: "ある", blank: true, conjugation: aruPos },
-          { text: "ね" },
         ],
         notes: "Reversed order",
       },
@@ -340,20 +362,23 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "めいさんのかばんの 中[なか]には 傘[かさ]やノートが あると" },
+          { text: "めいさんのかばんの 中[なか]には 傘[かさ]やノートが あると",
+            blank: true },
           { text: "聞[き]く", blank: true, conjugation: kiitaPos },
         ],
       },
       {
         segments: [
-          { text: "めいさんのかばんには 傘[かさ]やノートが あると" },
+          { text: "めいさんのかばんには 傘[かさ]やノートが あると",
+            blank: true },
           { text: "聞[き]く", blank: true, conjugation: kiitaPos },
         ],
         notes: "かばんには (no の中)",
       },
       {
         segments: [
-          { text: "めいさんのかばんの 中[なか]には ノートや 傘[かさ]が あると" },
+          { text: "めいさんのかばんの 中[なか]には ノートや 傘[かさ]が あると",
+            blank: true },
           { text: "聞[き]く", blank: true, conjugation: kiitaPos },
         ],
         notes: "Reversed order",
@@ -368,6 +393,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "東京[とうきょう]には おいしいレストランや 美術館[びじゅつかん]が あると",
+            blank: true,
           },
           { text: "聞[き]く", blank: true, conjugation: kiitaPos },
         ],
@@ -376,6 +402,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "東京[とうきょう]には 美術館[びじゅつかん]や おいしいレストランが あると",
+            blank: true,
           },
           { text: "聞[き]く", blank: true, conjugation: kiitaPos },
         ],
@@ -388,20 +415,23 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "イタリアでは ピザや ワインが 安[やす]いと" },
+          { text: "イタリアでは ピザや ワインが 安[やす]いと",
+            blank: true },
           { text: "聞[き]く", blank: true, conjugation: kiitaPos },
         ],
       },
       {
         segments: [
-          { text: "イタリアには ピザや ワインが 安[やす]いと" },
+          { text: "イタリアには ピザや ワインが 安[やす]いと",
+            blank: true },
           { text: "聞[き]く", blank: true, conjugation: kiitaPos },
         ],
         notes: "には instead of では",
       },
       {
         segments: [
-          { text: "イタリアでは ワインや ピザが 安[やす]いと" },
+          { text: "イタリアでは ワインや ピザが 安[やす]いと",
+            blank: true },
           { text: "聞[き]く", blank: true, conjugation: kiitaPos },
         ],
         notes: "Reversed order",
@@ -410,13 +440,14 @@ export const questions: Question[] = [
   },
   {
     english:
-      "I've heard that Kenji's older sister is someone like a lawyer or a doctor.",
+      "I've heard that Kenji's older sister works as something like a lawyer or a doctor.",
     hint: "Kenji = けんじ",
     answers: [
       {
         segments: [
           {
-            text: "けんじさんの お姉[ねえ]さんは 弁護士[べんごし]とか 医者[いしゃ]とかだと",
+            text: "けんじさんの お姉[ねえ]さんは 弁護士[べんごし]や 医者[いしゃ]として 働[はたら]いていると",
+            blank: true,
           },
           { text: "聞[き]く", blank: true, conjugation: kiitaPos },
         ],
@@ -424,31 +455,24 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "けんじさんの お姉[ねえ]さんは 医者[いしゃ]とか 弁護士[べんごし]とかだと",
+            text: "けんじさんの お姉[ねえ]さんは 医者[いしゃ]や 弁護士[べんごし]として 働[はたら]いていると",
+            blank: true,
           },
           { text: "聞[き]く", blank: true, conjugation: kiitaPos },
         ],
         notes: "Reversed order",
       },
-      {
-        segments: [
-          {
-            text: "けんじさんの お姉[ねえ]さんは 弁護士[べんごし]や 医者[いしゃ]だと",
-          },
-          { text: "聞[き]く", blank: true, conjugation: kiitaPos },
-        ],
-        notes: "や instead of とか",
-      },
-    ],
+      ],
   },
   {
     english:
-      "I've heard that in summer, people do things like barbecues or camp by the river.",
+      "I've heard that in summer, people do things like barbecues and camping by the river.",
     answers: [
       {
         segments: [
           {
-            text: "夏[なつ]は 川[かわ]で バーベキューするとか キャンプするとか すると",
+            text: "夏[なつ]は 川[かわ]で バーベキューや キャンプを すると",
+            blank: true,
           },
           { text: "聞[き]く", blank: true, conjugation: kiitaPos },
         ],
@@ -456,7 +480,8 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "夏[なつ]は 川[かわ]で キャンプするとか バーベキューするとか すると",
+            text: "夏[なつ]は 川[かわ]で キャンプや バーベキューを すると",
+            blank: true,
           },
           { text: "聞[き]く", blank: true, conjugation: kiitaPos },
         ],
@@ -470,20 +495,23 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "兄[あに]の 部屋[へや]には 古[ふる]い 雑誌[ざっし]や ゲームが" },
+          { text: "兄[あに]の 部屋[へや]には 古[ふる]い 雑誌[ざっし]や ゲームが",
+            blank: true },
           { text: "ある", blank: true, conjugation: aruPos },
         ],
       },
       {
         segments: [
-          { text: "兄[あに]の 部屋[へや]に 古[ふる]い 雑誌[ざっし]や ゲームが" },
+          { text: "兄[あに]の 部屋[へや]に 古[ふる]い 雑誌[ざっし]や ゲームが",
+            blank: true },
           { text: "ある", blank: true, conjugation: aruPos },
         ],
         notes: "に instead of には",
       },
       {
         segments: [
-          { text: "兄[あに]の 部屋[へや]には ゲームや 古[ふる]い 雑誌[ざっし]が" },
+          { text: "兄[あに]の 部屋[へや]には ゲームや 古[ふる]い 雑誌[ざっし]が",
+            blank: true },
           { text: "ある", blank: true, conjugation: aruPos },
         ],
         notes: "Reversed order",
@@ -499,6 +527,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "学校[がっこう]のお 祭[まつ]りには 屋台[やたい]やコンサートが あると",
+            blank: true,
           },
           { text: "聞[き]く", blank: true, conjugation: kiitaPos },
         ],
@@ -507,6 +536,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "学校[がっこう]のお 祭[まつ]りでは 屋台[やたい]やコンサートが あると",
+            blank: true,
           },
           { text: "聞[き]く", blank: true, conjugation: kiitaPos },
         ],
@@ -514,7 +544,8 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "お 祭[まつ]りには 屋台[やたい]やコンサートが あると" },
+          { text: "お 祭[まつ]りには 屋台[やたい]やコンサートが あると",
+            blank: true },
           { text: "聞[き]く", blank: true, conjugation: kiitaPos },
         ],
         notes: "Without 学校の",
@@ -523,6 +554,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "学校[がっこう]のお 祭[まつ]りには コンサートや 屋台[やたい]が あると",
+            blank: true,
           },
           { text: "聞[き]く", blank: true, conjugation: kiitaPos },
         ],
@@ -532,31 +564,37 @@ export const questions: Question[] = [
   },
   {
     english:
-      "I do things like watch horror movies or play games when I'm free.",
+      "I like things like horror movies and games when I'm free.",
     answers: [
       {
         segments: [
           {
-            text: "暇[ひま]な 時[とき]は ホラー 映画[えいが]を 見[み]るとか ゲームをするとか",
+            text: "暇[ひま]な 時[とき]は ホラー 映画[えいが]や ゲームが",
+            blank: true,
           },
-          { text: "する", blank: true, conjugation: suruPos },
+          { text: " 好[す]き" },
+          { text: "です" },
         ],
       },
       {
         segments: [
           {
-            text: "休[やす]みの 日[ひ]は ホラー 映画[えいが]を 見[み]るとか ゲームをするとか",
+            text: "休[やす]みの 日[ひ]は ホラー 映画[えいが]や ゲームが",
+            blank: true,
           },
-          { text: "する", blank: true, conjugation: suruPos },
+          { text: " 好[す]き" },
+          { text: "です" },
         ],
         notes: "休みの日は instead of 暇な時は",
       },
       {
         segments: [
           {
-            text: "暇[ひま]な 時[とき]は ゲームをするとか ホラー 映画[えいが]を 見[み]るとか",
+            text: "暇[ひま]な 時[とき]は ゲームや ホラー 映画[えいが]が",
+            blank: true,
           },
-          { text: "する", blank: true, conjugation: suruPos },
+          { text: " 好[す]き" },
+          { text: "です" },
         ],
         notes: "Reversed order",
       },
@@ -571,6 +609,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "りくさんは 毎日[まいにち] ピアノや ギターを 練習[れんしゅう]すると",
+            blank: true,
           },
           { text: "聞[き]く", blank: true, conjugation: kiitaPos },
         ],
@@ -579,6 +618,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "りくさんは 毎日[まいにち] ギターや ピアノを 練習[れんしゅう]すると",
+            blank: true,
           },
           { text: "聞[き]く", blank: true, conjugation: kiitaPos },
         ],
@@ -588,28 +628,28 @@ export const questions: Question[] = [
   },
   {
     english:
-      "Things like strawberries and peaches are delicious in summer, aren't they?",
+      "Things like strawberries and peaches are delicious in summer.",
     answers: [
       {
         segments: [
-          { text: "いちごや ももは 夏[なつ]に" },
+          { text: "いちごや ももは 夏[なつ]に",
+            blank: true },
           { text: "おいしい", blank: true, conjugation: oishiiPos },
-          { text: "ね" },
         ],
       },
       {
         segments: [
-          { text: "夏[なつ]は いちごや ももが" },
+          { text: "夏[なつ]は いちごや ももが",
+            blank: true },
           { text: "おいしい", blank: true, conjugation: oishiiPos },
-          { text: "ね" },
         ],
         notes: "Topic on 夏",
       },
       {
         segments: [
-          { text: "ももや いちごは 夏[なつ]に" },
+          { text: "ももや いちごは 夏[なつ]に",
+            blank: true },
           { text: "おいしい", blank: true, conjugation: oishiiPos },
-          { text: "ね" },
         ],
         notes: "Reversed order",
       },

@@ -10,45 +10,45 @@ export const questions: Question[] = [
           { text: "の", blank: true },
           { text: "でしょうか", blank: true },
         ],
-        notes: "Polite, の nominalization, 今年の冬 for \"this winter\"",
+        register: "polite",
       },
       {
         segments: [
-          { text: "今年[ことし]の 冬[ふよ]、雪[ゆき]が 降[ふ]る" },
+          { text: "今年[ことし]の 冬[ふゆ]、雪[ゆき]が 降[ふ]る" },
           { text: "でしょうか", blank: true },
         ],
-        notes: "Polite, の omitted before でしょうか",
+        register: "polite",
       },
       {
         segments: [
-          { text: "今年[ことし]の 冬[ふよ]、雪[ゆき]が 降[ふ]る" },
+          { text: "今年[ことし]の 冬[ふゆ]、雪[ゆき]が 降[ふ]る" },
           { text: "ん", blank: true },
           { text: "でしょうか", blank: true },
         ],
-        notes: "Polite, ん (contracted の) before でしょうか",
+        register: "polite",
       },
       {
         segments: [
-          { text: "この 冬[ふよ]、雪[ゆき]が 降[ふ]る" },
+          { text: "この 冬[ふゆ]、雪[ゆき]が 降[ふ]る" },
           { text: "の", blank: true },
           { text: "でしょうか", blank: true },
         ],
-        notes: "この冬 instead of 今年の冬, polite, の nominalization",
+        register: "polite",
       },
       {
         segments: [
-          { text: "この 冬[ふよ]、雪[ゆき]が 降[ふ]る" },
+          { text: "この 冬[ふゆ]、雪[ゆき]が 降[ふ]る" },
           { text: "でしょうか", blank: true },
         ],
-        notes: "この冬, polite, の omitted",
+        register: "polite",
       },
       {
         segments: [
-          { text: "この 冬[ふよ]、雪[ゆき]が 降[ふ]る" },
+          { text: "この 冬[ふゆ]、雪[ゆき]が 降[ふ]る" },
           { text: "ん", blank: true },
           { text: "でしょうか", blank: true },
         ],
-        notes: "この冬, polite, ん contracted",
+        register: "polite",
       },
     ],
   },
@@ -63,7 +63,7 @@ export const questions: Question[] = [
           { text: "の", blank: true },
           { text: "でしょうか", blank: true },
         ],
-        notes: "Polite: な-adj + なの + でしょうか. Full nominalization with の.",
+        register: "polite",
       },
       {
         segments: [
@@ -72,14 +72,14 @@ export const questions: Question[] = [
           { text: "ん", blank: true },
           { text: "でしょうか", blank: true },
         ],
-        notes: "Polite: な-adj + なん + でしょうか. Contracted ん form.",
+        register: "polite",
       },
       {
         segments: [
           { text: "たけしさんは 週末[しゅうまつ]、暇[ひま]" },
           { text: "でしょうか", blank: true },
         ],
-        notes: "Polite: な-adj + でしょうか. なの omitted (permitted per grammar notes).",
+        register: "polite",
       },
       {
         segments: [
@@ -88,7 +88,7 @@ export const questions: Question[] = [
           { text: "の", blank: true },
           { text: "でしょうか", blank: true },
         ],
-        notes: "Polite: time expression moved to front. なの + でしょうか.",
+        register: "polite",
       },
       {
         segments: [
@@ -97,14 +97,14 @@ export const questions: Question[] = [
           { text: "ん", blank: true },
           { text: "でしょうか", blank: true },
         ],
-        notes: "Polite: time first, なん + でしょうか contracted form.",
+        register: "polite",
       },
       {
         segments: [
           { text: "週末[しゅうまつ]、たけしさんは 暇[ひま]" },
           { text: "でしょうか", blank: true },
         ],
-        notes: "Polite: time first, なの omitted, でしょうか only.",
+        register: "polite",
       },
       {
         segments: [
@@ -113,7 +113,7 @@ export const questions: Question[] = [
           { text: "の", blank: true },
           { text: "でしょうか", blank: true },
         ],
-        notes: "Polite: が instead of は for subject marking. なの + でしょうか.",
+        register: "polite",
       },
       {
         segments: [
@@ -122,7 +122,7 @@ export const questions: Question[] = [
           { text: "の", blank: true },
           { text: "でしょうか", blank: true },
         ],
-        notes: "Polite: 今週末 (this weekend) instead of 週末. なの + でしょうか.",
+        register: "polite",
       },
     ],
   },
@@ -132,83 +132,87 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "パーティーの 食[た]べ 物[もの]は" },
-          { text: "いい", blank: true },
+          { text: "よい" },
           { text: "の", blank: true },
           { text: "でしょうか", blank: true },
         ],
-        notes: "Core polite form: パーティーの食べ物は + いいのでしょうか (blank)",
+        register: "polite",
       },
       {
         segments: [
           { text: "パーティーの 食[た]べ 物[もの]は" },
-          { text: "いい", blank: true },
+          { text: "よい" },
           { text: "でしょうか", blank: true },
         ],
-        notes: "Polite form with の omitted: いいでしょうか (の dropped)",
+        register: "polite",
       },
       {
         segments: [
           { text: "パーティーの 食[た]べ 物[もの]が" },
-          { text: "おいしい", blank: true },
+          { text: "おいしい" },
           { text: "の", blank: true },
           { text: "でしょうか", blank: true },
         ],
-        notes: "が instead of は; おいしい synonym for いい (good/delicious); polite でしょうか with の",
+        register: "polite",
       },
       {
         segments: [
           { text: "パーティーの 食[た]べ 物[もの]が" },
-          { text: "おいしいだろうか", blank: true },
+          { text: "おいしい" },
+          { text: "だろうか", blank: true },
         ],
-        notes: "が + おいしい + だろうか; casual/masculine, の omitted",
+        register: "casual",
       },
       {
         segments: [
           { text: "パーティーの 食[た]べ 物[もの]は" },
-          { text: "おいしい", blank: true },
+          { text: "おいしい" },
           { text: "の", blank: true },
           { text: "でしょうか", blank: true },
         ],
-        notes: "は + おいしいのでしょうか; polite with の nominalization",
+        register: "polite",
       },
       {
         segments: [
           { text: "パーティーの 食[た]べ 物[もの]は" },
-          { text: "おいしいだろうか", blank: true },
+          { text: "おいしい" },
+          { text: "だろうか", blank: true },
         ],
-        notes: "は + おいしいだろうか; casual/masculine, の omitted",
+        register: "casual",
       },
       {
         segments: [
           { text: "パーティーの 料[りょう] 理[り]は" },
-          { text: "いい", blank: true },
+          { text: "よい" },
           { text: "の", blank: true },
           { text: "でしょうか", blank: true },
         ],
-        notes: "料理 instead of 食べ物; polite でしょうか with の",
+        register: "polite",
       },
       {
         segments: [
           { text: "パーティーの 料[りょう] 理[り]は" },
-          { text: "いいだろうか", blank: true },
+          { text: "よい" },
+          { text: "だろうか", blank: true },
         ],
-        notes: "料理は + いいだろうか; casual, の omitted",
+        register: "casual",
       },
       {
         segments: [
           { text: "パーティーの 料[りょう] 理[り]は" },
-          { text: "おいしい", blank: true },
+          { text: "おいしい" },
           { text: "の", blank: true },
           { text: "でしょうか", blank: true },
         ],
-        notes: "料理は + おいしいのでしょうか; polite with の",
+        register: "polite",
       },
       {
         segments: [
           { text: "パーティーの 料[りょう] 理[り]は" },
-          { text: "おいしいだろうか", blank: true },
+          { text: "おいしい" },
+          { text: "だろうか", blank: true },
         ],
-        notes: "料理は + おいしいだろうか; casual, の omitted",
+        register: "casual",
       },
     ],
   },
@@ -217,44 +221,32 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "終電[しゅうでん]はもう 出[で]た", blank: true },
-          { text: "でしょう" },
+          { text: "終電[しゅうでん]はもう 出[で]た" },
+          { text: "でしょう", blank: true },
         ],
+        register: "polite",
       },
       {
         segments: [
-          { text: "終電[しゅうでん]はもう 出[で]たでしょう", blank: true },
-          { text: "ね" },
+          { text: "終電[しゅうでん]はもう 出[で]た" },
+          { text: "の", blank: true },
+          { text: "でしょう", blank: true },
         ],
-        notes: "Adding ね at the end to reinforce the \"right?\" confirmation-seeking nuance",
+        register: "polite",
       },
       {
         segments: [
-          { text: "終電[しゅうでん]はもう 出[で]ただろう", blank: true },
-          { text: "ね" },
+          { text: "終電[しゅうでん]はもう 出[で]ている" },
+          { text: "でしょう", blank: true },
         ],
-        notes: "Casual だろう + ね",
+        register: "polite",
       },
       {
         segments: [
-          { text: "終電[しゅうでん]はもう 出[で]たの", blank: true },
-          { text: "でしょう" },
+          { text: "終電[しゅうでん]がもう 出[で]た" },
+          { text: "でしょう", blank: true },
         ],
-        notes: "With の nominalization before でしょう — adds slight explanatory/reasoning nuance",
-      },
-      {
-        segments: [
-          { text: "終電[しゅうでん]はもう 出[で]て", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
-          { text: "でしょう" },
-        ],
-      },
-      {
-        segments: [
-          { text: "終電[しゅうでん]がもう 出[で]た", blank: true },
-          { text: "でしょう" },
-        ],
-        notes: "が instead of は — slightly more focus on 終電 as the subject",
+        register: "polite",
       },
     ],
   },
@@ -264,72 +256,79 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "健一[けんいち]は 今[いま]、図書館[としょかん]に" },
-          { text: "いるでしょう", blank: true },
-        ],
-      },
-      {
-        segments: [
-          { text: "健一[けんいち]は 今[いま]、図書館[としょかん]に" },
-          { text: "いるだろう", blank: true },
-        ],
-        notes: "だろう — casual/masculine equivalent",
-      },
-      {
-        segments: [
-          { text: "健一[けんいち]は 今[いま]、図書館[としょかん]に いるの" },
+          { text: "健一[けんいち]さんは 今[いま]、図書館[としょかん]に" },
+          { text: "いる" },
           { text: "でしょう", blank: true },
         ],
-        notes: "のでしょう — nominalized with の, adding explanatory/rhetorical nuance",
+        register: "polite",
       },
       {
         segments: [
-          { text: "健一[けんいち]は 今[いま]、図書館[としょかん]に いるん" },
+          { text: "健一[けんいち]さんは 今[いま]、図書館[としょかん]に" },
+          { text: "いる" },
+          { text: "だろう", blank: true },
+        ],
+        register: "casual",
+      },
+      {
+        segments: [
+          { text: "健一[けんいち]さんは 今[いま]、図書館[としょかん]に いるの" },
           { text: "でしょう", blank: true },
         ],
-        notes: "んでしょう — ん (contracted の) version",
+        register: "polite",
       },
       {
         segments: [
-          { text: "健一[けんいち]は 今[いま]、図書館[としょかん]に いるの" },
+          { text: "健一[けんいち]さんは 今[いま]、図書館[としょかん]に いるん" },
+          { text: "でしょう", blank: true },
+        ],
+        register: "polite",
+      },
+      {
+        segments: [
+          { text: "健一[けんいち]さんは 今[いま]、図書館[としょかん]に いるの" },
           { text: "だろう", blank: true },
         ],
-        notes: "のだろう — nominalized with の, casual/masculine",
+        register: "casual",
       },
       {
         segments: [
-          { text: "健一[けんいち]は 今[いま]、図書館[としょかん]に いるん" },
+          { text: "健一[けんいち]さんは 今[いま]、図書館[としょかん]に いるん" },
           { text: "だろう", blank: true },
         ],
-        notes: "んだろう — ん contracted form, casual",
+        register: "casual",
       },
       {
         segments: [
-          { text: "今[いま]、健一[けんいち]は 図書館[としょかん]に" },
-          { text: "いるでしょう", blank: true },
+          { text: "今[いま]、健一[けんいち]さんは 図書館[としょかん]に" },
+          { text: "いる" },
+          { text: "でしょう", blank: true },
         ],
-        notes: "今 moved to front — time-topic-location order",
+        register: "polite",
       },
       {
         segments: [
-          { text: "今[いま]、健一[けんいち]は 図書館[としょかん]に" },
-          { text: "いるだろう", blank: true },
+          { text: "今[いま]、健一[けんいち]さんは 図書館[としょかん]に" },
+          { text: "いる" },
+          { text: "だろう", blank: true },
         ],
-        notes: "今 at front + だろう",
+        register: "casual",
       },
       {
         segments: [
-          { text: "健一[けんいち]が 今[いま]、図書館[としょかん]に" },
-          { text: "いるでしょう", blank: true },
+          { text: "健一[けんいち]さんが 今[いま]、図書館[としょかん]に" },
+          { text: "いる" },
+          { text: "でしょう", blank: true },
         ],
-        notes: "が instead of は — emphasizing Kenji as the subject",
+        register: "polite",
       },
       {
         segments: [
-          { text: "健一[けんいち]が 今[いま]、図書館[としょかん]に" },
-          { text: "いるだろう", blank: true },
+          { text: "健一[けんいち]さんが 今[いま]、図書館[としょかん]に" },
+          { text: "いる" },
+          { text: "だろう", blank: true },
         ],
-        notes: "が instead of は + だろう",
+        register: "casual",
       },
     ],
   },
@@ -339,61 +338,38 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "あのホラー 映画[えいが]は 怖[こわ]い", blank: true },
-          { text: "でしょう" },
+          { text: "あのホラー 映画[えいが]は 怖[こわ]い" },
+          { text: "でしょう", blank: true },
         ],
+        register: "polite",
       },
       {
         segments: [
-          { text: "そのホラー 映画[えいが]は 怖[こわ]い", blank: true },
-          { text: "でしょう" },
+          { text: "そのホラー 映画[えいが]は 怖[こわ]い" },
+          { text: "でしょう", blank: true },
         ],
-        notes: "その instead of あの — both valid for \"that\"",
+        register: "polite",
       },
       {
         segments: [
-          { text: "あのホラー 映画[えいが]は 怖[こわ]い", blank: true },
-          { text: "だろう" },
+          { text: "あのホラー 映画[えいが]は 怖[こわ]い" },
+          { text: "だろう", blank: true },
         ],
-        notes: "だろう instead of でしょう — more casual/masculine",
+        register: "casual",
       },
       {
         segments: [
-          { text: "そのホラー 映画[えいが]は 怖[こわ]い", blank: true },
-          { text: "だろう" },
+          { text: "そのホラー 映画[えいが]は 怖[こわ]い" },
+          { text: "だろう", blank: true },
         ],
-        notes: "その + だろう",
+        register: "casual",
       },
       {
         segments: [
-          { text: "あのホラー 映画[えいが]は 怖[こわ]い", blank: true },
-          { text: "でしょう" },
-          { text: "ね" },
+          { text: "あのホラー 映画[えいが]、 怖[こわ]い" },
+          { text: "でしょう", blank: true },
         ],
-        notes: "でしょうね — adding ね to reinforce the \"right?\" nuance",
-      },
-      {
-        segments: [
-          { text: "そのホラー 映画[えいが]は 怖[こわ]い", blank: true },
-          { text: "でしょう" },
-          { text: "ね" },
-        ],
-        notes: "その + でしょうね",
-      },
-      {
-        segments: [
-          { text: "あのホラー 映画[えいが]は 怖[こわ]い", blank: true },
-          { text: "だろう" },
-          { text: "ね" },
-        ],
-        notes: "だろうね — casual with ね",
-      },
-      {
-        segments: [
-          { text: "あのホラー 映画[えいが]、 怖[こわ]い", blank: true },
-          { text: "でしょう" },
-        ],
-        notes: "Without は particle — topic dropped, more natural casual phrasing",
+        register: "polite",
       },
     ],
   },
@@ -403,59 +379,65 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "はなさんは 音楽[おんがく]に 興味[きょうみ]がある", blank: true },
-          { text: "のでしょうか" },
+          { text: "はなさんは 音楽[おんがく]に 興味[きょうみ]がある" },
+          { text: "の" },
+          { text: "でしょうか", blank: true },
         ],
-        notes: "Polite form: のでしょうか. 興味がある as the verb phrase, nominalized with の before でしょうか",
+        register: "polite",
       },
       {
         segments: [
-          { text: "はなさんは 音楽[おんがく]に 興味[きょうみ]がある", blank: true },
-          { text: "のだろうか" },
+          { text: "はなさんは 音楽[おんがく]に 興味[きょうみ]がある" },
+          { text: "の" },
+          { text: "だろうか", blank: true },
         ],
-        notes: "Casual/masculine form: のだろうか instead of のでしょうか",
+        register: "casual",
       },
       {
         segments: [
-          { text: "はなさんは 音楽[おんがく]に 興味[きょうみ]がある", blank: true },
-          { text: "でしょうか" },
+          { text: "はなさんは 音楽[おんがく]に 興味[きょうみ]がある" },
+          { text: "でしょうか", blank: true },
         ],
-        notes: "の omitted before でしょうか — still natural per the grammar notes",
+        register: "polite",
       },
       {
         segments: [
-          { text: "はなさんは 音楽[おんがく]に 興味[きょうみ]がある", blank: true },
-          { text: "だろうか" },
+          { text: "はなさんは 音楽[おんがく]に 興味[きょうみ]がある" },
+          { text: "だろうか", blank: true },
         ],
-        notes: "の omitted before だろうか — casual, の dropped",
+        register: "casual",
       },
       {
         segments: [
-          { text: "はなさんが 音楽[おんがく]に 興味[きょうみ]がある", blank: true },
-          { text: "のでしょうか" },
+          { text: "はなさんが 音楽[おんがく]に 興味[きょうみ]がある" },
+          { text: "の" },
+          { text: "でしょうか", blank: true },
         ],
-        notes: "が instead of は for subject particle; polite のでしょうか",
+        register: "polite",
       },
       {
         segments: [
-          { text: "はなさんが 音楽[おんがく]に 興味[きょうみ]がある", blank: true },
-          { text: "のだろうか" },
+          { text: "はなさんが 音楽[おんがく]に 興味[きょうみ]がある" },
+          { text: "の" },
+          { text: "だろうか", blank: true },
         ],
-        notes: "が instead of は; casual のだろうか",
+        register: "casual",
       },
       {
         segments: [
-          { text: "はなさんは 音楽[おんがく]に 興味[きょうみ]がある", blank: true },
-          { text: "んでしょうか" },
+          { text: "はなさんは 音楽[おんがく]に 興味[きょうみ]がある" },
+          { text: "ん" },
+          { text: "でしょうか", blank: true },
         ],
-        notes: "ん (contracted form of の) before でしょうか; polite",
+        register: "polite",
       },
       {
         segments: [
-          { text: "はなさんは 音楽[おんがく]に 興味[きょうみ]がある", blank: true },
-          { text: "んだろうか" },
+          { text: "はなさんは 音楽[おんがく]に 興味[きょうみ]がある" },
+          { text: "ん" },
+          { text: "だろうか", blank: true },
         ],
-        notes: "ん (contracted form of の) before だろうか; casual",
+        register: "casual",
       },
     ],
   },
@@ -465,65 +447,66 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "毎日[まいにち] 残業[ざんぎょう]するのは" },
-          { text: "大変[たいへん]", blank: true },
-          { text: "でしょう" },
+          { text: "大変[たいへん]" },
+          { text: "でしょう", blank: true },
         ],
+        register: "polite",
       },
       {
         segments: [
           { text: "毎日[まいにち] 残業[ざんぎょう]するのは" },
-          { text: "大変[たいへん]", blank: true },
-          { text: "だろう" },
+          { text: "大変[たいへん]" },
+          { text: "だろう", blank: true },
         ],
-        notes: "Casual/masculine: だろう instead of でしょう",
+        register: "casual",
       },
       {
         segments: [
           { text: "毎日[まいにち] 残業[ざんぎょう]しているのは" },
-          { text: "大変[たいへん]", blank: true },
-          { text: "でしょう" },
+          { text: "大変[たいへん]" },
+          { text: "でしょう", blank: true },
         ],
-        notes: "Using ている (ongoing/habitual state) instead of plain する",
+        register: "polite",
       },
       {
         segments: [
           { text: "毎日[まいにち] 残業[ざんぎょう]しているのは" },
-          { text: "大変[たいへん]", blank: true },
-          { text: "だろう" },
+          { text: "大変[たいへん]" },
+          { text: "だろう", blank: true },
         ],
-        notes: "ている + だろう (casual/masculine)",
+        register: "casual",
       },
       {
         segments: [
           { text: "毎日[まいにち] 残業[ざんぎょう]するのが" },
-          { text: "大変[たいへん]", blank: true },
-          { text: "でしょう" },
+          { text: "大変[たいへん]" },
+          { text: "でしょう", blank: true },
         ],
-        notes: "Using が instead of は as subject marker for the nominalized clause",
+        register: "polite",
       },
       {
         segments: [
           { text: "毎日[まいにち] 残業[ざんぎょう]するのが" },
-          { text: "大変[たいへん]", blank: true },
-          { text: "だろう" },
+          { text: "大変[たいへん]" },
+          { text: "だろう", blank: true },
         ],
-        notes: "が + だろう (casual/masculine)",
+        register: "casual",
       },
       {
         segments: [
           { text: "毎日[まいにち]の 残業[ざんぎょう]は" },
-          { text: "大変[たいへん]", blank: true },
-          { text: "でしょう" },
+          { text: "大変[たいへん]" },
+          { text: "でしょう", blank: true },
         ],
-        notes: "毎日の残業は as a noun phrase topic instead of nominalized verb clause",
+        register: "polite",
       },
       {
         segments: [
           { text: "毎日[まいにち]の 残業[ざんぎょう]は" },
-          { text: "大変[たいへん]", blank: true },
-          { text: "だろう" },
+          { text: "大変[たいへん]" },
+          { text: "だろう", blank: true },
         ],
-        notes: "毎日の残業は + だろう (casual/masculine)",
+        register: "casual",
       },
     ],
   },
@@ -533,78 +516,83 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "そうたさんは 帰[かえ]る", blank: true },
-          { text: "のでしょうか" },
+          { text: "そうたさんは 帰[かえ]る" },
+          { text: "の" },
+          { text: "でしょうか", blank: true },
         ],
-        notes: "Polite でしょうか with の nominalization, は particle",
+        register: "polite",
       },
       {
         segments: [
-          { text: "そうたさんは 帰[かえ]る", blank: true },
-          { text: "でしょうか" },
+          { text: "そうたさんは 帰[かえ]る" },
+          { text: "でしょうか", blank: true },
         ],
-        notes: "Polite でしょうか with の omitted, は particle",
+        register: "polite",
       },
       {
         segments: [
-          { text: "そうたさんは 帰[かえ]るの", blank: true },
-          { text: "だろうか" },
+          { text: "そうたさんは 帰[かえ]るの" },
+          { text: "だろうか", blank: true },
         ],
-        notes: "Casual だろうか with の nominalization, は particle",
+        register: "casual",
       },
       {
         segments: [
-          { text: "そうたさんは 帰[かえ]る", blank: true },
-          { text: "だろうか" },
+          { text: "そうたさんは 帰[かえ]る" },
+          { text: "だろうか", blank: true },
         ],
-        notes: "Casual だろうか with の omitted, は particle",
+        register: "casual",
       },
       {
         segments: [
-          { text: "そうたさんが 帰[かえ]る", blank: true },
-          { text: "のでしょうか" },
+          { text: "そうたさんが 帰[かえ]る" },
+          { text: "の" },
+          { text: "でしょうか", blank: true },
         ],
-        notes: "Polite でしょうか with の, が particle instead of は",
+        register: "polite",
       },
       {
         segments: [
-          { text: "そうたさんが 帰[かえ]るの", blank: true },
-          { text: "だろうか" },
+          { text: "そうたさんが 帰[かえ]るの" },
+          { text: "だろうか", blank: true },
         ],
-        notes: "Casual だろうか with の, が particle",
+        register: "casual",
       },
       {
         segments: [
-          { text: "そうたさんは 帰[かえ]ってくる", blank: true },
-          { text: "のでしょうか" },
+          { text: "そうたさんは 帰[かえ]ってくる" },
+          { text: "の" },
+          { text: "でしょうか", blank: true },
         ],
-        notes: "帰ってくる (come back) instead of just 帰る, polite でしょうか with の",
+        register: "polite",
       },
       {
         segments: [
-          { text: "そうたさんは 帰[かえ]ってくる", blank: true },
-          { text: "だろうか" },
+          { text: "そうたさんは 帰[かえ]ってくる" },
+          { text: "だろうか", blank: true },
         ],
-        notes: "帰ってくる, casual だろうか, の omitted",
+        register: "casual",
       },
       {
         segments: [
-          { text: "そうたさんは 帰[かえ]ってくるの", blank: true },
-          { text: "だろうか" },
+          { text: "そうたさんは 帰[かえ]ってくるの" },
+          { text: "だろうか", blank: true },
         ],
-        notes: "帰ってくる, casual だろうか with の",
+        register: "casual",
       },
       {
         segments: [
-          { text: "そうたさんは 帰[かえ]るんでしょうか", blank: true },
+          { text: "そうたさんは 帰[かえ]るん" },
+          { text: "でしょうか", blank: true },
         ],
-        notes: "Polite でしょうか with ん (contracted の), は particle",
+        register: "polite",
       },
       {
         segments: [
-          { text: "そうたさんは 帰[かえ]るんだろうか", blank: true },
+          { text: "そうたさんは 帰[かえ]るん" },
+          { text: "だろうか", blank: true },
         ],
-        notes: "Casual だろうか with ん (contracted の), は particle",
+        register: "casual",
       },
     ],
   },
@@ -619,27 +607,30 @@ export const questions: Question[] = [
           { text: "の", blank: true },
           { text: "でしょうか", blank: true },
         ],
+        register: "polite",
       },
       {
         segments: [
           { text: "あのかばんは ゆきさんの" },
-          { text: "なのだろうか", blank: true },
+          { text: "な" },
+          { text: "の" },
+          { text: "だろうか", blank: true },
         ],
-        notes: "Casual/masculine form: Noun + なのだろうか",
+        register: "casual",
       },
       {
         segments: [
           { text: "あのかばんは ゆきさんの" },
           { text: "でしょうか", blank: true },
         ],
-        notes: "Polite form with の omitted before でしょうか: Noun + でしょうか",
+        register: "polite",
       },
       {
         segments: [
           { text: "あのかばんは ゆきさんの" },
           { text: "だろうか", blank: true },
         ],
-        notes: "Casual form with なの omitted before だろうか: Noun + だろうか",
+        register: "casual",
       },
       {
         segments: [
@@ -648,14 +639,16 @@ export const questions: Question[] = [
           { text: "の", blank: true },
           { text: "でしょうか", blank: true },
         ],
-        notes: "Using あそこの instead of あの to express \"over there\": あそこのかばん",
+        register: "polite",
       },
       {
         segments: [
           { text: "あそこのかばんは ゆきさんの" },
-          { text: "なのだろうか", blank: true },
+          { text: "な" },
+          { text: "の" },
+          { text: "だろうか", blank: true },
         ],
-        notes: "あそこの with casual なのだろうか",
+        register: "casual",
       },
       {
         segments: [
@@ -664,12 +657,16 @@ export const questions: Question[] = [
           { text: "の", blank: true },
           { text: "でしょうか", blank: true },
         ],
+        register: "polite",
       },
       {
         segments: [
           { text: "あれは ゆきさんのかばん" },
-          { text: "なのだろうか", blank: true },
+          { text: "な" },
+          { text: "の" },
+          { text: "だろうか", blank: true },
         ],
+        register: "casual",
       },
       {
         segments: [
@@ -677,12 +674,15 @@ export const questions: Question[] = [
           { text: "ん", blank: true },
           { text: "でしょうか", blank: true },
         ],
+        register: "polite",
       },
       {
         segments: [
           { text: "あのかばんは ゆきさんの" },
-          { text: "んだろうか", blank: true },
+          { text: "ん" },
+          { text: "だろうか", blank: true },
         ],
+        register: "casual",
       },
     ],
   },
@@ -694,57 +694,58 @@ export const questions: Question[] = [
           { text: "新幹線[しんかんせん]は 世界[せかい]で 一番[いちばん] 速[はや]い 電車[でんしゃ]" },
           { text: "でしょう", blank: true },
         ],
-        notes: "Noun predicate + でしょう. Standard polite assertion.",
+        register: "polite",
       },
       {
         segments: [
           { text: "新幹線[しんかんせん]は 世界[せかい]で 一番[いちばん] 速[はや]い 電車[でんしゃ]" },
           { text: "だろう", blank: true },
         ],
-        notes: "Noun predicate + だろう. Casual/masculine version.",
+        register: "casual",
       },
       {
         segments: [
           { text: "新幹線[しんかんせん]は 世界一[せかいいち]の 速[はや]さの 電車[でんしゃ]" },
           { text: "でしょう", blank: true },
         ],
-        notes: "Using 世界一 (world's number one) instead of 世界で一番. Noun predicate + でしょう.",
+        register: "polite",
       },
       {
         segments: [
           { text: "新幹線[しんかんせん]は 世界一[せかいいち]の 速[はや]さの 電車[でんしゃ]" },
           { text: "だろう", blank: true },
         ],
+        register: "casual",
       },
       {
         segments: [
           { text: "世界[せかい]で 一番[いちばん] 速[はや]い 電車[でんしゃ]は 新幹線[しんかんせん]" },
           { text: "でしょう", blank: true },
         ],
-        notes: "Reversed word order — \"The world's fastest train is probably the Shinkansen, right?\" Same meaning, different focus.",
+        register: "polite",
       },
       {
         segments: [
           { text: "世界[せかい]で 一番[いちばん] 速[はや]い 電車[でんしゃ]は 新幹線[しんかんせん]" },
           { text: "だろう", blank: true },
         ],
-        notes: "Reversed word order + だろう. Casual.",
+        register: "casual",
       },
       {
         segments: [
           { text: "新幹線[しんかんせん]は 世界[せかい]で 一番[いちばん]" },
-          { text: "速[はや]い", blank: true },
-          { text: "でしょう" },
+          { text: "速[はや]い" },
+          { text: "でしょう", blank: true },
         ],
-        notes: "い-adjective predicate + でしょう, without repeating 電車.",
+        register: "polite",
       },
       {
         segments: [
           { text: "新幹線[しんかんせん]は 世界[せかい]で 一番[いちばん]" },
-          { text: "速[はや]い", blank: true },
-          { text: "だろう" },
+          { text: "速[はや]い" },
+          { text: "だろう", blank: true },
         ],
-        notes: "い-adjective predicate + だろう. Casual/masculine.",
+        register: "casual",
       },
     ],
   },
@@ -759,24 +760,32 @@ export const questions: Question[] = [
           { text: "の", blank: true },
           { text: "でしょうか", blank: true },
         ],
+        register: "polite",
       },
       {
         segments: [
-          { text: "けいたさんは 大学院生[だいがくいんせい]なのだろうか", blank: true },
+          { text: "けいたさんは 大学院生[だいがくいんせい]" },
+          { text: "な" },
+          { text: "の" },
+          { text: "だろうか", blank: true },
         ],
-        notes: "Casual/masculine form: Noun + なのだろうか",
+        register: "casual",
       },
       {
         segments: [
-          { text: "けいたさんは 大学院生[だいがくいんせい]なんでしょうか", blank: true },
+          { text: "けいたさんは 大学院生[だいがくいんせい]" },
+          { text: "なん" },
+          { text: "でしょうか", blank: true },
         ],
-        notes: "Polite form with contracted ん: Noun + なんでしょうか",
+        register: "polite",
       },
       {
         segments: [
-          { text: "けいたさんは 大学院生[だいがくいんせい]なんだろうか", blank: true },
+          { text: "けいたさんは 大学院生[だいがくいんせい]" },
+          { text: "なん" },
+          { text: "だろうか", blank: true },
         ],
-        notes: "Casual form with contracted ん: Noun + なんだろうか",
+        register: "casual",
       },
     ],
   },
@@ -786,78 +795,101 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "あの 近所[きんじょ]は" },
-          { text: "静[しず]かなのでしょうか", blank: true },
+          { text: "静[しず]か" },
+          { text: "な" },
+          { text: "の" },
+          { text: "でしょうか", blank: true },
         ],
+        register: "polite",
       },
       {
         segments: [
           { text: "あの 近所[きんじょ]は" },
-          { text: "静[しず]かなんでしょうか", blank: true },
+          { text: "静[しず]か" },
+          { text: "なん" },
+          { text: "でしょうか", blank: true },
         ],
-        notes: "Contracted ん version: 静かなん + でしょうか (polite). ん is a contraction of の.",
+        register: "polite",
       },
       {
         segments: [
           { text: "あの 近所[きんじょ]は" },
-          { text: "静[しず]かなのだろうか", blank: true },
+          { text: "静[しず]か" },
+          { text: "な" },
+          { text: "の" },
+          { text: "だろうか", blank: true },
         ],
-        notes: "Casual/masculine form: 静かなの + だろうか.",
+        register: "casual",
       },
       {
         segments: [
           { text: "あの 近所[きんじょ]は" },
-          { text: "静[しず]かなんだろうか", blank: true },
+          { text: "静[しず]か" },
+          { text: "なん" },
+          { text: "だろうか", blank: true },
         ],
-        notes: "Casual/masculine with contracted ん: 静かなん + だろうか.",
+        register: "casual",
       },
       {
         segments: [
           { text: "あの 近所[きんじょ]は" },
-          { text: "静[しず]かだろうか", blank: true },
+          { text: "静[しず]か" },
+          { text: "だろうか", blank: true },
         ],
-        notes: "だろうか with の omitted: 静か + だろうか. Casual, の-less variant.",
+        register: "casual",
       },
       {
         segments: [
           { text: "その 近所[きんじょ]は" },
-          { text: "静[しず]かなのでしょうか", blank: true },
+          { text: "静[しず]か" },
+          { text: "な" },
+          { text: "の" },
+          { text: "でしょうか", blank: true },
         ],
-        notes: "Using その instead of あの — \"that neighborhood (near you)\" + polite でしょうか.",
+        register: "polite",
       },
       {
         segments: [
           { text: "その 近所[きんじょ]は" },
-          { text: "静[しず]かなのだろうか", blank: true },
+          { text: "静[しず]か" },
+          { text: "な" },
+          { text: "の" },
+          { text: "だろうか", blank: true },
         ],
-        notes: "その + casual だろうか with の.",
+        register: "casual",
       },
       {
         segments: [
           { text: "その 近所[きんじょ]は" },
-          { text: "静[しず]かだろうか", blank: true },
+          { text: "静[しず]か" },
+          { text: "だろうか", blank: true },
         ],
-        notes: "その + casual だろうか with の omitted.",
+        register: "casual",
       },
       {
         segments: [
           { text: "その 近所[きんじょ]は" },
-          { text: "静[しず]かなんでしょうか", blank: true },
+          { text: "静[しず]か" },
+          { text: "なん" },
+          { text: "でしょうか", blank: true },
         ],
-        notes: "その + contracted ん + でしょうか (polite).",
+        register: "polite",
       },
       {
         segments: [
           { text: "あの 近所[きんじょ]は" },
-          { text: "静[しず]かでしょうか", blank: true },
+          { text: "静[しず]か" },
+          { text: "でしょうか", blank: true },
         ],
-        notes: "あの + でしょうか with の omitted (な-adj directly + でしょうか).",
+        register: "polite",
       },
       {
         segments: [
           { text: "その 近所[きんじょ]は" },
-          { text: "静[しず]かでしょうか", blank: true },
+          { text: "静[しず]か" },
+          { text: "でしょうか", blank: true },
         ],
-        notes: "その + でしょうか with の omitted (direct な-adj + でしょうか).",
+        register: "polite",
       },
     ],
   },
@@ -866,84 +898,113 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "駅[えき]の 近[ちか]くの 新[あたら]しいカフェは 人気[にんき]があるのでしょうか", blank: true },
+          { text: "駅[えき]の 近[ちか]くの 新[あたら]しいカフェは 人気[にんき]がある" },
+          { text: "の" },
+          { text: "でしょうか", blank: true },
         ],
+        register: "polite",
       },
       {
         segments: [
-          { text: "駅[えき]の 近[ちか]くの 新[あたら]しいカフェは 人気[にんき]があるのだろうか", blank: true },
+          { text: "駅[えき]の 近[ちか]くの 新[あたら]しいカフェは 人気[にんき]がある" },
+          { text: "の" },
+          { text: "だろうか", blank: true },
         ],
-        notes: "Casual/masculine form with だろうか; nominalized with の",
+        register: "casual",
       },
       {
         segments: [
-          { text: "駅[えき]の 近[ちか]くの 新[あたら]しいカフェは 人気[にんき]があるでしょうか", blank: true },
+          { text: "駅[えき]の 近[ちか]くの 新[あたら]しいカフェは 人気[にんき]がある" },
+          { text: "でしょうか", blank: true },
         ],
-        notes: "Polite でしょうか with の omitted (casual dropping of nominalizer)",
+        register: "polite",
       },
       {
         segments: [
-          { text: "駅[えき]の 近[ちか]くの 新[あたら]しいカフェは 人気[にんき]があるだろうか", blank: true },
+          { text: "駅[えき]の 近[ちか]くの 新[あたら]しいカフェは 人気[にんき]がある" },
+          { text: "だろうか", blank: true },
         ],
-        notes: "Casual だろうか with の omitted",
+        register: "casual",
       },
       {
         segments: [
-          { text: "駅[えき]の 近[ちか]くの 新[あたら]しいカフェは 人気[にんき]なのでしょうか", blank: true },
+          { text: "駅[えき]の 近[ちか]くの 新[あたら]しいカフェは 人気[にんき]" },
+          { text: "な" },
+          { text: "の" },
+          { text: "でしょうか", blank: true },
         ],
-        notes: "人気 treated as な-adjective: 人気なのでしょうか (polite)",
+        register: "polite",
       },
       {
         segments: [
-          { text: "駅[えき]の 近[ちか]くの 新[あたら]しいカフェは 人気[にんき]なのだろうか", blank: true },
+          { text: "駅[えき]の 近[ちか]くの 新[あたら]しいカフェは 人気[にんき]" },
+          { text: "な" },
+          { text: "の" },
+          { text: "だろうか", blank: true },
         ],
-        notes: "人気 as な-adjective with だろうか (casual/masculine)",
+        register: "casual",
       },
       {
         segments: [
-          { text: "駅[えき]の 近[ちか]くにある 新[あたら]しいカフェは 人気[にんき]があるのでしょうか", blank: true },
+          { text: "駅[えき]の 近[ちか]くにある 新[あたら]しいカフェは 人気[にんき]がある" },
+          { text: "の" },
+          { text: "でしょうか", blank: true },
         ],
-        notes: "近くにある as relative clause modifying カフェ (more explicit); polite でしょうか",
+        register: "polite",
       },
       {
         segments: [
-          { text: "駅[えき]の 近[ちか]くにある 新[あたら]しいカフェは 人気[にんき]があるのだろうか", blank: true },
+          { text: "駅[えき]の 近[ちか]くにある 新[あたら]しいカフェは 人気[にんき]がある" },
+          { text: "の" },
+          { text: "だろうか", blank: true },
         ],
-        notes: "近くにある relative clause + だろうか (casual)",
+        register: "casual",
       },
       {
         segments: [
-          { text: "駅[えき]の 近[ちか]くの 新[あたら]しいカフェは 人気[にんき]があるんでしょうか", blank: true },
+          { text: "駅[えき]の 近[ちか]くの 新[あたら]しいカフェは 人気[にんき]があるん" },
+          { text: "でしょうか", blank: true },
         ],
+        register: "polite",
       },
       {
         segments: [
-          { text: "駅[えき]の 近[ちか]くの 新[あたら]しいカフェは 人気[にんき]があるんだろうか", blank: true },
+          { text: "駅[えき]の 近[ちか]くの 新[あたら]しいカフェは 人気[にんき]があるん" },
+          { text: "だろうか", blank: true },
         ],
+        register: "casual",
       },
       {
         segments: [
-          { text: "駅[えき]の 近[ちか]くの 新[あたら]しいカフェは 人気[にんき]なんでしょうか", blank: true },
+          { text: "駅[えき]の 近[ちか]くの 新[あたら]しいカフェは 人気[にんき]" },
+          { text: "なん" },
+          { text: "でしょうか", blank: true },
         ],
-        notes: "人気 as な-adjective with ん (contracted なの) + でしょうか",
+        register: "polite",
       },
       {
         segments: [
-          { text: "駅[えき]の 近[ちか]くの 新[あたら]しいカフェは 人気[にんき]なんだろうか", blank: true },
+          { text: "駅[えき]の 近[ちか]くの 新[あたら]しいカフェは 人気[にんき]" },
+          { text: "なん" },
+          { text: "だろうか", blank: true },
         ],
-        notes: "人気 as な-adjective with ん (contracted なの) + だろうか (casual)",
+        register: "casual",
       },
       {
         segments: [
-          { text: "駅[えき]の 近[ちか]くの 新[あたら]しいカフェが 人気[にんき]があるのでしょうか", blank: true },
+          { text: "駅[えき]の 近[ちか]くの 新[あたら]しいカフェが 人気[にんき]がある" },
+          { text: "の" },
+          { text: "でしょうか", blank: true },
         ],
-        notes: "が instead of は as subject marker; polite でしょうか",
+        register: "polite",
       },
       {
         segments: [
-          { text: "駅[えき]の 近[ちか]くの 新[あたら]しいカフェが 人気[にんき]があるのだろうか", blank: true },
+          { text: "駅[えき]の 近[ちか]くの 新[あたら]しいカフェが 人気[にんき]がある" },
+          { text: "の" },
+          { text: "だろうか", blank: true },
         ],
-        notes: "が instead of は + だろうか (casual)",
+        register: "casual",
       },
     ],
   },
@@ -954,65 +1015,70 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "はなさんの 夢[ゆめ]が" },
-          { text: "かなう", blank: true },
-          { text: "のでしょうか" },
+          { text: "かなう" },
+          { text: "の" },
+          { text: "でしょうか", blank: true },
         ],
+        register: "polite",
       },
       {
         segments: [
           { text: "はなさんの 夢[ゆめ]が" },
-          { text: "かなう", blank: true },
-          { text: "のだろうか" },
+          { text: "かなう" },
+          { text: "の" },
+          { text: "だろうか", blank: true },
         ],
-        notes: "Casual/masculine form with が and の nominalization",
+        register: "casual",
       },
       {
         segments: [
           { text: "はなさんの 夢[ゆめ]は" },
-          { text: "かなう", blank: true },
-          { text: "のでしょうか" },
+          { text: "かなう" },
+          { text: "の" },
+          { text: "でしょうか", blank: true },
         ],
-        notes: "は instead of が, polite with の nominalization",
+        register: "polite",
       },
       {
         segments: [
           { text: "はなさんの 夢[ゆめ]は" },
-          { text: "かなう", blank: true },
-          { text: "のだろうか" },
+          { text: "かなう" },
+          { text: "の" },
+          { text: "だろうか", blank: true },
         ],
-        notes: "は instead of が, casual/masculine with の nominalization",
+        register: "casual",
       },
       {
         segments: [
           { text: "はなさんの 夢[ゆめ]が" },
-          { text: "かなう", blank: true },
-          { text: "でしょうか" },
+          { text: "かなう" },
+          { text: "でしょうか", blank: true },
         ],
-        notes: "Polite form with が, の omitted",
+        register: "polite",
       },
       {
         segments: [
           { text: "はなさんの 夢[ゆめ]が" },
-          { text: "かなう", blank: true },
-          { text: "だろうか" },
+          { text: "かなう" },
+          { text: "だろうか", blank: true },
         ],
-        notes: "Casual/masculine form with が, の omitted",
+        register: "casual",
       },
       {
         segments: [
           { text: "はなさんの 夢[ゆめ]は" },
-          { text: "かなう", blank: true },
-          { text: "でしょうか" },
+          { text: "かなう" },
+          { text: "でしょうか", blank: true },
         ],
-        notes: "は instead of が, polite, の omitted",
+        register: "polite",
       },
       {
         segments: [
           { text: "はなさんの 夢[ゆめ]は" },
-          { text: "かなう", blank: true },
-          { text: "だろうか" },
+          { text: "かなう" },
+          { text: "だろうか", blank: true },
         ],
-        notes: "は instead of が, casual/masculine, の omitted",
+        register: "casual",
       },
     ],
   },
@@ -1022,61 +1088,65 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "そらは 新[あたら]しいカメラを 買[か]う" },
+          { text: "そらさんは 新[あたら]しいカメラを 買[か]う" },
           { text: "の", blank: true },
           { text: "でしょうか", blank: true },
         ],
+        register: "polite",
       },
       {
         segments: [
-          { text: "そらは 新[あたら]しいカメラを 買[か]う" },
-          { text: "のだろうか", blank: true },
-        ],
-        notes: "Casual/masculine form with の nominalization + だろうか",
-      },
-      {
-        segments: [
-          { text: "そらは 新[あたら]しいカメラを 買[か]う" },
-          { text: "でしょうか", blank: true },
-        ],
-        notes: "Polite でしょうか with の omitted",
-      },
-      {
-        segments: [
-          { text: "そらは 新[あたら]しいカメラを 買[か]う" },
+          { text: "そらさんは 新[あたら]しいカメラを 買[か]う" },
+          { text: "の" },
           { text: "だろうか", blank: true },
         ],
-        notes: "Casual だろうか with の omitted",
+        register: "casual",
       },
       {
         segments: [
-          { text: "そらが 新[あたら]しいカメラを 買[か]う" },
+          { text: "そらさんは 新[あたら]しいカメラを 買[か]う" },
+          { text: "でしょうか", blank: true },
+        ],
+        register: "polite",
+      },
+      {
+        segments: [
+          { text: "そらさんは 新[あたら]しいカメラを 買[か]う" },
+          { text: "だろうか", blank: true },
+        ],
+        register: "casual",
+      },
+      {
+        segments: [
+          { text: "そらさんが 新[あたら]しいカメラを 買[か]う" },
           { text: "の", blank: true },
           { text: "でしょうか", blank: true },
         ],
-        notes: "が instead of は + のでしょうか",
+        register: "polite",
       },
       {
         segments: [
-          { text: "そらが 新[あたら]しいカメラを 買[か]う" },
-          { text: "のだろうか", blank: true },
+          { text: "そらさんが 新[あたら]しいカメラを 買[か]う" },
+          { text: "の" },
+          { text: "だろうか", blank: true },
         ],
-        notes: "が instead of は + のだろうか",
+        register: "casual",
       },
       {
         segments: [
-          { text: "そらは 新[あたら]しいカメラを 買[か]う" },
+          { text: "そらさんは 新[あたら]しいカメラを 買[か]う" },
           { text: "ん", blank: true },
           { text: "でしょうか", blank: true },
         ],
-        notes: "Contracted ん form (んでしょうか) instead of のでしょうか",
+        register: "polite",
       },
       {
         segments: [
-          { text: "そらは 新[あたら]しいカメラを 買[か]う" },
-          { text: "んだろうか", blank: true },
+          { text: "そらさんは 新[あたら]しいカメラを 買[か]う" },
+          { text: "ん" },
+          { text: "だろうか", blank: true },
         ],
-        notes: "Contracted ん form (んだろうか) instead of のだろうか",
+        register: "casual",
       },
     ],
   },
@@ -1085,65 +1155,35 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "すしは ハンバーガーより" },
-          { text: "おいしい", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
-          { text: "でしょう" },
-        ],
-      },
-      {
-        segments: [
-          { text: "ハンバーガーより すしのほうが" },
-          { text: "おいしい", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
-          { text: "でしょう" },
-        ],
-      },
-      {
-        segments: [
-          { text: "すしは ハンバーガーより" },
-          { text: "おいしい", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
-          { text: "だろう" },
-        ],
-        notes: "Casual だろう instead of でしょう",
-      },
-      {
-        segments: [
-          { text: "ハンバーガーより すしのほうが" },
-          { text: "おいしい", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
-          { text: "だろう" },
-        ],
-        notes: "のほうが + casual だろう",
-      },
-      {
-        segments: [
           { text: "寿司[すし]は ハンバーガーより" },
-          { text: "おいしい", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
-          { text: "でしょう" },
+          { text: "おいしい" },
+          { text: "でしょう", blank: true },
         ],
-        notes: "Using kanji 寿司 instead of hiragana すし, with でしょう",
+        register: "polite",
       },
       {
         segments: [
           { text: "ハンバーガーより 寿司[すし]のほうが" },
-          { text: "おいしい", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
-          { text: "でしょう" },
+          { text: "おいしい" },
+          { text: "でしょう", blank: true },
         ],
-        notes: "Kanji 寿司, のほうが, でしょう",
+        register: "polite",
       },
       {
         segments: [
           { text: "寿司[すし]は ハンバーガーより" },
-          { text: "おいしい", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
-          { text: "だろう" },
+          { text: "おいしい" },
+          { text: "だろう", blank: true },
         ],
-        notes: "Kanji 寿司, casual だろう",
+        register: "casual",
       },
       {
         segments: [
           { text: "ハンバーガーより 寿司[すし]のほうが" },
-          { text: "おいしい", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
-          { text: "だろう" },
+          { text: "おいしい" },
+          { text: "だろう", blank: true },
         ],
-        notes: "Kanji 寿司, のほうが, casual だろう",
+        register: "casual",
       },
     ],
   },

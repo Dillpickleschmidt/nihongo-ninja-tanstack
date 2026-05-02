@@ -20,28 +20,11 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "私[わたし]は すしを 食[た]べたことが" },
+          { text: "私[わたし]は 寿司[すし]を 食[た]べたことが", blank: true },
           { text: "ある", blank: true, conjugation: aruNeg },
         ],
       },
-      {
-        segments: [
-          { text: "すしを 食[た]べたことが" },
-          { text: "ある", blank: true, conjugation: aruNeg },
-        ],
-      },
-      {
-        segments: [
-          { text: "私[わたし]は 寿司[すし]を 食[た]べたことが" },
-          { text: "ある", blank: true, conjugation: aruNeg },
-        ],
-      },
-      {
-        segments: [
-          { text: "寿司[すし]を 食[た]べたことが" },
-          { text: "ある", blank: true, conjugation: aruNeg },
-        ],
-      },
+
     ],
   },
   {
@@ -50,14 +33,14 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "イタリアに 行[い]ったことが" },
+          { text: "イタリアに 行[い]ったことが", blank: true },
           { text: "ある", blank: true, conjugation: aruPos },
           { text: "。そこのピザは おいしかった" },
         ],
       },
       {
         segments: [
-          { text: "イタリアへ 行[い]ったことが" },
+          { text: "イタリアへ 行[い]ったことが", blank: true },
           { text: "ある", blank: true, conjugation: aruPos },
           { text: "。そこのピザは おいしかった" },
         ],
@@ -65,7 +48,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "イタリアに 一度[いちど] 行[い]ったことが" },
+          { text: "イタリアに 一度[いちど] 行[い]ったことが", blank: true },
           { text: "ある", blank: true, conjugation: aruPos },
           { text: "。そこのピザは おいしかった" },
         ],
@@ -73,7 +56,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "イタリアへ 一度[いちど] 行[い]ったことが" },
+          { text: "イタリアへ 一度[いちど] 行[い]ったことが", blank: true },
           { text: "ある", blank: true, conjugation: aruPos },
           { text: "。そこのピザは おいしかった" },
         ],
@@ -81,11 +64,11 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "イタリアには 一度[いちど] 行[い]ったことが" },
+          { text: "イタリアには 一度[いちど] 行[い]ったことが", blank: true },
           { text: "ある", blank: true, conjugation: aruPos },
-          { text: "。そこのピザは 最高[さいこう]だった" },
+          { text: "。そこのピザは とても おいしかった" },
         ],
-        notes: "には + 最高だった (was the greatest) instead of おいしかった",
+        notes: "には + とてもおいしかった",
       },
     ],
   },
@@ -94,70 +77,58 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "怖[こわ]くて 眠[ねむ]れない 夢[ゆめ]を 見[み]ることが" },
+          { text: "怖[こわ]くて 眠[ねむ]れない 夢[ゆめ]を 見[み]ることが", blank: true },
           { text: "ある", blank: true, conjugation: aruPos },
         ],
       },
       {
         segments: [
-          { text: "時々[ときどき]、怖[こわ]くて 眠[ねむ]れない 夢[ゆめ]を 見[み]ることが" },
+          { text: "時々[ときどき]、怖[こわ]くて 眠[ねむ]れない 夢[ゆめ]を 見[み]ることが", blank: true },
           { text: "ある", blank: true, conjugation: aruPos },
         ],
         notes: "With 時々",
       },
       {
         segments: [
-          { text: "私[わたし]は 怖[こわ]くて 眠[ねむ]れない 夢[ゆめ]を 見[み]ることが" },
-          { text: "ある", blank: true, conjugation: aruPos },
-        ],
-        notes: "With 私は",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は 時々[ときどき]、怖[こわ]くて 眠[ねむ]れない 夢[ゆめ]を 見[み]ることが" },
-          { text: "ある", blank: true, conjugation: aruPos },
-        ],
-        notes: "私は + 時々",
-      },
-      {
-        segments: [
-          { text: "とても 怖[こわ]い 夢[ゆめ]を 見[み]ることが" },
+          { text: "とても 怖[こわ]い 夢[ゆめ]を 見[み]ることが", blank: true },
           { text: "ある", blank: true, conjugation: aruPos },
         ],
         notes: "とても 怖い instead of 怖くて眠れない",
       },
       {
         segments: [
-          { text: "すごく 怖[こわ]い 夢[ゆめ]を 見[み]ることが" },
+          { text: "すごく 怖[こわ]い 夢[ゆめ]を 見[み]ることが", blank: true },
           { text: "ある", blank: true, conjugation: aruPos },
         ],
         notes: "すごく 怖い variant",
       },
       {
         segments: [
-          { text: "時々[ときどき]、とても 怖[こわ]い 夢[ゆめ]を 見[み]ることが" },
+          { text: "時々[ときどき]、とても 怖[こわ]い 夢[ゆめ]を 見[み]ることが", blank: true },
           { text: "ある", blank: true, conjugation: aruPos },
         ],
         notes: "時々 + とても 怖い",
       },
       {
         segments: [
-          { text: "時々[ときどき]、すごく 怖[こわ]い 夢[ゆめ]を 見[み]ることが" },
+          { text: "時々[ときどき]、すごく 怖[こわ]い 夢[ゆめ]を 見[み]ることが", blank: true },
           { text: "ある", blank: true, conjugation: aruPos },
         ],
         notes: "時々 + すごく 怖い",
       },
       {
         segments: [
-          { text: "怖[こわ]くて 眠[ねむ]れない 夢[ゆめ]を 見[み]ることもある" },
+          { text: "怖[こわ]くて 眠[ねむ]れない 夢[ゆめ]を 見[み]ることも", blank: true },
+          { text: "ある", blank: true, conjugation: aruPos },
         ],
-        notes: "こともある variation (plain text, non-conjugated)",
+        notes: "こともある means this sometimes happens too",
       },
       {
         segments: [
-          { text: "時々[ときどき]、怖[こわ]くて 眠[ねむ]れない 夢[ゆめ]を 見[み]ることもある" },
+          { text: "時々[ときどき]、怖[こわ]くて 眠[ねむ]れない 夢[ゆめ]を 見[み]ることも", blank: true },
+          { text: "ある", blank: true, conjugation: aruPos },
         ],
-        notes: "時々 + こともある",
+        notes: "時々 with こともある",
       },
     ],
   },
@@ -167,24 +138,17 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "けんじさん、富士山[ふじさん]に 登[のぼ]ったことが" },
+          { text: "けんじさん、富士山[ふじさん]に 登[のぼ]ったことが", blank: true },
           { text: "ある", blank: true, conjugation: aruPos },
           { text: "か" },
         ],
       },
       {
         segments: [
-          { text: "けんじくん、富士山[ふじさん]に 登[のぼ]ったことが" },
+          { text: "富士山[ふじさん]に 登[のぼ]ったことが", blank: true },
           { text: "ある", blank: true, conjugation: aruPos },
           { text: "か" },
-        ],
-        notes: "くん suffix",
-      },
-      {
-        segments: [
-          { text: "富士山[ふじさん]に 登[のぼ]ったことが" },
-          { text: "ある", blank: true, conjugation: aruPos },
-          { text: "か、けんじさん" },
+          { text: "、けんじさん" },
         ],
         notes: "Name at the end",
       },
@@ -195,20 +159,13 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "私[わたし]は 新幹線[しんかんせん]に 乗[の]ったことが" },
+          { text: "私[わたし]は 新幹線[しんかんせん]に 乗[の]ったことが", blank: true },
           { text: "ある", blank: true, conjugation: aruNeg },
         ],
       },
       {
         segments: [
-          { text: "新幹線[しんかんせん]に 乗[の]ったことが" },
-          { text: "ある", blank: true, conjugation: aruNeg },
-        ],
-        notes: "No 私は",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は 新幹線[しんかんせん]に 乗[の]ったことは" },
+          { text: "私[わたし]は 新幹線[しんかんせん]に 乗[の]ったことは", blank: true },
           { text: "ある", blank: true, conjugation: aruNeg },
         ],
         notes: "は instead of が after こと",
@@ -220,20 +177,12 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "雪[ゆき]を 見[み]たことが" },
+          { text: "雪[ゆき]を 見[み]たことが", blank: true },
           { text: "ある", blank: true, conjugation: aruNeg },
           { text: "。フィリピン 出身[しゅっしん]です" },
         ],
       },
-      {
-        segments: [
-          { text: "私[わたし]は 雪[ゆき]を 見[み]たことが" },
-          { text: "ある", blank: true, conjugation: aruNeg },
-          { text: "。フィリピン 出身[しゅっしん]です" },
-        ],
-        notes: "With 私は",
-      },
-    ],
+      ],
   },
   {
     english: "I've never been to a hot spring before — have you, Miho?",
@@ -241,52 +190,34 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "私[わたし]は 温泉[おんせん]に 行[い]ったことが" },
+          { text: "私[わたし]は 温泉[おんせん]に 行[い]ったことが", blank: true },
           { text: "ある", blank: true, conjugation: aruNeg },
-          { text: "。みほさんは？" },
+          { text: "。みほさんは 温泉[おんせん]に 行[い]ったことが", blank: true },
+          { text: "ある", blank: true, conjugation: aruPos },
+          { text: "か" },
         ],
       },
-      {
-        segments: [
-          { text: "温泉[おんせん]に 行[い]ったことが" },
-          { text: "ある", blank: true, conjugation: aruNeg },
-          { text: "。みほさんは？" },
-        ],
-        notes: "No 私は",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は 温泉[おんせん]に 行[い]ったことが" },
-          { text: "ある", blank: true, conjugation: aruNeg },
-          { text: "。みほさんは 温泉[おんせん]に 行[い]ったことがある？" },
-        ],
-        notes: "Full Miho question repeated",
-      },
-    ],
+      ],
   },
   {
     english: "I've never been to a karaoke place — is it fun?",
     answers: [
       {
         segments: [
-          { text: "私[わたし]は カラオケに 行[い]ったことが" },
+          { text: "私[わたし]は カラオケに 行[い]ったことが", blank: true },
           { text: "ある", blank: true, conjugation: aruNeg },
-          { text: "。楽[たの]しいですか" },
+          { text: "。楽[たの]しい" },
+          { text: "です" },
+          { text: "か" },
         ],
       },
       {
         segments: [
-          { text: "カラオケに 行[い]ったことが" },
+          { text: "私[わたし]は カラオケへ 行[い]ったことが", blank: true },
           { text: "ある", blank: true, conjugation: aruNeg },
-          { text: "。楽[たの]しいですか" },
-        ],
-        notes: "No 私は",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は カラオケへ 行[い]ったことが" },
-          { text: "ある", blank: true, conjugation: aruNeg },
-          { text: "。楽[たの]しいですか" },
+          { text: "。楽[たの]しい" },
+          { text: "です" },
+          { text: "か" },
         ],
         notes: "へ instead of に",
       },
@@ -298,52 +229,34 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "私[わたし]は ボランティアを したことが" },
+          { text: "私[わたし]は ボランティアを したことが", blank: true },
           { text: "ある", blank: true, conjugation: aruNeg },
-          { text: "。そうたさんは？" },
+          { text: "。そうたさんは ボランティアを したことが", blank: true },
+          { text: "ある", blank: true, conjugation: aruPos },
+          { text: "か" },
         ],
       },
-      {
-        segments: [
-          { text: "ボランティアを したことが" },
-          { text: "ある", blank: true, conjugation: aruNeg },
-          { text: "。そうたさんは？" },
-        ],
-        notes: "No 私は",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は ボランティアを したことが" },
-          { text: "ある", blank: true, conjugation: aruNeg },
-          { text: "。そうたさんは したことがある？" },
-        ],
-        notes: "Sota's question explicit",
-      },
-    ],
+      ],
   },
   {
     english: "I've never sung karaoke before — is it hard?",
     answers: [
       {
         segments: [
-          { text: "私[わたし]は カラオケで 歌[うた]ったことが" },
+          { text: "私[わたし]は カラオケで 歌[うた]ったことが", blank: true },
           { text: "ある", blank: true, conjugation: aruNeg },
-          { text: "。難[むずか]しいですか" },
+          { text: "。難[むずか]しい" },
+          { text: "です" },
+          { text: "か" },
         ],
       },
       {
         segments: [
-          { text: "カラオケで 歌[うた]ったことが" },
+          { text: "私[わたし]は カラオケで 歌[うた]を 歌[うた]ったことが", blank: true },
           { text: "ある", blank: true, conjugation: aruNeg },
-          { text: "。難[むずか]しいですか" },
-        ],
-        notes: "No 私は",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は カラオケで 歌[うた]を 歌[うた]ったことが" },
-          { text: "ある", blank: true, conjugation: aruNeg },
-          { text: "。難[むずか]しいですか" },
+          { text: "。難[むずか]しい" },
+          { text: "です" },
+          { text: "か" },
         ],
         notes: "歌を歌う variant",
       },
@@ -355,24 +268,20 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "私[わたし]は デパートで 何[なに]も 買[か]ったことが" },
+          { text: "私[わたし]は デパートで 何[なに]も 買[か]ったことが", blank: true },
           { text: "ある", blank: true, conjugation: aruNeg },
-          { text: "。高[たか]いですか" },
+          { text: "。高[たか]い" },
+          { text: "です" },
+          { text: "か" },
         ],
       },
       {
         segments: [
-          { text: "デパートで 何[なに]も 買[か]ったことが" },
+          { text: "私[わたし]は デパートで ものを 買[か]ったことが", blank: true },
           { text: "ある", blank: true, conjugation: aruNeg },
-          { text: "。高[たか]いですか" },
-        ],
-        notes: "No 私は",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は デパートで ものを 買[か]ったことが" },
-          { text: "ある", blank: true, conjugation: aruNeg },
-          { text: "。高[たか]いですか" },
+          { text: "。高[たか]い" },
+          { text: "です" },
+          { text: "か" },
         ],
         notes: "ものを instead of 何も",
       },
@@ -383,207 +292,141 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "私[わたし]は つりを したことが" },
+          { text: "私[わたし]は つりを したことが", blank: true },
           { text: "ある", blank: true, conjugation: aruNeg },
-          { text: "。楽[たの]しいですか" },
+          { text: "。楽[たの]しい" },
+          { text: "です" },
+          { text: "か" },
         ],
       },
-      {
-        segments: [
-          { text: "つりを したことが" },
-          { text: "ある", blank: true, conjugation: aruNeg },
-          { text: "。楽[たの]しいですか" },
-        ],
-        notes: "No 私は",
-      },
-    ],
+      ],
   },
   {
     english: "I've never done a homestay before — is it fun?",
     answers: [
       {
         segments: [
-          { text: "私[わたし]は ホームステイを したことが" },
+          { text: "私[わたし]は ホームステイを したことが", blank: true },
           { text: "ある", blank: true, conjugation: aruNeg },
-          { text: "。楽[たの]しいですか" },
+          { text: "。楽[たの]しい" },
+          { text: "です" },
+          { text: "か" },
         ],
       },
       {
         segments: [
-          { text: "ホームステイを したことが" },
+          { text: "私[わたし]は ホームステイしたことが", blank: true },
           { text: "ある", blank: true, conjugation: aruNeg },
-          { text: "。楽[たの]しいですか" },
-        ],
-        notes: "No 私は",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は ホームステイしたことが" },
-          { text: "ある", blank: true, conjugation: aruNeg },
-          { text: "。楽[たの]しいですか" },
+          { text: "。楽[たの]しい" },
+          { text: "です" },
+          { text: "か" },
         ],
         notes: "ホームステイする without を",
       },
-      {
-        segments: [
-          { text: "ホームステイしたことが" },
-          { text: "ある", blank: true, conjugation: aruNeg },
-          { text: "。楽[たの]しいですか" },
-        ],
-        notes: "No 私は, no を",
-      },
-    ],
+      ],
   },
   {
     english: "I've never been to a zoo before — is it interesting?",
     answers: [
       {
         segments: [
-          { text: "私[わたし]は 動物園[どうぶつえん]に 行[い]ったことが" },
+          { text: "私[わたし]は 動物園[どうぶつえん]に 行[い]ったことが", blank: true },
           { text: "ある", blank: true, conjugation: aruNeg },
-          { text: "。面白[おもしろ]いですか" },
+          { text: "。面白[おもしろ]い" },
+          { text: "です" },
+          { text: "か" },
         ],
       },
       {
         segments: [
-          { text: "動物園[どうぶつえん]に 行[い]ったことが" },
+          { text: "私[わたし]は 動物園[どうぶつえん]へ 行[い]ったことが", blank: true },
           { text: "ある", blank: true, conjugation: aruNeg },
-          { text: "。面白[おもしろ]いですか" },
-        ],
-        notes: "No 私は",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は 動物園[どうぶつえん]へ 行[い]ったことが" },
-          { text: "ある", blank: true, conjugation: aruNeg },
-          { text: "。面白[おもしろ]いですか" },
+          { text: "。面白[おもしろ]い" },
+          { text: "です" },
+          { text: "か" },
         ],
         notes: "へ instead of に",
       },
-      {
-        segments: [
-          { text: "動物園[どうぶつえん]へ 行[い]ったことが" },
-          { text: "ある", blank: true, conjugation: aruNeg },
-          { text: "。面白[おもしろ]いですか" },
-        ],
-        notes: "へ, no 私は",
-      },
-    ],
+      ],
   },
   {
     english: "I've never driven a car before — is it scary?",
     answers: [
       {
         segments: [
-          { text: "私[わたし]は 車[くるま]を 運転[うんてん]したことが" },
+          { text: "私[わたし]は 車[くるま]を 運転[うんてん]したことが", blank: true },
           { text: "ある", blank: true, conjugation: aruNeg },
-          { text: "。怖[こわ]いですか" },
+          { text: "。怖[こわ]い" },
+          { text: "です" },
+          { text: "か" },
         ],
       },
-      {
-        segments: [
-          { text: "車[くるま]を 運転[うんてん]したことが" },
-          { text: "ある", blank: true, conjugation: aruNeg },
-          { text: "。怖[こわ]いですか" },
-        ],
-        notes: "No 私は",
-      },
-    ],
+      ],
   },
   {
     english: "I've never been to a concert before — is it fun?",
     answers: [
       {
         segments: [
-          { text: "私[わたし]は コンサートに 行[い]ったことが" },
+          { text: "私[わたし]は コンサートに 行[い]ったことが", blank: true },
           { text: "ある", blank: true, conjugation: aruNeg },
-          { text: "。楽[たの]しいですか" },
+          { text: "。楽[たの]しい" },
+          { text: "です" },
+          { text: "か" },
         ],
       },
-      {
-        segments: [
-          { text: "コンサートに 行[い]ったことが" },
-          { text: "ある", blank: true, conjugation: aruNeg },
-          { text: "。楽[たの]しいですか" },
-        ],
-        notes: "No 私は",
-      },
-    ],
+      ],
   },
   {
     english: "I've never done a barbecue before — is it fun?",
     answers: [
       {
         segments: [
-          { text: "私[わたし]は バーベキューを したことが" },
+          { text: "私[わたし]は バーベキューを したことが", blank: true },
           { text: "ある", blank: true, conjugation: aruNeg },
-          { text: "。楽[たの]しいですか" },
+          { text: "。楽[たの]しい" },
+          { text: "です" },
+          { text: "か" },
         ],
       },
-      {
-        segments: [
-          { text: "バーベキューを したことが" },
-          { text: "ある", blank: true, conjugation: aruNeg },
-          { text: "。楽[たの]しいですか" },
-        ],
-        notes: "No 私は",
-      },
-    ],
+      ],
   },
   {
     english: "I've never been to an art museum before — is it interesting?",
     answers: [
       {
         segments: [
-          { text: "私[わたし]は 美術館[びじゅつかん]に 行[い]ったことが" },
+          { text: "私[わたし]は 美術館[びじゅつかん]に 行[い]ったことが", blank: true },
           { text: "ある", blank: true, conjugation: aruNeg },
-          { text: "。面白[おもしろ]いですか" },
+          { text: "。面白[おもしろ]い" },
+          { text: "です" },
+          { text: "か" },
         ],
       },
       {
         segments: [
-          { text: "美術館[びじゅつかん]に 行[い]ったことが" },
+          { text: "私[わたし]は 美術館[びじゅつかん]へ 行[い]ったことが", blank: true },
           { text: "ある", blank: true, conjugation: aruNeg },
-          { text: "。面白[おもしろ]いですか" },
-        ],
-        notes: "No 私は",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は 美術館[びじゅつかん]へ 行[い]ったことが" },
-          { text: "ある", blank: true, conjugation: aruNeg },
-          { text: "。面白[おもしろ]いですか" },
+          { text: "。面白[おもしろ]い" },
+          { text: "です" },
+          { text: "か" },
         ],
         notes: "へ instead of に",
       },
-      {
-        segments: [
-          { text: "美術館[びじゅつかん]へ 行[い]ったことが" },
-          { text: "ある", blank: true, conjugation: aruNeg },
-          { text: "。面白[おもしろ]いですか" },
-        ],
-        notes: "へ, no 私は",
-      },
-    ],
+      ],
   },
   {
     english: "I've never done a drive before — is it fun?",
     answers: [
       {
         segments: [
-          { text: "私[わたし]は ドライブを したことが" },
+          { text: "私[わたし]は ドライブを したことが", blank: true },
           { text: "ある", blank: true, conjugation: aruNeg },
-          { text: "。楽[たの]しいですか" },
+          { text: "。楽[たの]しい" },
+          { text: "です" },
+          { text: "か" },
         ],
       },
-      {
-        segments: [
-          { text: "ドライブを したことが" },
-          { text: "ある", blank: true, conjugation: aruNeg },
-          { text: "。楽[たの]しいですか" },
-        ],
-        notes: "No 私は",
-      },
-    ],
+      ],
   },
 ]

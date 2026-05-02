@@ -8,6 +8,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "週末[しゅうまつ]は 公園[こうえん]に 行[い]ったり、写真[しゃしん]を 撮[と]ったり",
+            blank: true,
           },
           {
             text: "する",
@@ -25,6 +26,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "週末[しゅうまつ]に 公園[こうえん]に 行[い]ったり、写真[しゃしん]を 撮[と]ったり",
+            blank: true,
           },
           {
             text: "する",
@@ -42,6 +44,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "週末[しゅうまつ]は 写真[しゃしん]を 撮[と]ったり、公園[こうえん]に 行[い]ったり",
+            blank: true,
           },
           {
             text: "する",
@@ -65,6 +68,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "平日[へいじつ]は お 風呂[ふろ]に 入[はい]ったり、本[ほん]を 読[よ]んだり",
+            blank: true,
           },
           {
             text: "する",
@@ -82,6 +86,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "平日[へいじつ]は 風呂[ふろ]に 入[はい]ったり、本[ほん]を 読[よ]んだり",
+            blank: true,
           },
           {
             text: "する",
@@ -100,6 +105,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "平日[へいじつ]は 本[ほん]を 読[よ]んだり、お 風呂[ふろ]に 入[はい]ったり",
+            blank: true,
           },
           {
             text: "する",
@@ -118,6 +124,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "平日[へいじつ]は 本[ほん]を 読[よ]んだり、風呂[ふろ]に 入[はい]ったり",
+            blank: true,
           },
           {
             text: "する",
@@ -136,6 +143,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "平日[へいじつ]の 夜[よる]は お 風呂[ふろ]に 入[はい]ったり、本[ほん]を 読[よ]んだり",
+            blank: true,
           },
           {
             text: "する",
@@ -154,6 +162,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "平日[へいじつ]の 夜[よる]は 風呂[ふろ]に 入[はい]ったり、本[ほん]を 読[よ]んだり",
+            blank: true,
           },
           {
             text: "する",
@@ -178,6 +187,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "ストレスが ある 時[とき]は、ドライブしたり、音楽[おんがく]を 聞[き]いたり",
+            blank: true,
           },
           {
             text: "する",
@@ -195,6 +205,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "ストレスの 時[とき]は、ドライブしたり、音楽[おんがく]を 聞[き]いたり",
+            blank: true,
           },
           {
             text: "する",
@@ -213,6 +224,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "ストレスが ある 時[とき]は、音楽[おんがく]を 聞[き]いたり、ドライブしたり",
+            blank: true,
           },
           {
             text: "する",
@@ -231,6 +243,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "ストレスの 時[とき]は、音楽[おんがく]を 聞[き]いたり、ドライブしたり",
+            blank: true,
           },
           {
             text: "する",
@@ -254,6 +267,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "お 祭[まつ]りで すしを 食[た]べたり、ビールを 飲[の]んだり",
+            blank: true,
           },
           {
             text: "する",
@@ -269,7 +283,8 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "祭[まつ]りで すしを 食[た]べたり、ビールを 飲[の]んだり" },
+          { text: "祭[まつ]りで すしを 食[た]べたり、ビールを 飲[の]んだり",
+            blank: true },
           {
             text: "する",
             blank: true,
@@ -287,6 +302,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "お 祭[まつ]りで ビールを 飲[の]んだり、すしを 食[た]べたり",
+            blank: true,
           },
           {
             text: "する",
@@ -303,7 +319,8 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "祭[まつ]りで ビールを 飲[の]んだり、すしを 食[た]べたり" },
+          { text: "祭[まつ]りで ビールを 飲[の]んだり、すしを 食[た]べたり",
+            blank: true },
           {
             text: "する",
             blank: true,
@@ -327,6 +344,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "美術館[びじゅつかん]で 絵[え]を 見[み]たり、お 土産[みやげ]を 買[か]ったり",
+            blank: true,
           },
           {
             text: "する",
@@ -344,6 +362,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "美術館[びじゅつかん]で 絵[え]を 見[み]たり、土産[みやげ]を 買[か]ったり",
+            blank: true,
           },
           {
             text: "する",
@@ -362,6 +381,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "美術館[びじゅつかん]で お 土産[みやげ]を 買[か]ったり、絵[え]を 見[み]たり",
+            blank: true,
           },
           {
             text: "する",
@@ -380,6 +400,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "美術館[びじゅつかん]で 写真[しゃしん]を 撮[と]ったり、お 土産[みやげ]を 買[か]ったり",
+            blank: true,
           },
           {
             text: "する",
@@ -398,6 +419,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "美術館[びじゅつかん]で お 土産[みやげ]を 買[か]ったり、写真[しゃしん]を 撮[と]ったり",
+            blank: true,
           },
           {
             text: "する",
@@ -422,6 +444,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "けんじさんは 休[やす]みの 日[ひ]に、カラオケを 歌[うた]ったり、踊[おど]ったり",
+            blank: true,
           },
           {
             text: "する",
@@ -439,6 +462,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "けんじさんは 休[やす]みの 日[ひ]は、カラオケを 歌[うた]ったり、踊[おど]ったり",
+            blank: true,
           },
           {
             text: "する",
@@ -457,6 +481,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "けんじさんは 休[やす]みの 日[ひ]に、踊[おど]ったり、カラオケを 歌[うた]ったり",
+            blank: true,
           },
           {
             text: "する",
@@ -475,6 +500,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "けんじさんは 休[やす]みの 日[ひ]は、踊[おど]ったり、カラオケを 歌[うた]ったり",
+            blank: true,
           },
           {
             text: "する",
@@ -493,6 +519,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "休[やす]みの 日[ひ]に、けんじさんは カラオケを 歌[うた]ったり、踊[おど]ったり",
+            blank: true,
           },
           {
             text: "する",
@@ -511,6 +538,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "休[やす]みの 日[ひ]は、けんじさんは カラオケを 歌[うた]ったり、踊[おど]ったり",
+            blank: true,
           },
           {
             text: "する",
@@ -535,6 +563,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "夏休[なつやす]みは 海[うみ]で 泳[およ]いだり、山[やま]に 登[のぼ]ったり",
+            blank: true,
           },
           {
             text: "する",
@@ -552,6 +581,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "夏休[なつやす]みに 海[うみ]で 泳[およ]いだり、山[やま]に 登[のぼ]ったり",
+            blank: true,
           },
           {
             text: "する",
@@ -570,6 +600,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "夏休[なつやす]みは 山[やま]に 登[のぼ]ったり、海[うみ]で 泳[およ]いだり",
+            blank: true,
           },
           {
             text: "する",
@@ -588,6 +619,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "夏休[なつやす]みに 山[やま]に 登[のぼ]ったり、海[うみ]で 泳[およ]いだり",
+            blank: true,
           },
           {
             text: "する",
@@ -606,6 +638,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "休[やす]みの 日[ひ]は 海[うみ]で 泳[およ]いだり、山[やま]に 登[のぼ]ったり",
+            blank: true,
           },
           {
             text: "する",
@@ -624,6 +657,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "休[やす]みの 日[ひ]に 海[うみ]で 泳[およ]いだり、山[やま]に 登[のぼ]ったり",
+            blank: true,
           },
           {
             text: "する",
@@ -642,6 +676,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "休[やす]みの 日[ひ]は 山[やま]に 登[のぼ]ったり、海[うみ]で 泳[およ]いだり",
+            blank: true,
           },
           {
             text: "する",
@@ -660,6 +695,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "休[やす]みの 日[ひ]に 山[やま]に 登[のぼ]ったり、海[うみ]で 泳[およ]いだり",
+            blank: true,
           },
           {
             text: "する",
@@ -681,7 +717,8 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "キャンプで 料理[りょうり]したり、ゲームをしたり" },
+          { text: "キャンプで 料理[りょうり]したり、ゲームをしたり",
+            blank: true },
           {
             text: "する",
             blank: true,
@@ -696,7 +733,8 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "キャンプ場[じょう]で 料理[りょうり]したり、ゲームをしたり" },
+          { text: "キャンプ場[じょう]で 料理[りょうり]したり、ゲームをしたり",
+            blank: true },
           {
             text: "する",
             blank: true,
@@ -712,7 +750,8 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "キャンプで ゲームをしたり、料理[りょうり]したり" },
+          { text: "キャンプで ゲームをしたり、料理[りょうり]したり",
+            blank: true },
           {
             text: "する",
             blank: true,
@@ -728,7 +767,8 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "キャンプ場[じょう]で ゲームをしたり、料理[りょうり]したり" },
+          { text: "キャンプ場[じょう]で ゲームをしたり、料理[りょうり]したり",
+            blank: true },
           {
             text: "する",
             blank: true,
@@ -752,6 +792,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "温泉[おんせん]で お 風呂[ふろ]に 入[はい]ったり、牛乳[ぎゅうにゅう]を 飲[の]んだり",
+            blank: true,
           },
           {
             text: "する",
@@ -769,6 +810,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "温泉[おんせん]で 風呂[ふろ]に 入[はい]ったり、牛乳[ぎゅうにゅう]を 飲[の]んだり",
+            blank: true,
           },
           {
             text: "する",
@@ -787,6 +829,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "温泉[おんせん]で 牛乳[ぎゅうにゅう]を 飲[の]んだり、お 風呂[ふろ]に 入[はい]ったり",
+            blank: true,
           },
           {
             text: "する",
@@ -810,6 +853,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "パーティーで 歌[うた]を 歌[うた]ったり、ギターを 弾[ひ]いたり",
+            blank: true,
           },
           {
             text: "する",
@@ -827,6 +871,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "パーティーで ギターを 弾[ひ]いたり、歌[うた]を 歌[うた]ったり",
+            blank: true,
           },
           {
             text: "する",
@@ -841,38 +886,7 @@ export const questions: Question[] = [
         ],
         notes: "Reversed order",
       },
-      {
-        segments: [
-          { text: "パーティーで 歌[うた]を 歌[うた]ったり" },
-          {
-            text: "する",
-            blank: true,
-            conjugation: {
-              pos: "Suru verb - special class",
-              form: "normal",
-              polarity: "positive",
-              tense: "past",
-            },
-          },
-        ],
-        notes: "Single たり (just singing)",
-      },
-      {
-        segments: [
-          { text: "パーティーで ギターを 弾[ひ]いたり" },
-          {
-            text: "する",
-            blank: true,
-            conjugation: {
-              pos: "Suru verb - special class",
-              form: "normal",
-              polarity: "positive",
-              tense: "past",
-            },
-          },
-        ],
-        notes: "Single たり (just guitar)",
-      },
+
     ],
   },
   {
@@ -882,6 +896,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "休[やす]みの 日[ひ]は 運動[うんどう]したり、散歩[さんぽ]したり",
+            blank: true,
           },
           {
             text: "する",
@@ -899,6 +914,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "休[やす]みの 日[ひ]には 運動[うんどう]したり、散歩[さんぽ]したり",
+            blank: true,
           },
           {
             text: "する",
@@ -917,6 +933,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "休[やす]みの 日[ひ]は 散歩[さんぽ]したり、運動[うんどう]したり",
+            blank: true,
           },
           {
             text: "する",
@@ -935,6 +952,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "休[やす]みの 日[ひ]には 散歩[さんぽ]したり、運動[うんどう]したり",
+            blank: true,
           },
           {
             text: "する",
@@ -952,12 +970,13 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "At the shrine, I did things like buy charms and take photos.",
+    english: "At the shrine, I did things like buy souvenirs and take photos.",
     answers: [
       {
         segments: [
           {
             text: "神社[じんじゃ]で お 土産[みやげ]を 買[か]ったり、写真[しゃしん]を 撮[と]ったり",
+            blank: true,
           },
           {
             text: "する",
@@ -975,6 +994,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "神社[じんじゃ]で 写真[しゃしん]を 撮[と]ったり、お 土産[みやげ]を 買[か]ったり",
+            blank: true,
           },
           {
             text: "する",
@@ -999,6 +1019,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "塾[じゅく]で 単語[たんご]を 覚[おぼ]えたり、作文[さくぶん]を 書[か]いたり",
+            blank: true,
           },
           {
             text: "する",
@@ -1016,6 +1037,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "塾[じゅく]で 作文[さくぶん]を 書[か]いたり、単語[たんご]を 覚[おぼ]えたり",
+            blank: true,
           },
           {
             text: "する",
@@ -1039,6 +1061,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "カフェで コーヒーを 飲[の]んだり、雑誌[ざっし]を 読[よ]んだり",
+            blank: true,
           },
           {
             text: "する",
@@ -1056,6 +1079,7 @@ export const questions: Question[] = [
         segments: [
           {
             text: "カフェで 雑誌[ざっし]を 読[よ]んだり、コーヒーを 飲[の]んだり",
+            blank: true,
           },
           {
             text: "する",
