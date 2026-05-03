@@ -64,7 +64,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
       convexQueryClient.serverHttpClient?.setAuth(auth.token)
     }
 
-    return {}
+    return { auth }
   },
   loader: async ({ context }) => {
     await Promise.all([

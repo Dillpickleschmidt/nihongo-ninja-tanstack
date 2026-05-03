@@ -7,10 +7,7 @@ import { SrsServiceSection } from "@/features/settings/SrsServiceSection"
 
 export const Route = createFileRoute("/_home/settings")({
   loader: ({ context, preload }) => {
-    const auth = context.queryClient.getQueryData<{ userId: string | null }>(
-      queryKeys.auth(),
-    )
-    if (auth?.userId) {
+    if (context.auth.userId) {
       context.queryClient.prefetchQuery(autumnCustomerQueryOptions())
     }
 

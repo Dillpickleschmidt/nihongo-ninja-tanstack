@@ -23,6 +23,7 @@ import {
 import { getModuleIdFromUrl, getChapterForModule } from "@/lib/module-links"
 import { updatePreferenceCookie } from "@/query/model/preferences"
 import { queryKeys } from "@/query/query-keys"
+import { autumnCustomerQueryOptions } from "@/query/query-options"
 import { usePreferences } from "@/lib/preferences"
 import { z } from "zod"
 
@@ -60,6 +61,10 @@ export const Route = createFileRoute("/_home")({
   validateSearch: (search) => homeSearchSchema.parse(search),
   loader: ({ context, location }) => {
     syncActiveChapter(context.queryClient, location)
+
+    if (context.auth.userId) {
+      context.queryClient.prefetchQuery(autumnCustomerQueryOptions())
+    }
   },
   component: HomeLayout,
 })

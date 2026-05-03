@@ -10,7 +10,6 @@ import { createFileRoute, useNavigate } from "@tanstack/solid-router"
 import { useQueryClient } from "@tanstack/solid-query"
 import { z } from "zod"
 import { queryKeys } from "~/query/query-keys"
-import { authQueryOptions } from "~/query/query-options"
 import {
   getGenericSections,
   getCurrentSeason,
@@ -57,14 +56,12 @@ export const Route = createFileRoute("/_home/discover")({
 
     const { season, year } = getCurrentSeason()
     const genericSections = getGenericSections(season, year)
-    const auth = context.queryClient.getQueryData(authQueryOptions().queryKey)
 
     const trendingConfig = genericSections.find((s) => s.type === "trending")!
     const bannerSeed = Math.floor(Math.random() * 4294967296)
 
-    const userId = auth?.session?.user?.id ?? null
-    const personalSectionsPromise = userId
-      ? context.queryClient.fetchQuery(personalSectionsQueryOptions(userId))
+    const personalSectionsPromise = context.auth.userId
+      ? context.queryClient.fetchQuery(personalSectionsQueryOptions(context.auth.userId))
       : Promise.resolve(null)
 
     context.queryClient

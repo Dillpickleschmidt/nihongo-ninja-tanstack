@@ -17,12 +17,10 @@ import {
   Package,
   Ellipsis,
   Import,
-  LogIn,
-  LogOut,
   ArrowLeft,
   type LucideIcon,
 } from "lucide-solid"
-import { getUser } from "@/lib/auth"
+import { SidebarAuthFooter } from "./SidebarAuthFooter"
 // --- Guides navigation data ---
 const guidesNavigation = [
   {
@@ -316,7 +314,6 @@ function GuidesNavigation(props: NavigationContentProps) {
 
 // --- Main content shell ---
 export function NavigationContent(props: NavigationContentProps) {
-  const user = getUser()
   const location = useLocation()
   const isGuidesSection = () => location().pathname.startsWith("/guides")
 
@@ -333,30 +330,7 @@ export function NavigationContent(props: NavigationContentProps) {
         <GuidesNavigation {...props} />
       </Show>
 
-      {/* Auth footer */}
-      <Show
-        when={user()}
-        fallback={
-          <Link to="/auth">
-            <Button
-              variant="ghost"
-              class="w-full justify-start gap-2 text-primary/60 hover:text-primary"
-            >
-              <LogIn class={iconSize} />
-              Sign In
-            </Button>
-          </Link>
-        }
-      >
-        <Button
-          variant="ghost"
-          onClick={props.onSignOut}
-          class="w-full justify-start gap-2 text-primary/60 hover:text-red-400"
-        >
-          <LogOut class={iconSize} />
-          Sign Out
-        </Button>
-      </Show>
+      <SidebarAuthFooter onSignOut={props.onSignOut} />
     </div>
   )
 }
