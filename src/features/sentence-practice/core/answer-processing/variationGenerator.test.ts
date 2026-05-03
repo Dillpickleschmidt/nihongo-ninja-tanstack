@@ -161,6 +161,25 @@ describe("honorific variations", () => {
     )
     expect(nonKana[0].honorificType).toBe("none")
   })
+
+  it("does not replace honorific-looking text in protected lexical words", () => {
+    const segments: RichSegment[] = [
+      createRichSegment("赤[あか]ちゃんが泣[な]いています", false),
+    ]
+    const result = generateValidAnswers(segments, 0, true)
+    const nonKana = result.filter((a) => !a.isKanaVariation)
+
+    expect(
+      nonKana.some((a) => stripSeparators(a.original).includes("赤[あか]ちゃん")),
+    ).toBe(true)
+    expect(
+      nonKana.every(
+        (a) =>
+          !stripSeparators(a.original).includes("赤[あか]さん") &&
+          !stripSeparators(a.original).includes("赤[あか]くん"),
+      ),
+    ).toBe(true)
+  })
 })
 
 describe("position-based replacement", () => {

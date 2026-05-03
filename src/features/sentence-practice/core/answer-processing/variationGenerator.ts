@@ -254,23 +254,25 @@ function generatePronounVariations(answers: RichAnswer[]): RichAnswer[] {
   return Array.from(resultMap.values())
 }
 
-// Honorific forms inside kinship terms (お父さん, おばあちゃん, etc.) are
-// NOT person-name honorifics — swapping their さん/ちゃん would produce
-// nonsense like お父くん or お父先生. We detect these positions up-front
-// and skip them during honorific swap.
-function isInKinshipForm(
+// Some words contain さん/ちゃん as part of the lexical word rather than as a
+// person-name honorific. Swapping those endings would produce nonsense like
+// お父くん or 赤さん, so skip these positions during honorific variation.
+const HONORIFIC_SWAP_PROTECTED_FORMS = [
+  ...KINSHIP_GROUPS.flat(),
+  "赤[あか]ちゃん",
+]
+
+function isInHonorificSwapProtectedForm(
   text: string,
   honorific: string,
   honorificStart: number,
 ): boolean {
-  for (const group of KINSHIP_GROUPS) {
-    for (const form of group) {
-      const offset = form.indexOf(honorific)
-      if (offset < 0) continue
-      const formStart = honorificStart - offset
-      if (formStart < 0) continue
-      if (text.substr(formStart, form.length) === form) return true
-    }
+  for (const form of HONORIFIC_SWAP_PROTECTED_FORMS) {
+    const offset = form.indexOf(honorific)
+    if (offset < 0) continue
+    const formStart = honorificStart - offset
+    if (formStart < 0) continue
+    if (text.substr(formStart, form.length) === form) return true
   }
   return false
 }
@@ -312,7 +314,11 @@ function generateHonorificVariations(answers: RichAnswer[]): RichAnswer[] {
       for (let i = 0; i < positions.length; i++) {
         if (
           isInsideFuriganaReading(answer.original, positions[i]) ||
-          isInKinshipForm(answer.original, baseHonorific, positions[i])
+          isInHonorificSwapProtectedForm(
+            answer.original,
+            baseHonorific,
+            positions[i],
+          )
         ) {
           continue
         }
