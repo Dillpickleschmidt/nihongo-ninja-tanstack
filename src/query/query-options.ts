@@ -1,5 +1,5 @@
 import { queryOptions } from "@tanstack/solid-query"
-import { fetchAuth } from "@/lib/server"
+import { fetchAuth, fetchAutumnCustomer } from "@/lib/server"
 import { fetchKanjiSvg } from "@/utils/svg-processor"
 import { queryKeys } from "./query-keys"
 import { parseDeviceSettingsCookie } from "./model/device-settings"
@@ -25,6 +25,16 @@ export const authQueryOptions = () =>
       return { ...auth, staleTime }
     },
     staleTime: (query) => query.state.data?.staleTime ?? 0,
+  })
+
+// ============================================================================
+// Autumn Billing Query Options
+// ============================================================================
+
+export const autumnCustomerQueryOptions = () =>
+  queryOptions({
+    queryKey: queryKeys.autumnCustomer(),
+    queryFn: fetchAutumnCustomer,
   })
 
 // ============================================================================

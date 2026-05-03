@@ -2,7 +2,7 @@ import { useNavigate } from "@tanstack/solid-router"
 import { createSignal } from "solid-js"
 import { useQueryClient } from "@tanstack/solid-query"
 import { authClient } from "@/lib/auth-client"
-import { createProfile } from "@/lib/server"
+import { ensureAccountResources } from "@/lib/server"
 import { convexQueryClient, convexAuthProvider } from "@/providers/convex"
 import { queryKeys } from "~/query/query-keys"
 
@@ -38,8 +38,8 @@ export default function LoginSignupForm() {
           email: email(),
           password: password(),
         })
-        // Create profile with default preferences after signup
-        await createProfile()
+        // Create default profile and billing resources after signup
+        await ensureAccountResources()
       }
 
       queryClient.invalidateQueries({ queryKey: ["auth"] })
