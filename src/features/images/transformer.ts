@@ -16,7 +16,10 @@ export function buildPublicUnpicSource(args: {
 }): UnpicImageSource {
   return {
     src: args.src,
-    transformer: publicTransformer,
+    transformer: (src, { width }) => {
+      const path = encodeURI(src.toString().replace(/^\/+/, ""))
+      return `/api/images/public/${path}?w=${imageWidth(width, args.sourceWidth)}`
+    },
     breakpoints: breakpointsFor({ ...args.layout, sourceWidth: args.sourceWidth }),
   }
 }
@@ -28,19 +31,14 @@ export function buildPrivateUnpicSource(args: {
 }): UnpicImageSource {
   return {
     src: args.imageId,
-    transformer: privateTransformer,
+    transformer: (src, { width }) => {
+      const id = encodeURIComponent(src.toString())
+      return `/api/images/private/${id}?w=${imageWidth(width, args.sourceWidth)}`
+    },
     breakpoints: breakpointsFor({ ...args.layout, sourceWidth: args.sourceWidth }),
   }
 }
 
-const publicTransformer: UnpicImageSource["transformer"] = (src, { width }) => {
-  const path = encodeURI(src.toString().replace(/^\/+/, ""))
-  const query = typeof width === "number" ? `?w=${width}` : ""
-  return `/api/images/public/${path}${query}`
-}
-
-const privateTransformer: UnpicImageSource["transformer"] = (src, { width }) => {
-  const id = encodeURIComponent(src.toString())
-  const query = typeof width === "number" ? `?w=${width}` : ""
-  return `/api/images/private/${id}${query}`
+function imageWidth(width: string | number | undefined, sourceWidth: number) {
+  return typeof width === "number" ? width : sourceWidth
 }

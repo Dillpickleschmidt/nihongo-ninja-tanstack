@@ -44,7 +44,10 @@ export default function LoginSignupForm() {
 
       queryClient.invalidateQueries({ queryKey: ["auth"] })
       convexQueryClient.client.setAuth(convexAuthProvider)
-      navigate({ to: "/learn" })
+      navigate({
+        to: "/dashboard",
+        search: isLogin() ? undefined : { welcome: "trial" },
+      })
     } catch (err: any) {
       setError(err?.message || "An error occurred")
     } finally {

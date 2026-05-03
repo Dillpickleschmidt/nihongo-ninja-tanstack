@@ -28,9 +28,19 @@ export const Route = createFileRoute("/api/images/public/$")({
           return new Response("Not found", { status: 404 })
         }
 
+        const sourceContentType = source.headers.get("content-type") ?? "image/jpeg"
+        if (sourceContentType === "image/gif") {
+          return new Response(source.body, {
+            headers: {
+              "Content-Type": sourceContentType,
+              "Cache-Control": "public, max-age=31536000, immutable",
+            },
+          })
+        }
+
         const format = chooseOutputFormat(
           request.headers.get("accept"),
-          source.headers.get("content-type") ?? "image/jpeg",
+          sourceContentType,
         )
 
         const result = await env.IMAGES

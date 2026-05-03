@@ -38,6 +38,16 @@ export const Route = createFileRoute("/api/images/private/$imageId")({
           return new Response("Not found", { status: 404 })
         }
 
+        if (asset.contentType === "image/gif") {
+          return new Response(object.body, {
+            headers: {
+              "Content-Type": asset.contentType,
+              ETag: asset.objectEtag,
+              "Cache-Control": "private, max-age=31536000, immutable",
+            },
+          })
+        }
+
         const result = await env.IMAGES
           .input(object.body)
           .transform({ width: w, fit: "scale-down" })

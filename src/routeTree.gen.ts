@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as OauthCallbackRouteImport } from './routes/oauth-callback'
 import { Route as LessonsRouteImport } from './routes/lessons'
 import { Route as AuthRouteImport } from './routes/auth'
@@ -121,6 +122,11 @@ import { Route as HomeImportBuiltinUploadRouteImport } from './routes/_home/impo
 import { Route as HomeImportBuiltinManualRouteImport } from './routes/_home/import/builtin/manual'
 import { Route as HomeVocabDeckDeckIdEditRouteImport } from './routes/_home/vocab/deck/$deckId/edit'
 
+const PricingRoute = PricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OauthCallbackRoute = OauthCallbackRouteImport.update({
   id: '/oauth-callback',
   path: '/oauth-callback',
@@ -733,6 +739,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/lessons': typeof LessonsRouteWithChildren
   '/oauth-callback': typeof OauthCallbackRoute
+  '/pricing': typeof PricingRoute
   '/cheatsheets': typeof HomeCheatsheetsRoute
   '/conjugation': typeof HomeConjugationRoute
   '/counters': typeof HomeCountersRoute
@@ -845,6 +852,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/lessons': typeof LessonsRouteWithChildren
   '/oauth-callback': typeof OauthCallbackRoute
+  '/pricing': typeof PricingRoute
   '/cheatsheets': typeof HomeCheatsheetsRoute
   '/conjugation': typeof HomeConjugationRoute
   '/counters': typeof HomeCountersRoute
@@ -957,6 +965,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/lessons': typeof LessonsRouteWithChildren
   '/oauth-callback': typeof OauthCallbackRoute
+  '/pricing': typeof PricingRoute
   '/_home/cheatsheets': typeof HomeCheatsheetsRoute
   '/_home/conjugation': typeof HomeConjugationRoute
   '/_home/counters': typeof HomeCountersRoute
@@ -1071,6 +1080,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/lessons'
     | '/oauth-callback'
+    | '/pricing'
     | '/cheatsheets'
     | '/conjugation'
     | '/counters'
@@ -1183,6 +1193,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/lessons'
     | '/oauth-callback'
+    | '/pricing'
     | '/cheatsheets'
     | '/conjugation'
     | '/counters'
@@ -1294,6 +1305,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/lessons'
     | '/oauth-callback'
+    | '/pricing'
     | '/_home/cheatsheets'
     | '/_home/conjugation'
     | '/_home/counters'
@@ -1408,6 +1420,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   LessonsRoute: typeof LessonsRouteWithChildren
   OauthCallbackRoute: typeof OauthCallbackRoute
+  PricingRoute: typeof PricingRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiImagesUploadRoute: typeof ApiImagesUploadRoute
   ApiImagesPrivateImageIdRoute: typeof ApiImagesPrivateImageIdRoute
@@ -1416,6 +1429,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/solid-router' {
   interface FileRoutesByPath {
+    '/pricing': {
+      id: '/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof PricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/oauth-callback': {
       id: '/oauth-callback'
       path: '/oauth-callback'
@@ -2468,6 +2488,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   LessonsRoute: LessonsRouteWithChildren,
   OauthCallbackRoute: OauthCallbackRoute,
+  PricingRoute: PricingRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiImagesUploadRoute: ApiImagesUploadRoute,
   ApiImagesPrivateImageIdRoute: ApiImagesPrivateImageIdRoute,

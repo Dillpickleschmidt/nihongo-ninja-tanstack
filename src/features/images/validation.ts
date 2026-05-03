@@ -7,6 +7,7 @@ const ALLOWED_PRIVATE_IMAGE_CONTENT_TYPES = [
   "image/png",
   "image/webp",
   "image/avif",
+  "image/gif",
 ] as const
 
 const contentTypeSchema = z
@@ -36,13 +37,9 @@ export const privateImageRouteParamsSchema = z.object({
 })
 
 export const imageWidthQuerySchema = z.object({
-  w: z
-    .string()
-    .optional()
-    .transform((value) => {
-      if (!value) return undefined
-      const parsed = Number(value)
-      if (!Number.isFinite(parsed) || parsed <= 0) return undefined
-      return Math.max(1, Math.round(parsed))
-    }),
+  w: z.coerce
+    .number()
+    .finite()
+    .positive()
+    .transform((value) => Math.max(1, Math.round(value))),
 })

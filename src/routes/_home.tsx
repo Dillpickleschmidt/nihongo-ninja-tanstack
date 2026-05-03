@@ -5,12 +5,13 @@ import {
   useNavigate,
 } from "@tanstack/solid-router"
 import { createIsomorphicFn } from "@tanstack/solid-start"
-import { createEffect, createMemo, createSignal } from "solid-js"
+import { createEffect, createMemo, createSignal, Show } from "solid-js"
 import { useQueryClient } from "@tanstack/solid-query"
 import type { QueryClient } from "@tanstack/solid-query"
 import { authClient } from "@/lib/auth-client"
 import { BottomNav } from "@/features/navbar/Nav"
 import { MobileNavSheet } from "@/features/navbar/MobileNavSheet"
+import { TrialWelcomeDialog } from "@/features/billing/TrialWelcomeDialog"
 import { Sidebar } from "@/features/sidebar/Sidebar"
 import { SSRMediaQuery } from "@/components/SSRMediaQuery"
 import { useConvexQuery } from "@/lib/convex-query"
@@ -23,6 +24,11 @@ import { getModuleIdFromUrl, getChapterForModule } from "@/lib/module-links"
 import { updatePreferenceCookie } from "@/query/model/preferences"
 import { queryKeys } from "@/query/query-keys"
 import { usePreferences } from "@/lib/preferences"
+import { z } from "zod"
+
+const homeSearchSchema = z.object({
+  welcome: z.literal("trial").optional(),
+})
 
 const syncActiveChapter = createIsomorphicFn()
   .server(
@@ -51,6 +57,7 @@ const syncActiveChapter = createIsomorphicFn()
   .client(() => {})
 
 export const Route = createFileRoute("/_home")({
+  validateSearch: (search) => homeSearchSchema.parse(search),
   loader: ({ context, location }) => {
     syncActiveChapter(context.queryClient, location)
   },
@@ -81,6 +88,7 @@ function HomeLayout() {
     )
   })
 
+  const location = useLocation()
   const [moreSheetOpen, setMoreSheetOpen] = createSignal(false)
 
   return (
@@ -96,6 +104,10 @@ function HomeLayout() {
       <div class="pl-(--sidebar-width) 2xl:pr-(--sidebar-width)">
         <Outlet />
       </div>
+
+      <Show when={location().search.welcome === "trial"}>
+        <TrialWelcomeDialog />
+      </Show>
 
       <SSRMediaQuery hideFrom="xl">
         <BottomNav
