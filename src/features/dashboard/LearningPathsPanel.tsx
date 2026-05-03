@@ -73,7 +73,7 @@ const triggerClass =
   "relative flex cursor-pointer items-center gap-3.5 overflow-hidden rounded-xl border border-white/5 p-4 text-left transition-colors duration-200 hover:border-dynamic-accent/30"
 
 function CreationTrigger(props: {
-  icon: Component<{ class?: string }>
+  icon: Component<{ class?: string; style?: Record<string, string> }>
   label: string
   description: string
   to?: string
@@ -82,7 +82,13 @@ function CreationTrigger(props: {
 }) {
   const content = () => (
     <>
-      <props.icon class="size-5 shrink-0 text-(--landing-accent)" />
+      <props.icon
+        class="size-5 shrink-0"
+        style={{
+          color: "var(--landing-accent)",
+          stroke: "var(--landing-accent)",
+        }}
+      />
       <div>
         <p class="text-sm font-medium text-white/85">{props.label}</p>
         <p class="mt-0.5 text-[11px] leading-tight text-white/45">
@@ -106,24 +112,31 @@ function CreationTrigger(props: {
       `color-mix(in srgb, var(--dynamic-accent) ${bgOpacity * 100}%, transparent)`
   }
 
+  const children = () => (
+    <>
+      <div
+        class="pointer-events-none absolute inset-0 opacity-3"
+        style={{
+          "background-image": `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E")`,
+        }}
+      />
+      {content()}
+    </>
+  )
+
   return (
     <Show
       when={props.to}
       fallback={
         <button
+          type="button"
           onClick={props.onClick}
           class={triggerClass}
           style={accentBg}
           onMouseEnter={onEnter}
           onMouseLeave={onLeave}
         >
-          <div
-            class="pointer-events-none absolute inset-0 opacity-3"
-            style={{
-              "background-image": `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-            }}
-          />
-          {content()}
+          {children()}
         </button>
       }
     >
@@ -136,13 +149,7 @@ function CreationTrigger(props: {
           onMouseEnter={onEnter}
           onMouseLeave={onLeave}
         >
-          <div
-            class="pointer-events-none absolute inset-0 opacity-3"
-            style={{
-              "background-image": `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-            }}
-          />
-          {content()}
+          {children()}
         </Link>
       )}
     </Show>

@@ -128,13 +128,6 @@ function DashboardComponent() {
   return (
     <div class="z-0 relative min-h-screen text-white overflow-x-clip">
       <style>{`
-        @property --landing-accent { syntax: "<color>"; inherits: true; initial-value: #f59e0b; }
-        @property --landing-accent-end { syntax: "<color>"; inherits: true; initial-value: #f43f5e; }
-
-        :root { transition: --landing-accent 2s ease-in-out, --landing-accent-end 2s ease-in-out; }
-
-        .landing-accent-gradient { background: linear-gradient(to right, var(--landing-accent), var(--landing-accent-end)); }
-
         @keyframes fade-up {
           from { opacity: 0; transform: translateY(20px); }
           to { opacity: 1; transform: translateY(0); }

@@ -31,15 +31,6 @@ function Homepage() {
 
   return (
     <div class="z-0 relative min-h-screen bg-neutral-950 text-white overflow-x-clip font-excalifont">
-      <style>{`
-        @property --landing-accent { syntax: "<color>"; inherits: true; initial-value: #f59e0b; }
-        @property --landing-accent-end { syntax: "<color>"; inherits: true; initial-value: #f43f5e; }
-
-        :root { transition: --landing-accent 2s ease-in-out, --landing-accent-end 2s ease-in-out; }
-
-        .landing-accent-gradient { background: linear-gradient(to right, var(--landing-accent), var(--landing-accent-end)); }
-      `}</style>
-
       {/* Floating kanji decorations - furthest back */}
       <FloatingKanji char="忍" class="top-20 left-[10%] -z-20" delay={0} />
       <FloatingKanji char="語" class="top-[40%] right-[5%] -z-20" delay={200} />

@@ -25,12 +25,15 @@ export function DashboardCard(props: DashboardCardProps) {
   }
 
   return (
-    <Link
-      to={props.card.href}
-      class="group relative block overflow-hidden rounded-2xl border border-white/5 bg-white/2 transition-colors duration-300 hover:border-(--landing-accent)/20 animate-fade-up opacity-0"
+    <div
+      class="relative animate-fade-up opacity-0"
       style={{ "animation-delay": `${props.index * 75}ms` }}
     >
-      <div class="relative aspect-[16/10] overflow-hidden">
+      <Link
+        to={props.card.href}
+        class="group block overflow-hidden rounded-2xl border border-white/5 bg-white/2 transition-colors duration-300 hover:border-(--landing-accent)/20"
+      >
+        <div class="relative aspect-[16/10] overflow-hidden">
         <img
           src={props.card.image}
           alt={props.card.title}
@@ -38,13 +41,6 @@ export function DashboardCard(props: DashboardCardProps) {
         />
         <div class="absolute inset-0 bg-gradient-to-t from-background to-transparent" />
         <div class="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-(--landing-accent)/30 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-
-        {/* Due count badge */}
-        <Show when={props.card.dueCountType}>
-          <div class="absolute top-3 right-3 rounded-full border border-(--landing-accent)/20 bg-background/80 px-2.5 py-1 text-xs font-medium text-(--landing-accent)">
-            {dueLabel()} due
-          </div>
-        </Show>
 
         {/* Tags */}
         <Show when={props.card.tags?.length}>
@@ -78,8 +74,21 @@ export function DashboardCard(props: DashboardCardProps) {
             {props.card.description}
           </p>
         </div>
-      </div>
+        </div>
+      </Link>
 
-    </Link>
+      <Show when={props.card.dueCountType}>
+        <div
+          class="pointer-events-none absolute top-3 right-3 rounded-full border bg-background/80 px-2.5 py-1 text-xs font-medium"
+          style={{
+            color: "var(--landing-accent)",
+            "border-color":
+              "color-mix(in srgb, var(--landing-accent) 20%, transparent)",
+          }}
+        >
+          {dueLabel()} due
+        </div>
+      </Show>
+    </div>
   )
 }

@@ -12,6 +12,26 @@
   font-display: swap;
 }
 
+@property --landing-accent {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #f59e0b;
+}
+
+@property --landing-accent-end {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #f43f5e;
+}
+
+.landing-accent-gradient {
+  background: linear-gradient(
+    to right,
+    var(--landing-accent),
+    var(--landing-accent-end)
+  );
+}
+
 @layer base {
   /* Light theme (default) */
   :root {
@@ -64,6 +84,11 @@
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+    --landing-accent: #f59e0b;
+    --landing-accent-end: #f43f5e;
+    transition:
+      --landing-accent 2s ease-in-out,
+      --landing-accent-end 2s ease-in-out;
   }
 
   /* Dark theme */
