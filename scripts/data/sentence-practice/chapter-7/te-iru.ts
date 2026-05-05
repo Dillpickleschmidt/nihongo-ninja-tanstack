@@ -2,100 +2,6 @@ import type { Question } from "../types"
 
 export const questions: Question[] = [
   {
-    english: "I'm eating breakfast right now.",
-    answers: [
-      {
-        segments: [
-          { text: "私[わたし]は 今[いま] 朝[あさ]ご 飯[はん]を" },
-          { text: "食[た]べて", blank: true },
-          {
-            text: "いる",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-      },
-      {
-        segments: [
-          { text: "私[わたし]は 朝[あさ]ご 飯[はん]を 今[いま]" },
-          { text: "食[た]べて", blank: true },
-          {
-            text: "いる",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "今 moved to before the verb",
-      },
-      {
-        segments: [
-          { text: "今[いま] 私[わたし]は 朝[あさ]ご 飯[はん]を" },
-          { text: "食[た]べて", blank: true },
-          {
-            text: "いる",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "今 moved to the very beginning",
-      },
-      {
-        segments: [
-          { text: "私[わたし]が 今[いま] 朝[あさ]ご 飯[はん]を" },
-          { text: "食[た]べて", blank: true },
-          {
-            text: "いる",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "が instead of は",
-      },
-    ],
-  },
-  {
-    english: "Kenji is married.",
-    hint: "Kenji = けんじ",
-    answers: [
-      {
-        segments: [
-          { text: "けんじさんは" },
-          { text: "結婚[けっこん]して", blank: true },
-          {
-            text: "いる",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-      },
-    ],
-  },
-  {
     english: "Kenji was singing in the library!",
     hint: "Kenji = けんじ",
     answers: [
@@ -169,13 +75,13 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Is Kenji drinking coffee every morning (these days)?",
+    english: "Kenji is married.",
     hint: "Kenji = けんじ",
     answers: [
       {
         segments: [
-          { text: "けんじさんは 毎朝[まいあさ] コーヒーを" },
-          { text: "飲[の]んで", blank: true },
+          { text: "けんじさんは" },
+          { text: "結婚[けっこん]して", blank: true },
           {
             text: "いる",
             blank: true,
@@ -186,312 +92,129 @@ export const questions: Question[] = [
               tense: "non-past",
             },
           },
-          { text: "か" },
-        ],
-      },
-      {
-        segments: [
-          { text: "けんじさんは 毎朝[まいあさ] コーヒーを" },
-          { text: "飲[の]んで", blank: true },
-          {
-            text: "いる",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "の" },
-        ],
-        notes: "の question particle instead of か",
-      },
-    ],
-  },
-  {
-    english: "My father works at a bank.",
-    answers: [
-      {
-        segments: [
-          { text: "父[ちち]は 銀行[ぎんこう]で 働[はたら]いて" },
-          {
-            text: "いる",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-      },
-      {
-        segments: [
-          { text: "父[ちち]が 銀行[ぎんこう]で 働[はたら]いて" },
-          {
-            text: "いる",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "が instead of は",
-      },
-      {
-        segments: [
-          { text: "私[わたし]の 父[ちち]は 銀行[ぎんこう]で 働[はたら]いて" },
-          {
-            text: "いる",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "Explicit 私の父は",
-      },
-      {
-        segments: [
-          { text: "父[ちち]は 銀行[ぎんこう]に 勤[つと]めて" },
-          {
-            text: "いる",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "勤める + に — emphasizes employment relationship (vs 働く + で)",
-      },
-    ],
-  },
-  {
-    english: "Is Kenji wearing glasses?",
-    hint: "Kenji = けんじ",
-    answers: [
-      {
-        segments: [
-          { text: "けんじさんは 眼鏡[めがね]を" },
-          { text: "かけて", blank: true },
-          {
-            text: "いる",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "か" },
         ],
       },
     ],
   },
   {
-    english: "Kenji is sleeping in the car right now.",
-    hint: "Kenji = けんじ",
+    english: "My older brother was playing tennis in the park yesterday.",
     answers: [
       {
         segments: [
-          { text: "けんじさんは 今[いま] 車[くるま]の 中[なか]で" },
-          { text: "寝[ね]て", blank: true },
+          { text: "兄[あに]は 昨日[きのう]、公園[こうえん]で テニスを " },
+          { text: "していた", blank: true },
+        ],
+        notes: "Standard word order with は; 兄 implies my older brother.",
+      },
+      {
+        segments: [
+          { text: "昨日[きのう]、兄[あに]は 公園[こうえん]で テニスを " },
+          { text: "していた", blank: true },
+        ],
+        notes: "Time expression placed at the beginning.",
+      },
+      {
+        segments: [
+          { text: "昨日[きのう]、公園[こうえん]で 兄[あに]は テニスを " },
+          { text: "していた", blank: true },
+        ],
+        notes: "Location placed before the subject.",
+      },
+      {
+        segments: [
+          { text: "兄[あに]は 公園[こうえん]で 昨日[きのう] テニスを " },
+          { text: "していた", blank: true },
+        ],
+        notes:
+          "Time expression placed after the location; natural with a slight focus on yesterday.",
+      },
+      {
+        segments: [
+          { text: "兄[あに]が 昨日[きのう]、公園[こうえん]で テニスを " },
+          { text: "していた", blank: true },
+        ],
+        notes:
+          "Using が instead of は to identify the older brother as the one playing.",
+      },
+      {
+        segments: [
+          { text: "昨日[きのう]、兄[あに]が 公園[こうえん]で テニスを " },
+          { text: "していた", blank: true },
+        ],
+        notes: "が-marked subject with the time expression first.",
+      },
+      {
+        segments: [
           {
-            text: "いる",
+            text: "私[わたし]の 兄[あに]は 昨日[きのう]、公園[こうえん]で テニスを ",
+          },
+          { text: "していた", blank: true },
+        ],
+        notes: "Explicitly says 'my older brother' with 私の兄.",
+      },
+      {
+        segments: [
+          {
+            text: "昨日[きのう]、私[わたし]の 兄[あに]は 公園[こうえん]で テニスを ",
+          },
+          { text: "していた", blank: true },
+        ],
+        notes: "Explicit 'my older brother' with the time expression first.",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]の 兄[あに]が 昨日[きのう]、公園[こうえん]で テニスを ",
+          },
+          { text: "していた", blank: true },
+        ],
+        notes: "Explicit 'my older brother' with が for identification.",
+      },
+      {
+        segments: [
+          {
+            text: "昨日[きのう]、私[わたし]の 兄[あに]が 公園[こうえん]で テニスを ",
+          },
+          { text: "していた", blank: true },
+        ],
+        notes: "Explicit 'my older brother' and が, with yesterday first.",
+      },
+      {
+        segments: [
+          {
+            text: "兄[あに]は 昨日[きのう]、公園[こうえん]で テニスを やっていた",
             blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
           },
         ],
+        notes:
+          "Uses やる instead of する, which is natural for playing a sport.",
       },
       {
         segments: [
-          { text: "今[いま]、 けんじさんは 車[くるま]の 中[なか]で" },
-          { text: "寝[ね]て", blank: true },
           {
-            text: "いる",
+            text: "昨日[きのう]、兄[あに]は 公園[こうえん]で テニスを やっていた",
             blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
           },
         ],
-        notes: "今 moved to the front",
+        notes: "やる version with the time expression first.",
       },
       {
         segments: [
-          { text: "けんじさんは 今[いま] 車[くるま]で" },
-          { text: "寝[ね]て", blank: true },
           {
-            text: "いる",
+            text: "兄[あに]が 昨日[きのう]、公園[こうえん]で テニスを やっていた",
             blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
           },
         ],
-        notes: "車で instead of 車の中で",
+        notes: "やる version with が marking the subject.",
       },
       {
         segments: [
-          { text: "けんじさんが 今[いま] 車[くるま]の 中[なか]で" },
-          { text: "寝[ね]て", blank: true },
           {
-            text: "いる",
+            text: "私[わたし]の 兄[あに]は 昨日[きのう]、公園[こうえん]で テニスを やっていた",
             blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
           },
         ],
-        notes: "が instead of は",
-      },
-      {
-        segments: [
-          { text: "けんじさんが 今[いま] 車[くるま]で" },
-          { text: "寝[ね]て", blank: true },
-          {
-            text: "いる",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "が + 車で",
-      },
-      {
-        segments: [
-          { text: "今[いま]、 けんじさんが 車[くるま]の 中[なか]で" },
-          { text: "寝[ね]て", blank: true },
-          {
-            text: "いる",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "今 at front + が",
-      },
-    ],
-  },
-  {
-    english: "The dog is dead.",
-    answers: [
-      {
-        segments: [
-          { text: "犬[いぬ]は" },
-          { text: "死[し]んで", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
-        ],
-      },
-      {
-        segments: [
-          { text: "犬[いぬ]が" },
-          { text: "死[し]んで", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
-        ],
-        notes: "が instead of は",
-      },
-    ],
-  },
-  {
-    english: "I'm always listening to music while studying.",
-    answers: [
-      {
-        segments: [
-          { text: "私[わたし]は いつも 勉強[べんきょう]して 音楽[おんがく]を 聞[き]いて" },
-          {
-            text: "いる",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-      },
-      {
-        segments: [
-          { text: "私[わたし]が いつも 勉強[べんきょう]して 音楽[おんがく]を 聞[き]いて" },
-          {
-            text: "いる",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "が instead of は",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は 勉強[べんきょう]して いつも 音楽[おんがく]を 聞[き]いて" },
-          {
-            text: "いる",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "いつも moved after 勉強して",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は いつも 勉強[べんきょう]して 音楽[おんがく]を 聴[き]いて" },
-          {
-            text: "いる",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "Using 聴く (listen attentively) instead of 聞く",
+        notes: "Explicit 'my older brother' with やる.",
       },
     ],
   },
@@ -534,12 +257,442 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Was Kenji writing a report at the café?",
+    english: "Kenji is taking pictures of the flowers near the temple.",
+    hint: "Kenji = 健二",
+    answers: [
+      {
+        segments: [
+          {
+            text: "健二[けんじ]さんは 今[いま]、お寺[てら]の 近[ちか]くで 花[はな]の 写真[しゃしん]を ",
+          },
+          { text: "撮[と]っている", blank: true },
+        ],
+        notes: "Standard wording; taking pictures near the temple",
+      },
+      {
+        segments: [
+          {
+            text: "健二[けんじ]さんは 今[いま]、お寺[てら]の 近[ちか]くの 花[はな]の 写真[しゃしん]を ",
+          },
+          { text: "撮[と]っている", blank: true },
+        ],
+        notes: "Specifies that the flowers are near the temple",
+      },
+      {
+        segments: [
+          {
+            text: "健二[けんじ]さんは 今[いま]、お寺[てら]の 近[ちか]くで 花[はな]を ",
+          },
+          { text: "撮[と]っている", blank: true },
+        ],
+        notes: "Uses 花を撮る, a natural way to say photographing flowers",
+      },
+      {
+        segments: [
+          {
+            text: "今[いま]、健二[けんじ]さんは お寺[てら]の 近[ちか]くで 花[はな]の 写真[しゃしん]を ",
+          },
+          { text: "撮[と]っている", blank: true },
+        ],
+        notes: "Moves 今 to the beginning",
+      },
+      {
+        segments: [
+          {
+            text: "健二[けんじ]さんが 今[いま]、お寺[てら]の 近[ちか]くで 花[はな]の 写真[しゃしん]を ",
+          },
+          { text: "撮[と]っている", blank: true },
+        ],
+        notes: "Uses が to focus on Kenji as the one doing the action",
+      },
+      {
+        segments: [
+          {
+            text: "健二[けんじ]は 今[いま]、お寺[てら]の 近[ちか]くで 花[はな]の 写真[しゃしん]を ",
+          },
+          { text: "撮[と]っている", blank: true },
+        ],
+        notes: "No honorific さん on Kenji; natural in narration",
+      },
+      {
+        segments: [
+          {
+            text: "健二[けんじ]さんは お寺[てら]の 近[ちか]くで 今[いま]、花[はな]の 写真[しゃしん]を ",
+          },
+          { text: "撮[と]っている", blank: true },
+        ],
+        notes: "Places 今 after the location phrase",
+      },
+      {
+        segments: [
+          {
+            text: "健二[けんじ]さんは 花[はな]の 写真[しゃしん]を 今[いま]、お寺[てら]の 近[ちか]くで ",
+          },
+          { text: "撮[と]っている", blank: true },
+        ],
+        notes: "Object placed before time and location",
+      },
+      {
+        segments: [
+          {
+            text: "健二[けんじ]さんは 今[いま]、寺[てら]の 近[ちか]くで 花[はな]の 写真[しゃしん]を ",
+          },
+          { text: "撮[と]っている", blank: true },
+        ],
+        notes: "Uses 寺 instead of お寺",
+      },
+      {
+        segments: [
+          {
+            text: "健二[けんじ]さんは 今[いま]、寺[てら]の 近[ちか]くの 花[はな]の 写真[しゃしん]を ",
+          },
+          { text: "撮[と]っている", blank: true },
+        ],
+        notes: "Uses 寺 and directly modifies the flowers as near the temple",
+      },
+      {
+        segments: [
+          {
+            text: "健二[けんじ]さんは 今[いま]、寺[てら]の 近[ちか]くで 花[はな]を ",
+          },
+          { text: "撮[と]っている", blank: true },
+        ],
+        notes: "Uses 寺 and 花を撮る",
+      },
+      {
+        segments: [
+          {
+            text: "今[いま]、健二[けんじ]さんは お寺[てら]の 近[ちか]くの 花[はな]の 写真[しゃしん]を ",
+          },
+          { text: "撮[と]っている", blank: true },
+        ],
+        notes:
+          "今 at beginning and flowers directly described as near the temple",
+      },
+      {
+        segments: [
+          {
+            text: "健二[けんじ]さんが 今[いま]、お寺[てら]の 近[ちか]くの 花[はな]の 写真[しゃしん]を ",
+          },
+          { text: "撮[と]っている", blank: true },
+        ],
+        notes: "が with flowers specified as near the temple",
+      },
+      {
+        segments: [
+          {
+            text: "健二[けんじ]さんが 今[いま]、お寺[てら]の 近[ちか]くで 花[はな]を ",
+          },
+          { text: "撮[と]っている", blank: true },
+        ],
+        notes: "が with 花を撮る",
+      },
+      {
+        segments: [
+          {
+            text: "健二[けんじ]は 今[いま]、お寺[てら]の 近[ちか]くの 花[はな]の 写真[しゃしん]を ",
+          },
+          { text: "撮[と]っている", blank: true },
+        ],
+        notes: "No honorific and flowers specified as near temple",
+      },
+      {
+        segments: [
+          {
+            text: "健二[けんじ]さんは 今[いま]、お寺[てら]の 近[ちか]くで 花[はな]の 写真[しゃしん]を ",
+          },
+          { text: "撮[と]ってる", blank: true },
+        ],
+        notes: "Contracted てる form, common in speech",
+      },
+      {
+        segments: [
+          {
+            text: "健二[けんじ]さんは 今[いま]、お寺[てら]の 近[ちか]くの 花[はな]の 写真[しゃしん]を ",
+          },
+          { text: "撮[と]ってる", blank: true },
+        ],
+        notes: "Contracted てる with flowers specified as near the temple",
+      },
+      {
+        segments: [
+          {
+            text: "健二[けんじ]さんは 今[いま]、お寺[てら]の 近[ちか]くで 花[はな]を ",
+          },
+          { text: "撮[と]ってる", blank: true },
+        ],
+        notes: "Contracted てる with 花を撮る",
+      },
+      {
+        segments: [
+          {
+            text: "今[いま]、健二[けんじ]さんは お寺[てら]の 近[ちか]くで 花[はな]の 写真[しゃしん]を ",
+          },
+          { text: "撮[と]ってる", blank: true },
+        ],
+        notes: "Contracted てる with 今 at the beginning",
+      },
+      {
+        segments: [
+          {
+            text: "健二[けんじ]は 今[いま]、お寺[てら]の 近[ちか]くで 花[はな]の 写真[しゃしん]を ",
+          },
+          { text: "撮[と]ってる", blank: true },
+        ],
+        notes: "Contracted てる and no honorific",
+      },
+      {
+        segments: [
+          {
+            text: "健二[けんじ]さんは 今[いま]、花[はな]の 写真[しゃしん]を お寺[てら]の 近[ちか]くで ",
+          },
+          { text: "撮[と]っている", blank: true },
+        ],
+        notes: "Location placed immediately before the verb",
+      },
+    ],
+  },
+  {
+    english:
+      "My mother was waiting in front of the station yesterday at seven o’clock.",
+    answers: [
+      {
+        segments: [
+          {
+            text: "母[はは]は 昨日[きのう]、七時[しちじ]に 駅[えき]の 前[まえ]で ",
+          },
+          { text: "待[ま]っていた", blank: true },
+        ],
+        notes: "Standard translation using 母は and 駅の前で",
+      },
+      {
+        segments: [
+          {
+            text: "昨日[きのう]、七時[しちじ]に 母[はは]は 駅[えき]の 前[まえ]で ",
+          },
+          { text: "待[ま]っていた", blank: true },
+        ],
+        notes: "Time phrase placed at the beginning",
+      },
+      {
+        segments: [
+          {
+            text: "昨日[きのう]の 七時[しちじ]に、母[はは]は 駅[えき]の 前[まえ]で ",
+          },
+          { text: "待[ま]っていた", blank: true },
+        ],
+        notes: "Using 昨日の七時に as a combined time expression",
+      },
+      {
+        segments: [
+          {
+            text: "母[はは]は 七時[しちじ]に 昨日[きのう]、駅[えき]の 前[まえ]で ",
+          },
+          { text: "待[ま]っていた", blank: true },
+        ],
+        notes:
+          "Seven o'clock placed before yesterday; still natural though less common",
+      },
+      {
+        segments: [
+          {
+            text: "母[はは]が 昨日[きのう]、七時[しちじ]に 駅[えき]の 前[まえ]で ",
+          },
+          { text: "待[ま]っていた", blank: true },
+        ],
+        notes: "Using が instead of は to identify who was waiting",
+      },
+      {
+        segments: [
+          { text: "母[はは]は 昨日[きのう]、七時[しちじ]に 駅前[えきまえ]で " },
+          { text: "待[ま]っていた", blank: true },
+        ],
+        notes: "Using the compound 駅前 instead of 駅の前",
+      },
+      {
+        segments: [
+          { text: "母[はは]が 昨日[きのう]、七時[しちじ]に 駅前[えきまえ]で " },
+          { text: "待[ま]っていた", blank: true },
+        ],
+        notes: "Using が and the compound 駅前",
+      },
+      {
+        segments: [
+          {
+            text: "昨日[きのう]、七時[しちじ]に 母[はは]が 駅[えき]の 前[まえ]で ",
+          },
+          { text: "待[ま]っていた", blank: true },
+        ],
+        notes: "Time phrase first, with が marking the subject",
+      },
+      {
+        segments: [
+          { text: "昨日[きのう]、七時[しちじ]に 母[はは]は 駅前[えきまえ]で " },
+          { text: "待[ま]っていた", blank: true },
+        ],
+        notes: "Time phrase first and 駅前",
+      },
+      {
+        segments: [
+          {
+            text: "昨日[きのう]の 七時[しちじ]に、母[はは]が 駅[えき]の 前[まえ]で ",
+          },
+          { text: "待[ま]っていた", blank: true },
+        ],
+        notes: "Combined time expression with が",
+      },
+      {
+        segments: [
+          {
+            text: "昨日[きのう]の 七時[しちじ]に、母[はは]は 駅前[えきまえ]で ",
+          },
+          { text: "待[ま]っていた", blank: true },
+        ],
+        notes: "Combined time expression and 駅前",
+      },
+      {
+        segments: [
+          {
+            text: "昨日[きのう]の 七時[しちじ]、母[はは]は 駅[えき]の 前[まえ]で ",
+          },
+          { text: "待[ま]っていた", blank: true },
+        ],
+        notes: "Omitting に after the combined time expression",
+      },
+      {
+        segments: [
+          { text: "昨日[きのう]の 七時[しちじ]、母[はは]は 駅前[えきまえ]で " },
+          { text: "待[ま]っていた", blank: true },
+        ],
+        notes: "Omitting に with combined time, using 駅前",
+      },
+      {
+        segments: [
+          {
+            text: "昨日[きのう]の 七時[しちじ]、母[はは]が 駅[えき]の 前[まえ]で ",
+          },
+          { text: "待[ま]っていた", blank: true },
+        ],
+        notes: "Omitting に with combined time, using が",
+      },
+      {
+        segments: [
+          {
+            text: "母[はは]は 駅[えき]の 前[まえ]で 昨日[きのう]の 七時[しちじ]に ",
+          },
+          { text: "待[ま]っていた", blank: true },
+        ],
+        notes: "Location placed before time",
+      },
+      {
+        segments: [
+          {
+            text: "母[はは]は 駅前[えきまえ]で 昨日[きのう]の 七時[しちじ]に ",
+          },
+          { text: "待[ま]っていた", blank: true },
+        ],
+        notes: "Location first with 駅前",
+      },
+      {
+        segments: [
+          {
+            text: "母[はは]が 駅[えき]の 前[まえ]で 昨日[きのう]の 七時[しちじ]に ",
+          },
+          { text: "待[ま]っていた", blank: true },
+        ],
+        notes: "Location first with が",
+      },
+      {
+        segments: [
+          {
+            text: "昨日[きのう]、駅[えき]の 前[まえ]で 七時[しちじ]に 母[はは]は ",
+          },
+          { text: "待[ま]っていた", blank: true },
+        ],
+        notes: "Subject placed near the verb after time and location",
+      },
+      {
+        segments: [
+          { text: "昨日[きのう]、駅前[えきまえ]で 七時[しちじ]に 母[はは]は " },
+          { text: "待[ま]っていた", blank: true },
+        ],
+        notes: "Subject near verb, using 駅前",
+      },
+      {
+        segments: [
+          {
+            text: "昨日[きのう] 七時[しちじ]に、母[はは]は 駅[えき]の 前[まえ]で ",
+          },
+          { text: "待[ま]っていた", blank: true },
+        ],
+        notes:
+          "No comma/particle between 昨日 and 七時に, a natural adverbial sequence",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]の 母[はは]は 昨日[きのう]、七時[しちじ]に 駅[えき]の 前[まえ]で ",
+          },
+          { text: "待[ま]っていた", blank: true },
+        ],
+        notes: "Explicitly saying 私の母 for 'my mother'",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]の 母[はは]が 昨日[きのう]、七時[しちじ]に 駅[えき]の 前[まえ]で ",
+          },
+          { text: "待[ま]っていた", blank: true },
+        ],
+        notes: "Explicit 私の母 with が",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]の 母[はは]は 昨日[きのう]、七時[しちじ]に 駅前[えきまえ]で ",
+          },
+          { text: "待[ま]っていた", blank: true },
+        ],
+        notes: "Explicit 私の母 and 駅前",
+      },
+      {
+        segments: [
+          {
+            text: "昨日[きのう]、七時[しちじ]に 私[わたし]の 母[はは]は 駅[えき]の 前[まえ]で ",
+          },
+          { text: "待[ま]っていた", blank: true },
+        ],
+        notes: "Time phrase first with explicit 私の母",
+      },
+      {
+        segments: [
+          {
+            text: "昨日[きのう]の 七時[しちじ]に、私[わたし]の 母[はは]は 駅[えき]の 前[まえ]で ",
+          },
+          { text: "待[ま]っていた", blank: true },
+        ],
+        notes: "Combined time expression with explicit 私の母",
+      },
+      {
+        segments: [
+          {
+            text: "昨日[きのう]の 七時[しちじ]、私[わたし]の 母[はは]は 駅前[えきまえ]で ",
+          },
+          { text: "待[ま]っていた", blank: true },
+        ],
+        notes:
+          "Omitting に in the combined time expression with explicit 私の母 and 駅前",
+      },
+    ],
+  },
+  {
+    english: "Is Kenji wearing glasses?",
     hint: "Kenji = けんじ",
     answers: [
       {
         segments: [
-          { text: "けんじさんは カフェで レポートを 書[か]いて" },
+          { text: "けんじさんは 眼鏡[めがね]を" },
+          { text: "かけて", blank: true },
           {
             text: "いる",
             blank: true,
@@ -547,49 +700,301 @@ export const questions: Question[] = [
               pos: "Ichidan verb",
               form: "normal",
               polarity: "positive",
-              tense: "past",
+              tense: "non-past",
             },
           },
           { text: "か" },
         ],
       },
+    ],
+  },
+  {
+    english: "The children are swimming in the sea.",
+    answers: [
       {
         segments: [
-          { text: "カフェで けんじさんは レポートを 書[か]いて" },
-          {
-            text: "いる",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "past",
-            },
-          },
-          { text: "か" },
+          { text: "子供[こども]は 今[いま]、海[うみ]で " },
+          { text: "泳[およ]いでいる", blank: true },
         ],
-        notes: "Location カフェで moved to front",
+        notes: "Basic translation using は and 今 before the location.",
       },
       {
         segments: [
-          { text: "けんじさんが カフェで レポートを 書[か]いて" },
-          {
-            text: "いる",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "past",
-            },
-          },
-          { text: "か" },
+          { text: "子供[こども]たちは 今[いま]、海[うみ]で " },
+          { text: "泳[およ]いでいる", blank: true },
         ],
-        notes: "が instead of は",
+        notes: "Uses plural 子供たち for 'the children'.",
       },
       {
         segments: [
-          { text: "けんじさんは 喫茶店[きっさてん]で レポートを 書[か]いて" },
+          { text: "今[いま]、子供[こども]たちは 海[うみ]で " },
+          { text: "泳[およ]いでいる", blank: true },
+        ],
+        notes: "Time expression placed at the beginning.",
+      },
+      {
+        segments: [
+          { text: "子供[こども]たちは 海[うみ]で 今[いま] " },
+          { text: "泳[およ]いでいる", blank: true },
+        ],
+        notes: "今 placed immediately before the verb phrase.",
+      },
+      {
+        segments: [
+          { text: "今[いま]、子供[こども]は 海[うみ]で " },
+          { text: "泳[およ]いでいる", blank: true },
+        ],
+        notes: "Singular-form collective 子供 with time at sentence start.",
+      },
+      {
+        segments: [
+          { text: "子供[こども]が 今[いま]、海[うみ]で " },
+          { text: "泳[およ]いでいる", blank: true },
+        ],
+        notes: "Uses が to mark the children as the observed subject.",
+      },
+      {
+        segments: [
+          { text: "子供[こども]たちが 今[いま]、海[うみ]で " },
+          { text: "泳[およ]いでいる", blank: true },
+        ],
+        notes: "Uses plural 子供たち with が.",
+      },
+      {
+        segments: [
+          { text: "今[いま]、子供[こども]たちが 海[うみ]で " },
+          { text: "泳[およ]いでいる", blank: true },
+        ],
+        notes: "が-marked subject with time expression first.",
+      },
+      {
+        segments: [
+          { text: "今[いま]、子供[こども]が 海[うみ]で " },
+          { text: "泳[およ]いでいる", blank: true },
+        ],
+        notes: "Collective 子供 with が and time first.",
+      },
+      {
+        segments: [
+          { text: "子供[こども]たちは 今[いま]、海[うみ]で " },
+          { text: "泳[およ]いでる", blank: true },
+        ],
+        notes: "Uses the common contracted form てる.",
+      },
+      {
+        segments: [
+          { text: "子供[こども]は 今[いま]、海[うみ]で " },
+          { text: "泳[およ]いでる", blank: true },
+        ],
+        notes: "Collective 子供 with contracted てる.",
+      },
+      {
+        segments: [
+          { text: "今[いま]、子供[こども]たちは 海[うみ]で " },
+          { text: "泳[およ]いでる", blank: true },
+        ],
+        notes: "Contracted てる with time expression at the beginning.",
+      },
+      {
+        segments: [
+          { text: "今[いま]、海[うみ]で 子供[こども]たちが " },
+          { text: "泳[およ]いでいる", blank: true },
+        ],
+        notes:
+          "Location placed before the subject, with が for what is being observed.",
+      },
+      {
+        segments: [
+          { text: "今[いま]、海[うみ]で 子供[こども]たちは " },
+          { text: "泳[およ]いでいる", blank: true },
+        ],
+        notes: "Location placed before the は-marked topic.",
+      },
+      {
+        segments: [
+          { text: "子供[こども]たちは 今[いま]、海[うみ]の 中[なか]で " },
+          { text: "泳[およ]いでいる", blank: true },
+        ],
+        notes: "Uses 海の中で to emphasize being in the sea/water.",
+      },
+      {
+        segments: [
+          { text: "今[いま]、子供[こども]たちは 海[うみ]の 中[なか]で " },
+          { text: "泳[およ]いでいる", blank: true },
+        ],
+        notes: "海の中で with the time expression at the beginning.",
+      },
+      {
+        segments: [
+          { text: "子供[こども]たちは 海[うみ]で " },
+          { text: "泳[およ]いでいる", blank: true },
+          { text: "、今[いま]" },
+        ],
+        notes: "今 placed after the predicate as an afterthought.",
+      },
+      {
+        segments: [
+          { text: "海[うみ]で 子供[こども]たちが 今[いま] " },
+          { text: "泳[およ]いでいる", blank: true },
+        ],
+        notes: "Starts with the location, then が-marked subject.",
+      },
+      {
+        segments: [
+          { text: "海[うみ]で 子供[こども]たちは 今[いま] " },
+          { text: "泳[およ]いでいる", blank: true },
+        ],
+        notes: "Starts with the location, then は-marked topic.",
+      },
+      {
+        segments: [
+          { text: "子供[こども]たちが 海[うみ]で 今[いま] " },
+          { text: "泳[およ]いでいる", blank: true },
+        ],
+        notes: "が-marked subject with 今 immediately before the verb phrase.",
+      },
+    ],
+  },
+  {
+    english: "I was writing a report at the library yesterday at ten o’clock.",
+    answers: [
+      {
+        segments: [
+          {
+            text: "私[わたし]は 昨日[きのう]、十時[じゅうじ]に 図書館[としょかん]で レポートを ",
+          },
+          { text: "書[か]いていた", blank: true },
+        ],
+        notes:
+          "Standard translation with ていた for an action in progress in the past",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 昨日[きのう]、図書館[としょかん]で 十時[じゅうじ]に レポートを ",
+          },
+          { text: "書[か]いていた", blank: true },
+        ],
+        notes: "Location before the specific time",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 十時[じゅうじ]に 昨日[きのう]、図書館[としょかん]で レポートを ",
+          },
+          { text: "書[か]いていた", blank: true },
+        ],
+        notes:
+          "Specific time placed before yesterday; still natural with a pause",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 昨日[きのう]の 十時[じゅうじ]に、図書館[としょかん]で レポートを ",
+          },
+          { text: "書[か]いていた", blank: true },
+        ],
+        notes: "Uses 昨日の十時に to mean at ten o’clock yesterday",
+      },
+      {
+        segments: [
+          {
+            text: "昨日[きのう]、私[わたし]は 十時[じゅうじ]に 図書館[としょかん]で レポートを ",
+          },
+          { text: "書[か]いていた", blank: true },
+        ],
+        notes: "昨日 placed at the start",
+      },
+      {
+        segments: [
+          {
+            text: "昨日[きのう]の 十時[じゅうじ]に、私[わたし]は 図書館[としょかん]で レポートを ",
+          },
+          { text: "書[か]いていた", blank: true },
+        ],
+        notes: "昨日の十時に placed at the start",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]が 昨日[きのう]、十時[じゅうじ]に 図書館[としょかん]で レポートを ",
+          },
+          { text: "書[か]いていた", blank: true },
+        ],
+        notes: "Uses が to emphasize that I was the one writing",
+      },
+      {
+        segments: [
+          {
+            text: "昨日[きのう]、十時[じゅうじ]に 私[わたし]は 図書館[としょかん]で レポートを ",
+          },
+          { text: "書[か]いていた", blank: true },
+        ],
+        notes: "Time phrase before the subject",
+      },
+      {
+        segments: [
+          {
+            text: "図書館[としょかん]で、私[わたし]は 昨日[きのう]の 十時[じゅうじ]に レポートを ",
+          },
+          { text: "書[か]いていた", blank: true },
+        ],
+        notes: "Location topicalized/fronted",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 昨日[きのう]、十時[じゅうじ]に 図書館[としょかん]で レポート ",
+          },
+          { text: "書[か]いていた", blank: true },
+        ],
+        notes: "Casual-sounding dropped を after レポート",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 昨日[きのう]、十時[じゅうじ]に レポートを 図書館[としょかん]で ",
+          },
+          { text: "書[か]いていた", blank: true },
+        ],
+        notes: "Object placed before the location",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 昨日[きのう]の 十時[じゅうじ]に、レポートを 図書館[としょかん]で ",
+          },
+          { text: "書[か]いていた", blank: true },
+        ],
+        notes: "Uses 昨日の十時に with object before location",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 昨日[きのう]、十時[じゅうじ]には 図書館[としょかん]で レポートを ",
+          },
+          { text: "書[か]いていた", blank: true },
+        ],
+        notes: "Uses 十時には to emphasize what was happening at ten",
+      },
+      {
+        segments: [
+          {
+            text: "昨日[きのう]の 十時[じゅうじ]には、私[わたし]は 図書館[としょかん]で レポートを ",
+          },
+          { text: "書[か]いていた", blank: true },
+        ],
+        notes: "Fronted time phrase with は for emphasis",
+      },
+    ],
+  },
+  {
+    english: "The light in the room is on.",
+    answers: [
+      {
+        segments: [
+          { text: "部屋[へや]の 電気[でんき]は" },
+          { text: "つけて", blank: true },
           {
             text: "いる",
             blank: true,
@@ -597,12 +1002,418 @@ export const questions: Question[] = [
               pos: "Ichidan verb",
               form: "normal",
               polarity: "positive",
-              tense: "past",
+              tense: "non-past",
             },
           },
-          { text: "か" },
         ],
-        notes: "喫茶店 instead of カフェ",
+      },
+      {
+        segments: [
+          { text: "部屋[へや]の 電気[でんき]が" },
+          { text: "つけて", blank: true },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "が particle",
+      },
+      {
+        segments: [
+          { text: "部屋[へや]の 電気[でんき]が" },
+          { text: "ついて", blank: true },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes:
+          'Intransitive つく (電気がついている) — more natural for "the light is on"',
+      },
+    ],
+  },
+  {
+    english: "My father is taking a shower, so please wait a little.",
+    answers: [
+      {
+        segments: [
+          { text: "父[ちち]は 今[いま]、シャワーを " },
+          { text: "浴[あ]びている", blank: true },
+          { text: "から、少[すこ]し 待[ま]ってください" },
+        ],
+        notes: "Basic wording with 父 and 今 before the action",
+      },
+      {
+        segments: [
+          { text: "父[ちち]は 今[いま]、シャワーを " },
+          { text: "浴[あ]びています", blank: true },
+          { text: "から、少[すこ]し 待[ま]ってください" },
+        ],
+        notes: "Polite ています form in the reason clause",
+      },
+      {
+        segments: [
+          { text: "父[ちち]は 今[いま]、シャワーを " },
+          { text: "浴[あ]びてる", blank: true },
+          { text: "から、少[すこ]し 待[ま]ってください" },
+        ],
+        notes: "Contracted てる form",
+      },
+      {
+        segments: [
+          { text: "父[ちち]は 今[いま]、シャワーを " },
+          { text: "浴[あ]びてます", blank: true },
+          { text: "から、少[すこ]し 待[ま]ってください" },
+        ],
+        notes: "Contracted polite てます form",
+      },
+      {
+        segments: [
+          { text: "父[ちち]が 今[いま]、シャワーを " },
+          { text: "浴[あ]びている", blank: true },
+          { text: "から、少[すこ]し 待[ま]ってください" },
+        ],
+        notes: "Using が to identify father as the reason",
+      },
+      {
+        segments: [
+          { text: "今[いま]、父[ちち]は シャワーを " },
+          { text: "浴[あ]びている", blank: true },
+          { text: "から、少[すこ]し 待[ま]ってください" },
+        ],
+        notes: "Time phrase placed at the beginning",
+      },
+      {
+        segments: [
+          { text: "今[いま]、父[ちち]が シャワーを " },
+          { text: "浴[あ]びている", blank: true },
+          { text: "から、少[すこ]し 待[ま]ってください" },
+        ],
+        notes: "Time phrase first and が marking the subject",
+      },
+      {
+        segments: [
+          { text: "父[ちち]は シャワーを " },
+          { text: "浴[あ]びている", blank: true },
+          { text: "から、今[いま] 少[すこ]し 待[ま]ってください" },
+        ],
+        notes: "今 placed in the request clause, still meaning wait now",
+      },
+      {
+        segments: [
+          { text: "父[ちち]が シャワーを " },
+          { text: "浴[あ]びている", blank: true },
+          { text: "から、今[いま] 少[すこ]し 待[ま]ってください" },
+        ],
+        notes: "が subject marker with 今 in the request clause",
+      },
+      {
+        segments: [
+          { text: "父[ちち]は 今[いま]、シャワーを " },
+          { text: "浴[あ]びている", blank: true },
+          { text: "から、ちょっと 待[ま]ってください" },
+        ],
+        notes: "Using ちょっと instead of 少し",
+      },
+      {
+        segments: [
+          { text: "父[ちち]が 今[いま]、シャワーを " },
+          { text: "浴[あ]びている", blank: true },
+          { text: "から、ちょっと 待[ま]ってください" },
+        ],
+        notes: "が subject marker and ちょっと",
+      },
+      {
+        segments: [
+          { text: "今[いま]、父[ちち]は シャワーを " },
+          { text: "浴[あ]びている", blank: true },
+          { text: "から、ちょっと 待[ま]ってください" },
+        ],
+        notes: "今 at sentence beginning with ちょっと",
+      },
+      {
+        segments: [
+          { text: "今[いま]、父[ちち]が シャワーを " },
+          { text: "浴[あ]びている", blank: true },
+          { text: "から、ちょっと 待[ま]ってください" },
+        ],
+        notes: "今 first, が, and ちょっと",
+      },
+      {
+        segments: [
+          { text: "父[ちち]は シャワーを " },
+          { text: "浴[あ]びている", blank: true },
+          { text: "から、今[いま] ちょっと 待[ま]ってください" },
+        ],
+        notes: "今 in request clause with ちょっと",
+      },
+      {
+        segments: [
+          { text: "父[ちち]が シャワーを " },
+          { text: "浴[あ]びている", blank: true },
+          { text: "から、今[いま] ちょっと 待[ま]ってください" },
+        ],
+        notes: "が subject marker with 今 in request clause and ちょっと",
+      },
+      {
+        segments: [
+          { text: "お父[とう]さんは 今[いま]、シャワーを " },
+          { text: "浴[あ]びている", blank: true },
+          { text: "から、少[すこ]し 待[ま]ってください" },
+        ],
+        notes: "Using お父さん instead of 父",
+      },
+      {
+        segments: [
+          { text: "お父[とう]さんが 今[いま]、シャワーを " },
+          { text: "浴[あ]びている", blank: true },
+          { text: "から、少[すこ]し 待[ま]ってください" },
+        ],
+        notes: "お父さん with が",
+      },
+      {
+        segments: [
+          { text: "お父[とう]さんは 今[いま]、シャワーを " },
+          { text: "浴[あ]びている", blank: true },
+          { text: "から、ちょっと 待[ま]ってください" },
+        ],
+        notes: "お父さん with ちょっと",
+      },
+      {
+        segments: [
+          { text: "お父[とう]さんが 今[いま]、シャワーを " },
+          { text: "浴[あ]びている", blank: true },
+          { text: "から、ちょっと 待[ま]ってください" },
+        ],
+        notes: "お父さん with が and ちょっと",
+      },
+    ],
+  },
+  {
+    english: "Kenji's younger brother is living in Canada now.",
+    hint: "Kenji = けんじ",
+    answers: [
+      {
+        segments: [
+          { text: "けんじさんの 弟[おとうと]は 今[いま] カナダに" },
+          { text: "住[す]んで", blank: true },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+      },
+      {
+        segments: [
+          { text: "けんじさんの 弟[おとうと]は カナダに 今[いま]" },
+          { text: "住[す]んで", blank: true },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "今 moved after カナダに",
+      },
+    ],
+  },
+  {
+    english: "The cat is sleeping under the chair.",
+    answers: [
+      {
+        segments: [
+          { text: "猫[ねこ]は 今[いま]、椅子[いす]の 下[した]で " },
+          { text: "寝[ね]て", blank: true },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes:
+          "Standard wording with conjugation metadata on いる to generate polite/casual forms",
+      },
+      {
+        segments: [
+          { text: "猫[ねこ]が 今[いま]、椅子[いす]の 下[した]で " },
+          { text: "寝[ね]て", blank: true },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Using が to identify the cat as the subject",
+      },
+      {
+        segments: [
+          { text: "今[いま]、猫[ねこ]は 椅子[いす]の 下[した]で " },
+          { text: "寝[ね]て", blank: true },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Time phrase placed at the beginning",
+      },
+      {
+        segments: [
+          { text: "今[いま]、猫[ねこ]が 椅子[いす]の 下[した]で " },
+          { text: "寝[ね]て", blank: true },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Time phrase first with が marking the subject",
+      },
+      {
+        segments: [
+          { text: "椅子[いす]の 下[した]で、猫[ねこ]は 今[いま] " },
+          { text: "寝[ね]て", blank: true },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Location phrase placed at the beginning",
+      },
+      {
+        segments: [
+          { text: "椅子[いす]の 下[した]で、猫[ねこ]が 今[いま] " },
+          { text: "寝[ね]て", blank: true },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Location phrase first with が marking the subject",
+      },
+      {
+        segments: [
+          { text: "猫[ねこ]は 椅子[いす]の 下[した]で 今[いま] " },
+          { text: "寝[ね]て", blank: true },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "今 placed immediately before the verb phrase",
+      },
+      {
+        segments: [
+          { text: "猫[ねこ]が 椅子[いす]の 下[した]で 今[いま] " },
+          { text: "寝[ね]て", blank: true },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "今 before the verb with が marking the subject",
+      },
+      {
+        segments: [
+          { text: "今[いま]、椅子[いす]の 下[した]で 猫[ねこ]が " },
+          { text: "寝[ね]て", blank: true },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes:
+          "Both time and location placed before the subject; natural for reporting what is happening",
+      },
+      {
+        segments: [
+          { text: "猫[ねこ]、今[いま] 椅子[いす]の 下[した]で " },
+          { text: "寝[ね]て", blank: true },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Casual spoken style with the subject particle omitted",
       },
     ],
   },
@@ -645,12 +1456,13 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "I work at a hospital every day.",
+    english: "I'm always listening to music while studying.",
     answers: [
       {
         segments: [
-          { text: "私[わたし]は 毎日[まいにち] 病院[びょういん]で" },
-          { text: "働[はたら]いて", blank: true },
+          {
+            text: "私[わたし]は いつも 勉強[べんきょう]して 音楽[おんがく]を 聞[き]いて",
+          },
           {
             text: "いる",
             blank: true,
@@ -665,25 +1477,9 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "私[わたし]は 病院[びょういん]で 毎日[まいにち]" },
-          { text: "働[はたら]いて", blank: true },
           {
-            text: "いる",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
+            text: "私[わたし]が いつも 勉強[べんきょう]して 音楽[おんがく]を 聞[き]いて",
           },
-        ],
-        notes: "Location before time",
-      },
-      {
-        segments: [
-          { text: "私[わたし]が 毎日[まいにち] 病院[びょういん]で" },
-          { text: "働[はたら]いて", blank: true },
           {
             text: "いる",
             blank: true,
@@ -699,8 +1495,9 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "私[わたし]が 病院[びょういん]で 毎日[まいにち]" },
-          { text: "働[はたら]いて", blank: true },
+          {
+            text: "私[わたし]は 勉強[べんきょう]して いつも 音楽[おんがく]を 聞[き]いて",
+          },
           {
             text: "いる",
             blank: true,
@@ -712,46 +1509,95 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "が + location before time",
+        notes: "いつも moved after 勉強して",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は いつも 勉強[べんきょう]して 音楽[おんがく]を 聴[き]いて",
+          },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Using 聴く (listen attentively) instead of 聞く",
       },
     ],
   },
   {
-    english: "Kenji's younger brother is living in Canada now.",
-    hint: "Kenji = けんじ",
+    english:
+      "At nine o’clock last night, my grandfather was watching TV at home.",
     answers: [
       {
         segments: [
-          { text: "けんじさんの 弟[おとうと]は 今[いま] カナダに" },
-          { text: "住[す]んで", blank: true },
           {
-            text: "いる",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
+            text: "私[わたし]の おじいさんは 昨日[きのう]の 夜[よる] 九時[くじ]に 家[いえ]で テレビを ",
           },
+          { text: "見[み]ていた", blank: true },
         ],
+        notes: "Basic sentence using known vocabulary; subject marked with は.",
       },
       {
         segments: [
-          { text: "けんじさんの 弟[おとうと]は カナダに 今[いま]" },
-          { text: "住[す]んで", blank: true },
           {
-            text: "いる",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
+            text: "私[わたし]の おじいさんが 昨日[きのう]の 夜[よる] 九時[くじ]に 家[いえ]で テレビを ",
           },
+          { text: "見[み]ていた", blank: true },
         ],
-        notes: "今 moved after カナダに",
+        notes:
+          "Using が to mark the subject; natural when identifying who was watching.",
+      },
+      {
+        segments: [
+          {
+            text: "昨日[きのう]の 夜[よる] 九時[くじ]に、私[わたし]の おじいさんは 家[いえ]で テレビを ",
+          },
+          { text: "見[み]ていた", blank: true },
+        ],
+        notes: "Time phrase placed at the beginning.",
+      },
+      {
+        segments: [
+          {
+            text: "昨日[きのう]の 夜[よる] 九時[くじ]に、私[わたし]の おじいさんが 家[いえ]で テレビを ",
+          },
+          { text: "見[み]ていた", blank: true },
+        ],
+        notes: "Time-fronted version with が subject marking.",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]の おじいさんは 家[いえ]で 昨日[きのう]の 夜[よる] 九時[くじ]に テレビを ",
+          },
+          { text: "見[み]ていた", blank: true },
+        ],
+        notes: "Location placed before the time phrase.",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]の おじいさんは 昨日[きのう]の 夜[よる] 九時[くじ]に うちで テレビを ",
+          },
+          { text: "見[み]ていた", blank: true },
+        ],
+        notes: "Using うち for home/my place instead of 家.",
+      },
+      {
+        segments: [
+          {
+            text: "昨日[きのう]の 夜[よる] 九時[くじ]に、私[わたし]の おじいさんは うちで テレビを ",
+          },
+          { text: "見[み]ていた", blank: true },
+        ],
+        notes: "Time-fronted version using うち for home.",
       },
     ],
   },
@@ -886,269 +1732,6 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "The light in the room is on.",
-    answers: [
-      {
-        segments: [
-          { text: "部屋[へや]の 電気[でんき]は" },
-          { text: "つけて", blank: true },
-          {
-            text: "いる",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-      },
-      {
-        segments: [
-          { text: "部屋[へや]の 電気[でんき]が" },
-          { text: "つけて", blank: true },
-          {
-            text: "いる",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "が particle",
-      },
-      {
-        segments: [
-          { text: "部屋[へや]の 電気[でんき]が" },
-          { text: "ついて", blank: true },
-          {
-            text: "いる",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "Intransitive つく (電気がついている) — more natural for \"the light is on\"",
-      },
-    ],
-  },
-  {
-    english: "My mother is cooking every morning (these days).",
-    answers: [
-      {
-        segments: [
-          { text: "母[はは]は 毎朝[まいあさ] 料理[りょうり]" },
-          { text: "して", blank: true },
-          {
-            text: "いる",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-      },
-      {
-        segments: [
-          { text: "私[わたし]の 母[はは]は 毎朝[まいあさ] 料理[りょうり]" },
-          { text: "して", blank: true },
-          {
-            text: "いる",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "With 私の母 explicit",
-      },
-      {
-        segments: [
-          { text: "母[はは]は 毎朝[まいあさ] ご 飯[はん]を" },
-          { text: "作[つく]って", blank: true },
-          {
-            text: "いる",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "ご飯を作っている (making meals) as a synonym for cooking",
-      },
-      {
-        segments: [
-          { text: "母[はは]は 毎朝[まいあさ] 料理[りょうり]を" },
-          { text: "して", blank: true },
-          {
-            text: "いる",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "料理をしている — 料理 as a noun object with を",
-      },
-      {
-        segments: [
-          { text: "母[はは]が 毎朝[まいあさ] 料理[りょうり]" },
-          { text: "して", blank: true },
-          {
-            text: "いる",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "が instead of は",
-      },
-      {
-        segments: [
-          { text: "母[はは]は 毎朝[まいあさ] 朝[あさ]ご 飯[はん]を" },
-          { text: "作[つく]って", blank: true },
-          {
-            text: "いる",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "朝ご飯を作っている — making breakfast specifically",
-      },
-    ],
-  },
-  {
-    english: "The traffic light has turned red.",
-    answers: [
-      {
-        segments: [
-          { text: "信号[しんごう]は" },
-          { text: "赤[あか]くなって", blank: true },
-          {
-            text: "いる",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-      },
-      {
-        segments: [
-          { text: "信号[しんごう]が" },
-          { text: "赤[あか]くなって", blank: true },
-          {
-            text: "いる",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "が particle",
-      },
-    ],
-  },
-  {
-    english: "My older brother is playing tennis every Saturday (these days).",
-    answers: [
-      {
-        segments: [
-          {
-            text: "私[わたし]の 兄[あに]は 毎週[まいしゅう] 土曜日[どようび]に テニスを",
-          },
-          { text: "して", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
-        ],
-      },
-      {
-        segments: [
-          { text: "兄[あに]は 毎週[まいしゅう] 土曜日[どようび]に テニスを" },
-          { text: "して", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
-        ],
-        notes: "Without 私の — 兄 alone is natural",
-      },
-      {
-        segments: [
-          { text: "兄[あに]は 毎週[まいしゅう] 土曜日[どようび]に テニスを" },
-          { text: "やって", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
-        ],
-        notes: "やっている instead of している",
-      },
-      {
-        segments: [
-          {
-            text: "私[わたし]の 兄[あに]は 毎週[まいしゅう] 土曜日[どようび]に テニスを",
-          },
-          { text: "やって", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
-        ],
-        notes: "With 私の + やっている",
-      },
-      {
-        segments: [
-          { text: "兄[あに]は 土曜日[どようび]に テニスを" },
-          { text: "して", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
-        ],
-        notes: "Without 毎週",
-      },
-      {
-        segments: [
-          { text: "兄[あに]が 毎週[まいしゅう] 土曜日[どようび]に テニスを" },
-          { text: "して", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
-        ],
-        notes: "が instead of は",
-      },
-      {
-        segments: [
-          { text: "毎週[まいしゅう] 土曜日[どようび]に 兄[あに]は テニスを" },
-          { text: "して", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
-        ],
-        notes: "Time phrase moved to the front",
-      },
-    ],
-  },
-  {
     english: "The dog is sitting on the chair.",
     answers: [
       {
@@ -1253,6 +1836,82 @@ export const questions: Question[] = [
           },
         ],
         notes: "が particle + 上に",
+      },
+    ],
+  },
+  {
+    english: "The traffic light has turned red.",
+    answers: [
+      {
+        segments: [
+          { text: "信号[しんごう]は" },
+          { text: "赤[あか]くなって", blank: true },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+      },
+      {
+        segments: [
+          { text: "信号[しんごう]が" },
+          { text: "赤[あか]くなって", blank: true },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "が particle",
+      },
+    ],
+  },
+  {
+    english: "The dog is dead.",
+    answers: [
+      {
+        segments: [
+          { text: "犬[いぬ]は" },
+          { text: "死[し]んで", blank: true },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+      },
+      {
+        segments: [
+          { text: "犬[いぬ]が" },
+          { text: "死[し]んで", blank: true },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "が instead of は",
       },
     ],
   },
