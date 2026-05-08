@@ -17,6 +17,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as HomeRouteImport } from './routes/_home'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as HomeVocabRouteImport } from './routes/_home/vocab'
+import { Route as HomeToolCardPreviewsRouteImport } from './routes/_home/tool-card-previews'
 import { Route as HomeSettingsRouteImport } from './routes/_home/settings'
 import { Route as HomeSearchRouteImport } from './routes/_home/search'
 import { Route as HomeLearnRouteImport } from './routes/_home/learn'
@@ -159,6 +160,11 @@ const IndexRoute = IndexRouteImport.update({
 const HomeVocabRoute = HomeVocabRouteImport.update({
   id: '/vocab',
   path: '/vocab',
+  getParentRoute: () => HomeRoute,
+} as any)
+const HomeToolCardPreviewsRoute = HomeToolCardPreviewsRouteImport.update({
+  id: '/tool-card-previews',
+  path: '/tool-card-previews',
   getParentRoute: () => HomeRoute,
 } as any)
 const HomeSettingsRoute = HomeSettingsRouteImport.update({
@@ -751,6 +757,7 @@ export interface FileRoutesByFullPath {
   '/learn': typeof HomeLearnRouteWithChildren
   '/search': typeof HomeSearchRoute
   '/settings': typeof HomeSettingsRoute
+  '/tool-card-previews': typeof HomeToolCardPreviewsRoute
   '/vocab': typeof HomeVocabRouteWithChildren
   '/external-resources/$resource': typeof HomeExternalResourcesResourceRoute
   '/guides/comparison': typeof HomeGuidesComparisonRoute
@@ -863,6 +870,7 @@ export interface FileRoutesByTo {
   '/learn': typeof HomeLearnRouteWithChildren
   '/search': typeof HomeSearchRoute
   '/settings': typeof HomeSettingsRoute
+  '/tool-card-previews': typeof HomeToolCardPreviewsRoute
   '/external-resources/$resource': typeof HomeExternalResourcesResourceRoute
   '/guides/comparison': typeof HomeGuidesComparisonRoute
   '/guides/srs': typeof HomeGuidesSrsRoute
@@ -977,6 +985,7 @@ export interface FileRoutesById {
   '/_home/learn': typeof HomeLearnRouteWithChildren
   '/_home/search': typeof HomeSearchRoute
   '/_home/settings': typeof HomeSettingsRoute
+  '/_home/tool-card-previews': typeof HomeToolCardPreviewsRoute
   '/_home/vocab': typeof HomeVocabRouteWithChildren
   '/_home/external-resources/$resource': typeof HomeExternalResourcesResourceRoute
   '/_home/guides/comparison': typeof HomeGuidesComparisonRoute
@@ -1092,6 +1101,7 @@ export interface FileRouteTypes {
     | '/learn'
     | '/search'
     | '/settings'
+    | '/tool-card-previews'
     | '/vocab'
     | '/external-resources/$resource'
     | '/guides/comparison'
@@ -1204,6 +1214,7 @@ export interface FileRouteTypes {
     | '/learn'
     | '/search'
     | '/settings'
+    | '/tool-card-previews'
     | '/external-resources/$resource'
     | '/guides/comparison'
     | '/guides/srs'
@@ -1317,6 +1328,7 @@ export interface FileRouteTypes {
     | '/_home/learn'
     | '/_home/search'
     | '/_home/settings'
+    | '/_home/tool-card-previews'
     | '/_home/vocab'
     | '/_home/external-resources/$resource'
     | '/_home/guides/comparison'
@@ -1483,6 +1495,13 @@ declare module '@tanstack/solid-router' {
       path: '/vocab'
       fullPath: '/vocab'
       preLoaderRoute: typeof HomeVocabRouteImport
+      parentRoute: typeof HomeRoute
+    }
+    '/_home/tool-card-previews': {
+      id: '/_home/tool-card-previews'
+      path: '/tool-card-previews'
+      fullPath: '/tool-card-previews'
+      preLoaderRoute: typeof HomeToolCardPreviewsRouteImport
       parentRoute: typeof HomeRoute
     }
     '/_home/settings': {
@@ -2304,6 +2323,7 @@ interface HomeRouteChildren {
   HomeLearnRoute: typeof HomeLearnRouteWithChildren
   HomeSearchRoute: typeof HomeSearchRoute
   HomeSettingsRoute: typeof HomeSettingsRoute
+  HomeToolCardPreviewsRoute: typeof HomeToolCardPreviewsRoute
   HomeVocabRoute: typeof HomeVocabRouteWithChildren
   HomeImportAnkiRoute: typeof HomeImportAnkiRoute
   HomeMiscKanjiPracticeSheetRoute: typeof HomeMiscKanjiPracticeSheetRoute
@@ -2330,6 +2350,7 @@ const HomeRouteChildren: HomeRouteChildren = {
   HomeLearnRoute: HomeLearnRouteWithChildren,
   HomeSearchRoute: HomeSearchRoute,
   HomeSettingsRoute: HomeSettingsRoute,
+  HomeToolCardPreviewsRoute: HomeToolCardPreviewsRoute,
   HomeVocabRoute: HomeVocabRouteWithChildren,
   HomeImportAnkiRoute: HomeImportAnkiRoute,
   HomeMiscKanjiPracticeSheetRoute: HomeMiscKanjiPracticeSheetRoute,

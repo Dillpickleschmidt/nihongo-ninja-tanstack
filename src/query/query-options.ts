@@ -7,7 +7,7 @@ import { parsePreferencesCookie } from "./model/preferences"
 import type {
   BackgroundSettings,
   BackgroundColor,
-} from "~/components/TextbookChapterBackgrounds"
+} from "@/features/backgrounds/types"
 
 // ============================================================================
 // Auth Query Options

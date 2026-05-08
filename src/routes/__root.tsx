@@ -27,7 +27,7 @@ import "@fontsource-variable/noto-sans-jp"
 import "@fontsource/zen-maru-gothic"
 import appCss from "@/styles/app.css?url"
 import AppConvexProvider, { convexQueryClient } from "@/providers/convex"
-import { TextbookChapterBackgrounds } from "@/components/TextbookChapterBackgrounds"
+import { ActiveLearningPathBackground } from "@/components/ActiveLearningPathBackground"
 import { TanStackRouterDevtools } from "@tanstack/solid-router-devtools"
 import { SolidQueryDevtools } from "@tanstack/solid-query-devtools"
 import {
@@ -123,7 +123,7 @@ function RootDocument(props: { children: JSX.Element }) {
               <PostHogPageView />
             </ClientOnly>
             <Suspense>
-              <TextbookChapterBackgrounds />
+              <ActiveLearningPathBackground />
             </Suspense>
             {props.children}
             <ThemedToaster />

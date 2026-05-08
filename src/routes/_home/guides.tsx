@@ -15,7 +15,7 @@ import { useQueryClient } from "@tanstack/solid-query"
 import { useCompleteModule } from "@/lib/completions"
 import { static_modules } from "@/data/static_modules"
 import { queryKeys } from "~/query/query-keys"
-import { TextbookChapterBackgrounds } from "@/components/TextbookChapterBackgrounds"
+import { ActiveLearningPathBackground } from "@/components/ActiveLearningPathBackground"
 import { Button } from "@/components/ui/button"
 import { TableOfContents, type TOCItem } from "@/components/TableOfContents"
 import GoHomeSvg from "@/features/homepage/shared/assets/go-home.svg"
@@ -91,7 +91,7 @@ function RouteComponent() {
 
   return (
     <>
-      <TextbookChapterBackgrounds />
+      <ActiveLearningPathBackground />
       <div class="flex gap-6 px-6 py-4">
         <div class="mx-auto w-full">
           <Outlet />
