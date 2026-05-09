@@ -1229,256 +1229,256 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "The party is noisy, so I decided to go home early.",
+    english: "The company party is noisy, so I decided to go home early.",
     answers: [
       {
         segments: [
-          { text: "パーティーが うるさいので、早[はや]く " },
+          { text: "会社[かいしゃ]の パーティーが うるさいので、早[はや]く " },
           { text: "帰[かえ]ることにする", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "Standard translation with が and ので",
       },
       {
         segments: [
-          { text: "パーティーが うるさいから、早[はや]く " },
+          { text: "会社[かいしゃ]の パーティーが うるさいから、早[はや]く " },
           { text: "帰[かえ]ることにする", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "Using から instead of ので",
       },
       {
         segments: [
-          { text: "パーティーは うるさいので、早[はや]く " },
+          { text: "会社[かいしゃ]の パーティーは うるさいので、早[はや]く " },
           { text: "帰[かえ]ることにする", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Using は to mark the party as the topic",
+        notes: "Using は to mark the company party as the topic",
       },
       {
         segments: [
-          { text: "パーティーは うるさいから、早[はや]く " },
+          { text: "会社[かいしゃ]の パーティーは うるさいから、早[はや]く " },
           { text: "帰[かえ]ることにする", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "Topic は with から",
       },
       {
         segments: [
-          { text: "パーティーが うるさいので、早[はや]く 家[いえ]に " },
+          { text: "会社[かいしゃ]の パーティーが うるさいので、早[はや]く 家[いえ]に " },
           { text: "帰[かえ]ることにする", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "Explicitly says to go home",
       },
       {
         segments: [
-          { text: "パーティーが うるさいから、早[はや]く 家[いえ]に " },
+          { text: "会社[かいしゃ]の パーティーが うるさいから、早[はや]く 家[いえ]に " },
           { text: "帰[かえ]ることにする", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "Explicit home destination with から",
       },
       {
         segments: [
-          { text: "パーティーは うるさいので、早[はや]く 家[いえ]に " },
+          { text: "会社[かいしゃ]の パーティーは うるさいので、早[はや]く 家[いえ]に " },
           { text: "帰[かえ]ることにする", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "Topic は plus explicit 家に",
       },
       {
         segments: [
-          { text: "パーティーは うるさいから、早[はや]く 家[いえ]に " },
+          { text: "会社[かいしゃ]の パーティーは うるさいから、早[はや]く 家[いえ]に " },
           { text: "帰[かえ]ることにする", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "Topic は, から, and explicit 家に",
       },
       {
         segments: [
-          { text: "パーティーが うるさいので、早[はや]く うちに " },
+          { text: "会社[かいしゃ]の パーティーが うるさいので、早[はや]く うちに " },
           { text: "帰[かえ]ることにする", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "Using うちに帰る for going home",
       },
       {
         segments: [
-          { text: "パーティーが うるさいから、早[はや]く うちに " },
+          { text: "会社[かいしゃ]の パーティーが うるさいから、早[はや]く うちに " },
           { text: "帰[かえ]ることにする", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "Using うちに帰る with から",
       },
       {
         segments: [
-          { text: "パーティーは うるさいので、早[はや]く うちに " },
+          { text: "会社[かいしゃ]の パーティーは うるさいので、早[はや]く うちに " },
           { text: "帰[かえ]ることにする", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "Topic は with うちに帰る",
       },
       {
         segments: [
-          { text: "パーティーは うるさいから、早[はや]く うちに " },
+          { text: "会社[かいしゃ]の パーティーは うるさいから、早[はや]く うちに " },
           { text: "帰[かえ]ることにする", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "Topic は with うちに帰る and から",
       },
       {
         segments: [
-          { text: "パーティーが うるさいので、早[はや]めに " },
+          { text: "会社[かいしゃ]の パーティーが うるさいので、早[はや]めに " },
           { text: "帰[かえ]ることにする", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "Using 早めに, a more idiomatic way to say early",
       },
       {
         segments: [
-          { text: "パーティーが うるさいから、早[はや]めに " },
+          { text: "会社[かいしゃ]の パーティーが うるさいから、早[はや]めに " },
           { text: "帰[かえ]ることにする", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "早めに with から",
       },
       {
         segments: [
-          { text: "パーティーは うるさいので、早[はや]めに " },
+          { text: "会社[かいしゃ]の パーティーは うるさいので、早[はや]めに " },
           { text: "帰[かえ]ることにする", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "早めに with topic は",
       },
       {
         segments: [
-          { text: "パーティーは うるさいから、早[はや]めに " },
+          { text: "会社[かいしゃ]の パーティーは うるさいから、早[はや]めに " },
           { text: "帰[かえ]ることにする", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "早めに with は and から",
       },
       {
         segments: [
-          { text: "パーティーが うるさいので、早[はや]めに 家[いえ]に " },
+          { text: "会社[かいしゃ]の パーティーが うるさいので、早[はや]めに 家[いえ]に " },
           { text: "帰[かえ]ることにする", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "早めに plus explicit 家に",
       },
       {
         segments: [
-          { text: "パーティーが うるさいから、早[はや]めに 家[いえ]に " },
+          { text: "会社[かいしゃ]の パーティーが うるさいから、早[はや]めに 家[いえ]に " },
           { text: "帰[かえ]ることにする", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "早めに 家に帰る with から",
       },
       {
         segments: [
-          { text: "パーティーは うるさいので、早[はや]めに 家[いえ]に " },
+          { text: "会社[かいしゃ]の パーティーは うるさいので、早[はや]めに 家[いえ]に " },
           { text: "帰[かえ]ることにする", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "早めに 家に帰る with topic は",
       },
       {
         segments: [
-          { text: "パーティーは うるさいから、早[はや]めに 家[いえ]に " },
+          { text: "会社[かいしゃ]の パーティーは うるさいから、早[はや]めに 家[いえ]に " },
           { text: "帰[かえ]ることにする", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "早めに 家に帰る with は and から",
       },
       {
         segments: [
-          { text: "パーティーが うるさいので、早[はや]めに うちに " },
+          { text: "会社[かいしゃ]の パーティーが うるさいので、早[はや]めに うちに " },
           { text: "帰[かえ]ることにする", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "早めに うちに帰る",
       },
       {
         segments: [
-          { text: "パーティーが うるさいから、早[はや]めに うちに " },
+          { text: "会社[かいしゃ]の パーティーが うるさいから、早[はや]めに うちに " },
           { text: "帰[かえ]ることにする", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "早めに うちに帰る with から",
       },
       {
         segments: [
-          { text: "パーティーは うるさいので、早[はや]めに うちに " },
+          { text: "会社[かいしゃ]の パーティーは うるさいので、早[はや]めに うちに " },
           { text: "帰[かえ]ることにする", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "早めに うちに帰る with topic は",
       },
       {
         segments: [
-          { text: "パーティーは うるさいから、早[はや]めに うちに " },
+          { text: "会社[かいしゃ]の パーティーは うるさいから、早[はや]めに うちに " },
           { text: "帰[かえ]ることにする", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "早めに うちに帰る with は and から",
       },
       {
         segments: [
-          { text: "パーティーが にぎやかすぎるので、早[はや]く " },
+          { text: "会社[かいしゃ]の パーティーが にぎやかすぎるので、早[はや]く " },
           { text: "帰[かえ]ることにする", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "Using にぎやかすぎる to express too lively/noisy",
       },
       {
         segments: [
-          { text: "パーティーが にぎやかすぎるから、早[はや]く " },
+          { text: "会社[かいしゃ]の パーティーが にぎやかすぎるから、早[はや]く " },
           { text: "帰[かえ]ることにする", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "にぎやかすぎる with から",
       },
       {
         segments: [
-          { text: "パーティーは にぎやかすぎるので、早[はや]く " },
+          { text: "会社[かいしゃ]の パーティーは にぎやかすぎるので、早[はや]く " },
           { text: "帰[かえ]ることにする", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "にぎやかすぎる with topic は",
       },
       {
         segments: [
-          { text: "パーティーは にぎやかすぎるから、早[はや]く " },
+          { text: "会社[かいしゃ]の パーティーは にぎやかすぎるから、早[はや]く " },
           { text: "帰[かえ]ることにする", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "にぎやかすぎる with は and から",
       },
       {
         segments: [
-          { text: "パーティーが にぎやかすぎるので、早[はや]めに " },
+          { text: "会社[かいしゃ]の パーティーが にぎやかすぎるので、早[はや]めに " },
           { text: "帰[かえ]ることにする", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "にぎやかすぎる with 早めに",
       },
       {
         segments: [
-          { text: "パーティーが にぎやかすぎるから、早[はや]めに " },
+          { text: "会社[かいしゃ]の パーティーが にぎやかすぎるから、早[はや]めに " },
           { text: "帰[かえ]ることにする", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "にぎやかすぎる, から, and 早めに",
       },
       {
         segments: [
-          { text: "パーティーは にぎやかすぎるので、早[はや]めに " },
+          { text: "会社[かいしゃ]の パーティーは にぎやかすぎるので、早[はや]めに " },
           { text: "帰[かえ]ることにする", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "にぎやかすぎる and 早めに with topic は",
       },
       {
         segments: [
-          { text: "パーティーは にぎやかすぎるから、早[はや]めに " },
+          { text: "会社[かいしゃ]の パーティーは にぎやかすぎるから、早[はや]めに " },
           { text: "帰[かえ]ることにする", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "にぎやかすぎる, は, から, and 早めに",
       },
       {
         segments: [
-          { text: "パーティーが にぎやかすぎるので、早[はや]く 家[いえ]に " },
+          { text: "会社[かいしゃ]の パーティーが にぎやかすぎるので、早[はや]く 家[いえ]に " },
           { text: "帰[かえ]ることにする", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "にぎやかすぎる plus explicit 家に",
       },
       {
         segments: [
-          { text: "パーティーが にぎやかすぎるから、早[はや]く 家[いえ]に " },
+          { text: "会社[かいしゃ]の パーティーが にぎやかすぎるから、早[はや]く 家[いえ]に " },
           { text: "帰[かえ]ることにする", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "にぎやかすぎる with explicit 家に and から",
       },
       {
         segments: [
-          { text: "パーティーが にぎやかすぎるので、早[はや]めに 家[いえ]に " },
+          { text: "会社[かいしゃ]の パーティーが にぎやかすぎるので、早[はや]めに 家[いえ]に " },
           { text: "帰[かえ]ることにする", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "にぎやかすぎる, 早めに, explicit 家に",
       },
       {
         segments: [
-          { text: "パーティーが にぎやかすぎるから、早[はや]めに 家[いえ]に " },
+          { text: "会社[かいしゃ]の パーティーが にぎやかすぎるから、早[はや]めに 家[いえ]に " },
           { text: "帰[かえ]ることにする", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
         notes: "にぎやかすぎる, 早めに, explicit 家に with から",

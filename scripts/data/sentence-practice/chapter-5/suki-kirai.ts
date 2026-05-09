@@ -110,11 +110,11 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "The music I like is old.",
+    english: "The music my father likes is old.",
     answers: [
       {
         segments: [
-          { text: "私[わたし]が" },
+          { text: "父[ちち]が" },
           { text: "好[す]き", blank: true },
           { text: "な 音楽[おんがく]は" },
           {
@@ -128,11 +128,11 @@ export const questions: Question[] = [
           },
         ],
         notes:
-          "Core structure: 私が好きな音楽 — が marks the subject in the relative clause modifying 音楽",
+          "Core structure: 父が好きな音楽 — が marks the subject in the relative clause modifying 音楽",
       },
       {
         segments: [
-          { text: "私[わたし]の" },
+          { text: "父[ちち]の" },
           { text: "好[す]き", blank: true },
           { text: "な 音楽[おんがく]は" },
           {
@@ -147,23 +147,6 @@ export const questions: Question[] = [
         ],
         notes:
           "Using の instead of が in the relative clause — both are natural for 好きな",
-      },
-      {
-        segments: [
-          { text: "好[す]き", blank: true },
-          { text: "な 音楽[おんがく]は" },
-          {
-            text: "古[ふる]い",
-            conjugation: {
-              pos: "I-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes:
-          "Dropping 私が — subject implied from context, very natural in casual speech",
       },
     ],
   },

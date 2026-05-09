@@ -353,31 +353,32 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Can I take a photo here?",
+    english: "Can I take a photo of this menu here?",
+    hint: "menu = メニュー",
     answers: [
       {
         segments: [
-          { text: "ここで 写真[しゃしん]が" },
+          { text: "ここで この メニューの 写真[しゃしん]が" },
           { text: "撮[と]る", blank: true, conjugation: potential("Godan verb with 'ru' ending") },
           { text: "か" },
         ],
       },
       {
         segments: [
-          { text: "ここで 写真[しゃしん]を" },
+          { text: "ここで この メニューの 写真[しゃしん]を" },
           { text: "撮[と]る", blank: true, conjugation: potential("Godan verb with 'ru' ending") },
           { text: "か" },
         ],
-        notes: "を is also used for the photo being taken.",
+        notes: "を is also used for the photo being taken; the menu makes the permission question more specific.",
       },
       {
         segments: [
-          { text: "ここで 写真[しゃしん]を 撮[と]る" },
+          { text: "ここで この メニューの 写真[しゃしん]を 撮[と]る" },
           { text: "ことが", blank: true },
           { text: "できる", blank: true, conjugation: normal("Ichidan verb") },
           { text: "か" },
         ],
-        notes: "ことができる asks if taking photos is allowed or possible here.",
+        notes: "ことができる asks if taking a menu photo is allowed or possible here.",
       },
     ],
   },

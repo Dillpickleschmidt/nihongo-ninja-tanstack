@@ -106,22 +106,22 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "I bought bread at the supermarket.",
+    english: "I bought bread for tomorrow's breakfast at the supermarket.",
     answers: [
       {
         segments: [
-          { text: "スーパーでパンを" },
+          { text: "スーパーで 明日[あした]の 朝[あさ]ご飯[はん]の パンを" },
           { text: "買[か]いました", blank: true },
         ],
       },
     ],
   },
   {
-    english: "I waited at the hospital.",
+    english: "I waited for my friend at the hospital.",
     answers: [
       {
         segments: [
-          { text: "病院[びょういん]で" },
+          { text: "病院[びょういん]で 友達[ともだち]を" },
           { text: "待[ま]ちました", blank: true },
         ],
       },

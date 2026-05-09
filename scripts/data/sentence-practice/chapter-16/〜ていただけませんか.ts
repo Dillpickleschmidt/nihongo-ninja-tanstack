@@ -78,11 +78,11 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Would you mind opening the window?",
+    english: "It is hot in this room; would you mind opening the window?",
     answers: [
       {
         segments: [
-          { text: "窓[まど]を" },
+          { text: "この 部屋[へや]が 暑[あつ]いので、窓[まど]を" },
           { text: "開[あ]けて" },
           { text: "いただけませんか", blank: true },
         ],
@@ -90,7 +90,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "窓[まど]を" },
+          { text: "この 部屋[へや]が 暑[あつ]いので、窓[まど]を" },
           { text: "開[あ]けて" },
           { text: "もらえませんか", blank: true },
         ],
@@ -99,7 +99,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "すみませんが、窓[まど]を" },
+          { text: "すみませんが、この 部屋[へや]が 暑[あつ]いので、窓[まど]を" },
           { text: "開[あ]けて" },
           { text: "いただけませんか", blank: true },
         ],
@@ -108,7 +108,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "すみませんが、窓[まど]を" },
+          { text: "すみませんが、この 部屋[へや]が 暑[あつ]いので、窓[まど]を" },
           { text: "開[あ]けて" },
           { text: "もらえませんか", blank: true },
         ],
@@ -117,7 +117,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "ちょっと窓[まど]を" },
+          { text: "この 部屋[へや]が 暑[あつ]いので、ちょっと窓[まど]を" },
           { text: "開[あ]けて" },
           { text: "いただけませんか", blank: true },
         ],
@@ -126,7 +126,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "ちょっと窓[まど]を" },
+          { text: "この 部屋[へや]が 暑[あつ]いので、ちょっと窓[まど]を" },
           { text: "開[あ]けて" },
           { text: "もらえませんか", blank: true },
         ],
@@ -503,45 +503,45 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Would you mind sending me this file?",
+    english: "Would you mind sending me this file before the meeting?",
     answers: [
       {
         segments: [
-          { text: "このファイルを 送[おく]っていただけませんか", blank: true },
+          { text: "会議[かいぎ]の 前[まえ]に このファイルを 送[おく]っていただけませんか", blank: true },
         ],
         register: "polite",
       },
       {
         segments: [
-          { text: "このファイルを 送[おく]ってもらえませんか", blank: true },
+          { text: "会議[かいぎ]の 前[まえ]に このファイルを 送[おく]ってもらえませんか", blank: true },
         ],
         register: "polite",
         notes: "てもらえませんか form — slightly less formal than いただけませんか",
       },
       {
         segments: [
-          { text: "このファイルを 私[わたし]に 送[おく]っていただけませんか", blank: true },
+          { text: "会議[かいぎ]の 前[まえ]に このファイルを 私[わたし]に 送[おく]っていただけませんか", blank: true },
         ],
         register: "polite",
         notes: "Explicitly includes 私に (to me) for clarity",
       },
       {
         segments: [
-          { text: "このファイルを 私[わたし]に 送[おく]ってもらえませんか", blank: true },
+          { text: "会議[かいぎ]の 前[まえ]に このファイルを 私[わたし]に 送[おく]ってもらえませんか", blank: true },
         ],
         register: "polite",
         notes: "てもらえませんか with explicit 私に",
       },
       {
         segments: [
-          { text: "すみませんが、このファイルを 送[おく]っていただけませんか", blank: true },
+          { text: "すみませんが、会議[かいぎ]の 前[まえ]に このファイルを 送[おく]っていただけませんか", blank: true },
         ],
         register: "polite",
         notes: "Softened with すみませんが (excuse me, but...) before the request — very natural polite phrasing",
       },
       {
         segments: [
-          { text: "すみませんが、このファイルを 送[おく]ってもらえませんか", blank: true },
+          { text: "すみませんが、会議[かいぎ]の 前[まえ]に このファイルを 送[おく]ってもらえませんか", blank: true },
         ],
         register: "polite",
         notes: "Softened with すみませんが + てもらえませんか",

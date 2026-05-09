@@ -2,47 +2,47 @@ import type { Question } from "../types";
 
 export const questions: Question[] = [
   {
-    english: "It takes three hours to translate this file.",
-    hint: "file = ファイル",
+    english: "It takes three hours to translate this whole long email.",
+    hint: "email = メール",
     answers: [
       {
         segments: [
-          { text: "この ファイルを 訳[やく]すのに", blank: true },
+          { text: "この 長[なが]い メールを 全部[ぜんぶ] 訳[やく]すのに", blank: true },
           { text: "三時間[さんじかん] " },
           { text: "かかる", conjugation: { pos: "Godan verb with 'ru' ending", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
       },
       {
         segments: [
-          { text: "この ファイルは 訳[やく]すのに", blank: true },
+          { text: "この 長[なが]い メールは 全部[ぜんぶ] 訳[やく]すのに", blank: true },
           { text: "三時間[さんじかん] " },
           { text: "かかる", conjugation: { pos: "Godan verb with 'ru' ending", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
       },
       {
         segments: [
-          { text: "この ファイルを 翻訳[ほんやく]するのに", blank: true },
+          { text: "この 長[なが]い メールを 全部[ぜんぶ] 翻訳[ほんやく]するのに", blank: true },
           { text: "三時間[さんじかん] " },
           { text: "かかる", conjugation: { pos: "Godan verb with 'ru' ending", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
       },
       {
         segments: [
-          { text: "この ファイルは 翻訳[ほんやく]するのに", blank: true },
+          { text: "この 長[なが]い メールは 全部[ぜんぶ] 翻訳[ほんやく]するのに", blank: true },
           { text: "三時間[さんじかん] " },
           { text: "かかる", conjugation: { pos: "Godan verb with 'ru' ending", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
       },
       {
         segments: [
-          { text: "この ファイルを 訳[やく]すのに", blank: true },
+          { text: "この 長[なが]い メールを 全部[ぜんぶ] 訳[やく]すのに", blank: true },
           { text: "かかる 時間[じかん]は 三時間[さんじかん] " },
           { text: "です" },
         ],
       },
       {
         segments: [
-          { text: "この ファイルを 翻訳[ほんやく]するのに", blank: true },
+          { text: "この 長[なが]い メールを 全部[ぜんぶ] 翻訳[ほんやく]するのに", blank: true },
           { text: "かかる 時間[じかん]は 三時間[さんじかん] " },
           { text: "です" },
         ],

@@ -1540,39 +1540,39 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "There is a cat named Tama under the sofa.",
+    english: "In the apartment photo, there is a cat named Tama under the sofa.",
     hint: "Tama = タマ",
     answers: [
       {
         segments: [
-          { text: "ソファの 下[した]に、タマ" },
+          { text: "アパートの 写真[しゃしん]では、ソファの 下[した]に、タマ" },
           { text: "という", blank: true },
           { text: "猫[ねこ]が " },
           { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Standard word order: location first, then the cat named Tama",
+        notes: "Adds a real-estate photo context; location first, then the cat named Tama",
       },
       {
         segments: [
-          { text: "タマ" },
+          { text: "アパートの 写真[しゃしん]では、タマ" },
           { text: "という", blank: true },
           { text: "猫[ねこ]が ソファの 下[した]に " },
           { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Subject first, then location",
+        notes: "Adds the apartment-photo setting with the named cat before the location",
       },
       {
         segments: [
-          { text: "ソファの 下[した]には、タマ" },
+          { text: "アパートの 写真[しゃしん]では、ソファの 下[した]には、タマ" },
           { text: "という", blank: true },
           { text: "猫[ねこ]が " },
           { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Using には to mark the location as the topic",
+        notes: "Uses には to mark the location as the topic within the apartment photo",
       },
       {
         segments: [
-          { text: "ソファの 下[した]に、タマ" },
+          { text: "アパートの 写真[しゃしん]では、ソファの 下[した]に、タマ" },
           { text: "という", blank: true },
           { text: "名前[なまえ]の 猫[ねこ]が " },
           { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
@@ -1581,7 +1581,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "タマ" },
+          { text: "アパートの 写真[しゃしん]では、タマ" },
           { text: "という", blank: true },
           { text: "名前[なまえ]の 猫[ねこ]が ソファの 下[した]に " },
           { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
@@ -1590,7 +1590,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "ソファの 下[した]には、タマ" },
+          { text: "アパートの 写真[しゃしん]では、ソファの 下[した]には、タマ" },
           { text: "という", blank: true },
           { text: "名前[なまえ]の 猫[ねこ]が " },
           { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },

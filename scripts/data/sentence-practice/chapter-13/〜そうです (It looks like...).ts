@@ -74,57 +74,58 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "That party looks fun.",
+    english: "That club party after the exam looks fun.",
+    hint: "club party = クラブのパーティー",
     answers: [
       {
         segments: [
-          { text: "その パーティーは " },
+          { text: "試験[しけん]の 後[あと]の その クラブの パーティーは " },
           { text: "楽[たの]しそう", blank: true },
           { text: "です" },
         ],
-        notes: "Standard translation using その and topic は.",
+        notes: "Standard translation using その and topic は, with a more specific club context.",
       },
       {
         segments: [
-          { text: "あの パーティーは " },
+          { text: "試験[しけん]の 後[あと]の あの クラブの パーティーは " },
           { text: "楽[たの]しそう", blank: true },
           { text: "です" },
         ],
-        notes: "Using あの for “that” party over there.",
+        notes: "Using あの for “that” club party over there.",
       },
       {
         segments: [
-          { text: "その パーティーが " },
+          { text: "試験[しけん]の 後[あと]の その クラブの パーティーが " },
           { text: "楽[たの]しそう", blank: true },
           { text: "です" },
         ],
-        notes: "Using が to point out that specific party as looking fun.",
+        notes: "Using が to point out that specific club party as looking fun.",
       },
       {
         segments: [
-          { text: "あの パーティーが " },
+          { text: "試験[しけん]の 後[あと]の あの クラブの パーティーが " },
           { text: "楽[たの]しそう", blank: true },
           { text: "です" },
         ],
-        notes: "Using あの with が for a party being noticed visually.",
+        notes: "Using あの with が for a club party being noticed visually.",
       },
       {
         segments: [
-          { text: "それは " },
+          { text: "それは 試験[しけん]の 後[あと]の " },
           { text: "楽[たの]しそうな", blank: true },
-          { text: "パーティー" },
+          { text: "クラブの パーティー" },
           { text: "です" },
         ],
-        notes: "Uses そうな before a noun: “That is a fun-looking party,” ",
+        notes: "Uses そうな before a noun: “That is a fun-looking club party after the exam.”",
       },
       {
         segments: [
-          { text: "あれは " },
+          { text: "あれは 試験[しけん]の 後[あと]の " },
           { text: "楽[たの]しそうな", blank: true },
-          { text: "パーティー" },
+          { text: "クラブの パーティー" },
           { text: "です" },
         ],
-        notes: "Uses あれ and そうな before パーティー, ",
+        notes: "Uses あれ and そうな before クラブのパーティー.",
       },
     ],
   },

@@ -317,11 +317,11 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "I'm going to the cafeteria to eat lunch.",
+    english: "I'm going to the cafeteria to eat lunch with a friend.",
     answers: [
       {
         segments: [
-          { text: "私[わたし]は 食堂[しょくどう]に 昼[ひる]ご 飯[はん]を" },
+          { text: "私[わたし]は 友達[ともだち]と 食堂[しょくどう]に 昼[ひる]ご 飯[はん]を" },
           { text: "食[た]べに", blank: true },
           {
             text: "行[い]く",
@@ -337,7 +337,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "私[わたし]は 食堂[しょくどう]へ 昼[ひる]ご 飯[はん]を" },
+          { text: "私[わたし]は 友達[ともだち]と 食堂[しょくどう]へ 昼[ひる]ご 飯[はん]を" },
           { text: "食[た]べに", blank: true },
           {
             text: "行[い]く",
@@ -350,11 +350,11 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "へ instead of に",
+        notes: "へ instead of に; keeps 友達と for 'with a friend'",
       },
       {
         segments: [
-          { text: "私[わたし]は 食堂[しょくどう]に ご 飯[はん]を" },
+          { text: "私[わたし]は 友達[ともだち]と 食堂[しょくどう]に ご 飯[はん]を" },
           { text: "食[た]べに", blank: true },
           {
             text: "行[い]く",
@@ -367,11 +367,11 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "ご飯 instead of 昼ご飯",
+        notes: "ご飯 instead of 昼ご飯; keeps 友達と for 'with a friend'",
       },
       {
         segments: [
-          { text: "私[わたし]は 食堂[しょくどう]へ ご 飯[はん]を" },
+          { text: "私[わたし]は 友達[ともだち]と 食堂[しょくどう]へ ご 飯[はん]を" },
           { text: "食[た]べに", blank: true },
           {
             text: "行[い]く",
@@ -384,11 +384,11 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "ご飯 + へ",
+        notes: "ご飯 + へ; keeps 友達と for 'with a friend'",
       },
       {
         segments: [
-          { text: "食堂[しょくどう]に 昼[ひる]ご 飯[はん]を" },
+          { text: "友達[ともだち]と 食堂[しょくどう]に 昼[ひる]ご 飯[はん]を" },
           { text: "食[た]べに", blank: true },
           {
             text: "行[い]く",
@@ -401,16 +401,16 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Subject 私は dropped",
+        notes: "Subject 私は dropped; keeps 友達と for 'with a friend'",
       },
     ],
   },
   {
-    english: "I'm going to the cafe to drink coffee.",
+    english: "I'm going to the cafe to drink coffee with a friend.",
     answers: [
       {
         segments: [
-          { text: "私[わたし]は カフェに コーヒーを" },
+          { text: "私[わたし]は 友達[ともだち]と カフェに コーヒーを" },
           { text: "飲[の]みに", blank: true },
           {
             text: "行[い]く",
@@ -423,10 +423,11 @@ export const questions: Question[] = [
             },
           },
         ],
+        notes: "Adds 友達と for a concrete social plan",
       },
       {
         segments: [
-          { text: "私[わたし]は カフェへ コーヒーを" },
+          { text: "私[わたし]は 友達[ともだち]と カフェへ コーヒーを" },
           { text: "飲[の]みに", blank: true },
           {
             text: "行[い]く",
@@ -439,11 +440,11 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "へ instead of に",
+        notes: "へ instead of に; adds 友達と",
       },
       {
         segments: [
-          { text: "私[わたし]が カフェに コーヒーを" },
+          { text: "私[わたし]が 友達[ともだち]と カフェに コーヒーを" },
           { text: "飲[の]みに", blank: true },
           {
             text: "行[い]く",
@@ -456,11 +457,11 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "が instead of は",
+        notes: "が instead of は; adds 友達と",
       },
       {
         segments: [
-          { text: "私[わたし]が カフェへ コーヒーを" },
+          { text: "私[わたし]が 友達[ともだち]と カフェへ コーヒーを" },
           { text: "飲[の]みに", blank: true },
           {
             text: "行[い]く",
@@ -473,11 +474,11 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "が + へ",
+        notes: "が + へ; adds 友達と",
       },
       {
         segments: [
-          { text: "私[わたし]は コーヒーを" },
+          { text: "私[わたし]は 友達[ともだち]と コーヒーを" },
           { text: "飲[の]みに", blank: true },
           { text: "カフェに", blank: true },
           {
@@ -491,11 +492,11 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Purpose before destination",
+        notes: "Purpose before destination; adds 友達と",
       },
       {
         segments: [
-          { text: "私[わたし]は コーヒーを" },
+          { text: "私[わたし]は 友達[ともだち]と コーヒーを" },
           { text: "飲[の]みに", blank: true },
           { text: "カフェへ", blank: true },
           {
@@ -509,7 +510,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Purpose before destination + へ",
+        notes: "Purpose before destination + へ; adds 友達と",
       },
     ],
   },

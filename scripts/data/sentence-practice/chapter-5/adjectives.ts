@@ -2,12 +2,12 @@ import type { Question } from "../types"
 
 export const questions: Question[] = [
   {
-    english: "The sea is beautiful.",
+    english: "The sea is really beautiful today.",
     answers: [
       {
         segments: [
           {
-            text: "海[うみ]は",
+            text: "今日[きょう]の 海[うみ]は すごく",
           },
           {
             text: "きれい",
@@ -17,6 +17,7 @@ export const questions: Question[] = [
             text: "です",
           },
         ],
+        notes: "今日の海 makes the simple adjective sentence sound like a real comment about today's view",
       },
     ],
   },

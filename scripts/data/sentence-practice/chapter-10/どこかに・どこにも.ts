@@ -2,12 +2,12 @@ import type { Question } from "../types"
 
 export const questions: Question[] = [
   {
-    english: "Is Kenji going somewhere this weekend?",
+    english: "Is Kenji taking the Shinkansen somewhere this weekend?",
     hint: "Kenji = けんじ",
     answers: [
       {
         segments: [
-          { text: "けんじさんは 週末[しゅうまつ]" },
+          { text: "けんじさんは 週末[しゅうまつ] 新幹線[しんかんせん]で" },
           { text: "どこかに", blank: true },
           {
             text: "行[い]く",
@@ -24,7 +24,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "けんじさんは 週末[しゅうまつ] どこかへ 行[い]く",
+            text: "けんじさんは 週末[しゅうまつ] 新幹線[しんかんせん]で どこかへ 行[い]く",
             conjugation: {
               pos: "Godan verb - Iku/Yuku special class",
               form: "normal",
@@ -37,7 +37,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "けんじさんは 今週末[こんしゅうまつ]" },
+          { text: "けんじさんは 今週末[こんしゅうまつ] 新幹線[しんかんせん]で" },
           { text: "どこかに", blank: true },
           {
             text: "行[い]く",
@@ -50,11 +50,11 @@ export const questions: Question[] = [
           },
           { text: "か" },
         ],
-        notes: "今週末 (this weekend) instead of 週末",
+        notes: "今週末 (this weekend) instead of 週末, with 新幹線で"
       },
       {
         segments: [
-          { text: "けんじさんは 今週末[こんしゅうまつ]" },
+          { text: "けんじさんは 今週末[こんしゅうまつ] 新幹線[しんかんせん]で" },
           { text: "どこかへ", blank: true },
           {
             text: "行[い]く",
@@ -67,16 +67,16 @@ export const questions: Question[] = [
           },
           { text: "か" },
         ],
-        notes: "今週末 + へ",
+        notes: "今週末 + へ, with 新幹線で"
       },
     ],
   },
   {
-    english: "I didn't go anywhere last weekend — I just chilled out at home.",
+    english: "It rained last weekend, so I didn't go anywhere — I just chilled out at home.",
     answers: [
       {
         segments: [
-          { text: "先週[せんしゅう]の 週末[しゅうまつ]は、" },
+          { text: "先週[せんしゅう]の 週末[しゅうまつ]は 雨[あめ]が 降[ふ]っていたから、" },
           { text: "どこにも", blank: true },
           { text: "行[い]かなかった。家[いえ]で ごろごろして" },
           { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "past" } },
@@ -86,7 +86,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "先週[せんしゅう]の 週末[しゅうまつ]は、どこにも 行[い]かなかった。家[いえ]で ごろごろしていた。",
+            text: "先週[せんしゅう]の 週末[しゅうまつ]は 雨[あめ]が 降[ふ]っていたから、どこにも 行[い]かなかった。家[いえ]で ごろごろしていた。",
           },
         ],
         notes: "Same wording in one sentence",
@@ -94,7 +94,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "先週[せんしゅう]の 週末[しゅうまつ]は、どこにも 行[い]きませんでした。家[いえ]で ごろごろしていました。",
+            text: "先週[せんしゅう]の 週末[しゅうまつ]は 雨[あめ]が 降[ふ]っていたから、どこにも 行[い]きませんでした。家[いえ]で ごろごろしていました。",
           },
         ],
         notes: "Polite form",
@@ -102,7 +102,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "先週[せんしゅう]の 週末[しゅうまつ]は、どこへも 行[い]かなかった。家[いえ]で ごろごろしていた。",
+            text: "先週[せんしゅう]の 週末[しゅうまつ]は 雨[あめ]が 降[ふ]っていたから、どこへも 行[い]かなかった。家[いえ]で ごろごろしていた。",
           },
         ],
         notes: "どこへも instead of どこにも",
@@ -110,7 +110,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "先週[せんしゅう]の 週末[しゅうまつ]は、どこへも 行[い]きませんでした。家[いえ]で ごろごろしていました。",
+            text: "先週[せんしゅう]の 週末[しゅうまつ]は 雨[あめ]が 降[ふ]っていたから、どこへも 行[い]きませんでした。家[いえ]で ごろごろしていました。",
           },
         ],
         notes: "どこへも polite",
@@ -118,7 +118,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "先週[せんしゅう]の 週末[しゅうまつ]、どこにも 行[い]かなかった。家[いえ]で ごろごろしていた。",
+            text: "先週[せんしゅう]の 週末[しゅうまつ]、雨[あめ]が 降[ふ]っていたから、どこにも 行[い]かなかった。家[いえ]で ごろごろしていた。",
           },
         ],
         notes: "は dropped after 週末",
@@ -126,7 +126,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "先週[せんしゅう]の 週末[しゅうまつ]、どこへも 行[い]かなかった。家[いえ]で ごろごろしていた。",
+            text: "先週[せんしゅう]の 週末[しゅうまつ]、雨[あめ]が 降[ふ]っていたから、どこへも 行[い]かなかった。家[いえ]で ごろごろしていた。",
           },
         ],
         notes: "どこへも, 家, は dropped",

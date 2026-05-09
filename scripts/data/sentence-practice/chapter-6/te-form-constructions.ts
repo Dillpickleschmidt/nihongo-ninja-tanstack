@@ -4,19 +4,19 @@ export const questions: Question[] = [
   // ─── てください requests ───
 
   {
-    english: "Please sit down.",
+    english: "Please sit here.",
     answers: [
       {
-        segments: [{ text: "座[すわ]って", blank: true }, { text: "ください" }],
-        notes: "Te-form + ください for a polite request",
+        segments: [{ text: "ここに 座[すわ]って", blank: true }, { text: "ください" }],
+        notes: "Te-form + ください for a polite request; ここに specifies the seat/place",
       },
       {
         segments: [
-          { text: "どうぞ、" },
+          { text: "どうぞ、ここに" },
           { text: "座[すわ]って", blank: true },
           { text: "ください" },
         ],
-        notes: "どうぞ + te-form + ください for a welcoming request",
+        notes: "どうぞ + ここに + te-form + ください for a welcoming request",
       },
     ],
   },
@@ -66,19 +66,19 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Please come to the park.",
+    english: "Please come to the station at six.",
     answers: [
       {
         segments: [
-          { text: "公園[こうえん]に" },
+          { text: "六時[ろくじ]に 駅[えき]に" },
           { text: "来[き]て", blank: true },
           { text: "ください" },
         ],
-        notes: "te-form of 来る + ください, using に for destination",
+        notes: "te-form of 来る + ください, with 六時に for time and 駅に for destination",
       },
       {
         segments: [
-          { text: "公園[こうえん]へ" },
+          { text: "六時[ろくじ]に 駅[えき]へ" },
           { text: "来[き]て", blank: true },
           { text: "ください" },
         ],
@@ -112,20 +112,20 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Please turn on the air conditioner.",
+    english: "It's hot in here, so please turn on the air conditioner.",
     hint: "air conditioner = エアコン",
     answers: [
       {
         segments: [
-          { text: "エアコンを" },
+          { text: "ここは 暑[あつ]いですから、エアコンを" },
           { text: "つけて", blank: true },
           { text: "ください" },
         ],
-        notes: "Basic te-form request: please turn on the air conditioner",
+        notes: "Adds a natural reason before the te-form request: it is hot here",
       },
       {
         segments: [
-          { text: "エアコン" },
+          { text: "ここは 暑[あつ]いですから、エアコン" },
           { text: "つけて", blank: true },
           { text: "ください" },
         ],
@@ -133,16 +133,16 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "このエアコンを" },
+          { text: "この 部屋[へや]は 暑[あつ]いですから、このエアコンを" },
           { text: "つけて", blank: true },
           { text: "ください" },
         ],
         notes:
-          "With この (this air conditioner) — pointing to a specific one nearby",
+          "With この部屋 for 'in here' and このエアコン for a specific air conditioner nearby",
       },
       {
         segments: [
-          { text: "そのエアコンを" },
+          { text: "この 部屋[へや]は 暑[あつ]いですから、そのエアコンを" },
           { text: "つけて", blank: true },
           { text: "ください" },
         ],

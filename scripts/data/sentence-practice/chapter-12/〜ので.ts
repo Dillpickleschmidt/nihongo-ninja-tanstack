@@ -96,53 +96,53 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "This café is quiet, so I often study here.",
+    english: "The university cafe is quiet, so I often study there between classes.",
     answers: [
       {
         segments: [
-          { text: "このカフェは" },
+          { text: "大学[だいがく]の カフェは" },
           { text: "静[しず]かなので", blank: true },
-          { text: "、ここでよく 勉強[べんきょう]します" },
+          { text: "、授業[じゅぎょう]の 間[あいだ]によくそこで 勉強[べんきょう]します" },
         ],
         register: "polite",
       },
       {
         segments: [
-          { text: "このカフェは" },
+          { text: "大学[だいがく]の カフェは" },
           { text: "静[しず]かなので", blank: true },
-          { text: "、ここでよく 勉強[べんきょう]する" },
+          { text: "、授業[じゅぎょう]の 間[あいだ]によくそこで 勉強[べんきょう]する" },
         ],
         register: "casual",
       },
       {
         segments: [
-          { text: "このカフェは" },
+          { text: "大学[だいがく]の カフェは" },
           { text: "静[しず]かなので", blank: true },
-          { text: "、よくここで 勉強[べんきょう]します" },
+          { text: "、授業[じゅぎょう]の 間[あいだ]によくそこで 勉強[べんきょう]します" },
         ],
         register: "polite",
       },
       {
         segments: [
-          { text: "このカフェは" },
+          { text: "大学[だいがく]の カフェは" },
           { text: "静[しず]かなので", blank: true },
-          { text: "、私[わたし]はここでよく 勉強[べんきょう]します" },
+          { text: "、私[わたし]は授業[じゅぎょう]の 間[あいだ]によくそこで 勉強[べんきょう]します" },
         ],
         register: "polite",
       },
       {
         segments: [
-          { text: "このカフェは" },
+          { text: "大学[だいがく]の カフェは" },
           { text: "静[しず]かなので", blank: true },
-          { text: "、ここでよく 勉強[べんきょう]をします" },
+          { text: "、授業[じゅぎょう]の 間[あいだ]によくそこで 勉強[べんきょう]をします" },
         ],
         register: "polite",
       },
       {
         segments: [
-          { text: "このカフェが" },
+          { text: "大学[だいがく]の カフェが" },
           { text: "静[しず]かなので", blank: true },
-          { text: "、ここでよく 勉強[べんきょう]します" },
+          { text: "、授業[じゅぎょう]の 間[あいだ]によくそこで 勉強[べんきょう]します" },
         ],
         register: "polite",
       },
@@ -210,34 +210,34 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "I'm hungry, so I'm going to go buy a sandwich.",
+    english: "I got hungry during class, so I'm going to buy a sandwich after class.",
     hint: "sandwich = サンドイッチ",
     answers: [
       {
         segments: [
-          { text: "おなかがすいているので", blank: true },
-          { text: "、サンドイッチを 買[か]いに 行[い]きます" },
+          { text: "授業中[じゅぎょうちゅう]に おなかがすいているので", blank: true },
+          { text: "、授業[じゅぎょう]の 後[あと]で サンドイッチを 買[か]いに 行[い]きます" },
         ],
         register: "polite",
       },
       {
         segments: [
-          { text: "おなかがすいているので", blank: true },
-          { text: "、サンドイッチを 買[か]いに 行[い]く" },
+          { text: "授業中[じゅぎょうちゅう]に おなかがすいているので", blank: true },
+          { text: "、授業[じゅぎょう]の 後[あと]で サンドイッチを 買[か]いに 行[い]く" },
         ],
         register: "casual",
       },
       {
         segments: [
-          { text: "おなかがすいたので", blank: true },
-          { text: "、サンドイッチを 買[か]いに 行[い]きます" },
+          { text: "授業中[じゅぎょうちゅう]に おなかがすいたので", blank: true },
+          { text: "、授業[じゅぎょう]の 後[あと]で サンドイッチを 買[か]いに 行[い]きます" },
         ],
         register: "polite",
       },
       {
         segments: [
-          { text: "おなかがすいたので", blank: true },
-          { text: "、サンドイッチを 買[か]いに 行[い]く" },
+          { text: "授業中[じゅぎょうちゅう]に おなかがすいたので", blank: true },
+          { text: "、授業[じゅぎょう]の 後[あと]で サンドイッチを 買[か]いに 行[い]く" },
         ],
         register: "casual",
       },

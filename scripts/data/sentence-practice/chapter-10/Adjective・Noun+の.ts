@@ -279,22 +279,22 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "I have two umbrellas. The new one is Kenji's.",
+    english: "There are two umbrellas here because it's raining. The new one is Kenji's.",
     hint: "Kenji = けんじ",
     answers: [
       {
         segments: [
-          { text: "私[わたし]は 傘[かさ]が 二[ふた]つある。" },
+          { text: "雨[あめ]だから、ここに 傘[かさ]が 二[ふた]つある。" },
           { text: "新[あたら]しいのは けんじさんの", blank: true },
           { text: "です" },
         ],
                 notes:
-          "Two sentences: first establishes the context (I have two umbrellas), second uses い-adjective + の to refer back to the umbrella without repeating it. けんじさんの uses possessive の with the noun dropped.",
+          "Two sentences: first establishes the rainy context and two umbrellas, second uses い-adjective + の to refer back to the umbrella without repeating it. けんじさんの uses possessive の with the noun dropped.",
       },
       {
         segments: [
           {
-            text: "私[わたし]は 傘[かさ]が 二[ふた]つある。新[あたら]しいのは けんじさんのです",
+            text: "雨[あめ]だから、ここに 傘[かさ]が 二[ふた]つある。新[あたら]しいのは けんじさんのです",
           },
         ],
         register: "polite",
@@ -303,7 +303,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "傘[かさ]が 二[ふた]つある。新[あたら]しいのは けんじさんのです",
+            text: "ここに 傘[かさ]が 二[ふた]つある。新[あたら]しいのは けんじさんのです",
           },
         ],
         register: "polite",
@@ -312,7 +312,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "私[わたし]は 傘[かさ]を 二[ふた]つ持[も]っている。新[あたら]しいのは けんじさんのです",
+            text: "雨[あめ]だから、傘[かさ]を 二[ふた]つ持[も]っている。新[あたら]しいのは けんじさんのです"
           },
         ],
         register: "polite",
@@ -321,7 +321,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "傘[かさ]は 二[ふた]つある。新[あたら]しいのは けんじさんのです",
+            text: "ここに 傘[かさ]は 二[ふた]つある。新[あたら]しいのは けんじさんのです"
           },
         ],
         register: "polite",

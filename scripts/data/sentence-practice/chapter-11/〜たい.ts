@@ -139,12 +139,12 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Yuki, what do you want to drink at the cafe?",
+    english: "Yuki, what do you want to drink at the cafe after class?",
     hint: "Yuki = ゆき; cafe = カフェ",
     answers: [
       {
         segments: [
-          { text: "ゆきさん、カフェで 何[なに]が " },
+          { text: "ゆきさん、授業[じゅぎょう]の 後[あと]で カフェで 何[なに]が " },
           { text: "飲[の]みたい", blank: true },
           { text: "です" },
           { text: "か" },
@@ -153,7 +153,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "ゆきさん、カフェで 何[なに]を " },
+          { text: "ゆきさん、授業[じゅぎょう]の 後[あと]で カフェで 何[なに]を " },
           { text: "飲[の]みたい", blank: true },
           { text: "です" },
           { text: "か" },
@@ -162,7 +162,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "ゆきさんは カフェで 何[なに]が " },
+          { text: "ゆきさんは 授業[じゅぎょう]の 後[あと]で カフェで 何[なに]が " },
           { text: "飲[の]みたい", blank: true },
           { text: "です" },
           { text: "か" },
@@ -171,7 +171,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "ゆきさんは カフェで 何[なに]を " },
+          { text: "ゆきさんは 授業[じゅぎょう]の 後[あと]で カフェで 何[なに]を " },
           { text: "飲[の]みたい", blank: true },
           { text: "です" },
           { text: "か" },
@@ -2067,12 +2067,12 @@ export const questions: Question[] = [
   },
   {
     english:
-      "Does everyone want to go see the famous castle in Mexico next year?",
+      "Does everyone want to go see a famous temple in Kyoto next year?",
     answers: [
       {
         segments: [
           {
-            text: "来年[らいねん]、皆[みな]さんは メキシコの 有名[ゆうめい]な お城[しろ]を 見[み]に ",
+            text: "来年[らいねん]、皆[みな]さんは 京都[きょうと]の 有名[ゆうめい]な お 寺[てら]を 見[み]に ",
           },
           {
             text: "行[い]きたい",
@@ -2087,12 +2087,12 @@ export const questions: Question[] = [
           { text: "か" },
         ],
         notes:
-          "Standard order with 来年 first and お城; たい conjugated as an い-adjective",
+          "Standard order with 来年 first and お寺; たい conjugated as an い-adjective",
       },
       {
         segments: [
           {
-            text: "皆[みな]さんは 来年[らいねん]、メキシコの 有名[ゆうめい]な お城[しろ]を 見[み]に ",
+            text: "皆[みな]さんは 来年[らいねん]、京都[きょうと]の 有名[ゆうめい]な お 寺[てら]を 見[み]に ",
           },
           {
             text: "行[い]きたい",
@@ -2111,7 +2111,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "メキシコの 有名[ゆうめい]な お城[しろ]を、皆[みな]さんは 来年[らいねん] 見[み]に ",
+            text: "京都[きょうと]の 有名[ゆうめい]な お 寺[てら]を、皆[みな]さんは 来年[らいねん] 見[み]に ",
           },
           {
             text: "行[い]きたい",
@@ -2168,7 +2168,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "来年[らいねん]、みんなは メキシコの 有名[ゆうめい]な お城[しろ]を 見[み]に ",
+            text: "来年[らいねん]、みんなは 京都[きょうと]の 有名[ゆうめい]な お 寺[てら]を 見[み]に ",
           },
           {
             text: "行[い]きたい",
@@ -2187,7 +2187,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "みんなは 来年[らいねん]、メキシコの 有名[ゆうめい]な お城[しろ]を 見[み]に ",
+            text: "みんなは 来年[らいねん]、京都[きょうと]の 有名[ゆうめい]な お 寺[てら]を 見[み]に ",
           },
           {
             text: "行[い]きたい",
@@ -2206,7 +2206,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "来年[らいねん]、皆[みな]さん、メキシコの 有名[ゆうめい]な お城[しろ]を 見[み]に ",
+            text: "来年[らいねん]、皆[みな]さん、京都[きょうと]の 有名[ゆうめい]な お 寺[てら]を 見[み]に ",
           },
           {
             text: "行[い]きたい",
@@ -2225,7 +2225,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "皆[みな]さん、来年[らいねん]、メキシコの 有名[ゆうめい]な お城[しろ]を 見[み]に ",
+            text: "皆[みな]さん、来年[らいねん]、京都[きょうと]の 有名[ゆうめい]な お 寺[てら]を 見[み]に ",
           },
           {
             text: "行[い]きたい",
@@ -2244,7 +2244,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "来年[らいねん]、みんな、メキシコの 有名[ゆうめい]な お城[しろ]を 見[み]に ",
+            text: "来年[らいねん]、みんな、京都[きょうと]の 有名[ゆうめい]な お 寺[てら]を 見[み]に ",
           },
           {
             text: "行[い]きたい",
@@ -2263,7 +2263,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "来年[らいねん]、皆[みな]さんは メキシコに ある 有名[ゆうめい]な お城[しろ]を 見[み]に ",
+            text: "来年[らいねん]、皆[みな]さんは 京都[きょうと]に ある 有名[ゆうめい]な お 寺[てら]を 見[み]に ",
           },
           {
             text: "行[い]きたい",
@@ -2277,12 +2277,12 @@ export const questions: Question[] = [
           },
           { text: "か" },
         ],
-        notes: "Using メキシコにある to mean “located in Mexico”",
+        notes: "Using 京都にある to mean “located in Kyoto”",
       },
       {
         segments: [
           {
-            text: "皆[みな]さんは 来年[らいねん]、メキシコに ある 有名[ゆうめい]な お城[しろ]を 見[み]に ",
+            text: "皆[みな]さんは 来年[らいねん]、京都[きょうと]に ある 有名[ゆうめい]な お 寺[てら]を 見[み]に ",
           },
           {
             text: "行[い]きたい",
@@ -2296,12 +2296,12 @@ export const questions: Question[] = [
           },
           { text: "か" },
         ],
-        notes: "Topic-first order with メキシコにある",
+        notes: "Topic-first order with 京都にある",
       },
       {
         segments: [
           {
-            text: "来年[らいねん]、みんなは メキシコに ある 有名[ゆうめい]な お城[しろ]を 見[み]に ",
+            text: "来年[らいねん]、みんなは 京都[きょうと]に ある 有名[ゆうめい]な お 寺[てら]を 見[み]に ",
           },
           {
             text: "行[い]きたい",

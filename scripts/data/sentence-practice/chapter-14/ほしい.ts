@@ -2,21 +2,21 @@ import type { Question } from "../types";
 
 export const questions: Question[] = [
   {
-    english: "I want that red bicycle over there.",
+    english: "I want that red bicycle over there for getting to my morning class.",
     answers: [
       {
         segments: [
-          { text: "私[わたし]は あそこの 赤[あか]い 自転車[じてんしゃ]が " },
+          { text: "私[わたし]は 朝[あさ]の 授業[じゅぎょう]に 行[い]く ために、あそこの 赤[あか]い 自転車[じてんしゃ]が " },
           { text: "ほしい", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Standard wording with あそこの for “over there”.",
+        notes: "Standard wording with あそこの for “over there”; adds a concrete reason for wanting the bicycle.",
       },
       {
         segments: [
-          { text: "私[わたし]は あの 赤[あか]い 自転車[じてんしゃ]が " },
+          { text: "私[わたし]は 朝[あさ]の 授業[じゅぎょう]に 行[い]く ために、あの 赤[あか]い 自転車[じてんしゃ]が " },
           { text: "ほしい", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Using あの for a bicycle away from the speaker.",
+        notes: "Using あの for a bicycle away from the speaker; includes the morning-class commute context.",
       },
     ],
   },

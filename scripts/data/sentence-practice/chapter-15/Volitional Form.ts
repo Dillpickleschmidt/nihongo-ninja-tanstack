@@ -169,79 +169,79 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Let's sing karaoke tonight!",
+    english: "After the exam, let's all go to karaoke tonight!",
     answers: [
       {
         segments: [
-          { text: "今夜[こんや]、カラオケを" },
+          { text: "試験[しけん]の 後[あと]で、今夜[こんや]、カラオケを" },
           { text: "する", blank: true, conjugation: { pos: "Suru verb - special class", form: "volitional", polarity: "positive", tense: "non-past" } },
         ],
       },
       {
         segments: [
-          { text: "今夜[こんや]、カラオケで" },
+          { text: "試験[しけん]の 後[あと]で、今夜[こんや]、カラオケで" },
           { text: "歌[うた]う", blank: true, conjugation: { pos: "Godan verb with 'u' ending", form: "volitional", polarity: "positive", tense: "non-past" } },
         ],
       },
       {
         segments: [
-          { text: "今晩[こんばん]、カラオケを" },
+          { text: "試験[しけん]の 後[あと]で、今晩[こんばん]、カラオケを" },
           { text: "する", blank: true, conjugation: { pos: "Suru verb - special class", form: "volitional", polarity: "positive", tense: "non-past" } },
         ],
         notes: "Using 今晩 instead of 今夜 for \"tonight\"",
       },
       {
         segments: [
-          { text: "今晩[こんばん]、カラオケで" },
+          { text: "試験[しけん]の 後[あと]で、今晩[こんばん]、カラオケで" },
           { text: "歌[うた]う", blank: true, conjugation: { pos: "Godan verb with 'u' ending", form: "volitional", polarity: "positive", tense: "non-past" } },
         ],
         notes: "今晩 + 歌おう at karaoke variation",
       },
       {
         segments: [
-          { text: "今夜[こんや]、カラオケに" },
+          { text: "試験[しけん]の 後[あと]で、今夜[こんや]、カラオケに" },
           { text: "行[い]く", blank: true, conjugation: { pos: "Godan verb - Iku/Yuku special class", form: "volitional", polarity: "positive", tense: "non-past" } },
         ],
         notes: "Let's go to karaoke tonight — カラオケに行こう/行きましょう",
       },
       {
         segments: [
-          { text: "今晩[こんばん]、カラオケに" },
+          { text: "試験[しけん]の 後[あと]で、今晩[こんばん]、カラオケに" },
           { text: "行[い]く", blank: true, conjugation: { pos: "Godan verb - Iku/Yuku special class", form: "volitional", polarity: "positive", tense: "non-past" } },
         ],
         notes: "今晩 + カラオケに行こう variation",
       },
       {
         segments: [
-          { text: "今夜[こんや]、一緒[いっしょ]にカラオケを" },
+          { text: "試験[しけん]の 後[あと]で、今夜[こんや]、一緒[いっしょ]にカラオケを" },
           { text: "する", blank: true, conjugation: { pos: "Suru verb - special class", form: "volitional", polarity: "positive", tense: "non-past" } },
         ],
         notes: "Adding 一緒に (together) — let's do karaoke together tonight",
       },
       {
         segments: [
-          { text: "今夜[こんや]、一緒[いっしょ]にカラオケで" },
+          { text: "試験[しけん]の 後[あと]で、今夜[こんや]、一緒[いっしょ]にカラオケで" },
           { text: "歌[うた]う", blank: true, conjugation: { pos: "Godan verb with 'u' ending", form: "volitional", polarity: "positive", tense: "non-past" } },
         ],
         notes: "一緒に + 歌おう at karaoke tonight",
       },
       {
         segments: [
-          { text: "今夜[こんや]、一緒[いっしょ]にカラオケに" },
+          { text: "試験[しけん]の 後[あと]で、今夜[こんや]、一緒[いっしょ]にカラオケに" },
           { text: "行[い]く", blank: true, conjugation: { pos: "Godan verb - Iku/Yuku special class", form: "volitional", polarity: "positive", tense: "non-past" } },
         ],
         notes: "一緒に + カラオケに行こう tonight",
       },
       {
         segments: [
-          { text: "今夜[こんや]、みんなでカラオケを" },
+          { text: "試験[しけん]の 後[あと]で、今夜[こんや]、みんなでカラオケを" },
           { text: "する", blank: true, conjugation: { pos: "Suru verb - special class", form: "volitional", polarity: "positive", tense: "non-past" } },
         ],
         notes: "みんなで (all together) + しよう",
       },
       {
         segments: [
-          { text: "今夜[こんや]、みんなでカラオケで" },
+          { text: "試験[しけん]の 後[あと]で、今夜[こんや]、みんなでカラオケで" },
           { text: "歌[うた]う", blank: true, conjugation: { pos: "Godan verb with 'u' ending", form: "volitional", polarity: "positive", tense: "non-past" } },
         ],
         notes: "みんなで + 歌おう at karaoke tonight",
@@ -838,27 +838,27 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Shall I send the map to Kenji?",
-    hint: "Kenji = けんじ",
+    english: "Shall I send the map to Kaede on LINE?",
+    hint: "Kaede = 楓 (かえで); LINE = ライン",
     answers: [
       {
         segments: [
-          { text: "地図[ちず]を けんじさんに" },
+          { text: "LINEで 地図[ちず]を 楓[かえで]さんに" },
           { text: "送[おく]る", blank: true, conjugation: { pos: "Godan verb with 'ru' ending", form: "volitional", polarity: "positive", tense: "non-past" } },
           { text: "か" },
         ],
       },
       {
         segments: [
-          { text: "けんじさんに 地図[ちず]を" },
+          { text: "LINEで 楓[かえで]さんに 地図[ちず]を" },
           { text: "送[おく]る", blank: true, conjugation: { pos: "Godan verb with 'ru' ending", form: "volitional", polarity: "positive", tense: "non-past" } },
           { text: "か" },
         ],
-        notes: "Reversed word order: recipient first, then object",
+        notes: "Reversed word order: LINEで plus recipient first, then object",
       },
       {
         segments: [
-          { text: "地図[ちず]を けんじさんへ" },
+          { text: "LINEで 地図[ちず]を 楓[かえで]さんへ" },
           { text: "送[おく]る", blank: true, conjugation: { pos: "Godan verb with 'ru' ending", form: "volitional", polarity: "positive", tense: "non-past" } },
           { text: "か" },
         ],
@@ -866,7 +866,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "けんじさんへ 地図[ちず]を" },
+          { text: "LINEで 楓[かえで]さんへ 地図[ちず]を" },
           { text: "送[おく]る", blank: true, conjugation: { pos: "Godan verb with 'ru' ending", form: "volitional", polarity: "positive", tense: "non-past" } },
           { text: "か" },
         ],
@@ -874,19 +874,19 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "私[わたし]が 地図[ちず]を けんじさんに" },
+          { text: "私[わたし]が LINEで 地図[ちず]を 楓[かえで]さんに" },
           { text: "送[おく]る", blank: true, conjugation: { pos: "Godan verb with 'ru' ending", form: "volitional", polarity: "positive", tense: "non-past" } },
           { text: "か" },
         ],
-        notes: "Explicit subject 私が, emphasizing \"shall I (be the one to) send\"; object first, recipient with に",
+        notes: "Explicit subject 私が, emphasizing \"shall I (be the one to) send\"; LINEで plus object first, recipient with に",
       },
       {
         segments: [
-          { text: "私[わたし]が けんじさんに 地図[ちず]を" },
+          { text: "私[わたし]が LINEで 楓[かえで]さんに 地図[ちず]を" },
           { text: "送[おく]る", blank: true, conjugation: { pos: "Godan verb with 'ru' ending", form: "volitional", polarity: "positive", tense: "non-past" } },
           { text: "か" },
         ],
-        notes: "Explicit 私が, recipient with に placed before object",
+        notes: "Explicit 私が, LINEで plus recipient with に placed before object",
       },
     ],
   },

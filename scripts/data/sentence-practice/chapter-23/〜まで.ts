@@ -218,13 +218,13 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Let's play games at the cafe until five o'clock.",
+    english: "Let's play smartphone games at the cafe until five o'clock.",
     answers: [
       {
         segments: [
           { text: "カフェで " },
           { text: "五時[ごじ]まで", blank: true },
-          { text: "、ゲームを" },
+          { text: "、スマホの ゲームを" },
           { text: "する", conjugation: { pos: "Suru verb - included", form: "volitional", polarity: "positive", tense: "non-past" } },
         ],
         notes: "Standard word order: location, until-time, object, volitional verb.",
@@ -232,14 +232,14 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "五時[ごじ]まで", blank: true },
-          { text: " カフェで ゲームを" },
+          { text: " カフェで スマホの ゲームを" },
           { text: "する", conjugation: { pos: "Suru verb - included", form: "volitional", polarity: "positive", tense: "non-past" } },
         ],
         notes: "Time expression placed first for emphasis.",
       },
       {
         segments: [
-          { text: "カフェで ゲームを " },
+          { text: "カフェで スマホの ゲームを " },
           { text: "五時[ごじ]まで", blank: true },
           { text: " " },
           { text: "する", conjugation: { pos: "Suru verb - included", form: "volitional", polarity: "positive", tense: "non-past" } },
@@ -250,22 +250,22 @@ export const questions: Question[] = [
         segments: [
           { text: "カフェで " },
           { text: "五時[ごじ]まで", blank: true },
-          { text: "、ゲームを" },
+          { text: "、スマホの ゲームを" },
           { text: "やる", conjugation: { pos: "Godan verb with 'ru' ending", form: "volitional", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Uses やる instead of する for playing games.",
+        notes: "Uses やる instead of する for playing smartphone games.",
       },
       {
         segments: [
           { text: "五時[ごじ]まで", blank: true },
-          { text: " カフェで ゲームを" },
+          { text: " カフェで スマホの ゲームを" },
           { text: "やる", conjugation: { pos: "Godan verb with 'ru' ending", form: "volitional", polarity: "positive", tense: "non-past" } },
         ],
         notes: "Uses やる with the time expression first.",
       },
       {
         segments: [
-          { text: "カフェで ゲームを " },
+          { text: "カフェで スマホの ゲームを " },
           { text: "五時[ごじ]まで", blank: true },
           { text: " " },
           { text: "やる", conjugation: { pos: "Godan verb with 'ru' ending", form: "volitional", polarity: "positive", tense: "non-past" } },

@@ -60,21 +60,21 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "I walked home while talking on the phone.",
+    english: "I walked home from the station while talking to my mother on the phone.",
     answers: [
       {
         segments: [
-          { text: "私[わたし]は" },
+          { text: "私[わたし]は 母[はは]と" },
           { text: "電話[でんわ]しながら", blank: true },
-          { text: "家[いえ]まで 歩[ある]いて" },
+          { text: "駅[えき]から 家[いえ]まで 歩[ある]いて" },
           { text: "帰[かえ]る", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "normal", polarity: "positive", tense: "past" } },
         ],
       },
       {
         segments: [
-          { text: "私[わたし]は" },
+          { text: "私[わたし]は 母[はは]と" },
           { text: "電話[でんわ]をしながら", blank: true },
-          { text: "家[いえ]まで 歩[ある]いて" },
+          { text: "駅[えき]から 家[いえ]まで 歩[ある]いて" },
           { text: "帰[かえ]る", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "normal", polarity: "positive", tense: "past" } },
         ],
         notes: "電話をする includes を before 電話.",
@@ -166,11 +166,11 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "I drank coffee while writing a letter.",
+    english: "I drank coffee while writing a birthday card for my mother.",
     answers: [
       {
         segments: [
-          { text: "私[わたし]は 手紙[てがみ]を" },
+          { text: "私[わたし]は 母[はは]の 誕生日[たんじょうび]の カードを" },
           { text: "書[か]きながら", blank: true },
           { text: "コーヒーを" },
           { text: "飲[の]む", conjugation: { pos: "Godan verb with 'mu' ending", form: "normal", polarity: "positive", tense: "past" } },
@@ -180,10 +180,10 @@ export const questions: Question[] = [
         segments: [
           { text: "私[わたし]は コーヒーを" },
           { text: "飲[の]みながら", blank: true },
-          { text: "手紙[てがみ]を" },
+          { text: "母[はは]の 誕生日[たんじょうび]の カードを" },
           { text: "書[か]く", conjugation: { pos: "Godan verb with 'ku' ending", form: "normal", polarity: "positive", tense: "past" } },
         ],
-        notes: "The coffee-drinking can be the simultaneous action while writing the letter.",
+        notes: "The coffee-drinking can be the simultaneous action while writing the birthday card.",
       },
     ],
   },
@@ -231,11 +231,11 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "I ate dinner while watching TV.",
+    english: "After work, I ate dinner alone while watching TV.",
     answers: [
       {
         segments: [
-          { text: "私[わたし]は テレビを" },
+          { text: "仕事[しごと]の 後[あと]で、私[わたし]は 一人[ひとり]で テレビを" },
           { text: "見[み]ながら", blank: true },
           { text: "、晩[ばん]ご 飯[はん]を" },
           { text: "食[た]べる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "past" } },
@@ -243,12 +243,12 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "私[わたし]は テレビを" },
+          { text: "仕事[しごと]の 後[あと]で、私[わたし]は 一人[ひとり]で テレビを" },
           { text: "見[み]ながら", blank: true },
           { text: "、夕[ゆう]ご 飯[はん]を" },
           { text: "食[た]べる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "past" } },
         ],
-        notes: "Using 夕ご飯 instead of 晩ご飯 for dinner",
+        notes: "Using 夕ご飯 instead of 晩ご飯 for dinner; adds an after-work solo dinner context",
       },
     ],
   },

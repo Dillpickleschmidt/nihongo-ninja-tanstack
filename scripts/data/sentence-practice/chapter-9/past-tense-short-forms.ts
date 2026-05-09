@@ -112,48 +112,48 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Last night's party was fun!",
+    english: "Last night's party at my host family's house was fun!",
     answers: [
       {
         segments: [
-          { text: "昨日[きのう]の 夜[よる]のパーティーは" },
+          { text: "昨日[きのう]の 夜[よる]のホストファミリーの 家[いえ]のパーティーは" },
           { text: "楽[たの]しかった", blank: true },
         ],
         notes:
-          'Standard: 昨日の夜 for "last night", い-adjective past form 楽しかった (written directly)',
+          'Standard: 昨日の夜 for "last night" and ホストファミリーの家のパーティー for the setting, with い-adjective past form 楽しかった',
       },
       {
         segments: [
-          { text: "昨晩[さくばん]のパーティーは" },
+          { text: "昨晩[さくばん]のホストファミリーの 家[いえ]のパーティーは" },
           { text: "楽[たの]しかった", blank: true },
         ],
-        notes: 'Using 昨晩 (sakuban) as an alternative word for "last night"',
+        notes: 'Using 昨晩 (sakuban) as an alternative word for "last night", keeping the host-family party setting',
       },
       {
         segments: [
-          { text: "昨日[きのう]の 夜[よる]のパーティーが" },
+          { text: "昨日[きのう]の 夜[よる]のホストファミリーの 家[いえ]のパーティーが" },
           { text: "楽[たの]しかった", blank: true },
         ],
-        notes: "Using が instead of は — emphasizing the party as subject",
+        notes: "Using が instead of は — emphasizing the host-family party as subject"
       },
       {
         segments: [
-          { text: "昨晩[さくばん]のパーティーが" },
+          { text: "昨晩[さくばん]のホストファミリーの 家[いえ]のパーティーが" },
           { text: "楽[たの]しかった", blank: true },
         ],
         notes: "が instead of は; 昨晩",
       },
       {
         segments: [
-          { text: "昨日[きのう]の 夜[よる]は 楽[たの]しいパーティー" },
+          { text: "昨日[きのう]の 夜[よる]は ホストファミリーの 家[いえ]で 楽[たの]しいパーティー" },
           { text: "だった", blank: true },
         ],
         notes:
-          'Using だった after noun: 楽しいパーティーだった — "it was a fun party"; 昨日の夜',
+          'Using だった after noun: 楽しいパーティーだった — "it was a fun party"; ホストファミリーの家で gives the setting'
       },
       {
         segments: [
-          { text: "昨晩[さくばん]は 楽[たの]しいパーティー" },
+          { text: "昨晩[さくばん]は ホストファミリーの 家[いえ]で 楽[たの]しいパーティー" },
           { text: "だった", blank: true },
         ],
         notes: "Using だった after noun; 昨晩",
@@ -409,11 +409,11 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "I didn't eat breakfast this morning.",
+    english: "I got up late this morning, so I didn't eat breakfast.",
     answers: [
       {
         segments: [
-          { text: "今朝[けさ]、朝[あさ]ご 飯[はん]を" },
+          { text: "今朝[けさ]、遅[おそ]く 起[お]きたから、朝[あさ]ご 飯[はん]を" },
           {
             text: " 食[た]べる",
             blank: true,
@@ -428,7 +428,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "今朝[けさ]は 朝[あさ]ご 飯[はん]を" },
+          { text: "今朝[けさ]は 遅[おそ]く 起[お]きたから、朝[あさ]ご 飯[はん]を" },
           {
             text: " 食[た]べる",
             blank: true,
@@ -444,7 +444,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "今朝[けさ]、朝[あさ]ご 飯[はん]は" },
+          { text: "今朝[けさ]、遅[おそ]く 起[お]きたから、朝[あさ]ご 飯[はん]は" },
           {
             text: " 食[た]べる",
             blank: true,
@@ -460,7 +460,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "朝[あさ]ご 飯[はん]を" },
+          { text: "今朝[けさ]、遅[おそ]く 起[お]きたから、朝[あさ]ご 飯[はん]を" },
           {
             text: " 食[た]べる",
             blank: true,
@@ -472,11 +472,11 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Context implied without 今朝",
+        notes: "Reason-first version with 遅く起きたから",
       },
       {
         segments: [
-          { text: "私[わたし]は 今朝[けさ]、朝[あさ]ご 飯[はん]を" },
+          { text: "私[わたし]は 今朝[けさ]、遅[おそ]く 起[お]きたから、朝[あさ]ご 飯[はん]を" },
           {
             text: " 食[た]べる",
             blank: true,
@@ -492,7 +492,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "今朝[けさ]、朝食[ちょうしょく]を" },
+          { text: "今朝[けさ]、遅[おそ]く 起[お]きたから、朝食[ちょうしょく]を" },
           {
             text: " 食[た]べる",
             blank: true,

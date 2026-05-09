@@ -172,11 +172,12 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "I'm sorry for using your computer.",
+    english: "I'm sorry for using your computer right before the presentation.",
+    hint: "presentation = 発表 (はっぴょう)",
     answers: [
       {
         segments: [
-          { text: "パソコンを" },
+          { text: "発表[はっぴょう]の 前[まえ]に パソコンを" },
           { text: "使[つか]って すみませんでした", blank: true },
         ],
         register: "polite",
@@ -184,7 +185,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "コンピューターを" },
+          { text: "発表[はっぴょう]の 前[まえ]に コンピューターを" },
           { text: "使[つか]って すみませんでした", blank: true },
         ],
         register: "polite",
@@ -192,7 +193,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "あなたの パソコンを" },
+          { text: "発表[はっぴょう]の 前[まえ]に あなたの パソコンを" },
           { text: "使[つか]って すみませんでした", blank: true },
         ],
         register: "polite",
@@ -200,7 +201,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "あなたの コンピューターを" },
+          { text: "発表[はっぴょう]の 前[まえ]に あなたの コンピューターを" },
           { text: "使[つか]って すみませんでした", blank: true },
         ],
         register: "polite",

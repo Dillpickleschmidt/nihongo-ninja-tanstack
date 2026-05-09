@@ -139,20 +139,21 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Would you like to eat lunch together?",
+    english: "Would you like to eat lunch together today?",
     answers: [
       {
         segments: [
-          { text: "昼[ひる]ご 飯[はん]を" },
+          { text: "今日[きょう]、昼[ひる]ご 飯[はん]を" },
           { text: "食[た]べませんか", blank: true },
         ],
+        notes: "Adds 今日 to make the invitation a concrete same-day plan",
       },
       {
         segments: [
-          { text: "一緒[いっしょ]に 昼[ひる]ご 飯[はん]を" },
+          { text: "今日[きょう]、一緒[いっしょ]に 昼[ひる]ご 飯[はん]を" },
           { text: "食[た]べませんか", blank: true },
         ],
-        notes: "With 一緒に",
+        notes: "With 一緒に and 今日 to make the invitation a concrete same-day plan",
       },
     ],
   },

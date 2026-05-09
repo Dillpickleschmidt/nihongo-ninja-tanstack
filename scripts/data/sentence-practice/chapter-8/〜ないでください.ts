@@ -94,11 +94,11 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Please don't forget your homework.",
+    english: "Please don't forget your homework tomorrow morning.",
     answers: [
       {
         segments: [
-          { text: "宿題[しゅくだい]を" },
+          { text: "明日[あした]の 朝[あさ]、宿題[しゅくだい]を" },
           { text: "忘[わす]れないで", blank: true },
           { text: "ください", blank: true },
         ],

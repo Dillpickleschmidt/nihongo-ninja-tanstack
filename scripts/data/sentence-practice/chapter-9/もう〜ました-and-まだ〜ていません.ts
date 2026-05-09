@@ -521,12 +521,12 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Has Takeshi already called the restaurant?",
+    english: "Has Takeshi already called his host family?",
     hint: "Takeshi = たけし",
     answers: [
       {
         segments: [
-          { text: "たけしさんはもうレストランに" },
+          { text: "たけしさんはもうホストファミリーに" },
           {
             text: " 電話[でんわ]する",
             blank: true,
@@ -538,11 +538,11 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "たけしさんは + もう + レストランに",
+        notes: "たけしさんは + もう + ホストファミリーに",
       },
       {
         segments: [
-          { text: "たけしさんはもうレストランに 電話[でんわ]を" },
+          { text: "たけしさんはもうホストファミリーに 電話[でんわ]を" },
           {
             text: "する",
             blank: true,
@@ -558,7 +558,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "たけしさんはもうレストランへ" },
+          { text: "たけしさんはもうホストファミリーへ" },
           {
             text: " 電話[でんわ]する",
             blank: true,
@@ -570,11 +570,11 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Using へ instead of に particle",
+        notes: "Using へ instead of に particle with ホストファミリー",
       },
       {
         segments: [
-          { text: "もうたけしさんはレストランに" },
+          { text: "もうたけしさんはホストファミリーに" },
           {
             text: " 電話[でんわ]する",
             blank: true,
@@ -590,7 +590,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "たけしさんがもうレストランに" },
+          { text: "たけしさんがもうホストファミリーに" },
           {
             text: " 電話[でんわ]する",
             blank: true,
@@ -606,7 +606,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "たけしさんがもうレストランに 電話[でんわ]を" },
+          { text: "たけしさんがもうホストファミリーに 電話[でんわ]を" },
           {
             text: "する",
             blank: true,
@@ -622,7 +622,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "たけしさんはもうレストランに" },
+          { text: "たけしさんはもうホストファミリーに" },
           {
             text: " 電話[でんわ]する",
             blank: true,

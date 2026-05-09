@@ -260,23 +260,23 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Even if I eat breakfast, I get hungry before lunch.",
+    english: "Even if I eat breakfast, I get hungry before my morning class ends.",
     answers: [
       {
         segments: [
           { text: "朝[あさ]ご 飯[はん]を 食[た]べ" },
           { text: "ても", blank: true },
-          { text: "、昼[ひる]ご 飯[はん]の 前[まえ]に おなかが すく" },
+          { text: "、午前[ごぜん]の 授業[じゅぎょう]が 終[お]わる 前[まえ]に おなかが すく" },
         ],
-        notes: "Basic wording with ても after 食べ.",
+        notes: "Basic wording with ても after 食べ; adds a concrete school-day context.",
       },
       {
         segments: [
           { text: "朝[あさ]ご 飯[はん]を 食[た]べ" },
           { text: "ても", blank: true },
-          { text: "、昼[ひる]ご 飯[はん]の 前[まえ]に お 腹[なか]が すく" },
+          { text: "、午前[ごぜん]の 授業[じゅぎょう]が 終[お]わる 前[まえ]に お 腹[なか]が すく" },
         ],
-        notes: "Using お腹 for stomach/hunger.",
+        notes: "Using お腹 for stomach/hunger in the same school-day context.",
       },
     ],
   },

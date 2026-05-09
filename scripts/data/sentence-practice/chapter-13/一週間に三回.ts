@@ -217,22 +217,22 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "I only study once a week.",
+    english: "Because of my part-time job, I only study once a week.",
     answers: [
       {
         segments: [
-          { text: "私[わたし]は" },
+          { text: "私[わたし]は アルバイトで" },
           { text: "一週間[いっしゅうかん]に 一回[いっかい]しか", blank: true },
           { text: "勉強[べんきょう]する", conjugation: normal("Suru verb - compound word", "negative") },
         ],
       },
       {
         segments: [
-          { text: "私[わたし]は" },
+          { text: "私[わたし]は アルバイトで" },
           { text: "一週間[いっしゅうかん]に 一度[いちど]しか", blank: true },
           { text: "勉強[べんきょう]する", conjugation: normal("Suru verb - compound word", "negative") },
         ],
-        notes: "一度 is another way to say once.",
+        notes: "一度 is another way to say once; アルバイトで gives the reason.",
       },
     ],
   },

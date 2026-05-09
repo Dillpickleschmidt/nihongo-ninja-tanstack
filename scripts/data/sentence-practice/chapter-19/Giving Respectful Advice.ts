@@ -2,111 +2,112 @@ import type { Question } from "../types";
 
 export const questions: Question[] = [
   {
-    english: "Please have a seat here.",
+    english: "The doctor will be here soon, so please have a seat here.",
     answers: [
       {
         segments: [
-          { text: "どうぞ、こちらに" },
+          { text: "医者[いしゃ]は すぐ 来[き]ますから、どうぞ、こちらに" },
           { text: "お 掛[か]けください", blank: true },
         ],
       },
       {
         segments: [
-          { text: "こちらに" },
+          { text: "医者[いしゃ]は すぐ 来[き]ますから、こちらに" },
           { text: "お 掛[か]けください", blank: true },
         ],
       },
       {
         segments: [
-          { text: "ここに" },
+          { text: "医者[いしゃ]は すぐ 来[き]ますから、ここに" },
           { text: "お 掛[か]けください", blank: true },
         ],
       },
       {
         segments: [
-          { text: "どうぞ、ここに" },
+          { text: "医者[いしゃ]は すぐ 来[き]ますから、どうぞ、ここに" },
           { text: "お 掛[か]けください", blank: true },
         ],
       },
       {
         segments: [
-          { text: "どうぞ、こちらへ" },
+          { text: "医者[いしゃ]は すぐ 来[き]ますから、どうぞ、こちらへ" },
           { text: "お 掛[か]けください", blank: true },
         ],
       },
       {
         segments: [
-          { text: "こちらへ" },
+          { text: "医者[いしゃ]は すぐ 来[き]ますから、こちらへ" },
           { text: "お 掛[か]けください", blank: true },
         ],
       },
       {
         segments: [
-          { text: "どうぞ、こちらに" },
+          { text: "医者[いしゃ]は すぐ 来[き]ますから、どうぞ、こちらに" },
           { text: "お 座[すわ]りください", blank: true },
         ],
       },
       {
         segments: [
-          { text: "こちらに" },
+          { text: "医者[いしゃ]は すぐ 来[き]ますから、こちらに" },
           { text: "お 座[すわ]りください", blank: true },
         ],
       },
     ],
   },
   {
-    english: "Please use this smartphone.",
+    english: "The app coupon is on this smartphone, so please use it.",
+    hint: "app = アプリ; coupon = クーポン",
     answers: [
       {
         segments: [
-          { text: "このスマホを" },
+          { text: "アプリの クーポンは このスマホに ありますから、このスマホを" },
           { text: "お 使[つか]いください", blank: true },
         ],
       },
       {
         segments: [
-          { text: "このスマートフォンを" },
+          { text: "アプリの クーポンは このスマートフォンに ありますから、このスマートフォンを" },
           { text: "お 使[つか]いください", blank: true },
         ],
       },
       {
         segments: [
-          { text: "どうぞ、このスマホを" },
+          { text: "アプリの クーポンは このスマホに ありますから、どうぞ、このスマホを" },
           { text: "お 使[つか]いください", blank: true },
         ],
       },
       {
         segments: [
-          { text: "どうぞ、このスマートフォンを" },
+          { text: "アプリの クーポンは このスマートフォンに ありますから、どうぞ、このスマートフォンを" },
           { text: "お 使[つか]いください", blank: true },
         ],
       },
     ],
   },
   {
-    english: "Please wait here for about ten minutes.",
+    english: "We are preparing your room now, so please wait here for about ten minutes.",
     answers: [
       {
         segments: [
-          { text: "ここで 十分[じゅっぷん]ぐらい" },
+          { text: "今[いま]、部屋[へや]を 準備[じゅんび]していますから、ここで 十分[じゅっぷん]ぐらい" },
           { text: "お 待[ま]ちください", blank: true },
         ],
       },
       {
         segments: [
-          { text: "こちらで 十分[じゅっぷん]ぐらい" },
+          { text: "今[いま]、部屋[へや]を 準備[じゅんび]していますから、こちらで 十分[じゅっぷん]ぐらい" },
           { text: "お 待[ま]ちください", blank: true },
         ],
       },
       {
         segments: [
-          { text: "ここで 十分[じゅっぷん]ほど" },
+          { text: "今[いま]、部屋[へや]を 準備[じゅんび]していますから、ここで 十分[じゅっぷん]ほど" },
           { text: "お 待[ま]ちください", blank: true },
         ],
       },
       {
         segments: [
-          { text: "こちらで 十分[じゅっぷん]ほど" },
+          { text: "今[いま]、部屋[へや]を 準備[じゅんび]していますから、こちらで 十分[じゅっぷん]ほど" },
           { text: "お 待[ま]ちください", blank: true },
         ],
       },

@@ -281,14 +281,14 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "I drink water.",
+    english: "I drink water with breakfast every day.",
     answers: [
       // 私は variant
       {
         segments: [
           { text: "私[わたし]", blank: true },
           { text: "は" },
-          { text: "水[みず]", blank: true },
+          { text: "毎日[まいにち] 朝[あさ]ご飯[はん]に 水[みず]", blank: true },
           { text: "を" },
           {
             text: "飲[の]む",
@@ -300,12 +300,12 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "私は; standard",
+        notes: "私は; standard; 朝ご飯に marks the mealtime",
       },
       // Dropped 私は variant
       {
         segments: [
-          { text: "水[みず]", blank: true },
+          { text: "毎日[まいにち] 朝[あさ]ご飯[はん]に 水[みず]", blank: true },
           { text: "を" },
           {
             text: "飲[の]む",
@@ -324,7 +324,7 @@ export const questions: Question[] = [
         segments: [
           { text: "私[わたし]", blank: true },
           { text: "、" },
-          { text: "水[みず]", blank: true },
+          { text: "毎日[まいにち] 朝[あさ]ご飯[はん]に 水[みず]", blank: true },
           { text: "を" },
           {
             text: "飲[の]む",

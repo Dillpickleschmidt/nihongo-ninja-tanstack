@@ -282,11 +282,12 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "My friend was saying the restaurant is good",
+    english: "My friend was saying the ramen place by the office is good",
+    hint: "ramen = ラーメン",
     answers: [
       {
         segments: [
-          { text: "友[とも]達[だち]はレストランがよいって", blank: true },
+          { text: "友[とも]達[だち]は 会社[かいしゃ]の 近[ちか]くの ラーメン 屋[や]がよいって", blank: true },
           { text: "言[い]っていた" },
         ],
         notes: "Using は for subject and が for topic",
@@ -294,7 +295,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "友[とも]達[だち]はあのレストランはよいって", blank: true },
+          { text: "友[とも]達[だち]は 会社[かいしゃ]の 近[ちか]くの あの ラーメン 屋[や]はよいって", blank: true },
           { text: "言[い]っていた" },
         ],
         notes: "Using は for both, with あの",
@@ -302,7 +303,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "友[とも]達[だち]がそのレストランはよいって", blank: true },
+          { text: "友[とも]達[だち]が 会社[かいしゃ]の 近[ちか]くの その ラーメン 屋[や]はよいって", blank: true },
           { text: "言[い]っていた" },
         ],
         notes: "が subject + は topic + その (that nearby)",
@@ -310,7 +311,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "友[とも]達[だち]がそのレストランがよいって", blank: true },
+          { text: "友[とも]達[だち]が 会社[かいしゃ]の 近[ちか]くの その ラーメン 屋[や]がよいって", blank: true },
           { text: "言[い]っていた" },
         ],
         notes: "が subject + が object + その",
@@ -486,12 +487,12 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "John was saying the coffee shop is crowded",
+    english: "John was saying the train to school is packed this morning",
     hint: "John = ジョン",
     answers: [
       {
         segments: [
-          { text: "ジョンさんはカフェが 込[こ]んでるって", blank: true },
+          { text: "ジョンさんは 今朝[けさ]、学校[がっこう]に 行[い]く 電車[でんしゃ]が 込[こ]んでるって", blank: true },
           { text: "言[い]っていた" },
         ],
         notes: "Using は and が",
@@ -499,7 +500,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "ジョンさんはあのカフェは 込[こ]んでるって", blank: true },
+          { text: "ジョンさんは 今朝[けさ]、学校[がっこう]に 行[い]く 電車[でんしゃ]は 込[こ]んでるって", blank: true },
           { text: "言[い]っていた" },
         ],
         notes: "Using は for both with あの",

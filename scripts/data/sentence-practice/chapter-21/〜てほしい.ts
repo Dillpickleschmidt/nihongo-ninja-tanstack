@@ -2,11 +2,12 @@ import type { Question } from "../types";
 
 export const questions: Question[] = [
   {
-    english: "I want everyone to read this letter.",
+    english: "I want everyone to read this LINE message before tomorrow's club meeting.",
+    hint: "LINE message = LINEのメッセージ; club meeting = クラブの会議",
     answers: [
       {
         segments: [
-          { text: "私[わたし]は 皆[みんな]に この 手紙[てがみ]を " },
+          { text: "私[わたし]は 皆[みんな]に 明日[あした]の クラブの 会議[かいぎ]の 前[まえ]に この LINEのメッセージを " },
           { text: "読[よ]んで", blank: true },
           { text: "ほしい", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
@@ -14,15 +15,15 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "私[わたし]は この 手紙[てがみ]を 皆[みんな]に " },
+          { text: "私[わたし]は 明日[あした]の クラブの 会議[かいぎ]の 前[まえ]に この LINEのメッセージを 皆[みんな]に " },
           { text: "読[よ]んで", blank: true },
           { text: "ほしい", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Object placed before 皆に for emphasis on this letter",
+        notes: "Object/time phrase placed before 皆に for emphasis on the LINE message",
       },
       {
         segments: [
-          { text: "私[わたし]は 皆[みんな]が この 手紙[てがみ]を " },
+          { text: "私[わたし]は 皆[みんな]が 明日[あした]の クラブの 会議[かいぎ]の 前[まえ]に この LINEのメッセージを " },
           { text: "読[よ]んで", blank: true },
           { text: "ほしい", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
@@ -30,7 +31,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "私[わたし]は この 手紙[てがみ]を 皆[みんな]が " },
+          { text: "私[わたし]は 明日[あした]の クラブの 会議[かいぎ]の 前[まえ]に この LINEのメッセージを 皆[みんな]が " },
           { text: "読[よ]んで", blank: true },
           { text: "ほしい", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
@@ -38,15 +39,15 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "私[わたし]は この 手紙[てがみ]は 皆[みんな]に " },
+          { text: "私[わたし]は 明日[あした]の クラブの 会議[かいぎ]の 前[まえ]に この LINEのメッセージは 皆[みんな]に " },
           { text: "読[よ]んで", blank: true },
           { text: "ほしい", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Topicalizing this letter with は",
+        notes: "Topicalizing the LINE message with は",
       },
       {
         segments: [
-          { text: "私[わたし]は この 手紙[てがみ]は 皆[みんな]が " },
+          { text: "私[わたし]は 明日[あした]の クラブの 会議[かいぎ]の 前[まえ]に この LINEのメッセージは 皆[みんな]が " },
           { text: "読[よ]んで", blank: true },
           { text: "ほしい", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
         ],

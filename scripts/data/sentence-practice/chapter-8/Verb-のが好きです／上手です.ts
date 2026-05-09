@@ -975,12 +975,12 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Does Haruto like playing games?",
+    english: "Does Haruto like playing games after doing homework?",
     hint: "Haruto = 陽翔 (はると)",
     answers: [
       {
         segments: [
-          { text: "陽翔[はると]さんは ゲームを するのが" },
+          { text: "陽翔[はると]さんは 宿題[しゅくだい]の 後[あと]で ゲームを するのが" },
           {
             text: " 好[す]き",
             blank: true,
@@ -996,7 +996,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "陽翔[はると]さんは ゲームするのが" },
+          { text: "陽翔[はると]さんは 宿題[しゅくだい]の 後[あと]で ゲームするのが" },
           {
             text: " 好[す]き",
             blank: true,
@@ -1009,11 +1009,11 @@ export const questions: Question[] = [
           },
           { text: "か" },
         ],
-        notes: "ゲームする without を particle",
+        notes: "ゲームする without を particle; keeps the after-homework context.",
       },
       {
         segments: [
-          { text: "陽翔[はると]さんが ゲームを するのが" },
+          { text: "陽翔[はると]さんが 宿題[しゅくだい]の 後[あと]で ゲームを するのが" },
           {
             text: " 好[す]き",
             blank: true,
@@ -1030,7 +1030,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "陽翔[はると]さんが ゲームするのが" },
+          { text: "陽翔[はると]さんが 宿題[しゅくだい]の 後[あと]で ゲームするのが" },
           {
             text: " 好[す]き",
             blank: true,
@@ -1043,7 +1043,7 @@ export const questions: Question[] = [
           },
           { text: "か" },
         ],
-        notes: "が + ゲームする",
+        notes: "が + ゲームする with the after-homework context",
       },
     ],
   },

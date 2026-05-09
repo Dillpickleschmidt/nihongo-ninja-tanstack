@@ -127,11 +127,12 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "I wonder if the food at the party will be good.",
+    english: "I wonder if the food at the club party will be good.",
+    hint: "club = クラブ",
     answers: [
       {
         segments: [
-          { text: "パーティーの 食[た]べ 物[もの]は" },
+          { text: "クラブの パーティーの 食[た]べ 物[もの]は" },
           { text: "よい" },
           { text: "の", blank: true },
           { text: "でしょうか", blank: true },
@@ -140,7 +141,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "パーティーの 食[た]べ 物[もの]は" },
+          { text: "クラブの パーティーの 食[た]べ 物[もの]は" },
           { text: "よい" },
           { text: "でしょうか", blank: true },
         ],
@@ -148,7 +149,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "パーティーの 食[た]べ 物[もの]が" },
+          { text: "クラブの パーティーの 食[た]べ 物[もの]が" },
           { text: "おいしい" },
           { text: "の", blank: true },
           { text: "でしょうか", blank: true },
@@ -157,7 +158,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "パーティーの 食[た]べ 物[もの]が" },
+          { text: "クラブの パーティーの 食[た]べ 物[もの]が" },
           { text: "おいしい" },
           { text: "だろうか", blank: true },
         ],
@@ -165,7 +166,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "パーティーの 食[た]べ 物[もの]は" },
+          { text: "クラブの パーティーの 食[た]べ 物[もの]は" },
           { text: "おいしい" },
           { text: "の", blank: true },
           { text: "でしょうか", blank: true },
@@ -174,7 +175,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "パーティーの 食[た]べ 物[もの]は" },
+          { text: "クラブの パーティーの 食[た]べ 物[もの]は" },
           { text: "おいしい" },
           { text: "だろうか", blank: true },
         ],
@@ -894,11 +895,11 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "I wonder if the new cafe near the station is popular.",
+    english: "I wonder if the new cafe in front of the university is popular.",
     answers: [
       {
         segments: [
-          { text: "駅[えき]の 近[ちか]くの 新[あたら]しいカフェは 人気[にんき]がある" },
+          { text: "大学[だいがく]の 前[まえ]の 新[あたら]しいカフェは 人気[にんき]がある" },
           { text: "の" },
           { text: "でしょうか", blank: true },
         ],
@@ -906,7 +907,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "駅[えき]の 近[ちか]くの 新[あたら]しいカフェは 人気[にんき]がある" },
+          { text: "大学[だいがく]の 前[まえ]の 新[あたら]しいカフェは 人気[にんき]がある" },
           { text: "の" },
           { text: "だろうか", blank: true },
         ],
@@ -914,21 +915,21 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "駅[えき]の 近[ちか]くの 新[あたら]しいカフェは 人気[にんき]がある" },
+          { text: "大学[だいがく]の 前[まえ]の 新[あたら]しいカフェは 人気[にんき]がある" },
           { text: "でしょうか", blank: true },
         ],
         register: "polite",
       },
       {
         segments: [
-          { text: "駅[えき]の 近[ちか]くの 新[あたら]しいカフェは 人気[にんき]がある" },
+          { text: "大学[だいがく]の 前[まえ]の 新[あたら]しいカフェは 人気[にんき]がある" },
           { text: "だろうか", blank: true },
         ],
         register: "casual",
       },
       {
         segments: [
-          { text: "駅[えき]の 近[ちか]くの 新[あたら]しいカフェは 人気[にんき]" },
+          { text: "大学[だいがく]の 前[まえ]の 新[あたら]しいカフェは 人気[にんき]" },
           { text: "な" },
           { text: "の" },
           { text: "でしょうか", blank: true },
@@ -937,7 +938,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "駅[えき]の 近[ちか]くの 新[あたら]しいカフェは 人気[にんき]" },
+          { text: "大学[だいがく]の 前[まえ]の 新[あたら]しいカフェは 人気[にんき]" },
           { text: "な" },
           { text: "の" },
           { text: "だろうか", blank: true },
@@ -946,7 +947,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "駅[えき]の 近[ちか]くにある 新[あたら]しいカフェは 人気[にんき]がある" },
+          { text: "大学[だいがく]の 前[まえ]にある 新[あたら]しいカフェは 人気[にんき]がある" },
           { text: "の" },
           { text: "でしょうか", blank: true },
         ],
@@ -954,7 +955,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "駅[えき]の 近[ちか]くにある 新[あたら]しいカフェは 人気[にんき]がある" },
+          { text: "大学[だいがく]の 前[まえ]にある 新[あたら]しいカフェは 人気[にんき]がある" },
           { text: "の" },
           { text: "だろうか", blank: true },
         ],
@@ -962,21 +963,21 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "駅[えき]の 近[ちか]くの 新[あたら]しいカフェは 人気[にんき]があるん" },
+          { text: "大学[だいがく]の 前[まえ]の 新[あたら]しいカフェは 人気[にんき]があるん" },
           { text: "でしょうか", blank: true },
         ],
         register: "polite",
       },
       {
         segments: [
-          { text: "駅[えき]の 近[ちか]くの 新[あたら]しいカフェは 人気[にんき]があるん" },
+          { text: "大学[だいがく]の 前[まえ]の 新[あたら]しいカフェは 人気[にんき]があるん" },
           { text: "だろうか", blank: true },
         ],
         register: "casual",
       },
       {
         segments: [
-          { text: "駅[えき]の 近[ちか]くの 新[あたら]しいカフェは 人気[にんき]" },
+          { text: "大学[だいがく]の 前[まえ]の 新[あたら]しいカフェは 人気[にんき]" },
           { text: "なん" },
           { text: "でしょうか", blank: true },
         ],
@@ -984,7 +985,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "駅[えき]の 近[ちか]くの 新[あたら]しいカフェは 人気[にんき]" },
+          { text: "大学[だいがく]の 前[まえ]の 新[あたら]しいカフェは 人気[にんき]" },
           { text: "なん" },
           { text: "だろうか", blank: true },
         ],
@@ -992,7 +993,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "駅[えき]の 近[ちか]くの 新[あたら]しいカフェが 人気[にんき]がある" },
+          { text: "大学[だいがく]の 前[まえ]の 新[あたら]しいカフェが 人気[にんき]がある" },
           { text: "の" },
           { text: "でしょうか", blank: true },
         ],
@@ -1000,7 +1001,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "駅[えき]の 近[ちか]くの 新[あたら]しいカフェが 人気[にんき]がある" },
+          { text: "大学[だいがく]の 前[まえ]の 新[あたら]しいカフェが 人気[にんき]がある" },
           { text: "の" },
           { text: "だろうか", blank: true },
         ],

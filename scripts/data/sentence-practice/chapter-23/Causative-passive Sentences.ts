@@ -611,92 +611,92 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "At the party yesterday, I was made to dance by the department manager.",
-    hint: "party = パーティー",
+    english: "At yesterday's company party, I was made to dance by the department manager.",
+    hint: "company party = 会社 (かいしゃ)のパーティー",
     answers: [
       {
         segments: [
-          { text: "昨日[きのう] パーティーで、私[わたし]は 部長[ぶちょう]に " },
+          { text: "昨日[きのう] 会社[かいしゃ]の パーティーで、私[わたし]は 部長[ぶちょう]に " },
           { text: "踊[おど]らせられた", blank: true },
         ],
         notes: "Full causative-passive form 踊らせられた",
       },
       {
         segments: [
-          { text: "昨日[きのう]の パーティーで、私[わたし]は 部長[ぶちょう]に " },
+          { text: "昨日[きのう]の 会社[かいしゃ]の パーティーで、私[わたし]は 部長[ぶちょう]に " },
           { text: "踊[おど]らせられた", blank: true },
         ],
-        notes: "Using の to specify 'yesterday's party'",
+        notes: "Using の to specify 'yesterday's company party'",
       },
       {
         segments: [
-          { text: "私[わたし]は 昨日[きのう] パーティーで、部長[ぶちょう]に " },
+          { text: "私[わたし]は 昨日[きのう] 会社[かいしゃ]の パーティーで、部長[ぶちょう]に " },
           { text: "踊[おど]らせられた", blank: true },
         ],
         notes: "Subject placed at the beginning",
       },
       {
         segments: [
-          { text: "私[わたし]は 昨日[きのう]の パーティーで、部長[ぶちょう]に " },
+          { text: "私[わたし]は 昨日[きのう]の 会社[かいしゃ]の パーティーで、部長[ぶちょう]に " },
           { text: "踊[おど]らせられた", blank: true },
         ],
-        notes: "Subject first with 昨日のパーティー",
+        notes: "Subject first with 昨日の会社のパーティー",
       },
       {
         segments: [
-          { text: "昨日[きのう]、パーティーで、私[わたし]は 部長[ぶちょう]に " },
+          { text: "昨日[きのう]、会社[かいしゃ]の パーティーで、私[わたし]は 部長[ぶちょう]に " },
           { text: "踊[おど]らせられた", blank: true },
         ],
         notes: "Comma after 昨日 for clearer separation",
       },
       {
         segments: [
-          { text: "パーティーで、私[わたし]は 昨日[きのう] 部長[ぶちょう]に " },
+          { text: "会社[かいしゃ]の パーティーで、私[わたし]は 昨日[きのう] 部長[ぶちょう]に " },
           { text: "踊[おど]らせられた", blank: true },
         ],
         notes: "Location first, with yesterday placed before the causer",
       },
       {
         segments: [
-          { text: "昨日[きのう]の パーティーでは、私[わたし]は 部長[ぶちょう]に " },
+          { text: "昨日[きのう]の 会社[かいしゃ]の パーティーでは、私[わたし]は 部長[ぶちょう]に " },
           { text: "踊[おど]らせられた", blank: true },
         ],
-        notes: "Using では to mark the party as the setting/topic",
+        notes: "Using では to mark the company party as the setting/topic",
       },
       {
         segments: [
-          { text: "昨日[きのう] パーティーでは、私[わたし]は 部長[ぶちょう]に " },
+          { text: "昨日[きのう] 会社[かいしゃ]の パーティーでは、私[わたし]は 部長[ぶちょう]に " },
           { text: "踊[おど]らせられた", blank: true },
         ],
         notes: "Using では with separate time expression 昨日",
       },
       {
         segments: [
-          { text: "昨日[きのう] パーティーで、私[わたし]が 部長[ぶちょう]に " },
+          { text: "昨日[きのう] 会社[かいしゃ]の パーティーで、私[わたし]が 部長[ぶちょう]に " },
           { text: "踊[おど]らせられた", blank: true },
         ],
         notes: "Using が to emphasize that I was the one made to dance",
       },
       {
         segments: [
-          { text: "昨日[きのう]の パーティーで、私[わたし]が 部長[ぶちょう]に " },
+          { text: "昨日[きのう]の 会社[かいしゃ]の パーティーで、私[わたし]が 部長[ぶちょう]に " },
           { text: "踊[おど]らせられた", blank: true },
         ],
-        notes: "Using が with 昨日のパーティー",
+        notes: "Using が with 昨日の会社のパーティー",
       },
       {
         segments: [
-          { text: "昨日[きのう] パーティーで、部長[ぶちょう]に 私[わたし]が " },
+          { text: "昨日[きのう] 会社[かいしゃ]の パーティーで、部長[ぶちょう]に 私[わたし]が " },
           { text: "踊[おど]らせられた", blank: true },
         ],
         notes: "Causer placed before the subject with が",
       },
       {
         segments: [
-          { text: "昨日[きのう]の パーティーで、部長[ぶちょう]に 私[わたし]が " },
+          { text: "昨日[きのう]の 会社[かいしゃ]の パーティーで、部長[ぶちょう]に 私[わたし]が " },
           { text: "踊[おど]らせられた", blank: true },
         ],
-        notes: "Causer before subject with 昨日のパーティー",
+        notes: "Causer before subject with 昨日の会社のパーティー",
       },
     ],
   },

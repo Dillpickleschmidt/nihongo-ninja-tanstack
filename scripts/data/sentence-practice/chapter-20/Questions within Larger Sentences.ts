@@ -318,11 +318,11 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "I'm thinking about whether to buy the red sweater.",
+    english: "I'm thinking about whether to buy the red sweater for my mother's birthday.",
     answers: [
       {
         segments: [
-          { text: "私[わたし]は 赤[あか]い セーターを" },
+          { text: "私[わたし]は 母[はは]の 誕生日[たんじょうび]に 赤[あか]い セーターを" },
           { text: "買[か]うかどうか", blank: true },
           { text: "考[かんが]える", conjugation: { pos: "Ichidan verb", form: "te-form", polarity: "positive", tense: "non-past" } },
           { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
@@ -331,7 +331,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "私[わたし]は 今[いま]、赤[あか]い セーターを" },
+          { text: "私[わたし]は 今[いま]、母[はは]の 誕生日[たんじょうび]に 赤[あか]い セーターを" },
           { text: "買[か]うかどうか", blank: true },
           { text: "考[かんが]える", conjugation: { pos: "Ichidan verb", form: "te-form", polarity: "positive", tense: "non-past" } },
           { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
@@ -340,7 +340,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "私[わたし]は 赤[あか]い セーターを" },
+          { text: "私[わたし]は 母[はは]の 誕生日[たんじょうび]に 赤[あか]い セーターを" },
           { text: "買[か]うかどうかを", blank: true },
           { text: "考[かんが]える", conjugation: { pos: "Ichidan verb", form: "te-form", polarity: "positive", tense: "non-past" } },
           { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
@@ -349,7 +349,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "今[いま]、私[わたし]は 赤[あか]い セーターを" },
+          { text: "今[いま]、私[わたし]は 母[はは]の 誕生日[たんじょうび]に 赤[あか]い セーターを" },
           { text: "買[か]うかどうか", blank: true },
           { text: "考[かんが]える", conjugation: { pos: "Ichidan verb", form: "te-form", polarity: "positive", tense: "non-past" } },
           { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
@@ -358,7 +358,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "今[いま]、私[わたし]は 赤[あか]い セーターを" },
+          { text: "今[いま]、私[わたし]は 母[はは]の 誕生日[たんじょうび]に 赤[あか]い セーターを" },
           { text: "買[か]うかどうかを", blank: true },
           { text: "考[かんが]える", conjugation: { pos: "Ichidan verb", form: "te-form", polarity: "positive", tense: "non-past" } },
           { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
@@ -367,7 +367,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "私[わたし]は 赤[あか]い セーターを" },
+          { text: "私[わたし]は 母[はは]の 誕生日[たんじょうび]に 赤[あか]い セーターを" },
           { text: "買[か]おうかどうか", blank: true },
           { text: "考[かんが]える", conjugation: { pos: "Ichidan verb", form: "te-form", polarity: "positive", tense: "non-past" } },
           { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
@@ -376,7 +376,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "私[わたし]は 今[いま]、赤[あか]い セーターを" },
+          { text: "私[わたし]は 今[いま]、母[はは]の 誕生日[たんじょうび]に 赤[あか]い セーターを" },
           { text: "買[か]おうかどうか", blank: true },
           { text: "考[かんが]える", conjugation: { pos: "Ichidan verb", form: "te-form", polarity: "positive", tense: "non-past" } },
           { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
@@ -385,7 +385,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "今[いま]、私[わたし]は 赤[あか]い セーターを" },
+          { text: "今[いま]、私[わたし]は 母[はは]の 誕生日[たんじょうび]に 赤[あか]い セーターを" },
           { text: "買[か]おうかどうか", blank: true },
           { text: "考[かんが]える", conjugation: { pos: "Ichidan verb", form: "te-form", polarity: "positive", tense: "non-past" } },
           { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
@@ -394,7 +394,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "私[わたし]は 赤[あか]い セーターを" },
+          { text: "私[わたし]は 母[はは]の 誕生日[たんじょうび]に 赤[あか]い セーターを" },
           { text: "買[か]おうかどうかを", blank: true },
           { text: "考[かんが]える", conjugation: { pos: "Ichidan verb", form: "te-form", polarity: "positive", tense: "non-past" } },
           { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
@@ -403,7 +403,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "今[いま]、私[わたし]は 赤[あか]い セーターを" },
+          { text: "今[いま]、私[わたし]は 母[はは]の 誕生日[たんじょうび]に 赤[あか]い セーターを" },
           { text: "買[か]おうかどうかを", blank: true },
           { text: "考[かんが]える", conjugation: { pos: "Ichidan verb", form: "te-form", polarity: "positive", tense: "non-past" } },
           { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },

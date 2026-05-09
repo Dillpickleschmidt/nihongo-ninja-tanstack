@@ -264,7 +264,7 @@ export const questions: Question[] = [
   },
   {
     english:
-      "I've never bought anything at a department store before — is it expensive?",
+      "I've never shopped at a department store before — is it expensive?",
     answers: [
       {
         segments: [
@@ -288,7 +288,7 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "I've never done fishing before — is it fun?",
+    english: "I've never been fishing before — is it fun?",
     answers: [
       {
         segments: [
@@ -378,7 +378,7 @@ export const questions: Question[] = [
       ],
   },
   {
-    english: "I've never done a barbecue before — is it fun?",
+    english: "I've never been to a barbecue before — is it fun?",
     answers: [
       {
         segments: [
@@ -416,7 +416,7 @@ export const questions: Question[] = [
       ],
   },
   {
-    english: "I've never done a drive before — is it fun?",
+    english: "I've never gone for a drive before — is it fun?",
     answers: [
       {
         segments: [
