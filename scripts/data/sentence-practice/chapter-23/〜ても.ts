@@ -12,7 +12,6 @@ export const questions: Question[] = [
           { text: "、けんいちさんは 明日[あした] コンサートに" },
           { text: "行[い]く", conjugation: { pos: "Godan verb - Iku/Yuku special class", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Basic word order with 天気が悪くても and simple future 行く",
       },
       {
         segments: [
@@ -21,7 +20,6 @@ export const questions: Question[] = [
           { text: "、けんいちさんは コンサートに" },
           { text: "行[い]く", conjugation: { pos: "Godan verb - Iku/Yuku special class", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Time phrase placed at the beginning",
       },
       {
         segments: [
@@ -30,7 +28,6 @@ export const questions: Question[] = [
           { text: "、明日[あした] けんいちさんは コンサートに" },
           { text: "行[い]く", conjugation: { pos: "Godan verb - Iku/Yuku special class", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "明日 placed after the concessive clause",
       },
       {
         segments: [
@@ -39,7 +36,6 @@ export const questions: Question[] = [
           { text: "、けんいちさんは 明日[あした] コンサートに" },
           { text: "行[い]く", conjugation: { pos: "Godan verb - Iku/Yuku special class", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "明日 placed immediately before the final verb",
       },
       {
         segments: [
@@ -48,7 +44,7 @@ export const questions: Question[] = [
           { text: "、けんいちさんは 明日[あした] コンサートに" },
           { text: "行[い]く", conjugation: { pos: "Godan verb - Iku/Yuku special class", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Using は with 天気 for contrast/topic",
+        notes: "は marks 天気 as a contrastive topic.",
       },
       {
         segments: [

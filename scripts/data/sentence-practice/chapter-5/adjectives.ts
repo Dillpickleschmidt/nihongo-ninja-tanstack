@@ -40,7 +40,6 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Standard: このハンバーガー + すごく + おいしい predicate",
       },
       {
         segments: [
@@ -118,7 +117,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Standard: よい (いい) past positive with は particle",
+        notes: "Uses よい as the base form for いい.",
       },
       {
         segments: [
@@ -394,7 +393,6 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Standard form: は particle, 今日 after topic",
       },
       {
         segments: [
@@ -913,7 +911,7 @@ export const questions: Question[] = [
             text: "です",
           },
         ],
-        notes: "Basic な-adjective predicate with すごく (really)",
+        notes: "すごく adds \"really/very.\"",
       },
       {
         segments: [
@@ -1320,7 +1318,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Standard: 海の天気は + いい (base form よい for engine)",
+        notes: "Uses よい as the base form for いい.",
       },
       {
         segments: [
@@ -1359,7 +1357,7 @@ export const questions: Question[] = [
             text: "です",
           },
         ],
-        notes: "Standard variation: は particle, すごく, な-adjective + です",
+        notes: "すごく adds \"really/very.\"",
       },
       {
         segments: [
@@ -1600,7 +1598,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Standard: 忙しかった — blank is かった (past suffix)",
+        notes: "Blank is かった, the past suffix for i-adjectives.",
       },
       {
         segments: [

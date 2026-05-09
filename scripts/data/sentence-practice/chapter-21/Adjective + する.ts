@@ -9,7 +9,7 @@ export const questions: Question[] = [
           { text: "私[わたし]は 砂糖[さとう]で コーヒーを " },
           { text: "甘[あま]くする", blank: true, conjugation: { pos: "Suru verb - compound word", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Basic translation using 砂糖で to mean “with sugar”.",
+        notes: "砂糖で means “with sugar.”",
       },
       {
         segments: [
@@ -99,7 +99,7 @@ export const questions: Question[] = [
           { text: "熱[あつ]くして", blank: true },
           { text: "ください" },
         ],
-        notes: "Basic request using the object marker を and ～くする in the てください form",
+        notes: "～くする means “make it ～”; てください makes it a request.",
       },
       {
         segments: [
@@ -143,7 +143,6 @@ export const questions: Question[] = [
           { text: "私[わたし]は この 部屋[へや]を" },
           { text: "暗[くら]くする", blank: true, conjugation: { pos: "Suru verb - compound word", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Basic sentence using この部屋を as the object",
       },
       {
         segments: [
@@ -171,7 +170,7 @@ export const questions: Question[] = [
           { text: "大[おお]きくして", blank: true },
           { text: "ください" },
         ],
-        notes: "Basic translation using 字 for the letters/characters",
+        notes: "字 means letters/characters.",
       },
       {
         segments: [
@@ -223,7 +222,7 @@ export const questions: Question[] = [
           { text: "私[わたし]は 卒業式[そつぎょうしき]の 前[まえ]に 髪[かみ]を もっと" },
           { text: "短[みじか]くする", blank: true, conjugation: { pos: "Suru verb - included", form: "tai-form", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Basic translation with もっと to express “shorter” explicitly",
+        notes: "もっと makes “shorter” explicit.",
       },
       {
         segments: [
@@ -355,7 +354,7 @@ export const questions: Question[] = [
           { text: "小[ちい]さく", blank: true },
           { text: "する", conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Basic translation with ので and 少し; all key vocabulary is known.",
+        notes: "少し softens the request.",
       },
       {
         segments: [
@@ -423,7 +422,6 @@ export const questions: Question[] = [
           { text: "私[わたし]は これで カレーを " },
           { text: "辛[から]くする", blank: true, conjugation: { pos: "Suru verb - compound word", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Basic word order: with this, make the curry spicy.",
       },
       {
         segments: [
@@ -478,7 +476,7 @@ export const questions: Question[] = [
           { text: "この 部屋[へや]は 寒[さむ]いので、ヒーターを 少[すこ]し " },
           { text: "強[つよ]くする", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Standard translation with ので and 少し",
+        notes: "少し softens the request.",
       },
       {
         segments: [
@@ -597,7 +595,7 @@ export const questions: Question[] = [
           { text: "ので、 本[ほん]を 何冊[なんさつ]か" },
           { text: "出[だ]す", conjugation: { pos: "Godan verb with 'su' ending", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Standard wording with ので; uses 何冊か for “some books.”",
+        notes: "何冊か means “some/a few books.”",
       },
       {
         segments: [
@@ -699,7 +697,7 @@ export const questions: Question[] = [
           { text: "晩[ばん]ご 飯[はん]の 前[まえ]に、この 汚[きたな]い 机[つくえ]を " },
           { text: "きれいにする", blank: true, conjugation: { pos: "Suru verb - compound word", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Basic wording with きれいにする for “make clean.”",
+        notes: "きれいにする means “make clean.”",
       },
       {
         segments: [

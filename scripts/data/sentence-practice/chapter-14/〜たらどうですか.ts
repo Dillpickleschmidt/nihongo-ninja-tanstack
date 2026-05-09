@@ -174,7 +174,7 @@ export const questions: Question[] = [
           { text: "です" },
           { text: "か" },
         ],
-        notes: "Basic wording with すぐ and に for the call destination.",
+        notes: "に marks the person being called; すぐ adds urgency."
       },
       {
         segments: [
@@ -449,7 +449,7 @@ export const questions: Question[] = [
           { text: "です" },
           { text: "か" },
         ],
-        notes: "Basic version with その傘 and コンビニで before the object",
+        notes: "で marks the convenience store as where the umbrella was forgotten."
       },
       {
         segments: [
@@ -598,7 +598,7 @@ export const questions: Question[] = [
           { text: "です" },
           { text: "か" },
         ],
-        notes: "Standard translation using が for the homework and 聞く for asking the teacher",
+        notes: "聞く is used for asking a question; が marks the homework as what is unclear."
       },
       {
         segments: [
@@ -839,7 +839,7 @@ export const questions: Question[] = [
           { text: "です" },
           { text: "か" },
         ],
-        notes: "Basic translation using ので and もう一度 before the suggestion.",
+        notes: "ので gives the reason; もう一度 means 'one more time'."
       },
       {
         segments: [
@@ -989,7 +989,7 @@ export const questions: Question[] = [
           { text: "です" },
           { text: "か" },
         ],
-        notes: "Basic translation with お返事 and に marking the recipient.",
+        notes: "に marks the reply's recipient."
       },
       {
         segments: [
@@ -1139,7 +1139,7 @@ export const questions: Question[] = [
           { text: "です" },
           { text: "か" },
         ],
-        notes: "Basic wording with 店に and polite たらどうですか",
+        notes: "店に marks the place to ask; たらどうですか makes a polite suggestion."
       },
       {
         register: "casual",

@@ -2,24 +2,24 @@ import type { Question } from "../types";
 
 export const questions: Question[] = [
   {
-    english: "I'll go ahead and make a reservation.",
+    english: "I'll go ahead and make the restaurant reservation.",
     answers: [
       {
         segments: [
-          { text: "予約[よやく]" },
+          { text: "レストランの 予約[よやく]" },
           { text: "しておく", blank: true },
         ],
       },
       {
         segments: [
-          { text: "じゃあ、 予約[よやく]" },
+          { text: "じゃあ、 レストランの 予約[よやく]" },
           { text: "しておく", blank: true },
         ],
         notes: "じゃあ (well then) prefix",
       },
       {
         segments: [
-          { text: "予約[よやく]" },
+          { text: "レストランの 予約[よやく]" },
           { text: "しとく", blank: true },
         ],
         register: "casual",
@@ -27,22 +27,22 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "私[わたし]が 予約[よやく]" },
+          { text: "私[わたし]が レストランの 予約[よやく]" },
           { text: "しておく", blank: true },
         ],
-        notes: "Explicit subject 私が — emphasizing that I (specifically) will do it",
+        notes: "Explicit subject 私が — emphasizing that I (specifically) will make the restaurant reservation",
       },
       {
         segments: [
-          { text: "私[わたし]が 予約[よやく]" },
+          { text: "私[わたし]が レストランの 予約[よやく]" },
           { text: "しとく", blank: true },
         ],
         register: "casual",
-        notes: "Explicit subject 私が + contracted とく",
+        notes: "Explicit subject 私が + contracted とく for making the restaurant reservation",
       },
       {
         segments: [
-          { text: "予約[よやく]して" },
+          { text: "レストランの 予約[よやく]をして" },
           {
             text: "おく",
             blank: true,

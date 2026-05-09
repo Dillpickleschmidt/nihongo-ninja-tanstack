@@ -244,33 +244,33 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "I forgot my wallet, so I can't buy anything.",
+    english: "I left my wallet at home, so I can't buy anything at the cafeteria.",
     answers: [
       {
         segments: [
-          { text: "財布[さいふ]を 忘[わす]れたので", blank: true },
-          { text: "、何[なに]も 買[か]えません" },
+          { text: "財布[さいふ]を 家[いえ]に 忘[わす]れたので", blank: true },
+          { text: "、食堂[しょくどう]で 何[なに]も 買[か]えません" },
         ],
         register: "polite",
       },
       {
         segments: [
-          { text: "財布[さいふ]を 忘[わす]れたので", blank: true },
-          { text: "、何[なに]も 買[か]えない" },
+          { text: "財布[さいふ]を 家[いえ]に 忘[わす]れたので", blank: true },
+          { text: "、食堂[しょくどう]で 何[なに]も 買[か]えない" },
         ],
         register: "casual",
       },
       {
         segments: [
-          { text: "財布[さいふ]を 忘[わす]れたので", blank: true },
-          { text: "、何[なに]も 買[か]うことができません" },
+          { text: "財布[さいふ]を 家[いえ]に 忘[わす]れたので", blank: true },
+          { text: "、食堂[しょくどう]で 何[なに]も 買[か]うことができません" },
         ],
         register: "polite",
       },
       {
         segments: [
-          { text: "財布[さいふ]を 忘[わす]れたので", blank: true },
-          { text: "、何[なに]も 買[か]うことができない" },
+          { text: "財布[さいふ]を 家[いえ]に 忘[わす]れたので", blank: true },
+          { text: "、食堂[しょくどう]で 何[なに]も 買[か]うことができない" },
         ],
         register: "casual",
       },

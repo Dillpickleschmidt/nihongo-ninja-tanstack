@@ -11,7 +11,7 @@ export const questions: Question[] = [
           { text: "読[よ]んで", blank: true },
           { text: "ほしい", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Basic order with 皆に marking the people wanted to act",
+        notes: "皆に marks the people the speaker wants to act.",
       },
       {
         segments: [
@@ -65,7 +65,7 @@ export const questions: Question[] = [
           { text: "返[かえ]して", blank: true },
           { text: "ほしい", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Basic order with 健一に marking the person I want to act",
+        notes: "健一に marks the person the speaker wants to act.",
       },
       {
         segments: [
@@ -134,7 +134,6 @@ export const questions: Question[] = [
           { text: "説明[せつめい]して", blank: true },
           { text: "ほしい", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Basic translation using 駅員に and もう一度",
       },
       {
         segments: [
@@ -204,7 +203,7 @@ export const questions: Question[] = [
           { text: "掃除[そうじ]して", blank: true },
           { text: "ほしい", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Standard wording; full てほしい phrase in one blank for validation",
+        notes: "The full てほしい phrase is in one blank for validation.",
       },
       {
         segments: [
@@ -368,7 +367,7 @@ export const questions: Question[] = [
           { text: "私[わたし]は 弟[おとうと]に 医者[いしゃ]に なれるように 一生懸命[いっしょうけんめい] 勉強[べんきょう]して", blank: true },
           { text: "ほしい", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Standard translation using に to mark the younger brother and 一生懸命 for 'hard'",
+        notes: "に marks the younger brother as the person whose action is desired; 一生懸命 means “hard/with effort.”",
       },
       {
         segments: [
@@ -488,7 +487,7 @@ export const questions: Question[] = [
           { text: "歌[うた]って", blank: true },
           { text: "ほしい", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Standard wording with に marking the children and で marking the party as the event/location.",
+        notes: "に marks the children as the people wanted to act; で marks the party as the event/location.",
       },
       {
         segments: [
@@ -621,7 +620,6 @@ export const questions: Question[] = [
           { text: "帰[かえ]って", blank: true },
           { text: "ほしい", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Basic translation with 家に帰る and 今晩",
       },
       {
         segments: [
@@ -750,7 +748,7 @@ export const questions: Question[] = [
           { text: "ほしい", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "か" },
         ],
-        notes: "Basic order with 私に marking the person Mika wants to bring something",
+        notes: "私に marks the person Mika wants the doctor to bring medicine to.",
       },
       {
         segments: [
@@ -843,7 +841,7 @@ export const questions: Question[] = [
           { text: "連[つ]れていって", blank: true },
           { text: "ほしい", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Standard wording with 姉に marking the person whose action is desired",
+        notes: "姉に marks the person whose action is desired.",
       },
       {
         segments: [
@@ -912,7 +910,6 @@ export const questions: Question[] = [
           { text: "電話[でんわ]して", blank: true },
           { text: "ほしい", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Basic wording with すぐ before the destination/action",
       },
       {
         segments: [
@@ -1172,7 +1169,6 @@ export const questions: Question[] = [
           { text: "私[わたし]は 大家[おおや]さんに 今日中[きょうじゅう]に ドアを 直[なお]して" },
           { text: "ほしい", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Basic sentence using 大家さんに and ドアを with 今日中に before the object",
       },
       {
         segments: [
@@ -1248,7 +1244,7 @@ export const questions: Question[] = [
           { text: "見[み]つけて", blank: true },
           { text: "ほしい", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Standard translation using 警察に as the person/group wanted to act",
+        notes: "警察に marks the group the speaker wants to act.",
       },
       {
         segments: [
@@ -1325,7 +1321,7 @@ export const questions: Question[] = [
           { text: "置[お]いて", blank: true },
           { text: "ほしい", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Standard wording with 机の上に for “on the desk”",
+        notes: "机の上に explicitly means “on top of the desk.”",
       },
       {
         segments: [
@@ -1460,7 +1456,7 @@ export const questions: Question[] = [
           { text: "話[はな]して", blank: true },
           { text: "ほしい", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Standard translation using に to mark the friend and 日本人のように before the object.",
+        notes: "に marks the friend as the person whose action is desired; 日本人のように means “like a Japanese person.”",
       },
       {
         segments: [
@@ -1622,7 +1618,7 @@ export const questions: Question[] = [
           { text: "私[わたし]は 母[はは]に 出[で]かける 前[まえ]に ドアに 鍵[かぎ]を かけて", blank: true },
           { text: "ほしい", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Standard wording with 母に and ドアに鍵をかける",
+        notes: "ドアに鍵をかける means “lock the door.”",
       },
       {
         segments: [
@@ -1817,7 +1813,7 @@ export const questions: Question[] = [
           { text: "私[わたし]は 父[ちち]に ここで ブーツを " },
           { text: "脱[ぬ]いでほしい", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Standard translation with the full てほしい expression as the blank.",
+        notes: "The full てほしい expression is in one blank.",
       },
       {
         segments: [
@@ -1873,7 +1869,6 @@ export const questions: Question[] = [
           { text: "ほしい", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "か" },
         ],
-        notes: "Standard word order with 学生たちは and 黒板に",
       },
       {
         segments: [
@@ -1949,7 +1944,7 @@ export const questions: Question[] = [
           { text: "私[わたし]は ホテルの フロントに 明日[あした]の 朝[あさ] 八時[はちじ]に タクシーを " },
           { text: "呼[よ]んでほしい", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Basic order with ホテルのフロント as the person/desk asked to act",
+        notes: "ホテルのフロント marks the front desk as the party asked to act.",
       },
       {
         segments: [
@@ -2025,7 +2020,6 @@ export const questions: Question[] = [
           { text: "謝[あやま]って", blank: true },
           { text: "ほしい", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Standard translation with 今すぐ before the customer.",
       },
       {
         segments: [
@@ -2149,7 +2143,7 @@ export const questions: Question[] = [
           { text: "私[わたし]は レストランの シェフに 今夜[こんや] 辛[から]い カレーを 作[つく]って" },
           { text: "ほしい", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Basic translation using 今夜 and に to mark the chef",
+        notes: "に marks the chef as the person whose action is desired.",
       },
       {
         segments: [

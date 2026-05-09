@@ -11,7 +11,6 @@ export const questions: Question[] = [
           { text: "という", blank: true },
           { text: "駅[えき]で 降[お]りてください" },
         ],
-        notes: "Basic translation using 駅で降りる.",
       },
       {
         segments: [
@@ -59,7 +58,6 @@ export const questions: Question[] = [
           { text: "アニメを 知[し]っています" },
           { text: "か" },
         ],
-        notes: "Standard word order with を marking the object.",
       },
       {
         segments: [
@@ -119,7 +117,6 @@ export const questions: Question[] = [
           { text: "漫画[まんが]を " },
           { text: "読[よ]む", conjugation: { pos: "Godan verb with 'mu' ending", form: "normal", polarity: "positive", tense: "past" } },
         ],
-        notes: "Basic word order with 私は at the start",
       },
       {
         segments: [
@@ -179,7 +176,6 @@ export const questions: Question[] = [
           { text: "お 菓子[かし]を " },
           { text: "買[か]う", conjugation: { pos: "Godan verb with 'u' ending", form: "normal", polarity: "positive", tense: "past" } },
         ],
-        notes: "Standard word order with 私は as the subject",
       },
       {
         segments: [
@@ -221,7 +217,6 @@ export const questions: Question[] = [
           { text: "旅館[りょかん]に " },
           { text: "泊[と]まる", conjugation: { pos: "Godan verb with 'ru' ending", form: "normal", polarity: "positive", tense: "past" } },
         ],
-        notes: "Standard word order with 私は and 先月 at the beginning",
       },
       {
         segments: [
@@ -279,7 +274,7 @@ export const questions: Question[] = [
           { text: "平和[へいわ]という言葉[ことば]", blank: true },
           { text: "を 書[か]いてください" },
         ],
-        notes: "Basic translation using 言葉 for “word.”",
+        notes: "言葉 is used here for “word.”",
       },
       {
         segments: [
@@ -350,7 +345,7 @@ export const questions: Question[] = [
           { text: "歌[うた]を " },
           { text: "聞[き]く", conjugation: { pos: "Godan verb with 'ku' ending", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Standard word order with 私は first; uses known vocabulary 歌",
+        notes: "Uses 歌 for “song.”",
       },
       {
         segments: [
@@ -377,7 +372,6 @@ export const questions: Question[] = [
           { text: "歌[うた]を " },
           { text: "聞[き]く", conjugation: { pos: "Godan verb with 'ku' ending", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Same standard order without comma punctuation",
       },
       {
         segments: [
@@ -473,7 +467,6 @@ export const questions: Question[] = [
           { text: "シェフに " },
           { text: "会[あ]う", conjugation: { pos: "Godan verb with 'u' ending", form: "normal", polarity: "positive", tense: "past" } },
         ],
-        notes: "Standard word order with 私は at the start",
       },
       {
         segments: [
@@ -645,7 +638,6 @@ export const questions: Question[] = [
           { text: "小説[しょうせつ]を " },
           { text: "借[か]りる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "past" } },
         ],
-        notes: "Standard word order with 私は, time, place, object",
       },
       {
         segments: [
@@ -714,7 +706,6 @@ export const questions: Question[] = [
           { text: "ゲームは" },
           { text: "面白[おもしろ]い", conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Standard translation with は marking the topic",
       },
       {
         segments: [
@@ -792,7 +783,7 @@ export const questions: Question[] = [
           { text: "色[いろ]の セーターが " },
           { text: "欲[ほ]しい", conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Standard translation using がほしい for wanting a noun",
+        notes: "がほしい is used for wanting a noun.",
       },
       {
         segments: [
@@ -878,7 +869,6 @@ export const questions: Question[] = [
           { text: "という", blank: true },
           { text: "島[しま]の 写真[しゃしん]を 見[み]せてください" },
         ],
-        notes: "Standard wording with を marking the photo as the object.",
       },
       {
         register: "polite",
@@ -918,7 +908,7 @@ export const questions: Question[] = [
           { text: "人[ひと]から メールを " },
           { text: "もらう", conjugation: { pos: "Godan verb with 'u' ending", form: "normal", polarity: "positive", tense: "past" } },
         ],
-        notes: "Basic translation using から for the sender/source and もらう for “got.”",
+        notes: "から marks the sender/source of the email.",
       },
       {
         segments: [
@@ -1049,7 +1039,6 @@ export const questions: Question[] = [
           { text: "という", blank: true },
           { text: "先生[せんせい]に すぐ 電話[でんわ]してください" },
         ],
-        notes: "Basic translation using 先生に電話してください with すぐ before the verb",
       },
       {
         segments: [
@@ -1184,7 +1173,6 @@ export const questions: Question[] = [
           { text: "会社[かいしゃ]で " },
           { text: "働[はたら]く", conjugation: { pos: "Godan verb with 'ku' ending", form: "tai-form", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Basic translation with 将来 at the beginning",
       },
       {
         segments: [
@@ -1307,7 +1295,6 @@ export const questions: Question[] = [
           { text: "飲[の]み 物[もの]を " },
           { text: "飲[の]む", conjugation: { pos: "Godan verb with 'mu' ending", form: "normal", polarity: "positive", tense: "past" } },
         ],
-        notes: "Basic translation with お祭りで and 飲み物.",
       },
       {
         segments: [
@@ -1421,7 +1408,6 @@ export const questions: Question[] = [
           { text: "アプリを " },
           { text: "使[つか]う", conjugation: { pos: "Godan verb with 'u' ending", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Standard word order with 毎日 at the beginning of the sentence",
       },
       {
         segments: [
@@ -1463,7 +1449,6 @@ export const questions: Question[] = [
           { text: "作品[さくひん]を " },
           { text: "見[み]る", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "past" } },
         ],
-        notes: "Basic translation with 私は and location before the object.",
       },
       {
         segments: [

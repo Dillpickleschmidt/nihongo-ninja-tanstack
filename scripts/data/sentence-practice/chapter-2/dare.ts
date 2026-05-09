@@ -84,7 +84,6 @@ export const questions: Question[] = [
           { text: "誰[だれ]の", blank: true },
           { text: "英語[えいご]の 辞書[じしょ]ですか" },
         ],
-        notes: "Standard variant",
       },
       {
         segments: [
@@ -92,7 +91,7 @@ export const questions: Question[] = [
           { text: "誰[だれ]の", blank: true },
           { text: "英語[えいご]の 辞書[じしょ]ですか" },
         ],
-        notes: "Standard but with 、instead of は"
+        notes: "Uses 、instead of は."
       },
       {
         segments: [
@@ -333,7 +332,7 @@ export const questions: Question[] = [
           { text: "誰[だれ]の 自転車[じてんしゃ]", blank: true },
           { text: "ですか" },
         ],
-        notes: "Basic あれは pattern, blank on だれの自転車",
+        notes: "Blank is だれの自転車.",
       },
       {
         segments: [
@@ -361,7 +360,7 @@ export const questions: Question[] = [
           { text: "誰[だれ]の", blank: true },
           { text: "帽子[ぼうし]ですか" },
         ],
-        notes: "Standard: それ (that, near listener) + だれの + 帽子",
+        notes: "それ means \"that\" near the listener.",
       },
       {
         segments: [
@@ -473,7 +472,7 @@ export const questions: Question[] = [
           { text: "誰[だれ]のコンピューター", blank: true },
           { text: "ですか" },
         ],
-        notes: "Standard: それは + だれの + noun. \"That one\" near the listener.",
+        notes: "それ means \"that one\" near the listener.",
       },
       {
         segments: [

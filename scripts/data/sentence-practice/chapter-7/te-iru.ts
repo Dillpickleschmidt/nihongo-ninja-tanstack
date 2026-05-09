@@ -267,7 +267,7 @@ export const questions: Question[] = [
           },
           { text: "撮[と]っている", blank: true },
         ],
-        notes: "Standard wording; taking pictures near the temple",
+        notes: "Uses の近くで for taking pictures near the temple."
       },
       {
         segments: [
@@ -463,7 +463,7 @@ export const questions: Question[] = [
           },
           { text: "待[ま]っていた", blank: true },
         ],
-        notes: "Standard translation using 母は and 駅の前で",
+        notes: "Uses 母は as the topic and 駅の前で for the location."
       },
       {
         segments: [
@@ -716,7 +716,7 @@ export const questions: Question[] = [
           { text: "子供[こども]は 今[いま]、海[うみ]で " },
           { text: "泳[およ]いでいる", blank: true },
         ],
-        notes: "Basic translation using は and 今 before the location.",
+        notes: "Uses は for the topic and places 今 before the location."
       },
       {
         segments: [
@@ -1053,7 +1053,7 @@ export const questions: Question[] = [
           { text: "浴[あ]びている", blank: true },
           { text: "から、少[すこ]し 待[ま]ってください" },
         ],
-        notes: "Basic wording with 父 and 今 before the action",
+        notes: "Uses 父 for my father and places 今 before the action."
       },
       {
         segments: [
@@ -1542,7 +1542,7 @@ export const questions: Question[] = [
           },
           { text: "見[み]ていた", blank: true },
         ],
-        notes: "Basic sentence using known vocabulary; subject marked with は.",
+        notes: "Marks the subject with は."
       },
       {
         segments: [

@@ -156,7 +156,7 @@ export const questions: Question[] = [
           { text: "泣[な]く", conjugation: { pos: "Godan verb with 'ku' ending", form: "te-form", polarity: "positive", tense: "non-past" } },
           { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Standard wording with あの and は",
+        notes: "あの points to something away from both speaker and listener; は marks it as the topic."
       },
       {
         segments: [
@@ -313,7 +313,6 @@ export const questions: Question[] = [
           { text: "みたい", blank: true },
           { text: "です" },
         ],
-        notes: "Reordered sentence with the topic first",
       },
       {
         segments: [
@@ -322,7 +321,7 @@ export const questions: Question[] = [
           { text: "みたい", blank: true },
           { text: "です" },
         ],
-        notes: "Reordered sentence using が for the subway",
+        notes: "が marks the subway as the observed subject."
       },
     ],
   },
@@ -356,7 +355,7 @@ export const questions: Question[] = [
           { text: "みたい", blank: true },
           { text: "です" },
         ],
-        notes: "Standard translation using ニュースによると and とても",
+        notes: "ニュースによると marks the news as the information source."
       },
       {
         segments: [

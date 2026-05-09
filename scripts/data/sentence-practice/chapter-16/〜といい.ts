@@ -2,20 +2,20 @@ import type { Question } from "../types";
 
 export const questions: Question[] = [
   {
-    english: "I hope tomorrow's test is easy.",
+    english: "I hope tomorrow's kanji test is easy.",
     answers: [
       {
         segments: [
-          { text: "明日[あした]のテストが " },
+          { text: "明日[あした]の 漢字[かんじ]の テストが " },
           { text: "簡単[かんたん]だといい", blank: true },
           { text: "な" },
         ],
         register: "casual",
-        notes: "Uses テスト and the casual hopeful ending といいな.",
+        notes: "Uses 漢字のテスト and the casual hopeful ending といいな.",
       },
       {
         segments: [
-          { text: "明日[あした]のテストは " },
+          { text: "明日[あした]の 漢字[かんじ]の テストは " },
           { text: "簡単[かんたん]だといい", blank: true },
           { text: "な" },
         ],
@@ -24,16 +24,16 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "明日[あした]の試験[しけん]が " },
+          { text: "明日[あした]の 漢字[かんじ]の 試験[しけん]が " },
           { text: "簡単[かんたん]だといい", blank: true },
           { text: "な" },
         ],
         register: "casual",
-        notes: "Uses 試験 instead of テスト for “test/exam.”",
+        notes: "Uses 漢字の試験 instead of 漢字のテスト for “kanji test/exam.”",
       },
       {
         segments: [
-          { text: "明日[あした]の試験[しけん]は " },
+          { text: "明日[あした]の 漢字[かんじ]の 試験[しけん]は " },
           { text: "簡単[かんたん]だといい", blank: true },
           { text: "な" },
         ],
@@ -42,7 +42,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "明日[あした]は テストが " },
+          { text: "明日[あした]は 漢字[かんじ]の テストが " },
           { text: "簡単[かんたん]だといい", blank: true },
           { text: "な" },
         ],
@@ -51,7 +51,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "明日[あした]は 試験[しけん]が " },
+          { text: "明日[あした]は 漢字[かんじ]の 試験[しけん]が " },
           { text: "簡単[かんたん]だといい", blank: true },
           { text: "な" },
         ],
@@ -60,7 +60,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "明日[あした]のテストが " },
+          { text: "明日[あした]の 漢字[かんじ]の テストが " },
           { text: "簡単[かんたん]だといい", blank: true },
           { text: "です" },
         ],
@@ -69,7 +69,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "明日[あした]の試験[しけん]が " },
+          { text: "明日[あした]の 漢字[かんじ]の 試験[しけん]が " },
           { text: "簡単[かんたん]だといい", blank: true },
           { text: "です" },
         ],

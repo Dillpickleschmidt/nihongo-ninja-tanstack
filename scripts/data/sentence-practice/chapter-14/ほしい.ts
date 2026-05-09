@@ -9,7 +9,7 @@ export const questions: Question[] = [
           { text: "私[わたし]は 朝[あさ]の 授業[じゅぎょう]に 行[い]く ために、あそこの 赤[あか]い 自転車[じてんしゃ]が " },
           { text: "ほしい", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Standard wording with あそこの for “over there”; adds a concrete reason for wanting the bicycle.",
+        notes: "あそこの means 'that over there'; 自転車がほしいです states the wanted item directly."
       },
       {
         segments: [
@@ -21,21 +21,21 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "I want a bigger desk for this room.",
+    english: "I study at home every night, so I want a bigger desk for this room.",
     answers: [
       {
         segments: [
-          { text: "私[わたし]は この 部屋[へや]に もっと 大[おお]きい 机[つくえ]が " },
+          { text: "私[わたし]は 毎晩[まいばん] 家[いえ]で 勉強[べんきょう]するから、この 部屋[へや]に もっと 大[おお]きい 机[つくえ]が " },
           { text: "ほしい", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Standard wording with この部屋に for where the desk is wanted.",
+        notes: "Adds a natural reason with 毎晩家で勉強するから while keeping この部屋に for where the desk is wanted.",
       },
       {
         segments: [
-          { text: "私[わたし]は この 部屋[へや]の ために もっと 大[おお]きい 机[つくえ]が " },
+          { text: "毎晩[まいばん] 家[いえ]で 勉強[べんきょう]するから、私[わたし]は この 部屋[へや]の ために もっと 大[おお]きい 机[つくえ]が " },
           { text: "ほしい", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Using のために to mean “for this room”.",
+        notes: "Uses のために to mean “for this room,” with a reason first.",
       },
     ],
   },
@@ -48,7 +48,7 @@ export const questions: Question[] = [
           { text: "私[わたし]は 今週末[こんしゅうまつ]の バーベキューに、三袋[さんふくろ]の たまねぎと じゃがいもが " },
           { text: "ほしい", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Basic version with 三袋の before both items.",
+        notes: "三袋の modifies both お米 and 野菜."
       },
       {
         segments: [
@@ -124,7 +124,7 @@ export const questions: Question[] = [
           { text: "が" },
           { text: "ほしい", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Basic version using から for “from” and の for “about my résumé”.",
+        notes: "から marks the person you want feedback from; の connects アドバイス to 履歴書."
       },
       {
         segments: [
@@ -399,7 +399,7 @@ export const questions: Question[] = [
           { text: "が" },
           { text: "ほしい", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Basic wording using 父 for “my father” and 時計 for wristwatch.",
+        notes: "父 is used for the speaker's own father; 時計 can mean wristwatch in context."
       },
       {
         segments: [

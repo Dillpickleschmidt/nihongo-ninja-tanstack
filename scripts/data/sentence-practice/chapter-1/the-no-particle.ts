@@ -22,7 +22,6 @@ export const questions: Question[] = [
           { text: "小林[こばやし]さんの 友達[ともだち]", blank: true },
           { text: "は 留学生[りゅうがくせい]ですか" },
         ],
-        notes: "Standard word order with は topic marker",
       },
       {
         segments: [
@@ -57,7 +56,6 @@ export const questions: Question[] = [
           { text: "大学[だいがく]の 一年生[いちねんせい]", blank: true },
           { text: "です" },
         ],
-        notes: "Standard word order: 私は + 大学の一年生 + です",
       },
       {
         segments: [
@@ -104,7 +102,7 @@ export const questions: Question[] = [
           { text: "医者[いしゃ]の 電話[でんわ] 番号[ばんごう]", blank: true },
           { text: "は 何[なん]ですか" },
         ],
-        notes: "Basic variation: 医者 is the blank (Noun A before の), は particle",
+        notes: "Blank is only 医者, the noun before の.",
       },
       {
         segments: [
@@ -152,7 +150,6 @@ export const questions: Question[] = [
           { text: "瑞希[みずき]さんのお 姉[ねえ]さん", blank: true },
           { text: "は 弁護士[べんごし]です" },
         ],
-        notes: "Standard answer: 瑞希さんのお姉さんは弁護士です",
       },
       {
         segments: [
@@ -173,7 +170,7 @@ export const questions: Question[] = [
           { text: "韓国[かんこく]の 大学生[だいがくせい]", blank: true },
           { text: "です" },
         ],
-        notes: "Standard answer: blank is 韓国の大学生, using の for \"in Korea\" relationship; 友達 kanji form",
+        notes: "Uses の for the \"in Korea\" relationship; 友達 kanji form.",
       },
       {
         segments: [
@@ -211,7 +208,7 @@ export const questions: Question[] = [
           { text: "工学[こうがく]の一年生[いちねんせい]", blank: true },
           { text: "です" },
         ],
-        notes: "Basic structure: は topic marker, の connecting 工学 and 一年生",
+        notes: "の connects 工学 and 一年生.",
       },
       {
         segments: [
@@ -232,7 +229,7 @@ export const questions: Question[] = [
           { text: "夏美[なつみ]さんの 大学[だいがく]の 名前[なまえ]", blank: true },
           { text: "は 何[なん]ですか" },
         ],
-        notes: "Standard word order with は; both の instances are blanked as the grammar being tested",
+        notes: "Both の instances are blanked as the grammar being tested.",
       },
     ],
   },
@@ -244,7 +241,6 @@ export const questions: Question[] = [
           { text: "私[わたし]の お 兄[にい]さんの 友達[ともだち]", blank: true },
           { text: "は 弁護士[べんごし]です" },
         ],
-        notes: "Standard: 私のお兄さん for \"my older brother\", 友達 for friend",
       },
       {
         segments: [
@@ -301,7 +297,6 @@ export const questions: Question[] = [
           { text: "楓[かえで]さんのお 兄[にい]さん", blank: true },
           { text: "は 高校生[こうこうせい]です" },
         ],
-        notes: "Standard answer with の as the blank",
       },
       {
         segments: [
@@ -347,7 +342,7 @@ export const questions: Question[] = [
           { text: "森[もり]さんの 友達[ともだち]の 専攻[せんこう]", blank: true },
           { text: "は 生物学[せいぶつがく]です" },
         ],
-        notes: "Standard: の chain as the blank — \"Mori's friend's [major is biology]\"",
+        notes: "The full の chain is blanked.",
       },
       {
         segments: [
@@ -381,7 +376,7 @@ export const questions: Question[] = [
           { text: "瑞希[みずき]さんの 弟[おとうと]さん", blank: true },
           { text: "は 会社員[かいしゃいん]です" },
         ],
-        notes: "Standard variation using 弟さん (polite reference to someone else's younger brother)",
+        notes: "Uses 弟さん, a polite reference to someone else's younger brother.",
       },
       {
         segments: [
@@ -422,7 +417,7 @@ export const questions: Question[] = [
           { text: "生物学[せいぶつがく]の 先生[せんせい]の 名前[なまえ]", blank: true },
           { text: "は 何[なん]ですか" },
         ],
-        notes: "Standard form: chained の connecting biology → teacher → name",
+        notes: "Chained の connects biology → teacher → name.",
       },
     ],
   },
@@ -435,7 +430,7 @@ export const questions: Question[] = [
           { text: "藤井[ふじい]さんの 電話[でんわ] 番号[ばんごう]", blank: true },
           { text: "は 何[なん]ですか" }
         ],
-        notes: "Standard: blank on 藤井さん, の connects possession to 電話番号",
+        notes: "の connects 藤井さん to 電話番号.",
       },
     ],
   },
@@ -448,7 +443,7 @@ export const questions: Question[] = [
           { text: "中国語[ちゅうごくご]のクラス", blank: true },
           { text: "は 何時[なんじ]ですか" },
         ],
-        notes: "Standard: の connects 中国語 and クラス; 何時 asks the time",
+        notes: "の connects 中国語 and クラス.",
       },
     ],
   },
@@ -461,7 +456,7 @@ export const questions: Question[] = [
           { text: "夏美[なつみ]さんの 妹[いもうと]さん", blank: true },
           { text: "はインドの 留学生[りゅうがくせい]です" },
         ],
-        notes: "Standard answer: 夏美さんの for possession, インドの留学生 for \"international student in India\"",
+        notes: "夏美さんの marks possession; インドの留学生 means \"international student in India.\"",
       },
       {
         segments: [

@@ -23,7 +23,6 @@ export const questions: Question[] = [
           { text: "今朝[けさ]、私[わたし]は 電車[でんしゃ]に 財布[さいふ]を" },
           { text: "忘[わす]れてしまった", blank: true },
         ],
-        notes: "Time phrase placed at the beginning",
       },
       {
         segments: [
@@ -332,7 +331,7 @@ export const questions: Question[] = [
           { text: "私[わたし]は 昨日[きのう]、図書館[としょかん]で " },
           { text: "寝[ね]てしまった", blank: true },
         ],
-        notes: "Standard wording with てしまう; subject first.",
+        notes: "Uses てしまう to emphasize the action was unintended/regrettable."
       },
       {
         segments: [
@@ -346,7 +345,6 @@ export const questions: Question[] = [
           { text: "昨日[きのう]、私[わたし]は 図書館[としょかん]で " },
           { text: "寝[ね]てしまった", blank: true },
         ],
-        notes: "Time expression placed first.",
       },
       {
         segments: [
@@ -642,7 +640,6 @@ export const questions: Question[] = [
           { text: "つもり" },
           { text: "です" },
         ],
-        notes: "Reordered sentence with the time clause first.",
       },
       {
         segments: [

@@ -1009,7 +1009,7 @@ export const questions: Question[] = [
           },
           { text: "か" },
         ],
-        notes: "ゲームする without を particle; keeps the after-homework context.",
+        notes: "ゲームする without を particle."
       },
       {
         segments: [
@@ -1043,7 +1043,7 @@ export const questions: Question[] = [
           },
           { text: "か" },
         ],
-        notes: "が + ゲームする with the after-homework context",
+        notes: "が instead of は, with ゲームする without を particle.",
       },
     ],
   },

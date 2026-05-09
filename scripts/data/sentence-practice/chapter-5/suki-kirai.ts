@@ -49,7 +49,7 @@ export const questions: Question[] = [
             conjugation: naAdj,
           },
         ],
-        notes: "Standard variation: は + が, 全然 + 嫌い",
+        notes: "全然 pairs with a negative predicate like 嫌い.",
       },
       {
         segments: [
@@ -160,8 +160,7 @@ export const questions: Question[] = [
           { text: "が、犬[いぬ]は" },
           { text: "嫌[きら]い", blank: true, conjugation: naAdj },
         ],
-        notes:
-          "Standard polite form with が connecting clauses; 犬 marked with は for contrast",
+        notes: "が connects the clauses; 犬 is marked with は for contrast.",
       },
       {
         segments: [
@@ -249,8 +248,7 @@ export const questions: Question[] = [
           },
           { text: "か" },
         ],
-        notes:
-          "Standard: が in relative clause, 古い predicate with か question",
+        notes: "が marks the subject inside the relative clause.",
       },
       {
         segments: [
@@ -282,8 +280,7 @@ export const questions: Question[] = [
           { text: "好[す]き", blank: true },
           { text: "じゃないです" },
         ],
-        notes:
-          'Standard variation: あまり好きじゃない — "not really like", using が to mark the object',
+        notes: 'あまり好きじゃない means "do not really like"; が marks the object.',
       },
       {
         segments: [
@@ -338,7 +335,7 @@ export const questions: Question[] = [
           { text: "スポーツはテニス" },
           { text: "です" },
         ],
-        notes: "Basic structure with noun modification using 好きな",
+        notes: "好きな modifies スポーツ.",
       },
       {
         segments: [
@@ -422,7 +419,7 @@ export const questions: Question[] = [
           { text: "が、お 茶[ちゃ]は" },
           { text: "嫌[きら]い", blank: true, conjugation: naAdj },
         ],
-        notes: "Basic structure with 父 and contrast using は for お茶",
+        notes: "お茶 is marked with は for contrast.",
       },
       {
         segments: [
@@ -463,7 +460,7 @@ export const questions: Question[] = [
           { text: "食[た]べ 物[もの]は 魚[さかな]" },
           { text: "です" },
         ],
-        notes: "Basic structure with noun modification using 嫌いな",
+        notes: "嫌いな modifies 食べ物.",
       },
       {
         segments: [

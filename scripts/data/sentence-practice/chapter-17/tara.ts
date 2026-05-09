@@ -26,7 +26,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Basic pattern with を for salary",
+        notes: "を marks the salary as what is received."
       },
     ],
   },

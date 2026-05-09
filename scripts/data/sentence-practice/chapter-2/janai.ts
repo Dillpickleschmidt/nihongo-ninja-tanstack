@@ -166,7 +166,6 @@ export const questions: Question[] = [
           { text: "それは" },
           { text: "中島[なかじま]さんの 鞄[かばん]じゃないですか", blank: true },
         ],
-        notes: "Basic variant",
       },
       {
         segments: [

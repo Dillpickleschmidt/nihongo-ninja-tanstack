@@ -45,7 +45,7 @@ export const questions: Question[] = [
         segments: [
           { text: "私[わたし]の お母[おかあ]さんは 日本人[にほんじん]です", blank: true },
         ],
-        notes: "Full: 私の + お母さん as topic, 日本人です as predicate",
+        notes: "Explicitly includes 私の for possession.",
       },
       {
         segments: [
@@ -93,7 +93,6 @@ export const questions: Question[] = [
         segments: [
           { text: "みんなは 学生[がくせい]です", blank: true },
         ],
-        notes: "Basic variation: みんな as topic with は",
       },
       {
         segments: [
@@ -188,7 +187,7 @@ export const questions: Question[] = [
         segments: [
           { text: "芽衣[めい]さんは 生物学[せいぶつがく]の 専攻[せんこう]です", blank: true },
         ],
-        notes: "Topic is Mei; 生物学の専攻 = biology major",
+        notes: "生物学の専攻 = biology major.",
       },
       {
         segments: [
@@ -231,7 +230,7 @@ export const questions: Question[] = [
         segments: [
           { text: "私[わたし]の 友[とも]だちは 看護師[かんごし]です", blank: true },
         ],
-        notes: "Standard answer: explicit 私の to show possession \"my friend\"",
+        notes: "Explicitly includes 私の to show possession.",
       },
       {
         segments: [

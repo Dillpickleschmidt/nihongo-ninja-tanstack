@@ -21,19 +21,19 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Please tell me your name.",
+    english: "Please tell me your name and phone number.",
     answers: [
       {
         segments: [
-          { text: "名前[なまえ]を" },
+          { text: "名前[なまえ]と 電話番号[でんわばんごう]を" },
           { text: "教[おし]えて", blank: true },
           { text: "ください" },
         ],
-        notes: "Core answer: 教える in te-form + ください",
+        notes: "Core answer: 教える in te-form + ください; a realistic information request",
       },
       {
         segments: [
-          { text: "お 名前[なまえ]を" },
+          { text: "お 名前[なまえ]と 電話番号[でんわばんごう]を" },
           { text: "教[おし]えて", blank: true },
           { text: "ください" },
         ],
@@ -41,7 +41,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "名前[なまえ]を 私[わたし]に" },
+          { text: "名前[なまえ]と 電話番号[でんわばんごう]を 私[わたし]に" },
           { text: "教[おし]えて", blank: true },
           { text: "ください" },
         ],
@@ -49,7 +49,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "私[わたし]に 名前[なまえ]を" },
+          { text: "私[わたし]に 名前[なまえ]と 電話番号[でんわばんごう]を" },
           { text: "教[おし]えて", blank: true },
           { text: "ください" },
         ],
@@ -57,7 +57,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "名前[なまえ]を" },
+          { text: "名前[なまえ]と 電話番号[でんわばんごう]を" },
           { text: "言[い]って", blank: true },
           { text: "ください" },
         ],
@@ -305,7 +305,6 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Standard form: 海で泳いで、昼ご飯を食べる",
       },
       {
         segments: [
@@ -344,7 +343,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Basic variation using で for location of borrowing",
+        notes: "Uses で for the location where the borrowing happens.",
       },
       {
         segments: [
@@ -907,7 +906,6 @@ export const questions: Question[] = [
           { text: "です" },
           { text: "か" },
         ],
-        notes: "Basic form with てもいいですか",
       },
       {
         segments: [
@@ -1037,7 +1035,7 @@ export const questions: Question[] = [
           { text: "早[はや]く 帰[かえ]っても", blank: true },
           { text: "いいですか" },
         ],
-        notes: "Standard variation: 今日 without は, using 帰ってもいいですか",
+        notes: "今日 without は; uses 帰ってもいいですか.",
       },
       {
         segments: [
@@ -1158,7 +1156,6 @@ export const questions: Question[] = [
           { text: "返[かえ]して", blank: true },
           { text: "もいいです" },
         ],
-        notes: "Standard てもいいです",
       },
       {
         segments: [
@@ -1281,7 +1278,7 @@ export const questions: Question[] = [
           { text: "晩[ばん]ご 飯[はん]は ハンバーガーでも", blank: true },
           { text: "いいです" },
         ],
-        notes: "Basic: 晩ご飯 as topic, ハンバーガーでもいいです",
+        notes: "晩ご飯 as topic; でも marks hamburger as an acceptable option.",
       },
       {
         segments: [
@@ -1530,7 +1527,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Standard form: 忘れる te-form + ては + いけない",
+        notes: "忘れる te-form + ては + いけない.",
       },
       {
         segments: [
@@ -1597,7 +1594,6 @@ export const questions: Question[] = [
           { text: "この 部屋[へや]に" },
           { text: "入[はい]ってはいけない", blank: true },
         ],
-        notes: "Standard form: この部屋に入ってはいけない",
       },
       {
         segments: [
@@ -1765,7 +1761,7 @@ export const questions: Question[] = [
           { text: "つけて", blank: true },
           { text: "寝[ね]ては いけない", blank: true },
         ],
-        notes: "Standard form: つけて (te-form of つける) + 寝てはいけない",
+        notes: "つけて is the te-form of つける.",
       },
       {
         segments: [
@@ -1810,7 +1806,6 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Standard form: 連れてきてはいけない",
       },
       {
         segments: [
@@ -1903,7 +1898,7 @@ export const questions: Question[] = [
           { text: "電話[でんわ]して", blank: true },
           { text: "はいけない" },
         ],
-        notes: "Standard form: 電話する in te-form + てはいけない",
+        notes: "電話する in te-form + てはいけない.",
       },
       {
         segments: [
@@ -1972,7 +1967,7 @@ export const questions: Question[] = [
           { text: "座[すわ]って", blank: true },
           { text: "はいけない" },
         ],
-        notes: "Basic form with に particle and てはいけない",
+        notes: "Uses に with 電話する, plus てはいけない.",
       },
       {
         segments: [

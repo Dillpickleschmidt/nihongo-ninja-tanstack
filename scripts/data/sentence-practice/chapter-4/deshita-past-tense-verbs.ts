@@ -302,7 +302,6 @@ export const questions: Question[] = [
           { text: "でした", blank: true },
           { text: "か" },
         ],
-        notes: "Standard polite past question.",
       },
       {
         segments: [
@@ -335,7 +334,7 @@ export const questions: Question[] = [
           { text: "でした", blank: true },
           { text: "か" },
         ],
-        notes: "Basic polite past question: でしたか",
+        notes: "でしたか marks a polite past-tense question.",
       },
       {
         segments: [
@@ -390,7 +389,7 @@ export const questions: Question[] = [
           { text: "でした", blank: true },
           { text: "！" },
         ],
-        notes: "Basic polite past affirmative with 実は (actually)",
+        notes: "実は adds \"actually.\"",
       },
       {
         segments: [

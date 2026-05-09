@@ -227,7 +227,6 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "No comma",
       },
       {
         segments: [
@@ -457,7 +456,6 @@ export const questions: Question[] = [
           { text: "、みんなが 藤井[ふじい]さんが 好[す]き" },
           { text: "です" },
         ],
-        notes: "With comma after 看護師で",
       },
       {
         segments: [
@@ -709,7 +707,6 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "With comma after 弁護士で",
       },
       {
         segments: [

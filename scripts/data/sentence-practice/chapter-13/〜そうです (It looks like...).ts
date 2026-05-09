@@ -11,7 +11,7 @@ export const questions: Question[] = [
           { text: "暖[あたた]かそう", blank: true },
           { text: "です" },
         ],
-        notes: "Standard translation using その for 'that' and そうです after an い-adjective stem.",
+        notes: "Uses そうです after the い-adjective stem 暖か-."
       },
       {
         segments: [
@@ -83,7 +83,7 @@ export const questions: Question[] = [
           { text: "楽[たの]しそう", blank: true },
           { text: "です" },
         ],
-        notes: "Standard translation using その and topic は, with a more specific club context.",
+        notes: "Using その for 'that' near the listener/context and は to mark the party as topic."
       },
       {
         segments: [
@@ -177,7 +177,7 @@ export const questions: Question[] = [
           { text: "寝[ね]そう", blank: true },
           { text: "です" },
         ],
-        notes: "Standard translation using verb-stem + そうです",
+        notes: "Uses verb-stem + そうです for 'looks like it will bark'."
       },
       {
         segments: [
@@ -246,7 +246,7 @@ export const questions: Question[] = [
           { text: "降[ふ]りそう", blank: true },
           { text: "です" },
         ],
-        notes: "Standard translation using 雨が降りそうです",
+        notes: "Uses 降りそうです for 'looks like it will rain'."
       },
       {
         segments: [
@@ -474,7 +474,7 @@ export const questions: Question[] = [
           { text: "から、今日[きょう]の 午後[ごご]、そこで 勉強[べんきょう]" },
           { text: "する", conjugation: { pos: "Suru verb - compound word", form: "volitional", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Basic translation using そうです for 'looks quiet' and から for 'so'.",
+        notes: "Uses そうです for 'looks quiet' and から for 'so'."
       },
       {
         segments: [

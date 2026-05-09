@@ -87,7 +87,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Basic version with が particle",
+        notes: "Uses が to mark the item chosen as number one."
       },
     ],
   },
@@ -104,7 +104,7 @@ export const questions: Question[] = [
           { text: "有名[ゆうめい]" },
           { text: "です" },
         ],
-        notes: "Standard version using 食べ物",
+        notes: "Uses 食べ物 for “food.”"
       },
       {
         segments: [
@@ -333,7 +333,7 @@ export const questions: Question[] = [
           },
           { text: "か" },
         ],
-        notes: "Standard version using どこ (which place)",
+        notes: "Uses どこ for “which place.”"
       },
       {
         segments: [
@@ -450,7 +450,7 @@ export const questions: Question[] = [
           { text: " 静[しず]か" },
           { text: "です" },
         ],
-        notes: "Standard version with が particle",
+        notes: "Uses が to mark the person chosen as number one."
       },
       {
         segments: [
@@ -483,7 +483,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Standard with のなかで in hiragana",
+        notes: "Writes のなかで in hiragana."
       },
       {
         segments: [
@@ -612,7 +612,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Standard word order, のなかで in hiragana",
+        notes: "Uses the usual word order and writes のなかで in hiragana."
       },
       {
         segments: [
@@ -784,7 +784,7 @@ export const questions: Question[] = [
           { text: "元気[げんき]" },
           { text: "です" },
         ],
-        notes: "Standard: 寮の皆の中で with 皆 in kanji",
+        notes: "Uses 寮の皆の中で with 皆 in kanji."
       },
       {
         segments: [

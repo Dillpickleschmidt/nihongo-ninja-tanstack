@@ -951,7 +951,7 @@ export const questions: Question[] = [
           },
         ],
         register: "polite",
-        notes: "Standard form",
+        notes: "Uses こと with より／ほう for comparing actions."
       },
       {
         segments: [
@@ -987,7 +987,7 @@ export const questions: Question[] = [
           },
         ],
         register: "polite",
-        notes: "Standard word order",
+        notes: "Uses と同じくらい to compare buying sushi at a supermarket with eating it at a sushi restaurant."
       },
       {
         segments: [

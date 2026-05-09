@@ -209,7 +209,6 @@ export const questions: Question[] = [
           { text: "できる", blank: true, conjugation: normal("Ichidan verb") },
           { text: "か" },
         ],
-        notes: "This puts 名前を before 漢字で.",
       },
     ],
   },
@@ -396,7 +395,6 @@ export const questions: Question[] = [
           { text: "私[わたし]は バスで" },
           { text: "寝[ね]る", blank: true, conjugation: potential("Ichidan verb", "negative") },
         ],
-        notes: "The subject is stated explicitly.",
       },
       {
         segments: [
@@ -534,7 +532,6 @@ export const questions: Question[] = [
           { text: "お金[かね]が ないから、" },
           { text: "払[はら]う", blank: true, conjugation: potential("Godan verb with 'u' ending", "negative") },
         ],
-        notes: "The reason comes first.",
       },
       {
         segments: [

@@ -9,7 +9,6 @@ export const questions: Question[] = [
         segments: [
           { text: "メアリーさんは 来月[らいげつ]仕事[しごと]を 辞[や]めるって", blank: true },
         ],
-        notes: "Basic pattern with は",
         register: "casual",
       },
       {
@@ -46,7 +45,6 @@ export const questions: Question[] = [
           { text: "メアリーさんは 来年[らいねん]留学[りゅうがく]するって", blank: true },
           { text: "言[い]っていた" },
         ],
-        notes: "Basic pattern with は",
         register: "casual",
       },
       {
@@ -137,7 +135,6 @@ export const questions: Question[] = [
           { text: "ケンさんは 宿題[しゅくだい]が 難[むずか]しいって", blank: true },
           { text: "言[い]っていた" },
         ],
-        notes: "Basic pattern with が",
         register: "casual",
       },
       {
@@ -158,7 +155,6 @@ export const questions: Question[] = [
         segments: [
           { text: "ユキさんは 結婚[けっこん]するって", blank: true },
         ],
-        notes: "Basic pattern with は",
         register: "casual",
       },
       {
@@ -206,7 +202,6 @@ export const questions: Question[] = [
         segments: [
           { text: "マイクさんは 日本[にほん]の 生活[せいかつ]に 慣[な]れたって", blank: true },
         ],
-        notes: "Basic pattern with は",
         register: "casual",
       },
       {

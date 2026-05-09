@@ -584,7 +584,7 @@ export const questions: Question[] = [
           { text: "私[わたし]の 妹[いもうと]は 熱[ねつ]が あるから、すぐ 医者[いしゃ]に " },
           { text: "電話[でんわ]しなければいけない", blank: true },
         ],
-        notes: "Standard なければいけない with から; uses only known vocabulary.",
+        notes: "Uses なければいけない with から to give the reason."
       },
       {
         segments: [
@@ -3277,7 +3277,7 @@ export const questions: Question[] = [
           { text: "今日[きょう] サッカーを したから、シャワーを " },
           { text: "浴[あ]びなければいけない", blank: true },
         ],
-        notes: "Standard なければいけない form; most direct translation",
+        notes: "Uses the full なければいけない form."
       },
       {
         segments: [
@@ -3410,7 +3410,7 @@ export const questions: Question[] = [
           { text: "今日[きょう] サッカーを した。シャワーを " },
           { text: "浴[あ]びなきゃ", blank: true },
         ],
-        notes: "Causal link inferred from context; very natural casual phrasing",
+        notes: "Infers the reason from context instead of stating it with から/だから."
       },
       {
         segments: [
@@ -3578,7 +3578,7 @@ export const questions: Question[] = [
           { text: "青信号[あおしんごう]だから、今[いま] " },
           { text: "渡[わた]らなければいけない", blank: true },
         ],
-        notes: "Basic translation using だから and なければいけない",
+        notes: "Uses だから to give the reason before なければいけない."
       },
       {
         segments: [

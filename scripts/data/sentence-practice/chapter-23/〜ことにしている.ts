@@ -403,7 +403,6 @@ export const questions: Question[] = [
           { text: "ことに", blank: true },
           { text: "する", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Basic word order with 公園に",
       },
       {
         segments: [
@@ -569,7 +568,6 @@ export const questions: Question[] = [
           { text: "選[えら]ぶことに", blank: true },
           { text: "する", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Standard wording with 卒業式のために and 駅の近くのホテル",
       },
       {
         segments: [
@@ -925,7 +923,7 @@ export const questions: Question[] = [
           { text: "する", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "past" } },
           { text: "か" },
         ],
-        notes: "Standard question with 結局 at the beginning and は marking Kenji as topic",
+        notes: "結局 at the beginning means “after all”; は marks Kenji as the topic.",
       },
       {
         segments: [
@@ -1072,7 +1070,7 @@ export const questions: Question[] = [
           { text: "今晩[こんばん]、晩[ばん]ご飯[はん]を 一人[ひとり]で 作[つく]ることに" },
           { text: "する", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Basic translation using 今晩 and 晩ご飯; blank is the final する in ことにする.",
+        notes: "The blank is the final する in ことにする.",
       },
       {
         segments: [
@@ -1517,7 +1515,6 @@ export const questions: Question[] = [
           { text: "ことに", blank: true },
           { text: "する", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Basic order: reason first, then every day/school/boxed lunch.",
       },
       {
         segments: [
@@ -1706,7 +1703,7 @@ export const questions: Question[] = [
           { text: "図書館[としょかん]が 静[しず]かなので、土曜日[どようび]の 午後[ごご]は そこで " },
           { text: "勉強[べんきょう]することにする", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Basic translation with そこで and は for Saturday afternoons",
+        notes: "そこで means “there,” referring back to the library.",
       },
       {
         segments: [
@@ -1874,7 +1871,6 @@ export const questions: Question[] = [
           { text: "謝[あやま]ることに", blank: true },
           { text: "する", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Basic translation using 今晩 and 私は at the start",
       },
       {
         segments: [
@@ -2215,7 +2211,6 @@ export const questions: Question[] = [
           { text: "明日[あした]の 会議[かいぎ]は 大切[たいせつ]なので、八時[はちじ]に 家[いえ]を 出[で]る" },
           { text: "ことにする", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Basic translation using は and なので",
       },
       {
         segments: [
@@ -2347,7 +2342,6 @@ export const questions: Question[] = [
           { text: "行[い]くことに", blank: true },
           { text: "する", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Standard translation using ので and 歩いて学校に行く",
       },
       {
         segments: [
@@ -2514,7 +2508,6 @@ export const questions: Question[] = [
           { text: "歌[うた]わないことに", blank: true },
           { text: "する", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Standard translation with ので and 今晩は",
       },
       {
         segments: [
@@ -2597,7 +2590,6 @@ export const questions: Question[] = [
           { text: "復習[ふくしゅう]することに", blank: true },
           { text: "する", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Basic translation using は and ので",
       },
       {
         segments: [
@@ -2738,7 +2730,6 @@ export const questions: Question[] = [
           { text: "置[お]くことに", blank: true },
           { text: "する", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Standard wording with が and ので",
       },
       {
         segments: [
@@ -3073,7 +3064,6 @@ export const questions: Question[] = [
           { text: "弾[ひ]かないことに", blank: true },
           { text: "する", blank: true, conjugation: { pos: "Suru verb - included", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Basic version with ので and 今晩は",
       },
       {
         segments: [

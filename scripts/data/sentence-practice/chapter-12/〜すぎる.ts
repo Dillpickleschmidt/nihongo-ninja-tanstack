@@ -9,7 +9,7 @@ export const questions: Question[] = [
           { text: "この カフェの コーヒーは " },
           { text: "熱[あつ]すぎる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Standard translation with このカフェのコーヒー as the topic",
+        notes: "このカフェのコーヒー is marked as the topic with は."
       },
       {
         segments: [
@@ -98,7 +98,7 @@ export const questions: Question[] = [
           { text: "昨日[きのう]、すしを 食[た]べ" },
           { text: "すぎる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "past" } },
         ],
-        notes: "Basic word order with 昨日 at the beginning and すし in kana.",
+        notes: "昨日 appears at the beginning; すし is written in kana."
       },
       {
         segments: [
@@ -818,7 +818,7 @@ export const questions: Question[] = [
           { text: "私[わたし]の ルームメイトは 昨日[きのう]、パーティーで ビールを" },
           { text: "飲[の]みすぎる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "past" } },
         ],
-        notes: "Basic sentence with は and 昨日 placed before the party setting.",
+        notes: "Uses は for the subject, with 昨日 before the party setting."
       },
       {
         segments: [
@@ -853,7 +853,7 @@ export const questions: Question[] = [
           { text: "昨日[きのう]、パーティーで 私[わたし]の ルームメイトは ビールを" },
           { text: "飲[の]みすぎる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "past" } },
         ],
-        notes: "Places パーティーで before the subject; still natural with the time expression first.",
+        notes: "Places パーティーで before the subject."
       },
     ],
   },
@@ -865,7 +865,7 @@ export const questions: Question[] = [
           { text: "この りんごは " },
           { text: "甘[あま]すぎる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Standard translation with は marking the apple as the topic.",
+        notes: "Marks the apple as the topic with は."
       },
       {
         segments: [
@@ -946,7 +946,7 @@ export const questions: Question[] = [
           { text: "すぎる", blank: true, conjugation: { pos: "Ichidan verb", form: "te-form", polarity: "negative", tense: "non-past" } },
           { text: "ください" },
         ],
-        notes: "Basic translation using 試験を心配する",
+        notes: "Uses 試験を心配する for “worry about the exam.”"
       },
       {
         segments: [

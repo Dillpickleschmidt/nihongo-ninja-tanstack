@@ -22,18 +22,19 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Please don't use my dictionary.",
+    english: "Please don't use my dictionary on the test.",
+    hint: "test = テスト",
     answers: [
       {
         segments: [
-          { text: "私[わたし]の 辞書[じしょ]を" },
+          { text: "テストで 私[わたし]の 辞書[じしょ]を" },
           { text: "使[つか]わないで", blank: true },
           { text: "ください", blank: true },
         ],
       },
       {
         segments: [
-          { text: "辞書[じしょ]を" },
+          { text: "テストで 辞書[じしょ]を" },
           { text: "使[つか]わないで", blank: true },
           { text: "ください", blank: true },
         ],

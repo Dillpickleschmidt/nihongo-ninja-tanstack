@@ -746,7 +746,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Standard version with が, 今 before the location, and と聞いた",
+        notes: "Uses が, places 今 before the location, and quotes with と聞いた."
       },
       {
         segments: [
@@ -1322,7 +1322,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Standard direct quote with と and 晩ご飯",
+        notes: "Uses direct quotation with と and 晩ご飯 for dinner."
       },
       {
         segments: [
@@ -1935,7 +1935,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Standard quotation with と; topic marker は for Kobayashi.",
+        notes: "Uses quotation particle と; marks Kobayashi with topic marker は."
       },
       {
         segments: [
@@ -3344,7 +3344,7 @@ export const questions: Question[] = [
           },
           { text: "か" },
         ],
-        notes: "Standard quotation with と and あの男の人",
+        notes: "Uses quotation particle と and あの男の人."
       },
       {
         segments: [

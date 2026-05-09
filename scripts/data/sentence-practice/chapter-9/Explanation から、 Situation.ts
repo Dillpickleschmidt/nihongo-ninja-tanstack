@@ -704,7 +704,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Natural exam-context wording: 'I didn't write any answers.'",
+        notes: "Uses 'I didn't write any answers' for the exam context.",
       },
       {
         segments: [
@@ -811,7 +811,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Standard translation with このレストランは and 今日 as topic",
+        notes: "Uses このレストランは and 今日 as topics."
       },
       {
         segments: [
@@ -1057,7 +1057,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Basic translation using 歌が上手 and カラオケに行く",
+        notes: "Uses 歌が上手 and カラオケに行く."
       },
       {
         segments: [
@@ -1236,7 +1236,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Standard translation with explicit 私は and 晩ご飯 for dinner",
+        notes: "Uses explicit 私は and 晩ご飯 for dinner."
       },
       {
         segments: [
@@ -1854,7 +1854,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Basic translation using 公園を散歩する and 昼ご飯の後で",
+        notes: "Uses 公園を散歩する and 昼ご飯の後で."
       },
       {
         segments: [
@@ -2282,7 +2282,7 @@ export const questions: Question[] = [
           { text: "です" },
           { text: "か" },
         ],
-        notes: "Standard translation using この辞書を and 使ってもよいですか",
+        notes: "Uses この辞書を and 使ってもよいですか."
       },
       {
         segments: [
@@ -3028,7 +3028,7 @@ export const questions: Question[] = [
           { text: "洗[あら]ったから", blank: true },
           { text: "、肉[にく]を 切[き]ってください" },
         ],
-        notes: "Moves もう after the object; still natural.",
+        notes: "Moves もう after the object."
       },
       {
         segments: [
@@ -3262,7 +3262,7 @@ export const questions: Question[] = [
           { text: "いるから", blank: true },
           { text: "、この かばんを 開[あ]けないでください" },
         ],
-        notes: "Basic wording with かばん and の中に for “in this bag”",
+        notes: "Uses かばん and の中に for “in this bag.”"
       },
       {
         segments: [

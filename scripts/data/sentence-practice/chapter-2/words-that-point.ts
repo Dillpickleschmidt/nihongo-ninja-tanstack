@@ -33,7 +33,6 @@ export const questions: Question[] = [
           { text: "トイレはどこ", blank: true },
           { text: "ですか" },
         ],
-        notes: "Standard question: teacher + は + どこ",
       },
     ],
   },
@@ -143,7 +142,6 @@ export const questions: Question[] = [
           { text: "です" },
           { text: "か" },
         ],
-        notes: "Standard: あれ + は + noun + です + か",
       },
     ],
   },
@@ -536,7 +534,7 @@ export const questions: Question[] = [
           { text: "あの", blank: true },
           { text: "かばんは 私[わたし]のです" },
         ],
-        notes: "Basic answer: あの + noun + は + 私の. あの marks something far from both speaker and listener.",
+        notes: "あの marks something far from both speaker and listener.",
       },
       {
         segments: [

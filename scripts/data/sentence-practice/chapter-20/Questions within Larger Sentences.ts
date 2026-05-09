@@ -11,7 +11,6 @@ export const questions: Question[] = [
           { text: " " },
           { text: "分[わ]かる", conjugation: { pos: "Godan verb with 'ru' ending", form: "normal", polarity: "negative", tense: "non-past" } },
         ],
-        notes: "Basic wording with 今夜のパーティー and 来る",
       },
       {
         segments: [
@@ -178,7 +177,6 @@ export const questions: Question[] = [
           { text: "閉[し]まっているかどうか", blank: true },
           { text: "、見[み]てください" },
         ],
-        notes: "Basic translation using が and 見てください for “please check/look.”",
       },
       {
         register: "polite",
@@ -327,7 +325,7 @@ export const questions: Question[] = [
           { text: "考[かんが]える", conjugation: { pos: "Ichidan verb", form: "te-form", polarity: "positive", tense: "non-past" } },
           { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Basic phrasing with 私は and を; uses 考えている for “am thinking/considering”",
+        notes: "考えている means “am thinking/considering.”",
       },
       {
         segments: [
@@ -422,7 +420,7 @@ export const questions: Question[] = [
           { text: "あるかどうか", blank: true },
           { text: "、教[おし]えてください" },
         ],
-        notes: "Basic translation using に for existence and 大浴場 for a large public bath",
+        notes: "大浴場 means a large public bath.",
       },
       {
         segments: [
@@ -626,7 +624,6 @@ export const questions: Question[] = [
           { text: "決[き]める", conjugation: { pos: "Ichidan verb", form: "te-form", polarity: "positive", tense: "non-past" } },
           { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
         ],
-        notes: "Basic order with 私のルームメイト and コンサートに",
       },
       {
         segments: [
@@ -779,7 +776,7 @@ export const questions: Question[] = [
           { text: "有名[ゆうめい]な 歌手[かしゅ]かどうか", blank: true },
           { text: " 知[し]る", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "tai-form", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Basic translation using あそこにいる女の人 and が in the embedded question",
+        notes: "あそこにいる女の人 means “the woman over there.”",
       },
       {
         segments: [
@@ -906,7 +903,7 @@ export const questions: Question[] = [
           { text: "、教[おし]えていただけません" },
           { text: "か" },
         ],
-        notes: "Standard translation using 飲んでみて and a polite request with いただけませんか",
+        notes: "いただけませんか makes the request polite.",
       },
       {
         register: "polite",
@@ -1128,7 +1125,7 @@ export const questions: Question[] = [
           { text: "かどうか", blank: true },
           { text: "、忘[わす]れる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "past" } },
         ],
-        notes: "Standard translation with 出かける前に and ドアに鍵をかける",
+        notes: "ドアに鍵をかける means “lock the door.”",
       },
       {
         segments: [
@@ -1490,7 +1487,7 @@ export const questions: Question[] = [
           { text: "もう 出[で]たかどうか", blank: true },
           { text: " 聞[き]く", conjugation: { pos: "Godan verb with 'ku' ending", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Basic translation with 駅で and が marking the last train as the subject",
+        notes: "が marks the last train as the subject of leaving.",
       },
       {
         segments: [
@@ -1621,7 +1618,7 @@ export const questions: Question[] = [
           { text: "、調[しら]べる", conjugation: { pos: "Ichidan verb", form: "te-form", polarity: "positive", tense: "non-past" } },
           { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Standard wording with あの不思議な音 and 外でも for “outside too”",
+        notes: "外でも means “outside too/even outside.”",
       },
       {
         segments: [
@@ -1698,7 +1695,7 @@ export const questions: Question[] = [
           { text: "禁煙[きんえん]かどうか", blank: true },
           { text: " 聞[き]く", conjugation: { pos: "Godan verb with 'ku' ending", form: "normal", polarity: "positive", tense: "past" } },
         ],
-        notes: "Basic translation with ツインの部屋が as the embedded-question subject",
+        notes: "が marks ツインの部屋 as the subject of the embedded question.",
       },
       {
         segments: [
@@ -1760,7 +1757,7 @@ export const questions: Question[] = [
           { text: "、" },
           { text: "思[おも]い 出[だ]す", conjugation: { pos: "Godan verb with 'su' ending", form: "potential", polarity: "negative", tense: "non-past" } },
         ],
-        notes: "Basic wording with が marking the final exam as the subject of the embedded question",
+        notes: "が marks the final exam as the subject of the embedded question.",
       },
       {
         segments: [
@@ -1888,7 +1885,6 @@ export const questions: Question[] = [
           { text: "、公園[こうえん]に 見[み]に" },
           { text: "行[い]く", conjugation: { pos: "Godan verb - Iku/Yuku special class", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Basic translation with 公園に and 咲いたかどうか",
       },
       {
         segments: [
@@ -1985,7 +1981,7 @@ export const questions: Question[] = [
           { text: "開[あ]いているかどうか", blank: true },
           { text: " 分[わ]かる", conjugation: { pos: "Godan verb with 'ru' ending", form: "normal", polarity: "negative", tense: "non-past" } },
         ],
-        notes: "Basic translation using 開いている for a facility being open",
+        notes: "開いている describes a facility being open.",
       },
       {
         segments: [
@@ -2199,7 +2195,7 @@ export const questions: Question[] = [
           { text: "、調[しら]べるつもり" },
           { text: "です" },
         ],
-        notes: "Basic translation using コンピューター and つもり for “going to”",
+        notes: "つもり expresses “going to / intending to.”",
       },
       {
         segments: [
@@ -2507,7 +2503,6 @@ export const questions: Question[] = [
           { text: "つくかどうか", blank: true },
           { text: "、見[み]てください" },
         ],
-        notes: "Standard translation using 見てください for “please see/check.”",
       },
       {
         segments: [

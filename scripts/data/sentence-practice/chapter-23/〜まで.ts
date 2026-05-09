@@ -2,36 +2,36 @@ import type { Question } from "../types";
 
 export const questions: Question[] = [
   {
-    english: "Please wait here until the rain stops.",
+    english: "It's raining hard, so please wait here until the taxi comes.",
+    hint: "taxi = タクシー",
     answers: [
       {
         segments: [
-          { text: "雨[あめ]が" },
-          { text: "やむまで", blank: true },
+          { text: "雨[あめ]が 強[つよ]いですから、タクシーが" },
+          { text: "来[く]るまで", blank: true },
           { text: "、ここで 待[ま]ってください" },
         ],
-        notes: "Standard word order: until the rain stops, please wait here",
       },
       {
         segments: [
-          { text: "ここで、雨[あめ]が" },
-          { text: "やむまで", blank: true },
+          { text: "雨[あめ]が 強[つよ]いですから、ここで、タクシーが" },
+          { text: "来[く]るまで", blank: true },
           { text: "、待[ま]ってください" },
         ],
-        notes: "Reordered: place first, then the until-clause",
+        notes: "Reordered: place before the until-clause",
       },
       {
         segments: [
-          { text: "雨[あめ]が" },
-          { text: "やむまで", blank: true },
+          { text: "雨[あめ]が 強[つよ]いですから、タクシーが" },
+          { text: "来[く]るまで", blank: true },
           { text: "、ここにいてください" },
         ],
-        notes: "Uses ここにいてください, natural for staying/waiting here until the rain stops",
+        notes: "Uses ここにいてください, natural for staying here until the taxi comes",
       },
       {
         segments: [
-          { text: "ここに、雨[あめ]が" },
-          { text: "やむまで", blank: true },
+          { text: "雨[あめ]が 強[つよ]いですから、ここに、タクシーが" },
+          { text: "来[く]るまで", blank: true },
           { text: "、いてください" },
         ],
         notes: "Reordered version using ここにいてください",
@@ -48,7 +48,6 @@ export const questions: Question[] = [
           { text: "、帰[かえ]って" },
           { text: "来[く]る", conjugation: { pos: "Kuru verb - special class", form: "normal", polarity: "negative", tense: "past" } },
         ],
-        notes: "Basic translation using 晩ご飯 and 帰ってくる",
       },
       {
         segments: [
@@ -283,7 +282,6 @@ export const questions: Question[] = [
           { text: "、図書館[としょかん]に " },
           { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "past" } },
         ],
-        notes: "Basic sentence with the until-clause first.",
       },
       {
         segments: [
@@ -478,7 +476,6 @@ export const questions: Question[] = [
           { text: "、" },
           { text: "使[つか]う", conjugation: { pos: "Godan verb with 'u' ending", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Basic translation with を marking the computer as the object",
       },
       {
         segments: [
@@ -653,7 +650,6 @@ export const questions: Question[] = [
           { text: "まで", blank: true },
           { text: "運[はこ]んでください" },
         ],
-        notes: "Standard translation using かばん and 運ぶ.",
       },
       {
         segments: [
@@ -754,7 +750,6 @@ export const questions: Question[] = [
           { text: "まで", blank: true },
           { text: "、スマホを 見[み]ないでください" },
         ],
-        notes: "Basic translation using 試験 and を",
       },
       {
         segments: [
@@ -856,7 +851,6 @@ export const questions: Question[] = [
           { text: "続[つづ]いたので、タクシーで 家[いえ]に " },
           { text: "帰[かえ]る", conjugation: { pos: "Godan verb with 'ru' ending", form: "normal", polarity: "positive", tense: "past" } },
         ],
-        notes: "Standard translation with は, using ので for “so/because” and 家に帰る",
       },
       {
         segments: [
@@ -1182,7 +1176,6 @@ export const questions: Question[] = [
           { text: "、ピアノを " },
           { text: "練習[れんしゅう]する", conjugation: { pos: "Suru verb - compound word", form: "normal", polarity: "positive", tense: "past" } },
         ],
-        notes: "Basic translation using Verb + まで with ピアノを練習する",
       },
       {
         segments: [
@@ -1358,7 +1351,7 @@ export const questions: Question[] = [
           { text: "来[く]るまで", blank: true },
           { text: "、ケーキを 冷蔵庫[れいぞうこ]に 入[い]れておいてください" },
         ],
-        notes: "Basic order with the until-clause first; uses 来る for guests arriving.",
+        notes: "来る can describe guests arriving/coming.",
       },
       {
         segments: [
@@ -1513,7 +1506,6 @@ export const questions: Question[] = [
           { text: "台風[たいふう]が 終[お]わるまで", blank: true },
           { text: "、教室[きょうしつ]に いてください" },
         ],
-        notes: "Basic sentence with Verb + まで and 教室にいる",
       },
       {
         segments: [
@@ -1572,7 +1564,6 @@ export const questions: Question[] = [
           { text: "、" },
           { text: "寝[ね]る", conjugation: { pos: "Ichidan verb", form: "potential", polarity: "negative", tense: "past" } },
         ],
-        notes: "Basic translation using 変な音 and potential 寝られなかった",
       },
       {
         segments: [
@@ -1687,7 +1678,6 @@ export const questions: Question[] = [
           { text: "まで", blank: true },
           { text: "待[ま]つ", conjugation: { pos: "Godan verb with 'tsu' ending", form: "normal", polarity: "positive", tense: "past" } },
         ],
-        notes: "Basic translation using 大きい木 and そこで",
       },
       {
         segments: [
@@ -1925,7 +1915,7 @@ export const questions: Question[] = [
           { text: "、" },
           { text: "歌[うた]う", conjugation: { pos: "Godan verb with 'u' ending", form: "volitional", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Standard translation using 泣かなくなるまで for “until the baby stops crying.”",
+        notes: "泣かなくなるまで literally means “until the baby becomes not crying.”",
       },
       {
         segments: [
@@ -2170,7 +2160,7 @@ export const questions: Question[] = [
           { text: "けど、中[なか]には " },
           { text: "入[はい]る", conjugation: { pos: "Godan verb with 'ru' ending", form: "normal", polarity: "negative", tense: "non-past" } },
         ],
-        notes: "Basic phrasing with おばあさんと and contrastive 中には入らない",
+        notes: "には marks inside the hospital as the contrasted place the speaker will not enter.",
       },
       {
         segments: [

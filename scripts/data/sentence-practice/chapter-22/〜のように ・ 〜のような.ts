@@ -11,7 +11,7 @@ export const questions: Question[] = [
           { text: " 空[そら]を " },
           { text: "飛[と]ぶ", conjugation: { pos: "Godan verb with 'bu' ending", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Basic translation using あの for “that” and は as the topic.",
+        notes: "あの refers to something distant from both speaker and listener; は marks it as the topic.",
       },
       {
         segments: [
@@ -51,7 +51,7 @@ export const questions: Question[] = [
           { text: "のように", blank: true },
           { text: "話[はな]してください" },
         ],
-        notes: "Standard translation using 発表中に and 先生のように",
+        notes: "発表中に means “during the presentation”; 先生のように means “like the teacher.”",
       },
       {
         segments: [
@@ -177,7 +177,7 @@ export const questions: Question[] = [
           { text: " 静[しず]かな 部屋[へや]が " },
           { text: "欲[ほ]しい", conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Most direct translation using のような to modify the noun 部屋",
+        notes: "のような modifies the noun 部屋.",
       },
       {
         segments: [
@@ -236,7 +236,7 @@ export const questions: Question[] = [
           { text: "夜[よる]のように", blank: true },
           { text: " 暗[くら]い", conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Basic comparison with のように modifying the adjective 暗い",
+        notes: "のように modifies the adjective 暗い.",
       },
       {
         segments: [
@@ -273,7 +273,7 @@ export const questions: Question[] = [
           { text: "野菜[やさい]を" },
           { text: "食[た]べる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Basic version using 兄 for 'my older brother' and 牛のように before the object.",
+        notes: "兄 implies “my older brother”; 牛のように modifies the eating action.",
       },
       {
         segments: [
@@ -349,7 +349,7 @@ export const questions: Question[] = [
           { text: " 笑[わら]って" },
           { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Basic version with は; the child is the topic.",
+        notes: "は marks the child as the topic.",
       },
       {
         segments: [
@@ -461,7 +461,7 @@ export const questions: Question[] = [
           { text: "海[うみ]のように", blank: true },
           { text: " 青[あお]い", conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Standard phrasing with 今日の空 as the topic and ように modifying the adjective 青い",
+        notes: "ように modifies the adjective 青い.",
       },
       {
         segments: [
@@ -515,7 +515,7 @@ export const questions: Question[] = [
           { text: "のように", blank: true },
           { text: "見[み]える", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "past" } },
         ],
-        notes: "Standard phrasing with のように modifying 見える",
+        notes: "のように modifies 見える.",
       },
       {
         segments: [
@@ -617,7 +617,6 @@ export const questions: Question[] = [
           { text: " 寝[ね]る", conjugation: { pos: "Ichidan verb", form: "te-form", polarity: "positive", tense: "non-past" } },
           { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Basic translation using あの and 電車で",
       },
       {
         segments: [
@@ -838,7 +837,6 @@ export const questions: Question[] = [
           { text: " 書類[しょるい]が " },
           { text: "ある", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Standard word order: on the desk, there are mountain-like documents.",
       },
       {
         segments: [
@@ -932,7 +930,7 @@ export const questions: Question[] = [
           { text: "怒[おこ]っているように", blank: true },
           { text: "吹[ふ]いている" },
         ],
-        notes: "Basic natural wording with ように modifying 吹いている",
+        notes: "ように modifies 吹いている.",
       },
       {
         segments: [
@@ -1029,7 +1027,7 @@ export const questions: Question[] = [
           { text: "です" },
           { text: "か" },
         ],
-        notes: "Basic order with explanatory んです; verb kept plain before んです",
+        notes: "The verb stays plain before explanatory んです.",
       },
       {
         segments: [
@@ -1103,7 +1101,6 @@ export const questions: Question[] = [
           { text: " 家事[かじ]をする ロボットが " },
           { text: "欲[ほ]しい", conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Standard word order: a robot that does housework like a person.",
       },
       {
         segments: [
@@ -1252,7 +1249,6 @@ export const questions: Question[] = [
           { text: "のように", blank: true },
           { text: " 辛[から]い", conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Standard wording with は; directly says the soup is spicy like curry.",
       },
       {
         segments: [
@@ -1292,7 +1288,7 @@ export const questions: Question[] = [
           { text: "不思議[ふしぎ]な 目[め]のように", blank: true },
           { text: "見[み]える", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Standard translation using 今夜 and は with のように見える.",
+        notes: "のように見える means “looks like/as if.”",
       },
       {
         segments: [
@@ -1363,7 +1359,7 @@ export const questions: Question[] = [
           { text: " 鍵[かぎ]を " },
           { text: "見[み]つける", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "past" } },
         ],
-        notes: "Basic translation using のような to modify 鍵",
+        notes: "のような modifies 鍵.",
       },
       {
         segments: [
@@ -1640,7 +1636,6 @@ export const questions: Question[] = [
           { text: "有名[ゆうめい]な 歌手[かしゅ]のように", blank: true },
           { text: "歌[うた]う", conjugation: { pos: "Godan verb with 'u' ending", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Basic sentence with は and お風呂で",
       },
       {
         segments: [
@@ -1693,7 +1688,6 @@ export const questions: Question[] = [
           { text: "子供[こども]のように", blank: true },
           { text: "泣[な]く", conjugation: { pos: "Godan verb with 'ku' ending", form: "normal", polarity: "positive", tense: "past" } },
         ],
-        notes: "Standard wording with 試合に負けた後で and 社長 as the topic",
       },
       {
         segments: [
@@ -1915,7 +1909,6 @@ export const questions: Question[] = [
           { text: "座[すわ]る", conjugation: { pos: "Godan verb with 'ru' ending", form: "te-form", polarity: "positive", tense: "non-past" } },
           { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "Standard wording with あの犬 and ソファに",
       },
       {
         segments: [

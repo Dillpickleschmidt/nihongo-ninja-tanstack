@@ -149,7 +149,7 @@ export const questions: Question[] = [
           { text: "です" },
           { text: "か" },
         ],
-        notes: "Standard direct question with が marking the desired drink",
+        notes: "Direct question with が marking the desired drink."
       },
       {
         segments: [
@@ -495,7 +495,7 @@ export const questions: Question[] = [
           { text: "試験[しけん]の 後[あと]、どんな 質問[しつもん]にも " },
           { text: "答[こた]えたくなかった", blank: true },
         ],
-        notes: "Standard wording with どんな質問にも for “any questions”",
+        notes: "Uses どんな質問にも for “any questions.”"
       },
       {
         segments: [
@@ -595,7 +595,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Standard translation using 見た時 and past たい form",
+        notes: "Uses 見た時 and the past たい form."
       },
       {
         segments: [
@@ -747,7 +747,7 @@ export const questions: Question[] = [
           { text: "が、髪[かみ]は" },
           { text: "洗[あら]いたくなかった", blank: true },
         ],
-        notes: "Basic translation; uses contrastive は for hair",
+        notes: "Uses contrastive は for hair."
       },
       {
         segments: [
@@ -1002,7 +1002,7 @@ export const questions: Question[] = [
           { text: "今日[きょう]は 眠[ねむ]いから、" },
           { text: "運転[うんてん]したくない", blank: true },
         ],
-        notes: "Standard translation with 今日 as the topic.",
+        notes: "Marks 今日 as the topic."
       },
       {
         segments: [
@@ -1159,7 +1159,7 @@ export const questions: Question[] = [
           { text: "が、兄[あに]と 一緒[いっしょ]に 朝[あさ]ご 飯[はん]を " },
           { text: "食[た]べたかった", blank: true },
         ],
-        notes: "Basic translation with 今朝は, 朝ご飯を, and 兄と一緒に",
+        notes: "Uses 今朝は, 朝ご飯を, and 兄と一緒に."
       },
       {
         segments: [
@@ -1576,7 +1576,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "No contrastive は after 時; still natural.",
+        notes: "Omits contrastive は after 時."
       },
       {
         segments: [

@@ -373,7 +373,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "With 暇 context",
+        notes: "Uses 暇だから to make the availability explicit."
       },
     ],
   },

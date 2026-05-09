@@ -50,11 +50,11 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "I eat lunch at the cafeteria about four times a week.",
+    english: "I eat lunch with friends at the cafeteria about four times a week, usually Monday through Thursday.",
     answers: [
       {
         segments: [
-          { text: "私[わたし]は 食堂[しょくどう]で" },
+          { text: "私[わたし]は 月曜日[げつようび]から 木曜日[もくようび]まで 食堂[しょくどう]で 友達[ともだち]と" },
           { text: "一週間[いっしゅうかん]に 四回[よんかい]ぐらい", blank: true },
           { text: "昼[ひる]ご飯[はん]を" },
           { text: "食[た]べる", conjugation: normal("Ichidan verb") },
@@ -62,12 +62,12 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "私[わたし]は" },
+          { text: "私[わたし]は 月曜日[げつようび]から 木曜日[もくようび]まで 友達[ともだち]と" },
           { text: "一週間[いっしゅうかん]に 四回[よんかい]くらい", blank: true },
           { text: "食堂[しょくどう]で 昼食[ちゅうしょく]を" },
           { text: "食[た]べる", conjugation: normal("Ichidan verb") },
         ],
-        notes: "昼食 is a more formal word for lunch.",
+        notes: "昼食 is a more formal word for lunch."
       },
     ],
   },

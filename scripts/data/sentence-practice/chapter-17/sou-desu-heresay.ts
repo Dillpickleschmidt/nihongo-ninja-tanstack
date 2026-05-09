@@ -12,7 +12,6 @@ export const questions: Question[] = [
           { text: "そう", blank: true },
           { text: "です" },
         ],
-        notes: "Basic structure with 大きい",
       },
       {
         segments: [
@@ -20,7 +19,6 @@ export const questions: Question[] = [
           { text: "そう", blank: true },
           { text: "です" },
         ],
-        notes: "Basic structure with 大きな",
       },
       {
         segments: [
@@ -73,7 +71,6 @@ export const questions: Question[] = [
           { text: "そう", blank: true },
           { text: "です" },
         ],
-        notes: "Basic structure",
       },
       {
         segments: [
@@ -114,7 +111,6 @@ export const questions: Question[] = [
           { text: "そう", blank: true },
           { text: "です" },
         ],
-        notes: "Basic structure",
       },
       {
         segments: [
@@ -135,7 +131,6 @@ export const questions: Question[] = [
           { text: "そう", blank: true },
           { text: "です" },
         ],
-        notes: "Basic structure with は",
       },
       {
         segments: [
@@ -192,7 +187,6 @@ export const questions: Question[] = [
           { text: "そう", blank: true },
           { text: "です" },
         ],
-        notes: "Basic structure with は",
       },
       {
         segments: [
@@ -235,7 +229,6 @@ export const questions: Question[] = [
           { text: "そう", blank: true },
           { text: "です" },
         ],
-        notes: "Basic structure with は",
       },
       {
         segments: [
@@ -264,7 +257,6 @@ export const questions: Question[] = [
           { text: "そう", blank: true },
           { text: "です" },
         ],
-        notes: "Basic structure with が",
       },
       {
         segments: [
@@ -309,7 +301,6 @@ export const questions: Question[] = [
           { text: "そう", blank: true },
           { text: "です" },
         ],
-        notes: "Basic structure with 大きい",
       },
       {
         segments: [
@@ -364,7 +355,6 @@ export const questions: Question[] = [
           { text: "そう", blank: true },
           { text: "です" },
         ],
-        notes: "Basic structure with できる",
       },
       {
         segments: [
@@ -427,7 +417,6 @@ export const questions: Question[] = [
           { text: "そう", blank: true },
           { text: "です" },
         ],
-        notes: "Basic structure",
       },
       {
         segments: [
@@ -535,7 +524,6 @@ export const questions: Question[] = [
           { text: "そう", blank: true },
           { text: "です" },
         ],
-        notes: "Basic structure with は",
       },
       {
         segments: [
@@ -564,7 +552,6 @@ export const questions: Question[] = [
           { text: "そう", blank: true },
           { text: "です" },
         ],
-        notes: "Basic structure with よい",
       },
       {
         segments: [
@@ -660,7 +647,6 @@ export const questions: Question[] = [
           { text: "そう", blank: true },
           { text: "です" },
         ],
-        notes: "Basic structure with やさしい",
       },
       {
         segments: [
