@@ -9,6 +9,7 @@ import { createEffect, createMemo, createSignal, Show } from "solid-js"
 import { useQueryClient } from "@tanstack/solid-query"
 import type { QueryClient } from "@tanstack/solid-query"
 import { authClient } from "@/lib/auth-client"
+import { getUser } from "@/lib/auth"
 import { BottomNav } from "@/features/navbar/Nav"
 import { MobileNavSheet } from "@/features/navbar/MobileNavSheet"
 import { TrialWelcomeDialog } from "@/features/billing/TrialWelcomeDialog"
@@ -79,10 +80,12 @@ function HomeLayout() {
     navigate({ to: "/" })
   }
 
+  const user = getUser()
   const todayDateKey = () => getLocalDateKey()
   const dailyProgressQuery = useConvexQuery(
     api.api.progress.getDailyProgress,
     () => ({ dateKey: todayDateKey() }),
+    () => ({ enabled: !!user() }),
   )
 
   const dailyProgressPercentage = createMemo(() => {

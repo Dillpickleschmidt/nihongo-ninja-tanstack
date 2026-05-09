@@ -36,7 +36,10 @@ import {
   preferencesQueryOptions,
 } from "@/query/query-options"
 import { updateDeviceSettingsCookie } from "@/query/model/device-settings"
-import { parsePreferencesCookie, syncPreferencesFromProfile } from "@/query/model/preferences"
+import {
+  parsePreferencesCookie,
+  syncPreferencesFromProfile,
+} from "@/query/model/preferences"
 import { useConvexQuery } from "@/lib/convex-query"
 import { getUser } from "@/lib/auth"
 import { api } from "convex/_generated/api"
@@ -156,4 +159,3 @@ function PreferencesSync() {
 
   return null
 }
-
