@@ -47,11 +47,12 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Tanaka is a student. Yamada is also a student.",
+    english: "Saito is a student. Yamada is also a student.",
+    hint: "Saito = 斎藤 (さいとう); Yamada = 山田 (やまだ)",
     answers: [
       {
         segments: [
-          { text: "田中[たなか]さんは 学生[がくせい]です。" },
+          { text: "斎藤[さいとう]さんは 学生[がくせい]です。" },
           { text: "山田[やまだ]さんも", blank: true },
           { text: "学生[がくせい]です。" },
         ],
@@ -59,11 +60,12 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Both Tanaka and Sato are Japanese.",
+    english: "Both Mori and Sato are Japanese.",
+    hint: "Mori = 森 (もり); Sato = 佐藤 (さとう)",
     answers: [
       {
         segments: [
-          { text: "田中[たなか]さんも", blank: true },
+          { text: "森[もり]さんも", blank: true },
           { text: "佐藤[さとう]さんも", blank: true },
           { text: "日本人[にほんじん]です" },
         ],
@@ -96,6 +98,7 @@ export const questions: Question[] = [
   },
   {
     english: "Yamada is a doctor. He is also a teacher.",
+    hint: "Yamada = 山田 (やまだ)",
     answers: [
       {
         segments: [
@@ -129,6 +132,7 @@ export const questions: Question[] = [
   },
   {
     english: "Kim is Korean. She is also a university student.",
+    hint: "Kim = キム",
     answers: [
       {
         segments: [
@@ -152,24 +156,26 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "This is Tanaka's pen. This is also Tanaka's notebook.",
+    english: "This is Fujii's pen. This is also Fujii's notebook.",
+    hint: "Fujii = 藤井 (ふじい)",
     answers: [
       {
         segments: [
-          { text: "これは 田中[たなか]さんのペンです。これは" },
-          { text: "田中[たなか]さんのノートも", blank: true },
+          { text: "これは 藤井[ふじい]さんのペンです。これは" },
+          { text: "藤井[ふじい]さんのノートも", blank: true },
           { text: "です。" },
         ],
       },
     ],
   },
   {
-    english: "Both Yamada and Tanaka are first-year students.",
+    english: "Both Yamada and Nakajima are first-year students.",
+    hint: "Yamada = 山田 (やまだ); Nakajima = 中島 (なかじま)",
     answers: [
       {
         segments: [
           { text: "山田[やまだ]さんも", blank: true },
-          { text: "田中[たなか]さんも", blank: true },
+          { text: "中島[なかじま]さんも", blank: true },
           { text: "一年生[いちねんせい]です" },
         ],
       },
@@ -188,13 +194,14 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Both this umbrella and that bag are Tanaka's.",
+    english: "Both this umbrella and that bag are Saito's.",
+    hint: "Saito = 斎藤 (さいとう)",
     answers: [
       {
         segments: [
           { text: "この 傘[かさ]も", blank: true },
           { text: "その 鞄[かばん]も", blank: true },
-          { text: "田中[たなか]さんのです" },
+          { text: "斎藤[さいとう]さんのです" },
         ],
       },
     ],
@@ -213,6 +220,7 @@ export const questions: Question[] = [
   },
   {
     english: "Both these shoes and that hat are Yamada's.",
+    hint: "Yamada = 山田 (やまだ)",
     answers: [
       {
         segments: [
@@ -248,11 +256,12 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Tanaka is a lawyer. He is also a university teacher.",
+    english: "Kobayashi is a lawyer. He is also a university teacher.",
+    hint: "Kobayashi = 小林 (こばやし)",
     answers: [
       {
         segments: [
-          { text: "田中[たなか]さんは 弁護士[べんごし]です。" },
+          { text: "小林[こばやし]さんは 弁護士[べんごし]です。" },
           { text: "大学[だいがく]の 先生[せんせい]も", blank: true },
           { text: "です。" },
         ],

@@ -916,7 +916,7 @@ export const questions: Question[] = [
   },
   {
     english: "Did Kenji decide not to quit his part-time job after all?",
-    hint: "Kenji = 健一",
+    hint: "Kenji = 健一 (けんいち)",
     answers: [
       {
         segments: [
@@ -2880,7 +2880,7 @@ export const questions: Question[] = [
   },
   {
     english: "Did Mika decide to sell her car after all?",
-    hint: "Mika = 美香",
+    hint: "Mika = 美香 (みか)",
     answers: [
       {
         segments: [

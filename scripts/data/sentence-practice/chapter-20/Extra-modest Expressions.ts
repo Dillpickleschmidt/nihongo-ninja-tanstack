@@ -3,7 +3,7 @@ import type { Question } from "../types";
 export const questions: Question[] = [
 {
     english: "I’m Yamamoto from the front desk, and I’ll call at nine o’clock.",
-    hint: "Yamamoto = 山本. Use hotel-staff level politeness.",
+    hint: "Yamamoto = 山本 (やまもと). Use hotel-staff level politeness.",
     answers: [
       {
         register: "polite",
@@ -396,7 +396,7 @@ export const questions: Question[] = [
   },
 {
     english: "I’m Suzuki from the travel agency; we have two single rooms available.",
-    hint: "Suzuki = 鈴木; single room = シングルの部屋",
+    hint: "Suzuki = 鈴木 (すずき); single room = シングルの部屋",
     answers: [
       {
         register: "polite",

@@ -2,20 +2,20 @@ import type { Question } from "../types"
 
 export const questions: Question[] = [
   {
-    english: "Tanaka isn't a student, is he?",
-    hint: "Sharing observation/seeking agreement about someone's role",
+    english: "Kobayashi isn't a student, is he?",
+    hint: "Kobayashi = 小林 (こばやし); sharing observation/seeking agreement about someone's role",
     answers: [
       {
         segments: [
-          { text: "田中[たなか]さんは 学生[がくせい]じゃないです" },
+          { text: "小林[こばやし]さんは 学生[がくせい]じゃないです" },
           { text: "ね", blank: true },
         ],
         notes:
-          "Using ね when you're both familiar with Tanaka and sharing knowledge",
+          "Using ね when you're both familiar with Kobayashi and sharing knowledge",
       },
       {
         segments: [
-          { text: "田中[たなか]さんは 学生[がくせい]じゃないです" },
+          { text: "小林[こばやし]さんは 学生[がくせい]じゃないです" },
           { text: "よね", blank: true },
         ],
         notes:
@@ -39,7 +39,7 @@ export const questions: Question[] = [
   },
   {
     english: "Yamada is a doctor, right?",
-    hint: "Confirming what you believe about someone's profession",
+    hint: "Yamada = 山田 (やまだ); confirming what you believe about someone's profession",
     answers: [
       {
         segments: [
@@ -95,7 +95,7 @@ export const questions: Question[] = [
   },
   {
     english: "Kim is a nurse, right?",
-    hint: "Confirming someone's profession",
+    hint: "Kim = キム; confirming someone's profession",
     answers: [
       {
         segments: [

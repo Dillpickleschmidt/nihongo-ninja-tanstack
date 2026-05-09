@@ -25,50 +25,52 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Isn't this Tanaka's bag?",
+    english: "Isn't this Saito's bag?",
+    hint: "Saito = 斎藤 (さいとう)",
     answers: [
       {
         segments: [
           { text: "これは" },
-          { text: "田中[たなか]さんの 鞄[かばん]じゃないですか", blank: true },
+          { text: "斎藤[さいとう]さんの 鞄[かばん]じゃないですか", blank: true },
         ],
         notes: "Full form with これは",
       },
       {
         segments: [
           { text: "これ、" },
-          { text: "田中[たなか]さんの 鞄[かばん]じゃないですか", blank: true },
+          { text: "斎藤[さいとう]さんの 鞄[かばん]じゃないですか", blank: true },
         ],
         notes: "Shorter with 、instead of は"
       },
       {
         segments: [
-          { text: "田中[たなか]さん 鞄[かばん]じゃないですか", blank: true },
+          { text: "斎藤[さいとう]さんの 鞄[かばん]じゃないですか", blank: true },
         ],
         notes: "Shorter form without これは",
       },
     ],
   },
   {
-    english: "This is not Tanaka's dictionary.",
+    english: "This is not Mori's dictionary.",
+    hint: "Mori = 森 (もり)",
     answers: [
       {
         segments: [
           { text: "これは" },
-          { text: "田中[たなか]さんの 辞書[じしょ]じゃないです", blank: true },
+          { text: "森[もり]さんの 辞書[じしょ]じゃないです", blank: true },
         ],
         notes: "Full form with これは",
       },
       {
         segments: [
           { text: "これ、" },
-          { text: "田中[たなか]さんの 辞書[じしょ]じゃないです", blank: true },
+          { text: "森[もり]さんの 辞書[じしょ]じゃないです", blank: true },
         ],
         notes: "Shorter with 、instead of は"
       },
       {
         segments: [
-          { text: "田中[たなか]さんの 辞書[じしょ]じゃないです", blank: true },
+          { text: "森[もり]さんの 辞書[じしょ]じゃないです", blank: true },
         ],
         notes: "Shorter form without これは",
       },
@@ -76,6 +78,7 @@ export const questions: Question[] = [
   },
   {
     english: "Tanaka is not a student. Yamada is not a student either.",
+    hint: "Tanaka = 田中 (たなか); Yamada = 山田 (やまだ)",
     answers: [
       {
         segments: [
@@ -155,47 +158,47 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Isn't that Kenji's bag?",
-    hint: "Kenji = けんじ",
+    english: "Isn't that Nakajima's bag?",
+    hint: "Nakajima = 中島 (なかじま)",
     answers: [
       {
         segments: [
           { text: "それは" },
-          { text: "けんじさんの 鞄[かばん]じゃないですか", blank: true },
+          { text: "中島[なかじま]さんの 鞄[かばん]じゃないですか", blank: true },
         ],
         notes: "Basic variant",
       },
       {
         segments: [
           { text: "それ、" },
-          { text: "けんじさんの 鞄[かばん]じゃないですか", blank: true },
+          { text: "中島[なかじま]さんの 鞄[かばん]じゃないですか", blank: true },
         ],
         notes: "Shorter with 、instead of は"
       },
       {
         segments: [
-          { text: "それはけんじさんの 鞄[かばん]" },
+          { text: "それは中島[なかじま]さんの 鞄[かばん]" },
           { text: "ではないですか", blank: true },
         ],
         notes: "More formal: ではないか instead of じゃないか",
       },
       {
         segments: [
-          { text: "その 鞄[かばん]はけんじさんの" },
+          { text: "その 鞄[かばん]は中島[なかじま]さんの" },
           { text: "じゃないですか", blank: true },
         ],
-        notes: "Topic is \"that bag\" (そのかばんは), predicate is \"Kenji's\" (けんじの); じゃないか",
+        notes: "Topic is \"that bag\" (そのかばんは), predicate is \"Nakajima's\"; じゃないか",
       },
       {
         segments: [
-          { text: "その 鞄[かばん]はけんじさんの" },
+          { text: "その 鞄[かばん]は中島[なかじま]さんの" },
           { text: "ではないですか", blank: true },
         ],
-        notes: "Topic is \"that bag,\" predicate is \"Kenji's\"; ではないか (more formal)",
+        notes: "Topic is \"that bag,\" predicate is \"Nakajima's\"; ではないか (more formal)",
       },
       {
         segments: [
-          { text: "あれはけんじさんの 鞄[かばん]" },
+          { text: "あれは中島[なかじま]さんの 鞄[かばん]" },
           { text: "じゃないですか", blank: true },
         ],
         notes: "Using あれ (that over there) — also natural when pointing out a bag across the room; じゃないですか",
@@ -203,13 +206,13 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "あれ、" },
-          { text: "けんじさんの 鞄[かばん]じゃないですか", blank: true },
+          { text: "中島[なかじま]さんの 鞄[かばん]じゃないですか", blank: true },
         ],
         notes: "Shorter with 、instead of は"
       },
       {
         segments: [
-          { text: "あの 鞄[かばん]は けんじさんの" },
+          { text: "あの 鞄[かばん]は 中島[なかじま]さんの" },
           { text: "じゃないですか", blank: true },
         ],
         notes: "あの + かばん as topic (that bag over there); じゃないか",
@@ -218,7 +221,7 @@ export const questions: Question[] = [
   },
   {
     english: "Yamada is not a doctor. Kim is not a doctor either.",
-    hint: "キム = kim",
+    hint: "Yamada = 山田 (やまだ); Kim = キム",
     answers: [
       {
         segments: [

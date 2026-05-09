@@ -3,7 +3,7 @@ import type { Question } from "../types";
 export const questions: Question[] = [
   {
     english: "Please get off at the station called Sakura.",
-    hint: "Sakura = 桜",
+    hint: "Sakura = 桜 (さくら)",
     answers: [
       {
         segments: [
@@ -1041,7 +1041,7 @@ export const questions: Question[] = [
   },
   {
     english: "Please call the teacher named Tanaka right away.",
-    hint: "Tanaka = 田中",
+    hint: "Tanaka = 田中 (たなか)",
     answers: [
       {
         segments: [

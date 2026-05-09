@@ -374,13 +374,13 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Kenji is not busy today.",
-    hint: "Kenji = けんじ",
+    english: "Fujii is not busy today.",
+    hint: "Fujii = 藤井 (ふじい)",
     answers: [
       {
         segments: [
           {
-            text: "けんじさんは 今日[きょう]",
+            text: "藤井[ふじい]さんは 今日[きょう]",
           },
           {
             text: "忙[いそが]しい",
@@ -398,7 +398,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "今日[きょう]、けんじさんは",
+            text: "今日[きょう]、藤井[ふじい]さんは",
           },
           {
             text: "忙[いそが]しい",
@@ -416,7 +416,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "けんじさんが 今日[きょう]",
+            text: "藤井[ふじい]さんが 今日[きょう]",
           },
           {
             text: "忙[いそが]しい",
@@ -434,7 +434,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "今日[きょう]、けんじさんが",
+            text: "今日[きょう]、藤井[ふじい]さんが",
           },
           {
             text: "忙[いそが]しい",
@@ -722,13 +722,13 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Kenji is really good-looking!",
-    hint: "Kenji = けんじ",
+    english: "Yosuke is really good-looking!",
+    hint: "Yosuke = 陽介 (ようすけ)",
     answers: [
       {
         segments: [
           {
-            text: "けんじさんは すごく",
+            text: "陽介[ようすけ]さんは すごく",
           },
           {
             text: "かっこいい",
@@ -747,7 +747,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "けんじさんが すごく",
+            text: "陽介[ようすけ]さんが すごく",
           },
           {
             text: "かっこいい",
@@ -761,12 +761,12 @@ export const questions: Question[] = [
           },
         ],
         notes:
-          "Using が instead of は — pointing out Kenji specifically as good-looking",
+          "Using が instead of は — pointing out Yosuke specifically as good-looking",
       },
       {
         segments: [
           {
-            text: "けんじさんは とても",
+            text: "陽介[ようすけ]さんは とても",
           },
           {
             text: "かっこいい",
@@ -784,7 +784,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "けんじさんが とても",
+            text: "陽介[ようすけ]さんが とても",
           },
           {
             text: "かっこいい",
@@ -1342,13 +1342,13 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Kenji's dog is really energetic!",
-    hint: "Kenji = けんじ",
+    english: "Kaede's dog is really energetic!",
+    hint: "Kaede = 楓 (かえで)",
     answers: [
       {
         segments: [
           {
-            text: "けんじさんの 犬[いぬ]は すごく",
+            text: "楓[かえで]さんの 犬[いぬ]は すごく"
           },
           {
             text: "元気[げんき]",
@@ -1363,7 +1363,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "けんじさんの 犬[いぬ]が すごく",
+            text: "楓[かえで]さんの 犬[いぬ]が すごく"
           },
           {
             text: "元気[げんき]",
@@ -1378,7 +1378,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "けんじさんの 犬[いぬ]は とても",
+            text: "楓[かえで]さんの 犬[いぬ]は とても"
           },
           {
             text: "元気[げんき]",
@@ -1393,7 +1393,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "けんじさんの 犬[いぬ]が とても",
+            text: "楓[かえで]さんの 犬[いぬ]が とても"
           },
           {
             text: "元気[げんき]",

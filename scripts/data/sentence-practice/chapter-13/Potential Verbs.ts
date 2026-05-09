@@ -14,19 +14,19 @@ const potential = (
 
 export const questions: Question[] = [
   {
-    english: "Is Kenji able to swim in the sea?",
-    hint: "Kenji = けんじ",
+    english: "Is Kobayashi able to swim in the sea?",
+    hint: "Kobayashi = 小林 (こばやし)",
     answers: [
       {
         segments: [
-          { text: "けんじさんは 海[うみ]で" },
+          { text: "小林[こばやし]さんは 海[うみ]で" },
           { text: "泳[およ]ぐ", blank: true, conjugation: potential("Godan verb with 'gu' ending") },
           { text: "か" },
         ],
       },
       {
         segments: [
-          { text: "けんじさんは 海[うみ]で 泳[およ]ぐ" },
+          { text: "小林[こばやし]さんは 海[うみ]で 泳[およ]ぐ" },
           { text: "ことが", blank: true },
           { text: "できる", blank: true, conjugation: normal("Ichidan verb") },
           { text: "か" },
@@ -35,15 +35,15 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "けんじさんが 海[うみ]で" },
+          { text: "小林[こばやし]さんが 海[うみ]で" },
           { text: "泳[およ]ぐ", blank: true, conjugation: potential("Godan verb with 'gu' ending") },
           { text: "か" },
         ],
-        notes: "が puts more focus on Kenji as the person in question.",
+        notes: "が puts more focus on Kobayashi as the person in question.",
       },
       {
         segments: [
-          { text: "けんじさんは 海[うみ]を" },
+          { text: "小林[こばやし]さんは 海[うみ]を" },
           { text: "泳[およ]ぐ", blank: true, conjugation: potential("Godan verb with 'gu' ending") },
           { text: "か" },
         ],
@@ -78,12 +78,12 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Takeshi can drink coffee, but not milk.",
-    hint: "Takeshi = たけし",
+    english: "Shunsuke can drink coffee, but not milk.",
+    hint: "Shunsuke = 俊介 (しゅんすけ)",
     answers: [
       {
         segments: [
-          { text: "たけしさんは コーヒーは" },
+          { text: "俊介[しゅんすけ]さんは コーヒーは" },
           { text: "飲[の]む", blank: true, conjugation: potential("Godan verb with 'mu' ending") },
           { text: "が、牛乳[ぎゅうにゅう]は" },
           { text: "飲[の]む", blank: true, conjugation: potential("Godan verb with 'mu' ending", "negative") },
@@ -92,7 +92,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "たけしさんは コーヒーを 飲[の]む" },
+          { text: "俊介[しゅんすけ]さんは コーヒーを 飲[の]む" },
           { text: "ことが", blank: true },
           { text: "できる", blank: true, conjugation: normal("Ichidan verb") },
           { text: "が、牛乳[ぎゅうにゅう]は 飲[の]む" },
@@ -104,25 +104,25 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Sakura can play the piano and sing at the same time!",
-    hint: "Sakura = さくら",
+    english: "Kaede can play the piano and sing at the same time!",
+    hint: "Kaede = 楓 (かえで)",
     answers: [
       {
         segments: [
-          { text: "さくらさんは、ピアノを 弾[ひ]きながら 歌[うた]を" },
+          { text: "楓[かえで]さんは、ピアノを 弾[ひ]きながら 歌[うた]を" },
           { text: "歌[うた]う", blank: true, conjugation: potential("Godan verb with 'u' ending") },
         ],
       },
       {
         segments: [
-          { text: "さくらさんは、ピアノを 弾[ひ]きながら 歌[うた]も" },
+          { text: "楓[かえで]さんは、ピアノを 弾[ひ]きながら 歌[うた]も" },
           { text: "歌[うた]う", blank: true, conjugation: potential("Godan verb with 'u' ending") },
         ],
-        notes: "も adds the feeling that singing is another thing Sakura can do at the same time.",
+        notes: "も adds the feeling that singing is another thing Kaede can do at the same time.",
       },
       {
         segments: [
-          { text: "さくらさんは、ピアノを 弾[ひ]きながら 歌[うた]う" },
+          { text: "楓[かえで]さんは、ピアノを 弾[ひ]きながら 歌[うた]う" },
           { text: "ことが", blank: true },
           { text: "できる", blank: true, conjugation: normal("Ichidan verb") },
         ],
@@ -131,25 +131,25 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Hana can use chopsticks!",
-    hint: "Hana = はな",
+    english: "Mizuki can use chopsticks!",
+    hint: "Mizuki = 瑞希 (みずき)",
     answers: [
       {
         segments: [
-          { text: "はなさんは はしが" },
+          { text: "瑞希[みずき]さんは はしが" },
           { text: "使[つか]う", blank: true, conjugation: potential("Godan verb with 'u' ending") },
         ],
       },
       {
         segments: [
-          { text: "はなさんは はしを" },
+          { text: "瑞希[みずき]さんは はしを" },
           { text: "使[つか]う", blank: true, conjugation: potential("Godan verb with 'u' ending") },
         ],
         notes: "を can also mark what Hana uses.",
       },
       {
         segments: [
-          { text: "はなさんは はしを 使[つか]う" },
+          { text: "瑞希[みずき]さんは はしを 使[つか]う" },
           { text: "ことが", blank: true },
           { text: "できる", blank: true, conjugation: normal("Ichidan verb") },
         ],

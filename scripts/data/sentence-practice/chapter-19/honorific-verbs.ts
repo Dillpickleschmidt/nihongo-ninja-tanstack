@@ -108,7 +108,7 @@ export const questions: Question[] = [
   },
   {
     english: "The department manager (graciously) welcomed the new employee.",
-    hint: "社員[しゃいん] - employee; 迎[むか]える - to welcome/greet",
+    hint: "社員 (しゃいん) - employee; 迎える (むかえる) - to welcome/greet",
     answers: [
       {
         segments: [
@@ -231,12 +231,13 @@ export const questions: Question[] = [
   },
   {
     english:
-      "Mr. Yamamoto's father (graciously) reads the newspaper every morning.",
+      "Mori's father (graciously) reads the newspaper every morning.",
+    hint: "Mori = 森 (もり)",
     answers: [
       {
         segments: [
           {
-            text: "山本[やまもと]さんのお 父[とう]さんは 毎朝[まいあさ]新聞[しんぶん]を",
+            text: "森[もり]さんのお 父[とう]さんは 毎朝[まいあさ]新聞[しんぶん]を",
           },
           { text: "ご 覧[らん]になります", blank: true },
         ],
@@ -247,7 +248,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "山本[やまもと]さんのお 父[とう]様[さま]は 毎朝[まいあさ]新聞[しんぶん]を",
+            text: "森[もり]さんのお 父[とう]様[さま]は 毎朝[まいあさ]新聞[しんぶん]を",
           },
           { text: "ご 覧[らん]になります", blank: true },
         ],
@@ -257,7 +258,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "山本[やまもと]さんのお 父[とう]さんは 毎朝[まいあさ]新聞[しんぶん]を",
+            text: "森[もり]さんのお 父[とう]さんは 毎朝[まいあさ]新聞[しんぶん]を",
           },
           { text: "お 読[よ]みになります", blank: true },
         ],
@@ -267,7 +268,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "山本[やまもと]さんのお 父[とう]様[さま]は 毎朝[まいあさ]新聞[しんぶん]を",
+            text: "森[もり]さんのお 父[とう]様[さま]は 毎朝[まいあさ]新聞[しんぶん]を",
           },
           { text: "お 読[よ]みになります", blank: true },
         ],
@@ -301,7 +302,7 @@ export const questions: Question[] = [
   },
   {
     english: "Will Mrs. Kaede be attending the summer festival this weekend?",
-    hint: "お 越[こ]しになる - to attend/come/go (honorific); 楓[かえで] - Kaede",
+    hint: "お越しになる (おこしになる) - to attend/come/go (honorific); Kaede = 楓 (かえで)",
     answers: [
       {
         segments: [
@@ -327,7 +328,7 @@ export const questions: Question[] = [
   },
   {
     english: "The professor (graciously) gave me this book.",
-    hint: "渡[わた]す - to hand over, to give",
+    hint: "渡す (わたす) - to hand over, to give",
     answers: [
       {
         segments: [

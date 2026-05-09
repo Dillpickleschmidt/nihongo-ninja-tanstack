@@ -2,8 +2,8 @@ import type { Question } from "../types"
 
 export const questions: Question[] = [
   {
-    english: "Is Mr./Ms. Tanaka a student?",
-    hint: "Name spelling: 田中（たなか）",
+    english: "Is Tanaka a student?",
+    hint: "Tanaka = 田中 (たなか)",
     answers: [
       {
         segments: [
@@ -14,8 +14,8 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Is Mr./Ms. Yamada a doctor?",
-    hint: "Name spelling: 山田（やまだ）",
+    english: "Is Yamada a doctor?",
+    hint: "Yamada = 山田 (やまだ)",
     answers: [
       {
         segments: [
@@ -27,7 +27,7 @@ export const questions: Question[] = [
   },
   {
     english: "How old is Professor Suzuki?",
-    hint: "Name spelling: 鈴木（すずき）",
+    hint: "Suzuki = 鈴木 (すずき)",
     answers: [
       {
         segments: [
@@ -38,8 +38,8 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Is Mr./Ms. Yoshida Japanese?",
-    hint: "Name spelling: 吉田（よしだ）",
+    english: "Is Yoshida Japanese?",
+    hint: "Yoshida = 吉田 (よしだ)",
     answers: [
       {
         segments: [
@@ -50,8 +50,8 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Is Ms. Hanako a nurse?",
-    hint: "Name spelling: 花子（はなこ）",
+    english: "Is Hanako a nurse?",
+    hint: "Hanako = 花子 (はなこ)",
     answers: [
       {
         segments: [
@@ -62,8 +62,8 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Is Katou a university student?",
-    hint: "Name spelling: 加藤（かとう）",
+    english: "Is Kato a university student?",
+    hint: "Kato = 加藤 (かとう)",
     answers: [
       {
         segments: [
@@ -74,20 +74,20 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Is Mr./Ms. Satou a lawyer?",
-    hint: "Name spelling: 砂糖（さとう）",
+    english: "Is Sato a lawyer?",
+    hint: "Sato = 佐藤 (さとう)",
     answers: [
       {
         segments: [
-          { text: "砂糖[さとう]さんは" },
+          { text: "佐藤[さとう]さんは" },
           { text: "弁護士[べんごし]ですか", blank: true },
         ],
       },
     ],
   },
   {
-    english: "Is Tarou a first-year student?",
-    hint: "Name spelling: 太郎（たろう）",
+    english: "Is Taro a first-year student?",
+    hint: "Taro = 太郎 (たろう)",
     answers: [
       {
         segments: [
@@ -98,8 +98,8 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Is Ms. Kimura a housewife?",
-    hint: "Name spelling: 木村（きむら）",
+    english: "Is Kimura a housewife?",
+    hint: "Kimura = 木村 (きむら)",
     answers: [
       {
         segments: [
@@ -110,8 +110,8 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Is Mr./Ms. Inoue an office worker?",
-    hint: "Name spelling: 井上（いのうえ）",
+    english: "Is Inoue an office worker?",
+    hint: "Inoue = 井上 (いのうえ)",
     answers: [
       {
         segments: [

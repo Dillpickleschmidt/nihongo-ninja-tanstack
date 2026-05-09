@@ -118,13 +118,13 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Kenji is really good at making Italian food.",
-    hint: "Kenji = けんじ",
+    english: "Kobayashi is really good at making Italian food.",
+    hint: "Kobayashi = 小林 (こばやし)",
     answers: [
       {
         segments: [
           {
-            text: "けんじさんは イタリア 料理[りょうり]を 作[つく]るのが とても",
+            text: "小林[こばやし]さんは イタリア 料理[りょうり]を 作[つく]るのが とても",
           },
           {
             text: " 上手[じょうず]",
@@ -141,7 +141,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "けんじさんは イタリア 料理[りょうり]を 作[つく]るのが すごく",
+            text: "小林[こばやし]さんは イタリア 料理[りょうり]を 作[つく]るのが すごく",
           },
           {
             text: " 上手[じょうず]",
@@ -159,7 +159,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "けんじさんは イタリア 料理[りょうり]を 作[つく]るのが 本当[ほんとう]に",
+            text: "小林[こばやし]さんは イタリア 料理[りょうり]を 作[つく]るのが 本当[ほんとう]に",
           },
           {
             text: " 上手[じょうず]",
@@ -177,7 +177,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "けんじさんが イタリア 料理[りょうり]を 作[つく]るのが とても",
+            text: "小林[こばやし]さんが イタリア 料理[りょうり]を 作[つく]るのが とても",
           },
           {
             text: " 上手[じょうず]",
@@ -363,12 +363,12 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Does Hana like reading magazines?",
-    hint: "Hana = はな",
+    english: "Does Kaede like reading magazines?",
+    hint: "Kaede = 楓 (かえで)",
     answers: [
       {
         segments: [
-          { text: "はなさんは 雑誌[ざっし]を 読[よ]むのが" },
+          { text: "楓[かえで]さんは 雑誌[ざっし]を 読[よ]むのが" },
           {
             text: " 好[す]き",
             blank: true,
@@ -384,7 +384,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "はなさんが 雑誌[ざっし]を 読[よ]むのが" },
+          { text: "楓[かえで]さんが 雑誌[ざっし]を 読[よ]むのが" },
           {
             text: " 好[す]き",
             blank: true,
@@ -401,7 +401,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "はなさんは 雑誌[ざっし]を 読[よ]むのは" },
+          { text: "楓[かえで]さんは 雑誌[ざっし]を 読[よ]むのは" },
           {
             text: " 好[す]き",
             blank: true,
@@ -419,12 +419,12 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Is Sota good at driving?",
-    hint: "Sota = そうた",
+    english: "Is Yosuke good at driving?",
+    hint: "Yosuke = 陽介 (ようすけ)",
     answers: [
       {
         segments: [
-          { text: "そうたさんは 運転[うんてん]するのが" },
+          { text: "陽介[ようすけ]さんは 運転[うんてん]するのが" },
           {
             text: " 上手[じょうず]",
             blank: true,
@@ -440,7 +440,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "そうたさんが 運転[うんてん]するのが" },
+          { text: "陽介[ようすけ]さんが 運転[うんてん]するのが" },
           {
             text: " 上手[じょうず]",
             blank: true,
@@ -457,7 +457,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "そうたさんは 運転[うんてん]するのは" },
+          { text: "陽介[ようすけ]さんは 運転[うんてん]するのは" },
           {
             text: " 上手[じょうず]",
             blank: true,
@@ -641,12 +641,12 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Takeshi is bad at washing dishes but loves cooking.",
-    hint: "Takeshi = たけし",
+    english: "Shunsuke is bad at washing dishes but loves cooking.",
+    hint: "Shunsuke = 俊介 (しゅんすけ)",
     answers: [
       {
         segments: [
-          { text: "たけしさんは お 皿[さら]を 洗[あら]うのが" },
+          { text: "俊介[しゅんすけ]さんは お 皿[さら]を 洗[あら]うのが" },
           {
             text: " 下手[へた]",
             blank: true,
@@ -672,7 +672,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "たけしさんは お 皿[さら]を 洗[あら]うのが" },
+          { text: "俊介[しゅんすけ]さんは お 皿[さら]を 洗[あら]うのが" },
           {
             text: " 下手[へた]",
             blank: true,
@@ -699,7 +699,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "たけしさんは お 皿[さら]を 洗[あら]うのは" },
+          { text: "俊介[しゅんすけ]さんは お 皿[さら]を 洗[あら]うのは" },
           {
             text: " 下手[へた]",
             blank: true,
@@ -726,7 +726,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "たけしさんは お 皿[さら]を 洗[あら]うのが" },
+          { text: "俊介[しゅんすけ]さんは お 皿[さら]を 洗[あら]うのが" },
           {
             text: " 下手[へた]",
             blank: true,
@@ -753,7 +753,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "たけしさんは 皿[さら]を 洗[あら]うのが" },
+          { text: "俊介[しゅんすけ]さんは 皿[さら]を 洗[あら]うのが" },
           {
             text: " 下手[へた]",
             blank: true,
@@ -781,12 +781,12 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Yuki is bad at swimming but loves going to the sea.",
-    hint: "Yuki = ゆき",
+    english: "Mizuki is bad at swimming but loves going to the sea.",
+    hint: "Mizuki = 瑞希 (みずき)",
     answers: [
       {
         segments: [
-          { text: "ゆきさんは 泳[およ]ぐのが" },
+          { text: "瑞希[みずき]さんは 泳[およ]ぐのが" },
           {
             text: " 下手[へた]",
             blank: true,
@@ -812,7 +812,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "ゆきさんは 泳[およ]ぐのが" },
+          { text: "瑞希[みずき]さんは 泳[およ]ぐのが" },
           {
             text: " 下手[へた]",
             blank: true,
@@ -839,7 +839,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "ゆきさんは 泳[およ]ぐのが" },
+          { text: "瑞希[みずき]さんは 泳[およ]ぐのが" },
           {
             text: " 下手[へた]",
             blank: true,
@@ -866,7 +866,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "ゆきさんは 泳[およ]ぐのが" },
+          { text: "瑞希[みずき]さんは 泳[およ]ぐのが" },
           {
             text: " 下手[へた]",
             blank: true,
@@ -893,7 +893,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "ゆきさんは 海[うみ]に 行[い]くのが" },
+          { text: "瑞希[みずき]さんは 海[うみ]に 行[い]くのが" },
           {
             text: " 大好[だいす]き",
             blank: true,
@@ -920,7 +920,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "ゆきさんは 泳[およ]ぐのが" },
+          { text: "瑞希[みずき]さんは 泳[およ]ぐのが" },
           {
             text: " 苦手[にがて]",
             blank: true,
@@ -947,7 +947,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "ゆきさんは 泳[およ]ぐのが" },
+          { text: "瑞希[みずき]さんは 泳[およ]ぐのが" },
           {
             text: " 苦手[にがて]",
             blank: true,
@@ -976,11 +976,11 @@ export const questions: Question[] = [
   },
   {
     english: "Does Haruto like playing games?",
-    hint: "Haruto = はると",
+    hint: "Haruto = 陽翔 (はると)",
     answers: [
       {
         segments: [
-          { text: "はるとさんは ゲームを するのが" },
+          { text: "陽翔[はると]さんは ゲームを するのが" },
           {
             text: " 好[す]き",
             blank: true,
@@ -996,7 +996,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "はるとさんは ゲームするのが" },
+          { text: "陽翔[はると]さんは ゲームするのが" },
           {
             text: " 好[す]き",
             blank: true,
@@ -1013,7 +1013,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "はるとさんが ゲームを するのが" },
+          { text: "陽翔[はると]さんが ゲームを するのが" },
           {
             text: " 好[す]き",
             blank: true,
@@ -1030,7 +1030,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "はるとさんが ゲームするのが" },
+          { text: "陽翔[はると]さんが ゲームするのが" },
           {
             text: " 好[す]き",
             blank: true,
@@ -1162,11 +1162,11 @@ export const questions: Question[] = [
   },
   {
     english: "Akiko is good at cooking but doesn't like cleaning.",
-    hint: "Akiko = あきこ",
+    hint: "Akiko = 明子 (あきこ)",
     answers: [
       {
         segments: [
-          { text: "あきこさんは 料理[りょうり]するのが" },
+          { text: "明子[あきこ]さんは 料理[りょうり]するのが" },
           {
             text: " 上手[じょうず]",
             blank: true,
@@ -1192,7 +1192,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "あきこさんは 料理[りょうり]するのが" },
+          { text: "明子[あきこ]さんは 料理[りょうり]するのが" },
           {
             text: " 上手[じょうず]",
             blank: true,
@@ -1219,7 +1219,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "あきこさんは 料理[りょうり]するのが" },
+          { text: "明子[あきこ]さんは 料理[りょうり]するのが" },
           {
             text: " 上手[じょうず]",
             blank: true,
@@ -1246,7 +1246,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "あきこさんが 料理[りょうり]するのが" },
+          { text: "明子[あきこ]さんが 料理[りょうり]するのが" },
           {
             text: " 上手[じょうず]",
             blank: true,
@@ -1276,11 +1276,11 @@ export const questions: Question[] = [
   {
     english:
       "Riku is good at playing tennis but doesn't like studying every day.",
-    hint: "Riku = りく",
+    hint: "Riku = 陸 (りく)",
     answers: [
       {
         segments: [
-          { text: "りくさんは テニスをするのが" },
+          { text: "陸[りく]さんは テニスをするのが" },
           {
             text: " 上手[じょうず]",
             blank: true,
@@ -1306,7 +1306,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "りくさんは テニスをするのが" },
+          { text: "陸[りく]さんは テニスをするのが" },
           {
             text: " 上手[じょうず]",
             blank: true,
@@ -1333,7 +1333,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "りくさんは テニスするのが" },
+          { text: "陸[りく]さんは テニスするのが" },
           {
             text: " 上手[じょうず]",
             blank: true,
@@ -1360,7 +1360,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "りくさんは テニスをするのが" },
+          { text: "陸[りく]さんは テニスをするのが" },
           {
             text: " 上手[じょうず]",
             blank: true,
@@ -1389,12 +1389,12 @@ export const questions: Question[] = [
   },
   {
     english:
-      "Sota doesn't like doing overtime work, but he's good at finishing his job quickly.",
-    hint: "Sota = そうた",
+      "Yosuke doesn't like doing overtime work, but he's good at finishing his job quickly.",
+    hint: "Yosuke = 陽介 (ようすけ)",
     answers: [
       {
         segments: [
-          { text: "そうたさんは 残業[ざんぎょう]するのが" },
+          { text: "陽介[ようすけ]さんは 残業[ざんぎょう]するのが" },
           {
             text: " 好[す]き",
             blank: true,
@@ -1420,7 +1420,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "そうたさんは 残業[ざんぎょう]するのが" },
+          { text: "陽介[ようすけ]さんは 残業[ざんぎょう]するのが" },
           {
             text: " 好[す]き",
             blank: true,
@@ -1447,7 +1447,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "そうたさんは 残業[ざんぎょう]するのが" },
+          { text: "陽介[ようすけ]さんは 残業[ざんぎょう]するのが" },
           {
             text: " 好[す]き",
             blank: true,
@@ -1474,7 +1474,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "そうたさんは 残業[ざんぎょう]するのは" },
+          { text: "陽介[ようすけ]さんは 残業[ざんぎょう]するのは" },
           {
             text: " 好[す]き",
             blank: true,
@@ -1579,11 +1579,11 @@ export const questions: Question[] = [
   },
   {
     english: "Haruto is good at swimming but doesn't like going to the sea.",
-    hint: "Haruto = はると",
+    hint: "Haruto = 陽翔 (はると)",
     answers: [
       {
         segments: [
-          { text: "はるとさんは 泳[およ]ぐのが" },
+          { text: "陽翔[はると]さんは 泳[およ]ぐのが" },
           {
             text: " 上手[じょうず]",
             blank: true,
@@ -1609,7 +1609,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "はるとさんは 泳[およ]ぐのが" },
+          { text: "陽翔[はると]さんは 泳[およ]ぐのが" },
           {
             text: " 上手[じょうず]",
             blank: true,
@@ -1636,7 +1636,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "はるとさんは 泳[およ]ぐのが" },
+          { text: "陽翔[はると]さんは 泳[およ]ぐのが" },
           {
             text: " 上手[じょうず]",
             blank: true,
@@ -1663,7 +1663,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "はるとさんは 泳[およ]ぐのが" },
+          { text: "陽翔[はると]さんは 泳[およ]ぐのが" },
           {
             text: " 上手[じょうず]",
             blank: true,
@@ -1690,7 +1690,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "はるとさんは 泳[およ]ぐのが" },
+          { text: "陽翔[はると]さんは 泳[およ]ぐのが" },
           {
             text: " 上手[じょうず]",
             blank: true,
@@ -1719,11 +1719,11 @@ export const questions: Question[] = [
   },
   {
     english: "Akiko is bad at doing laundry but loves cooking.",
-    hint: "Akiko = あきこ",
+    hint: "Akiko = 明子 (あきこ)",
     answers: [
       {
         segments: [
-          { text: "あきこさんは 洗濯[せんたく]するのが" },
+          { text: "明子[あきこ]さんは 洗濯[せんたく]するのが" },
           {
             text: " 下手[へた]",
             blank: true,
@@ -1749,7 +1749,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "あきこさんは 洗濯[せんたく]するのが" },
+          { text: "明子[あきこ]さんは 洗濯[せんたく]するのが" },
           {
             text: " 下手[へた]",
             blank: true,
@@ -1776,7 +1776,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "あきこさんは 洗濯[せんたく]するのが" },
+          { text: "明子[あきこ]さんは 洗濯[せんたく]するのが" },
           {
             text: " 下手[へた]",
             blank: true,
@@ -1803,7 +1803,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "あきこさんは 洗濯[せんたく]するのは" },
+          { text: "明子[あきこ]さんは 洗濯[せんたく]するのは" },
           {
             text: " 下手[へた]",
             blank: true,
@@ -1944,11 +1944,11 @@ export const questions: Question[] = [
   },
   {
     english: "Shinji is really good at speaking Japanese.",
-    hint: "Shinji = しんじ",
+    hint: "Shinji = 慎司 (しんじ)",
     answers: [
       {
         segments: [
-          { text: "しんじさんは 日本語[にほんご]を 話[はな]すのが すごく" },
+          { text: "慎司[しんじ]さんは 日本語[にほんご]を 話[はな]すのが すごく" },
           {
             text: " 上手[じょうず]",
             blank: true,
@@ -1963,7 +1963,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "しんじさんは 日本語[にほんご]を 話[はな]すのが とても" },
+          { text: "慎司[しんじ]さんは 日本語[にほんご]を 話[はな]すのが とても" },
           {
             text: " 上手[じょうず]",
             blank: true,
@@ -1980,7 +1980,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "しんじさんは 日本語[にほんご]を 話[はな]すのが 本当[ほんとう]に",
+            text: "慎司[しんじ]さんは 日本語[にほんご]を 話[はな]すのが 本当[ほんとう]に",
           },
           {
             text: " 上手[じょうず]",
@@ -1997,7 +1997,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "しんじさんが 日本語[にほんご]を 話[はな]すのが すごく" },
+          { text: "慎司[しんじ]さんが 日本語[にほんご]を 話[はな]すのが すごく" },
           {
             text: " 上手[じょうず]",
             blank: true,
@@ -2016,11 +2016,11 @@ export const questions: Question[] = [
   {
     english:
       "Naomi is really good at listening to people but doesn't like talking.",
-    hint: "Naomi = なおみ",
+    hint: "Naomi = 直美 (なおみ)",
     answers: [
       {
         segments: [
-          { text: "なおみさんは 人[ひと]の 話[はなし]を 聞[き]くのが すごく" },
+          { text: "直美[なおみ]さんは 人[ひと]の 話[はなし]を 聞[き]くのが すごく" },
           {
             text: " 上手[じょうず]",
             blank: true,
@@ -2046,7 +2046,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "なおみさんは 人[ひと]の 話[はなし]を 聞[き]くのが すごく" },
+          { text: "直美[なおみ]さんは 人[ひと]の 話[はなし]を 聞[き]くのが すごく" },
           {
             text: " 上手[じょうず]",
             blank: true,
@@ -2073,7 +2073,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "なおみさんは 人[ひと]の 話[はなし]を 聞[き]くのが とても" },
+          { text: "直美[なおみ]さんは 人[ひと]の 話[はなし]を 聞[き]くのが とても" },
           {
             text: " 上手[じょうず]",
             blank: true,
@@ -2100,7 +2100,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "なおみさんは 話[はなし]を 聞[き]くのが すごく" },
+          { text: "直美[なおみ]さんは 話[はなし]を 聞[き]くのが すごく" },
           {
             text: " 上手[じょうず]",
             blank: true,
@@ -2127,7 +2127,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "なおみさんは 人[ひと]の 話[はなし]を 聞[き]くのが すごく" },
+          { text: "直美[なおみ]さんは 人[ひと]の 話[はなし]を 聞[き]くのが すごく" },
           {
             text: " 上手[じょうず]",
             blank: true,
@@ -2154,7 +2154,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "なおみさんは 人[ひと]の 話[はなし]を 聞[き]くのが とても" },
+          { text: "直美[なおみ]さんは 人[ひと]の 話[はなし]を 聞[き]くのが とても" },
           {
             text: " 上手[じょうず]",
             blank: true,
@@ -2181,7 +2181,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "なおみさんは 人[ひと]の 話[はなし]を 聞[き]くのが とても" },
+          { text: "直美[なおみ]さんは 人[ひと]の 話[はなし]を 聞[き]くのが とても" },
           {
             text: " 上手[じょうず]",
             blank: true,

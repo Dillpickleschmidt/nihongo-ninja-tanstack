@@ -353,29 +353,30 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Yuki, thank you for lending me an umbrella this morning.",
+    english: "Kaede, thank you for lending me an umbrella this morning.",
+    hint: "Kaede = 楓 (かえで)",
     answers: [
       {
         segments: [
-          { text: "ゆきさん、今朝[けさ]、傘[かさ]を" },
+          { text: "楓[かえで]さん、今朝[けさ]、傘[かさ]を" },
           { text: "貸[か]してくれてありがとう", blank: true },
         ],
       },
       {
         segments: [
-          { text: "ゆきさん、今朝[けさ]、私[わたし]に 傘[かさ]を" },
+          { text: "楓[かえで]さん、今朝[けさ]、私[わたし]に 傘[かさ]を" },
           { text: "貸[か]してくれてありがとう", blank: true },
         ],
       },
       {
         segments: [
-          { text: "ゆきさん、傘[かさ]を 今朝[けさ]" },
+          { text: "楓[かえで]さん、傘[かさ]を 今朝[けさ]" },
           { text: "貸[か]してくれてありがとう", blank: true },
         ],
       },
       {
         segments: [
-          { text: "ゆきさん、私[わたし]に 今朝[けさ] 傘[かさ]を" },
+          { text: "楓[かえで]さん、私[わたし]に 今朝[けさ] 傘[かさ]を" },
           { text: "貸[か]してくれてありがとう", blank: true },
         ],
       },
@@ -383,18 +384,18 @@ export const questions: Question[] = [
         segments: [
           { text: "今朝[けさ]、傘[かさ]を" },
           { text: "貸[か]してくれてありがとう", blank: true },
-          { text: "、ゆきさん" },
+          { text: "、楓[かえで]さん" },
         ],
       },
       {
         segments: [
-          { text: "ゆきさん、今朝[けさ]、傘[かさ]を" },
+          { text: "楓[かえで]さん、今朝[けさ]、傘[かさ]を" },
           { text: "貸[か]してくれてありがとうございます", blank: true },
         ],
       },
       {
         segments: [
-          { text: "ゆきさん、今朝[けさ]、私[わたし]に 傘[かさ]を" },
+          { text: "楓[かえで]さん、今朝[けさ]、私[わたし]に 傘[かさ]を" },
           { text: "貸[か]してくれてありがとうございます", blank: true },
         ],
       },
@@ -402,12 +403,12 @@ export const questions: Question[] = [
         segments: [
           { text: "今朝[けさ]、傘[かさ]を" },
           { text: "貸[か]してくれてありがとうございます", blank: true },
-          { text: "、ゆきさん" },
+          { text: "、楓[かえで]さん" },
         ],
       },
       {
         segments: [
-          { text: "ゆきさん、今朝[けさ]、傘[かさ]、" },
+          { text: "楓[かえで]さん、今朝[けさ]、傘[かさ]、" },
           { text: "貸[か]してくれてありがとう", blank: true },
         ],
       },

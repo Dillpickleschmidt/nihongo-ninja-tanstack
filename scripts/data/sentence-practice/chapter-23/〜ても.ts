@@ -3,7 +3,7 @@ import type { Question } from "../types";
 export const questions: Question[] = [
   {
     english: "Even if the weather is bad, Kenji is going to the concert tomorrow.",
-    hint: "Kenji = 健一; concert = コンサート",
+    hint: "Kenji = 健一 (けんいち); concert = コンサート",
     answers: [
       {
         segments: [

@@ -62,8 +62,8 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Could Mr. Sato take a photo for me in front of the station?",
-    hint: "Mr. Sato = 佐藤さん",
+    english: "Could Sato take a photo for me in front of the station?",
+    hint: "Sato = 佐藤 (さとう)",
     answers: [
       {
         segments: [

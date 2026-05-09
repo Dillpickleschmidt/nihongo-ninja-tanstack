@@ -964,12 +964,12 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Kenji comes to school on Sundays.",
-    hint: "Kenji = けんじ",
+    english: "Yosuke comes to school on Sundays.",
+    hint: "Yosuke = 陽介 (ようすけ)",
     answers: [
       {
         segments: [
-          { text: "けんじさん", blank: true },
+          { text: "陽介[ようすけ]さん", blank: true },
           { text: "は" },
           { text: "日曜日[にちようび]", blank: true },
           { text: "に" },
@@ -989,7 +989,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "けんじさん", blank: true },
+          { text: "陽介[ようすけ]さん", blank: true },
           { text: "は" },
           { text: "日曜日[にちようび]", blank: true },
           { text: "に" },
@@ -1009,7 +1009,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "けんじさん", blank: true },
+          { text: "陽介[ようすけ]さん", blank: true },
           { text: "は" },
           { text: "学校[がっこう]", blank: true },
           { text: "に" },
@@ -1029,7 +1029,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "けんじさん", blank: true },
+          { text: "陽介[ようすけ]さん", blank: true },
           { text: "は" },
           { text: "学校[がっこう]", blank: true },
           { text: "へ" },
@@ -1049,7 +1049,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "けんじさん", blank: true },
+          { text: "陽介[ようすけ]さん", blank: true },
           { text: "が" },
           { text: "学校[がっこう]", blank: true },
           { text: "に" },
@@ -1070,7 +1070,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "けんじさん", blank: true },
+          { text: "陽介[ようすけ]さん", blank: true },
           { text: "が" },
           { text: "学校[がっこう]", blank: true },
           { text: "へ" },
@@ -1094,7 +1094,7 @@ export const questions: Question[] = [
         segments: [
           { text: "日曜日[にちようび]", blank: true },
           { text: "、" },
-          { text: "けんじさん", blank: true },
+          { text: "陽介[ようすけ]さん", blank: true },
           { text: "が" },
           { text: "学校[がっこう]", blank: true },
           { text: "に" },
@@ -1108,13 +1108,13 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Fronted 日曜日、(no に) + けんじさんが + 学校に",
+        notes: "Fronted 日曜日、(no に) + 陽介[ようすけ]さんが + 学校に",
       },
       {
         segments: [
           { text: "日曜日[にちようび]", blank: true },
           { text: "、" },
-          { text: "けんじさん", blank: true },
+          { text: "陽介[ようすけ]さん", blank: true },
           { text: "が" },
           { text: "学校[がっこう]", blank: true },
           { text: "へ" },
@@ -1128,14 +1128,14 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Fronted 日曜日、(no に) + けんじさんが + 学校へ",
+        notes: "Fronted 日曜日、(no に) + 陽介[ようすけ]さんが + 学校へ",
       },
       // Fronted 日曜日に variants (with に after 日曜日)
       {
         segments: [
           { text: "日曜日[にちようび]", blank: true },
           { text: "に、" },
-          { text: "けんじさん", blank: true },
+          { text: "陽介[ようすけ]さん", blank: true },
           { text: "が" },
           { text: "学校[がっこう]", blank: true },
           { text: "に" },
@@ -1149,13 +1149,13 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Fronted 日曜日に、+ けんじさんが + 学校に",
+        notes: "Fronted 日曜日に、+ 陽介[ようすけ]さんが + 学校に",
       },
       {
         segments: [
           { text: "日曜日[にちようび]", blank: true },
           { text: "に、" },
-          { text: "けんじさん", blank: true },
+          { text: "陽介[ようすけ]さん", blank: true },
           { text: "が" },
           { text: "学校[がっこう]", blank: true },
           { text: "へ" },
@@ -1169,14 +1169,14 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Fronted 日曜日に、+ けんじさんが + 学校へ",
+        notes: "Fronted 日曜日に、+ 陽介[ようすけ]さんが + 学校へ",
       },
       // 日曜日は as topic variants
       {
         segments: [
           { text: "日曜日[にちようび]", blank: true },
           { text: "は" },
-          { text: "けんじさん", blank: true },
+          { text: "陽介[ようすけ]さん", blank: true },
           { text: "が" },
           { text: "学校[がっこう]", blank: true },
           { text: "に" },
@@ -1190,13 +1190,13 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "日曜日は as topic + けんじさんが + 学校に",
+        notes: "日曜日は as topic + 陽介[ようすけ]さんが + 学校に",
       },
       {
         segments: [
           { text: "日曜日[にちようび]", blank: true },
           { text: "は" },
-          { text: "けんじさん", blank: true },
+          { text: "陽介[ようすけ]さん", blank: true },
           { text: "が" },
           { text: "学校[がっこう]", blank: true },
           { text: "へ" },
@@ -1210,7 +1210,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "日曜日は as topic + けんじさんが + 学校へ",
+        notes: "日曜日は as topic + 陽介[ようすけ]さんが + 学校へ",
       },
       // Time → destination → subject が variants (no comma)
       {
@@ -1219,7 +1219,7 @@ export const questions: Question[] = [
           { text: "に" },
           { text: "学校[がっこう]", blank: true },
           { text: "に" },
-          { text: "けんじさん", blank: true },
+          { text: "陽介[ようすけ]さん", blank: true },
           { text: "が" },
           {
             text: "来[く]る",
@@ -1231,7 +1231,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "日曜日に + 学校に + けんじさんが (destination before subject)",
+        notes: "日曜日に + 学校に + 陽介[ようすけ]さんが (destination before subject)",
       },
       {
         segments: [
@@ -1239,7 +1239,7 @@ export const questions: Question[] = [
           { text: "に" },
           { text: "学校[がっこう]", blank: true },
           { text: "へ" },
-          { text: "けんじさん", blank: true },
+          { text: "陽介[ようすけ]さん", blank: true },
           { text: "が" },
           {
             text: "来[く]る",
@@ -1251,7 +1251,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "日曜日に + 学校へ + けんじさんが (destination before subject)",
+        notes: "日曜日に + 学校へ + 陽介[ようすけ]さんが (destination before subject)",
       },
       // Time → destination → subject が variants (with comma)
       {
@@ -1260,7 +1260,7 @@ export const questions: Question[] = [
           { text: "に、" },
           { text: "学校[がっこう]", blank: true },
           { text: "に" },
-          { text: "けんじさん", blank: true },
+          { text: "陽介[ようすけ]さん", blank: true },
           { text: "が" },
           {
             text: "来[く]る",
@@ -1272,7 +1272,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "日曜日に、+ 学校に + けんじさんが (destination before subject)",
+        notes: "日曜日に、+ 学校に + 陽介[ようすけ]さんが (destination before subject)",
       },
       {
         segments: [
@@ -1280,7 +1280,7 @@ export const questions: Question[] = [
           { text: "に、" },
           { text: "学校[がっこう]", blank: true },
           { text: "へ" },
-          { text: "けんじさん", blank: true },
+          { text: "陽介[ようすけ]さん", blank: true },
           { text: "が" },
           {
             text: "来[く]る",
@@ -1292,7 +1292,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "日曜日に、+ 学校へ + けんじさんが (destination before subject)",
+        notes: "日曜日に、+ 学校へ + 陽介[ようすけ]さんが (destination before subject)",
       },
       // 日曜日、(no に) → destination → subject が variants
       {
@@ -1301,7 +1301,7 @@ export const questions: Question[] = [
           { text: "、" },
           { text: "学校[がっこう]", blank: true },
           { text: "に" },
-          { text: "けんじさん", blank: true },
+          { text: "陽介[ようすけ]さん", blank: true },
           { text: "が" },
           {
             text: "来[く]る",
@@ -1314,7 +1314,7 @@ export const questions: Question[] = [
           },
         ],
         notes:
-          "日曜日、(no に) + 学校に + けんじさんが (destination before subject)",
+          "日曜日、(no に) + 学校に + 陽介[ようすけ]さんが (destination before subject)",
       },
       {
         segments: [
@@ -1322,7 +1322,7 @@ export const questions: Question[] = [
           { text: "、" },
           { text: "学校[がっこう]", blank: true },
           { text: "へ" },
-          { text: "けんじさん", blank: true },
+          { text: "陽介[ようすけ]さん", blank: true },
           { text: "が" },
           {
             text: "来[く]る",
@@ -1335,7 +1335,7 @@ export const questions: Question[] = [
           },
         ],
         notes:
-          "日曜日、(no に) + 学校へ + けんじさんが (destination before subject)",
+          "日曜日、(no に) + 学校へ + 陽介[ようすけ]さんが (destination before subject)",
       },
     ],
   },
@@ -2467,12 +2467,12 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Yuki comes to my place on weekends.",
-    hint: "Yuki = ゆき",
+    english: "Mizuki comes to my place on weekends.",
+    hint: "Mizuki = 瑞希 (みずき)",
     answers: [
       {
         segments: [
-          { text: "ゆきさん", blank: true },
+          { text: "瑞希[みずき]さん", blank: true },
           { text: "は" },
           { text: "週末[しゅうまつ]", blank: true },
           { text: "に" },
@@ -2492,7 +2492,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "ゆきさん", blank: true },
+          { text: "瑞希[みずき]さん", blank: true },
           { text: "は" },
           { text: "週末[しゅうまつ]", blank: true },
           { text: "に" },
@@ -2512,7 +2512,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "ゆきさん", blank: true },
+          { text: "瑞希[みずき]さん", blank: true },
           { text: "は" },
           { text: "週末[しゅうまつ]", blank: true },
           { text: "に" },
@@ -2532,7 +2532,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "ゆきさん", blank: true },
+          { text: "瑞希[みずき]さん", blank: true },
           { text: "は" },
           { text: "週末[しゅうまつ]", blank: true },
           { text: "に" },
@@ -2552,7 +2552,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "ゆきさん", blank: true },
+          { text: "瑞希[みずき]さん", blank: true },
           { text: "は" },
           { text: "週末[しゅうまつ]", blank: true },
           { text: "に" },
@@ -2573,7 +2573,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "ゆきさん", blank: true },
+          { text: "瑞希[みずき]さん", blank: true },
           { text: "は" },
           { text: "週末[しゅうまつ]", blank: true },
           { text: "に" },
@@ -2596,7 +2596,7 @@ export const questions: Question[] = [
         segments: [
           { text: "週末[しゅうまつ]", blank: true },
           { text: "、" },
-          { text: "ゆきさん", blank: true },
+          { text: "瑞希[みずき]さん", blank: true },
           { text: "が" },
           { text: "私[わたし]のうち", blank: true },
           { text: "に" },
@@ -2610,13 +2610,13 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Fronted 週末、(no に) + ゆきさんが + 私のうちに",
+        notes: "Fronted 週末、(no に) + 瑞希[みずき]さんが + 私のうちに",
       },
       {
         segments: [
           { text: "週末[しゅうまつ]", blank: true },
           { text: "、" },
-          { text: "ゆきさん", blank: true },
+          { text: "瑞希[みずき]さん", blank: true },
           { text: "が" },
           { text: "私[わたし]のうち", blank: true },
           { text: "へ" },
@@ -2630,13 +2630,13 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Fronted 週末、(no に) + ゆきさんが + 私のうちへ",
+        notes: "Fronted 週末、(no に) + 瑞希[みずき]さんが + 私のうちへ",
       },
       {
         segments: [
           { text: "週末[しゅうまつ]", blank: true },
           { text: "、" },
-          { text: "ゆきさん", blank: true },
+          { text: "瑞希[みずき]さん", blank: true },
           { text: "が" },
           { text: "私[わたし]の家[いえ]", blank: true },
           { text: "に" },
@@ -2650,13 +2650,13 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Fronted 週末、(no に) + ゆきさんが + 私の家に",
+        notes: "Fronted 週末、(no に) + 瑞希[みずき]さんが + 私の家に",
       },
       {
         segments: [
           { text: "週末[しゅうまつ]", blank: true },
           { text: "、" },
-          { text: "ゆきさん", blank: true },
+          { text: "瑞希[みずき]さん", blank: true },
           { text: "が" },
           { text: "私[わたし]の家[いえ]", blank: true },
           { text: "へ" },
@@ -2670,13 +2670,13 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Fronted 週末、(no に) + ゆきさんが + 私の家へ",
+        notes: "Fronted 週末、(no に) + 瑞希[みずき]さんが + 私の家へ",
       },
       {
         segments: [
           { text: "週末[しゅうまつ]", blank: true },
           { text: "、" },
-          { text: "ゆきさん", blank: true },
+          { text: "瑞希[みずき]さん", blank: true },
           { text: "が" },
           { text: "うち", blank: true },
           { text: "に" },
@@ -2690,13 +2690,13 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Fronted 週末、(no に) + ゆきさんが + うちに",
+        notes: "Fronted 週末、(no に) + 瑞希[みずき]さんが + うちに",
       },
       {
         segments: [
           { text: "週末[しゅうまつ]", blank: true },
           { text: "、" },
-          { text: "ゆきさん", blank: true },
+          { text: "瑞希[みずき]さん", blank: true },
           { text: "が" },
           { text: "うち", blank: true },
           { text: "へ" },
@@ -2710,14 +2710,14 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Fronted 週末、(no に) + ゆきさんが + うちへ",
+        notes: "Fronted 週末、(no に) + 瑞希[みずき]さんが + うちへ",
       },
       // Fronted 週末に variants (with に after 週末)
       {
         segments: [
           { text: "週末[しゅうまつ]", blank: true },
           { text: "に、" },
-          { text: "ゆきさん", blank: true },
+          { text: "瑞希[みずき]さん", blank: true },
           { text: "が" },
           { text: "私[わたし]のうち", blank: true },
           { text: "に" },
@@ -2731,13 +2731,13 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Fronted 週末に、+ ゆきさんが + 私のうちに",
+        notes: "Fronted 週末に、+ 瑞希[みずき]さんが + 私のうちに",
       },
       {
         segments: [
           { text: "週末[しゅうまつ]", blank: true },
           { text: "に、" },
-          { text: "ゆきさん", blank: true },
+          { text: "瑞希[みずき]さん", blank: true },
           { text: "が" },
           { text: "私[わたし]のうち", blank: true },
           { text: "へ" },
@@ -2751,13 +2751,13 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Fronted 週末に、+ ゆきさんが + 私のうちへ",
+        notes: "Fronted 週末に、+ 瑞希[みずき]さんが + 私のうちへ",
       },
       {
         segments: [
           { text: "週末[しゅうまつ]", blank: true },
           { text: "に、" },
-          { text: "ゆきさん", blank: true },
+          { text: "瑞希[みずき]さん", blank: true },
           { text: "が" },
           { text: "私[わたし]の家[いえ]", blank: true },
           { text: "に" },
@@ -2771,13 +2771,13 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Fronted 週末に、+ ゆきさんが + 私の家に",
+        notes: "Fronted 週末に、+ 瑞希[みずき]さんが + 私の家に",
       },
       {
         segments: [
           { text: "週末[しゅうまつ]", blank: true },
           { text: "に、" },
-          { text: "ゆきさん", blank: true },
+          { text: "瑞希[みずき]さん", blank: true },
           { text: "が" },
           { text: "私[わたし]の家[いえ]", blank: true },
           { text: "へ" },
@@ -2791,13 +2791,13 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Fronted 週末に、+ ゆきさんが + 私の家へ",
+        notes: "Fronted 週末に、+ 瑞希[みずき]さんが + 私の家へ",
       },
       {
         segments: [
           { text: "週末[しゅうまつ]", blank: true },
           { text: "に、" },
-          { text: "ゆきさん", blank: true },
+          { text: "瑞希[みずき]さん", blank: true },
           { text: "が" },
           { text: "うち", blank: true },
           { text: "に" },
@@ -2811,13 +2811,13 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Fronted 週末に、+ ゆきさんが + うちに",
+        notes: "Fronted 週末に、+ 瑞希[みずき]さんが + うちに",
       },
       {
         segments: [
           { text: "週末[しゅうまつ]", blank: true },
           { text: "に、" },
-          { text: "ゆきさん", blank: true },
+          { text: "瑞希[みずき]さん", blank: true },
           { text: "が" },
           { text: "うち", blank: true },
           { text: "へ" },
@@ -2831,7 +2831,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Fronted 週末に、+ ゆきさんが + うちへ",
+        notes: "Fronted 週末に、+ 瑞希[みずき]さんが + うちへ",
       },
       // Time → destination → subject が variants (no comma)
       {
@@ -2840,7 +2840,7 @@ export const questions: Question[] = [
           { text: "に" },
           { text: "私[わたし]のうち", blank: true },
           { text: "に" },
-          { text: "ゆきさん", blank: true },
+          { text: "瑞希[みずき]さん", blank: true },
           { text: "が" },
           {
             text: "来[く]る",
@@ -2852,7 +2852,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "週末に + 私のうちに + ゆきさんが (destination before subject)",
+        notes: "週末に + 私のうちに + 瑞希[みずき]さんが (destination before subject)",
       },
       {
         segments: [
@@ -2860,7 +2860,7 @@ export const questions: Question[] = [
           { text: "に" },
           { text: "私[わたし]の家[いえ]", blank: true },
           { text: "に" },
-          { text: "ゆきさん", blank: true },
+          { text: "瑞希[みずき]さん", blank: true },
           { text: "が" },
           {
             text: "来[く]る",
@@ -2872,7 +2872,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "週末に + 私の家に + ゆきさんが (destination before subject)",
+        notes: "週末に + 私の家に + 瑞希[みずき]さんが (destination before subject)",
       },
       {
         segments: [
@@ -2880,7 +2880,7 @@ export const questions: Question[] = [
           { text: "に" },
           { text: "うち", blank: true },
           { text: "に" },
-          { text: "ゆきさん", blank: true },
+          { text: "瑞希[みずき]さん", blank: true },
           { text: "が" },
           {
             text: "来[く]る",
@@ -2892,7 +2892,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "週末に + うちに + ゆきさんが (destination before subject)",
+        notes: "週末に + うちに + 瑞希[みずき]さんが (destination before subject)",
       },
       // Time → destination → subject が variants (with comma after time)
       {
@@ -2901,7 +2901,7 @@ export const questions: Question[] = [
           { text: "に、" },
           { text: "私[わたし]のうち", blank: true },
           { text: "に" },
-          { text: "ゆきさん", blank: true },
+          { text: "瑞希[みずき]さん", blank: true },
           { text: "が" },
           {
             text: "来[く]る",
@@ -2913,7 +2913,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "週末に、+ 私のうちに + ゆきさんが (destination before subject)",
+        notes: "週末に、+ 私のうちに + 瑞希[みずき]さんが (destination before subject)",
       },
       {
         segments: [
@@ -2921,7 +2921,7 @@ export const questions: Question[] = [
           { text: "に、" },
           { text: "私[わたし]の家[いえ]", blank: true },
           { text: "に" },
-          { text: "ゆきさん", blank: true },
+          { text: "瑞希[みずき]さん", blank: true },
           { text: "が" },
           {
             text: "来[く]る",
@@ -2933,7 +2933,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "週末に、+ 私の家に + ゆきさんが (destination before subject)",
+        notes: "週末に、+ 私の家に + 瑞希[みずき]さんが (destination before subject)",
       },
       {
         segments: [
@@ -2941,7 +2941,7 @@ export const questions: Question[] = [
           { text: "に、" },
           { text: "うち", blank: true },
           { text: "に" },
-          { text: "ゆきさん", blank: true },
+          { text: "瑞希[みずき]さん", blank: true },
           { text: "が" },
           {
             text: "来[く]る",
@@ -2953,7 +2953,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "週末に、+ うちに + ゆきさんが (destination before subject)",
+        notes: "週末に、+ うちに + 瑞希[みずき]さんが (destination before subject)",
       },
       // 週末、(no に) → destination → subject が variants
       {
@@ -2962,7 +2962,7 @@ export const questions: Question[] = [
           { text: "、" },
           { text: "私[わたし]のうち", blank: true },
           { text: "に" },
-          { text: "ゆきさん", blank: true },
+          { text: "瑞希[みずき]さん", blank: true },
           { text: "が" },
           {
             text: "来[く]る",
@@ -2975,7 +2975,7 @@ export const questions: Question[] = [
           },
         ],
         notes:
-          "週末、(no に) + 私のうちに + ゆきさんが (destination before subject)",
+          "週末、(no に) + 私のうちに + 瑞希[みずき]さんが (destination before subject)",
       },
       {
         segments: [
@@ -2983,7 +2983,7 @@ export const questions: Question[] = [
           { text: "、" },
           { text: "私[わたし]の家[いえ]", blank: true },
           { text: "に" },
-          { text: "ゆきさん", blank: true },
+          { text: "瑞希[みずき]さん", blank: true },
           { text: "が" },
           {
             text: "来[く]る",
@@ -2996,7 +2996,7 @@ export const questions: Question[] = [
           },
         ],
         notes:
-          "週末、(no に) + 私の家に + ゆきさんが (destination before subject)",
+          "週末、(no に) + 私の家に + 瑞希[みずき]さんが (destination before subject)",
       },
       {
         segments: [
@@ -3004,7 +3004,7 @@ export const questions: Question[] = [
           { text: "、" },
           { text: "うち", blank: true },
           { text: "に" },
-          { text: "ゆきさん", blank: true },
+          { text: "瑞希[みずき]さん", blank: true },
           { text: "が" },
           {
             text: "来[く]る",
@@ -3017,14 +3017,14 @@ export const questions: Question[] = [
           },
         ],
         notes:
-          "週末、(no に) + うちに + ゆきさんが (destination before subject)",
+          "週末、(no に) + うちに + 瑞希[みずき]さんが (destination before subject)",
       },
       // 週末は as topic variants
       {
         segments: [
           { text: "週末[しゅうまつ]", blank: true },
           { text: "は" },
-          { text: "ゆきさん", blank: true },
+          { text: "瑞希[みずき]さん", blank: true },
           { text: "が" },
           { text: "私[わたし]のうち", blank: true },
           { text: "に" },
@@ -3038,13 +3038,13 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "週末は as topic + ゆきさんが + 私のうちに",
+        notes: "週末は as topic + 瑞希[みずき]さんが + 私のうちに",
       },
       {
         segments: [
           { text: "週末[しゅうまつ]", blank: true },
           { text: "は" },
-          { text: "ゆきさん", blank: true },
+          { text: "瑞希[みずき]さん", blank: true },
           { text: "が" },
           { text: "私[わたし]の家[いえ]", blank: true },
           { text: "に" },
@@ -3058,13 +3058,13 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "週末は as topic + ゆきさんが + 私の家に",
+        notes: "週末は as topic + 瑞希[みずき]さんが + 私の家に",
       },
       {
         segments: [
           { text: "週末[しゅうまつ]", blank: true },
           { text: "は" },
-          { text: "ゆきさん", blank: true },
+          { text: "瑞希[みずき]さん", blank: true },
           { text: "が" },
           { text: "うち", blank: true },
           { text: "に" },
@@ -3078,12 +3078,12 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "週末は as topic + ゆきさんが + うちに",
+        notes: "週末は as topic + 瑞希[みずき]さんが + うちに",
       },
-      // Non-fronted ゆきさんが variants
+      // Non-fronted 瑞希[みずき]さんが variants
       {
         segments: [
-          { text: "ゆきさん", blank: true },
+          { text: "瑞希[みずき]さん", blank: true },
           { text: "が" },
           { text: "週末[しゅうまつ]", blank: true },
           { text: "に" },
@@ -3099,11 +3099,11 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "ゆきさんが (non-fronted) + 週末に + 私のうちに",
+        notes: "瑞希[みずき]さんが (non-fronted) + 週末に + 私のうちに",
       },
       {
         segments: [
-          { text: "ゆきさん", blank: true },
+          { text: "瑞希[みずき]さん", blank: true },
           { text: "が" },
           { text: "週末[しゅうまつ]", blank: true },
           { text: "に" },
@@ -3119,11 +3119,11 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "ゆきさんが (non-fronted) + 週末に + 私の家に",
+        notes: "瑞希[みずき]さんが (non-fronted) + 週末に + 私の家に",
       },
       {
         segments: [
-          { text: "ゆきさん", blank: true },
+          { text: "瑞希[みずき]さん", blank: true },
           { text: "が" },
           { text: "週末[しゅうまつ]", blank: true },
           { text: "に" },
@@ -3139,7 +3139,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "ゆきさんが (non-fronted) + 週末に + うちに",
+        notes: "瑞希[みずき]さんが (non-fronted) + 週末に + うちに",
       },
     ],
   },

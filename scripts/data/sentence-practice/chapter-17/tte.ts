@@ -3,6 +3,7 @@ import type { Question } from "../types"
 export const questions: Question[] = [
   {
     english: "Mary says she's quitting her job next month",
+    hint: "Mary = メアリー",
     answers: [
       {
         segments: [
@@ -38,6 +39,7 @@ export const questions: Question[] = [
   },
   {
     english: "Mary was telling me she's studying abroad next year",
+    hint: "Mary = メアリー",
     answers: [
       {
         segments: [
@@ -150,6 +152,7 @@ export const questions: Question[] = [
   },
   {
     english: "Yuki says she's getting married",
+    hint: "Yuki = ゆき",
     answers: [
       {
         segments: [
@@ -246,6 +249,7 @@ export const questions: Question[] = [
   },
   {
     english: "Tanaka says there's a big fire nearby",
+    hint: "Tanaka = 田中 (たなか)",
     answers: [
       {
         segments: [
@@ -386,6 +390,7 @@ export const questions: Question[] = [
   },
   {
     english: "Naomi says the test was easy",
+    hint: "Naomi = なおみ",
     answers: [
       {
         segments: [
@@ -482,6 +487,7 @@ export const questions: Question[] = [
   },
   {
     english: "John was saying the coffee shop is crowded",
+    hint: "John = ジョン",
     answers: [
       {
         segments: [
@@ -503,7 +509,7 @@ export const questions: Question[] = [
   },
   {
     english: "Yuki says she failed the exam",
-    hint: "落ちた (おちた) -> failed (same kanji as in 落ち込む)",
+    hint: "Yuki = ゆき; 落ちた (おちた) -> failed (same kanji as in 落ち込む)",
     answers: [
       {
         segments: [
@@ -553,6 +559,7 @@ export const questions: Question[] = [
   },
   {
     english: "Tanaka says the weather will be nice tomorrow",
+    hint: "Tanaka = 田中 (たなか)",
     answers: [
       {
         segments: [

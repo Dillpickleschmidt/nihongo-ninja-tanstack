@@ -189,8 +189,8 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Ms. Takeda doesn't drink coffee at all, right?",
-    hint: "Seeking agreement using ね",
+    english: "Takeda doesn't drink coffee at all, right?",
+    hint: "Takeda = 武田 (たけだ); seeking agreement using ね",
     answers: [
       {
         segments: [
@@ -770,6 +770,7 @@ export const questions: Question[] = [
   },
   {
     english: "Yamamoto usually drinks tea in the evening.",
+    hint: "Yamamoto = 山本 (やまもと)",
     answers: [
       {
         segments: [
@@ -964,7 +965,7 @@ export const questions: Question[] = [
   },
   {
     english: "Yamamoto doesn't drink juice at all, right?",
-    hint: "juice -> ジュース; Seeking agreement with よね",
+    hint: "Yamamoto = 山本 (やまもと); juice = ジュース; seeking agreement with よね",
     answers: [
       {
         segments: [
@@ -1732,12 +1733,12 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Hana doesn't really eat lunch.",
-    hint: "Hana = はな",
+    english: "Kaede doesn't really eat lunch.",
+    hint: "Kaede = 楓 (かえで)",
     answers: [
       {
         segments: [
-          { text: "はなは" },
+          { text: "楓[かえで]さんは" },
           { text: "あまり", blank: true },
           { text: "昼[ひる]ご 飯[ごはん]を" },
           {
@@ -1753,7 +1754,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "はなは" },
+          { text: "楓[かえで]さんは" },
           { text: "あんまり", blank: true },
           { text: "昼[ひる]ご 飯[ごはん]を" },
           {
@@ -1769,7 +1770,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "はなは 昼[ひる]ご 飯[ごはん]を" },
+          { text: "楓[かえで]さんは 昼[ひる]ご 飯[ごはん]を" },
           { text: "あまり", blank: true },
           {
             text: "食[た]べる",
@@ -1784,7 +1785,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "はなは 昼[ひる]ご 飯[ごはん]を" },
+          { text: "楓[かえで]さんは 昼[ひる]ご 飯[ごはん]を" },
           { text: "あんまり", blank: true },
           {
             text: "食[た]べる",
@@ -1799,7 +1800,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "はなが" },
+          { text: "楓[かえで]さんが" },
           { text: "あまり", blank: true },
           { text: "昼[ひる]ご 飯[ごはん]を" },
           {

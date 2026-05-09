@@ -56,7 +56,7 @@ export const questions: Question[] = [
   },
   {
     english: "I want Kenji to return my dictionary tomorrow.",
-    hint: "Kenji = 健一",
+    hint: "Kenji = 健一 (けんいち)",
     answers: [
       {
         segments: [

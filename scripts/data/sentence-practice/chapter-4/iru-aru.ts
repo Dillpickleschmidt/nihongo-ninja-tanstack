@@ -703,12 +703,12 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Is Kenji at the hospital?",
-    hint: "Kenji = けんじ",
+    english: "Is Fujii at the hospital?",
+    hint: "Fujii = 藤井 (ふじい)",
     answers: [
       {
         segments: [
-          { text: "病院[びょういん]に ケンジ" },
+          { text: "病院[びょういん]に 藤井[ふじい]さん" },
           {
             text: "がいる",
             blank: true,
@@ -721,11 +721,11 @@ export const questions: Question[] = [
           },
           { text: "か" },
         ],
-        notes: "Kenji in katakana, がいる in blank",
+        notes: "Fujii as the person at the hospital, がいる in blank",
       },
       {
         segments: [
-          { text: "病院[びょういん]に ケンジ" },
+          { text: "病院[びょういん]に 藤井[ふじい]さん" },
           {
             text: "がいる",
             blank: true,
@@ -742,7 +742,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "病院[びょういん]に ケンジ" },
+          { text: "病院[びょういん]に 藤井[ふじい]さん" },
           {
             text: "がいる",
             blank: true,

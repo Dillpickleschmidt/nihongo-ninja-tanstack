@@ -2,12 +2,12 @@ import type { Question } from "../types"
 
 export const questions: Question[] = [
   {
-    english: "Kenji was singing in the library!",
-    hint: "Kenji = けんじ",
+    english: "Kaede was singing in the library!",
+    hint: "Kaede = 楓 (かえで)",
     answers: [
       {
         segments: [
-          { text: "けんじさんは 図書館[としょかん]で" },
+          { text: "楓[かえで]さんは 図書館[としょかん]で" },
           { text: "歌[うた]って", blank: true },
           {
             text: "いる",
@@ -23,7 +23,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "けんじさんが 図書館[としょかん]で" },
+          { text: "楓[かえで]さんが 図書館[としょかん]で" },
           { text: "歌[うた]って", blank: true },
           {
             text: "いる",
@@ -40,7 +40,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "けんじさんは 図書館[としょかん]で 歌[うた]を" },
+          { text: "楓[かえで]さんは 図書館[としょかん]で 歌[うた]を" },
           { text: "歌[うた]って", blank: true },
           {
             text: "いる",
@@ -57,7 +57,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "けんじさんが 図書館[としょかん]で 歌[うた]を" },
+          { text: "楓[かえで]さんが 図書館[としょかん]で 歌[うた]を" },
           { text: "歌[うた]って", blank: true },
           {
             text: "いる",
@@ -75,12 +75,12 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Kenji is married.",
-    hint: "Kenji = けんじ",
+    english: "Fujii is married.",
+    hint: "Fujii = 藤井 (ふじい)",
     answers: [
       {
         segments: [
-          { text: "けんじさんは" },
+          { text: "藤井[ふじい]さんは" },
           { text: "結婚[けっこん]して", blank: true },
           {
             text: "いる",
@@ -257,13 +257,13 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Kenji is taking pictures of the flowers near the temple.",
-    hint: "Kenji = 健二",
+    english: "Mizuki is taking pictures of the flowers near the temple.",
+    hint: "Mizuki = 瑞希 (みずき)",
     answers: [
       {
         segments: [
           {
-            text: "健二[けんじ]さんは 今[いま]、お寺[てら]の 近[ちか]くで 花[はな]の 写真[しゃしん]を ",
+            text: "瑞希[みずき]さんは 今[いま]、お寺[てら]の 近[ちか]くで 花[はな]の 写真[しゃしん]を ",
           },
           { text: "撮[と]っている", blank: true },
         ],
@@ -272,7 +272,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "健二[けんじ]さんは 今[いま]、お寺[てら]の 近[ちか]くの 花[はな]の 写真[しゃしん]を ",
+            text: "瑞希[みずき]さんは 今[いま]、お寺[てら]の 近[ちか]くの 花[はな]の 写真[しゃしん]を ",
           },
           { text: "撮[と]っている", blank: true },
         ],
@@ -281,7 +281,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "健二[けんじ]さんは 今[いま]、お寺[てら]の 近[ちか]くで 花[はな]を ",
+            text: "瑞希[みずき]さんは 今[いま]、お寺[てら]の 近[ちか]くで 花[はな]を ",
           },
           { text: "撮[と]っている", blank: true },
         ],
@@ -290,7 +290,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "今[いま]、健二[けんじ]さんは お寺[てら]の 近[ちか]くで 花[はな]の 写真[しゃしん]を ",
+            text: "今[いま]、瑞希[みずき]さんは お寺[てら]の 近[ちか]くで 花[はな]の 写真[しゃしん]を ",
           },
           { text: "撮[と]っている", blank: true },
         ],
@@ -299,25 +299,25 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "健二[けんじ]さんが 今[いま]、お寺[てら]の 近[ちか]くで 花[はな]の 写真[しゃしん]を ",
+            text: "瑞希[みずき]さんが 今[いま]、お寺[てら]の 近[ちか]くで 花[はな]の 写真[しゃしん]を ",
           },
           { text: "撮[と]っている", blank: true },
         ],
-        notes: "Uses が to focus on Kenji as the one doing the action",
+        notes: "Uses が to focus on Mizuki as the one doing the action",
       },
       {
         segments: [
           {
-            text: "健二[けんじ]は 今[いま]、お寺[てら]の 近[ちか]くで 花[はな]の 写真[しゃしん]を ",
+            text: "瑞希[みずき]は 今[いま]、お寺[てら]の 近[ちか]くで 花[はな]の 写真[しゃしん]を ",
           },
           { text: "撮[と]っている", blank: true },
         ],
-        notes: "No honorific さん on Kenji; natural in narration",
+        notes: "No honorific さん on Mizuki; natural in narration",
       },
       {
         segments: [
           {
-            text: "健二[けんじ]さんは お寺[てら]の 近[ちか]くで 今[いま]、花[はな]の 写真[しゃしん]を ",
+            text: "瑞希[みずき]さんは お寺[てら]の 近[ちか]くで 今[いま]、花[はな]の 写真[しゃしん]を ",
           },
           { text: "撮[と]っている", blank: true },
         ],
@@ -326,7 +326,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "健二[けんじ]さんは 花[はな]の 写真[しゃしん]を 今[いま]、お寺[てら]の 近[ちか]くで ",
+            text: "瑞希[みずき]さんは 花[はな]の 写真[しゃしん]を 今[いま]、お寺[てら]の 近[ちか]くで ",
           },
           { text: "撮[と]っている", blank: true },
         ],
@@ -335,7 +335,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "健二[けんじ]さんは 今[いま]、寺[てら]の 近[ちか]くで 花[はな]の 写真[しゃしん]を ",
+            text: "瑞希[みずき]さんは 今[いま]、寺[てら]の 近[ちか]くで 花[はな]の 写真[しゃしん]を ",
           },
           { text: "撮[と]っている", blank: true },
         ],
@@ -344,7 +344,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "健二[けんじ]さんは 今[いま]、寺[てら]の 近[ちか]くの 花[はな]の 写真[しゃしん]を ",
+            text: "瑞希[みずき]さんは 今[いま]、寺[てら]の 近[ちか]くの 花[はな]の 写真[しゃしん]を ",
           },
           { text: "撮[と]っている", blank: true },
         ],
@@ -353,7 +353,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "健二[けんじ]さんは 今[いま]、寺[てら]の 近[ちか]くで 花[はな]を ",
+            text: "瑞希[みずき]さんは 今[いま]、寺[てら]の 近[ちか]くで 花[はな]を ",
           },
           { text: "撮[と]っている", blank: true },
         ],
@@ -362,7 +362,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "今[いま]、健二[けんじ]さんは お寺[てら]の 近[ちか]くの 花[はな]の 写真[しゃしん]を ",
+            text: "今[いま]、瑞希[みずき]さんは お寺[てら]の 近[ちか]くの 花[はな]の 写真[しゃしん]を ",
           },
           { text: "撮[と]っている", blank: true },
         ],
@@ -372,7 +372,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "健二[けんじ]さんが 今[いま]、お寺[てら]の 近[ちか]くの 花[はな]の 写真[しゃしん]を ",
+            text: "瑞希[みずき]さんが 今[いま]、お寺[てら]の 近[ちか]くの 花[はな]の 写真[しゃしん]を ",
           },
           { text: "撮[と]っている", blank: true },
         ],
@@ -381,7 +381,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "健二[けんじ]さんが 今[いま]、お寺[てら]の 近[ちか]くで 花[はな]を ",
+            text: "瑞希[みずき]さんが 今[いま]、お寺[てら]の 近[ちか]くで 花[はな]を ",
           },
           { text: "撮[と]っている", blank: true },
         ],
@@ -390,7 +390,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "健二[けんじ]は 今[いま]、お寺[てら]の 近[ちか]くの 花[はな]の 写真[しゃしん]を ",
+            text: "瑞希[みずき]は 今[いま]、お寺[てら]の 近[ちか]くの 花[はな]の 写真[しゃしん]を ",
           },
           { text: "撮[と]っている", blank: true },
         ],
@@ -399,7 +399,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "健二[けんじ]さんは 今[いま]、お寺[てら]の 近[ちか]くで 花[はな]の 写真[しゃしん]を ",
+            text: "瑞希[みずき]さんは 今[いま]、お寺[てら]の 近[ちか]くで 花[はな]の 写真[しゃしん]を ",
           },
           { text: "撮[と]ってる", blank: true },
         ],
@@ -408,7 +408,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "健二[けんじ]さんは 今[いま]、お寺[てら]の 近[ちか]くの 花[はな]の 写真[しゃしん]を ",
+            text: "瑞希[みずき]さんは 今[いま]、お寺[てら]の 近[ちか]くの 花[はな]の 写真[しゃしん]を ",
           },
           { text: "撮[と]ってる", blank: true },
         ],
@@ -417,7 +417,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "健二[けんじ]さんは 今[いま]、お寺[てら]の 近[ちか]くで 花[はな]を ",
+            text: "瑞希[みずき]さんは 今[いま]、お寺[てら]の 近[ちか]くで 花[はな]を ",
           },
           { text: "撮[と]ってる", blank: true },
         ],
@@ -426,7 +426,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "今[いま]、健二[けんじ]さんは お寺[てら]の 近[ちか]くで 花[はな]の 写真[しゃしん]を ",
+            text: "今[いま]、瑞希[みずき]さんは お寺[てら]の 近[ちか]くで 花[はな]の 写真[しゃしん]を ",
           },
           { text: "撮[と]ってる", blank: true },
         ],
@@ -435,7 +435,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "健二[けんじ]は 今[いま]、お寺[てら]の 近[ちか]くで 花[はな]の 写真[しゃしん]を ",
+            text: "瑞希[みずき]は 今[いま]、お寺[てら]の 近[ちか]くで 花[はな]の 写真[しゃしん]を ",
           },
           { text: "撮[と]ってる", blank: true },
         ],
@@ -444,7 +444,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "健二[けんじ]さんは 今[いま]、花[はな]の 写真[しゃしん]を お寺[てら]の 近[ちか]くで ",
+            text: "瑞希[みずき]さんは 今[いま]、花[はな]の 写真[しゃしん]を お寺[てら]の 近[ちか]くで ",
           },
           { text: "撮[と]っている", blank: true },
         ],
@@ -686,12 +686,12 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Is Kenji wearing glasses?",
-    hint: "Kenji = けんじ",
+    english: "Is Nakajima wearing glasses?",
+    hint: "Nakajima = 中島 (なかじま)",
     answers: [
       {
         segments: [
-          { text: "けんじさんは 眼鏡[めがね]を" },
+          { text: "中島[なかじま]さんは 眼鏡[めがね]を" },
           { text: "かけて", blank: true },
           {
             text: "いる",
@@ -1202,12 +1202,12 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Kenji's younger brother is living in Canada now.",
-    hint: "Kenji = けんじ",
+    english: "Yosuke's younger brother is living in Canada now.",
+    hint: "Yosuke = 陽介 (ようすけ)",
     answers: [
       {
         segments: [
-          { text: "けんじさんの 弟[おとうと]は 今[いま] カナダに" },
+          { text: "陽介[ようすけ]さんの 弟[おとうと]は 今[いま] カナダに" },
           { text: "住[す]んで", blank: true },
           {
             text: "いる",
@@ -1223,7 +1223,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "けんじさんの 弟[おとうと]は カナダに 今[いま]" },
+          { text: "陽介[ようすけ]さんの 弟[おとうと]は カナダに 今[いま]" },
           { text: "住[す]んで", blank: true },
           {
             text: "いる",

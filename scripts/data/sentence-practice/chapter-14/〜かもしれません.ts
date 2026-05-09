@@ -142,26 +142,26 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Kenji's little brother might be a famous singer someday.",
-    hint: "Kenji = けんじ",
+    english: "Kaede's little brother might be a famous singer someday.",
+    hint: "Kaede = 楓 (かえで)",
     answers: [
       {
         segments: [
-          { text: "けんじさんの 弟[おとうと]は いつか 有名[ゆうめい]な 歌手[かしゅ]になる" },
+          { text: "楓[かえで]さんの 弟[おとうと]は いつか 有名[ゆうめい]な 歌手[かしゅ]になる" },
           { text: "かもしれない", blank: true },
         ],
         register: "casual",
       },
       {
         segments: [
-          { text: "けんじさんの 弟[おとうと]は いつか 有名[ゆうめい]な 歌手[かしゅ]になる" },
+          { text: "楓[かえで]さんの 弟[おとうと]は いつか 有名[ゆうめい]な 歌手[かしゅ]になる" },
           { text: "かもしれません", blank: true },
         ],
         register: "polite",
       },
       {
         segments: [
-          { text: "けんじさんの 弟[おとうと]が いつか 有名[ゆうめい]な 歌手[かしゅ]になる" },
+          { text: "楓[かえで]さんの 弟[おとうと]が いつか 有名[ゆうめい]な 歌手[かしゅ]になる" },
           { text: "かもしれない", blank: true },
         ],
         register: "casual",
@@ -169,7 +169,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "けんじさんの 弟[おとうと]が いつか 有名[ゆうめい]な 歌手[かしゅ]になる" },
+          { text: "楓[かえで]さんの 弟[おとうと]が いつか 有名[ゆうめい]な 歌手[かしゅ]になる" },
           { text: "かもしれません", blank: true },
         ],
         register: "polite",
@@ -177,7 +177,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "いつか、けんじさんの 弟[おとうと]は 有名[ゆうめい]な 歌手[かしゅ]になる" },
+          { text: "いつか、楓[かえで]さんの 弟[おとうと]は 有名[ゆうめい]な 歌手[かしゅ]になる" },
           { text: "かもしれない", blank: true },
         ],
         register: "casual",
@@ -185,7 +185,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "いつか、けんじさんの 弟[おとうと]は 有名[ゆうめい]な 歌手[かしゅ]になる" },
+          { text: "いつか、楓[かえで]さんの 弟[おとうと]は 有名[ゆうめい]な 歌手[かしゅ]になる" },
           { text: "かもしれません", blank: true },
         ],
         register: "polite",
@@ -193,7 +193,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "けんじさんの 弟[おとうと]は いつか 歌手[かしゅ]になる" },
+          { text: "楓[かえで]さんの 弟[おとうと]は いつか 歌手[かしゅ]になる" },
           { text: "かもしれない", blank: true },
         ],
         register: "casual",
@@ -201,7 +201,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "けんじさんの 弟[おとうと]は いつか 歌手[かしゅ]になる" },
+          { text: "楓[かえで]さんの 弟[おとうと]は いつか 歌手[かしゅ]になる" },
           { text: "かもしれません", blank: true },
         ],
         register: "polite",
@@ -209,7 +209,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "けんじさんの 弟[おとうと]は 将来[しょうらい] 有名[ゆうめい]な 歌手[かしゅ]になる" },
+          { text: "楓[かえで]さんの 弟[おとうと]は 将来[しょうらい] 有名[ゆうめい]な 歌手[かしゅ]になる" },
           { text: "かもしれない", blank: true },
         ],
         register: "casual",
@@ -217,7 +217,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "けんじさんの 弟[おとうと]は 将来[しょうらい] 有名[ゆうめい]な 歌手[かしゅ]になる" },
+          { text: "楓[かえで]さんの 弟[おとうと]は 将来[しょうらい] 有名[ゆうめい]な 歌手[かしゅ]になる" },
           { text: "かもしれません", blank: true },
         ],
         register: "polite",
@@ -388,26 +388,26 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Takeshi looks tired — he might be working too much.",
-    hint: "Takeshi = たけし",
+    english: "Saito looks tired — he might be working too much.",
+    hint: "Saito = 斎藤 (さいとう)",
     answers: [
       {
         segments: [
-          { text: "たけしさんは 疲[つか]れている。 働[はたら]きすぎている" },
+          { text: "斎藤[さいとう]さんは 疲[つか]れている。 働[はたら]きすぎている" },
           { text: "かもしれない", blank: true },
         ],
         register: "casual",
       },
       {
         segments: [
-          { text: "たけしさんは 疲[つか]れているから、 働[はたら]きすぎている" },
+          { text: "斎藤[さいとう]さんは 疲[つか]れているから、 働[はたら]きすぎている" },
           { text: "かもしれない", blank: true },
         ],
         register: "casual",
       },
       {
         segments: [
-          { text: "たけしさんは 疲[つか]れている。 仕事[しごと]をしすぎている" },
+          { text: "斎藤[さいとう]さんは 疲[つか]れている。 仕事[しごと]をしすぎている" },
           { text: "かもしれない", blank: true },
         ],
         register: "casual",
@@ -415,7 +415,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "たけしさんは 疲[つか]れているから、 仕事[しごと]をしすぎている" },
+          { text: "斎藤[さいとう]さんは 疲[つか]れているから、 仕事[しごと]をしすぎている" },
           { text: "かもしれない", blank: true },
         ],
         register: "casual",
@@ -423,7 +423,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "たけしさんは 疲[つか]れている。 働[はたら]きすぎ" },
+          { text: "斎藤[さいとう]さんは 疲[つか]れている。 働[はたら]きすぎ" },
           { text: "かもしれない", blank: true },
         ],
         register: "casual",
@@ -431,7 +431,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "たけしさんは 疲[つか]れている。 働[はたら]きすぎているの" },
+          { text: "斎藤[さいとう]さんは 疲[つか]れている。 働[はたら]きすぎているの" },
           { text: "かもしれない", blank: true },
         ],
         register: "casual",
@@ -439,7 +439,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "たけしさんは 疲[つか]れているから、 働[はたら]きすぎているの" },
+          { text: "斎藤[さいとう]さんは 疲[つか]れているから、 働[はたら]きすぎているの" },
           { text: "かもしれない", blank: true },
         ],
         register: "casual",
@@ -447,11 +447,11 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "たけしさんが 疲[つか]れている。 働[はたら]きすぎている" },
+          { text: "斎藤[さいとう]さんが 疲[つか]れている。 働[はたら]きすぎている" },
           { text: "かもしれない", blank: true },
         ],
         register: "casual",
-        notes: "たけしが instead of たけしは (が highlights Takeshi as the subject being observed)",
+        notes: "が instead of は highlights Saito as the subject being observed",
       },
     ],
   },
@@ -535,27 +535,27 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "I might already be in love with Kenji.",
-    hint: "Kenji = けんじ",
+    english: "I might already be in love with Mizuki.",
+    hint: "Mizuki = 瑞希 (みずき)",
     answers: [
       {
         segments: [
-          { text: "私[わたし]は もう けんじさんのことが 好[す]き" },
+          { text: "私[わたし]は もう 瑞希[みずき]さんのことが 好[す]き" },
           { text: "かもしれない", blank: true },
         ],
         register: "casual",
       },
       {
         segments: [
-          { text: "私[わたし]は もう けんじさんが 好[す]き" },
+          { text: "私[わたし]は もう 瑞希[みずき]さんが 好[す]き" },
           { text: "かもしれない", blank: true },
         ],
         register: "casual",
-        notes: "Without こと — simpler form けんじが好き",
+        notes: "Without こと — simpler form 瑞希さんが好き",
       },
       {
         segments: [
-          { text: "私[わたし]は けんじさんのことが もう 好[す]き" },
+          { text: "私[わたし]は 瑞希[みずき]さんのことが もう 好[す]き" },
           { text: "かもしれない", blank: true },
         ],
         register: "casual",
@@ -563,7 +563,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "私[わたし]は けんじさんが もう 好[す]き" },
+          { text: "私[わたし]は 瑞希[みずき]さんが もう 好[す]き" },
           { text: "かもしれない", blank: true },
         ],
         register: "casual",
@@ -571,7 +571,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "私[わたし]は もう けんじさんのことが 大好[だいす]き" },
+          { text: "私[わたし]は もう 瑞希[みずき]さんのことが 大好[だいす]き" },
           { text: "かもしれない", blank: true },
         ],
         register: "casual",
@@ -579,7 +579,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "私[わたし]は もう けんじさんが 大好[だいす]き" },
+          { text: "私[わたし]は もう 瑞希[みずき]さんが 大好[だいす]き" },
           { text: "かもしれない", blank: true },
         ],
         register: "casual",
@@ -587,7 +587,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "もうけんじさんのことが 好[す]きかも" },
+          { text: "もう瑞希[みずき]さんのことが 好[す]きかも" },
           {
             text: "しれる",
             blank: true,
@@ -1531,7 +1531,7 @@ export const questions: Question[] = [
   },
   {
     english: "Kenji didn't go to school today — he might be sick.",
-    hint: "けんじ = 健二",
+    hint: "Kenji = 健二 (けんじ)",
     answers: [
       {
         segments: [

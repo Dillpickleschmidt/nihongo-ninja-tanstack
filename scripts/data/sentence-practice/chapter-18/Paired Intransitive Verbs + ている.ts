@@ -353,19 +353,19 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Is Kenji angry?",
-    hint: "Kenji = けんじ",
+    english: "Is Saito angry?",
+    hint: "Saito = 斎藤 (さいとう)",
     answers: [
       {
         segments: [
-          { text: "けんじさんは 怒[おこ]って" },
+          { text: "斎藤[さいとう]さんは 怒[おこ]って" },
           { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "か" },
         ],
       },
       {
         segments: [
-          { text: "けんじさんが 怒[おこ]って" },
+          { text: "斎藤[さいとう]さんが 怒[おこ]って" },
           { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "か" },
         ],
@@ -533,12 +533,12 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Kenji has fallen down!",
-    hint: "Kenji = けんじ",
+    english: "Kaede has fallen down!",
+    hint: "Kaede = 楓 (かえで)",
     answers: [
       {
         segments: [
-          { text: "けんじさんが" },
+          { text: "楓[かえで]さんが" },
           { text: "転[ころ]んで", blank: true },
           { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "！" },
@@ -546,12 +546,12 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "けんじさんは" },
+          { text: "楓[かえで]さんは" },
           { text: "転[ころ]んで", blank: true },
           { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
           { text: "！" },
         ],
-        notes: "は instead of が for Kenji as topic",
+        notes: "は instead of が for Kaede as topic",
       },
     ],
   },
@@ -758,27 +758,27 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Kenji has already gone home.",
-    hint: "Kenji = けんじ",
+    english: "Fujii has already gone home.",
+    hint: "Fujii = 藤井 (ふじい)",
     answers: [
       {
         segments: [
-          { text: "けんじさんは もう" },
+          { text: "藤井[ふじい]さんは もう" },
           { text: "帰[かえ]って", blank: true },
           { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
       },
       {
         segments: [
-          { text: "けんじさんが もう" },
+          { text: "藤井[ふじい]さんが もう" },
           { text: "帰[かえ]って", blank: true },
           { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "が presents Kenji as the subject of the observation.",
+        notes: "が presents Fujii as the subject of the observation.",
       },
       {
         segments: [
-          { text: "もう けんじさんは" },
+          { text: "もう 藤井[ふじい]さんは" },
           { text: "帰[かえ]って", blank: true },
           { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],

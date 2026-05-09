@@ -35,48 +35,48 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Kenji didn't come home last night.",
-    hint: "Kenji = けんじ",
+    english: "Yosuke didn't come home last night.",
+    hint: "Yosuke = 陽介 (ようすけ)",
     answers: [
       {
         segments: [
-          { text: "けんじさんは 昨日[きのう]の 夜[よる]、" },
+          { text: "陽介[ようすけ]さんは 昨日[きのう]の 夜[よる]、" },
           { text: "帰[かえ]らなかった", blank: true },
         ],
         notes:
-          'Basic: けんじさんは, 昨日の夜 for "last night", negative past of う-verb 帰る',
+          'Basic: 陽介[ようすけ]さんは, 昨日の夜 for "last night", negative past of う-verb 帰る',
       },
       {
         segments: [
-          { text: "けんじさんは 昨日[きのう]の 夜[よる]、" },
+          { text: "陽介[ようすけ]さんは 昨日[きのう]の 夜[よる]、" },
           { text: "帰[かえ]らなかったです", blank: true },
         ],
         notes: "Semi-polite: なかったです form",
       },
       {
         segments: [
-          { text: "昨日[きのう]の 夜[よる]、けんじさんは" },
+          { text: "昨日[きのう]の 夜[よる]、陽介[ようすけ]さんは" },
           { text: "帰[かえ]らなかった", blank: true },
         ],
-        notes: "Time-first word order: 昨日の夜、けんじさんは",
+        notes: "Time-first word order: 昨日の夜、陽介[ようすけ]さんは",
       },
       {
         segments: [
-          { text: "けんじさんは 昨晩[さくばん]、" },
+          { text: "陽介[ようすけ]さんは 昨晩[さくばん]、" },
           { text: "帰[かえ]らなかった", blank: true },
         ],
         notes: 'Using 昨晩 (さくばん) as an alternative word for "last night"',
       },
       {
         segments: [
-          { text: "けんじさんは 昨夜[さくや]、" },
+          { text: "陽介[ようすけ]さんは 昨夜[さくや]、" },
           { text: "帰[かえ]らなかった", blank: true },
         ],
         notes: 'Using 昨夜 (さくや) as another alternative for "last night"',
       },
       {
         segments: [
-          { text: "けんじさんは 昨日[きのう]の 晩[ばん]、" },
+          { text: "陽介[ようすけ]さんは 昨日[きのう]の 晩[ばん]、" },
           { text: "帰[かえ]らなかった", blank: true },
         ],
         notes:
@@ -84,21 +84,21 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "けんじさんが 昨日[きのう]の 夜[よる]、" },
+          { text: "陽介[ようすけ]さんが 昨日[きのう]の 夜[よる]、" },
           { text: "帰[かえ]らなかった", blank: true },
         ],
         notes: "Using が instead of は for the subject particle",
       },
       {
         segments: [
-          { text: "けんじさんは 昨日[きのう]の 夜[よる]、うちに" },
+          { text: "陽介[ようすけ]さんは 昨日[きのう]の 夜[よる]、うちに" },
           { text: "帰[かえ]らなかった", blank: true },
         ],
         notes: 'Explicitly saying "didn\'t come home" with うちに帰らなかった',
       },
       {
         segments: [
-          { text: "けんじさんは 昨日[きのう]の 夜[よる]、家[いえ]に" },
+          { text: "陽介[ようすけ]さんは 昨日[きのう]の 夜[よる]、家[いえ]に" },
           { text: "帰[かえ]らなかった", blank: true },
         ],
         notes: "With 家に (home) explicitly stated",
@@ -294,7 +294,7 @@ export const questions: Question[] = [
   },
   {
     english: "Who was that person?",
-    hint: "Use 人[ひと] rather than a pronoun.",
+    hint: "Use 人 (ひと) rather than a pronoun.",
     answers: [
       {
         segments: [
@@ -326,12 +326,12 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Was Kenji's father a doctor?",
-    hint: "Kenji = けんじ",
+    english: "Was Fujii's father a doctor?",
+    hint: "Fujii = 藤井 (ふじい)",
     answers: [
       {
         segments: [
-          { text: "けんじさんのお父[とう]さんは 医者[いしゃ]" },
+          { text: "藤井[ふじい]さんのお父[とう]さんは 医者[いしゃ]" },
           { text: "でした", blank: true },
           { text: "か" },
         ],
@@ -339,7 +339,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "けんじさんのお父[とう]さんは 医者[いしゃ]" },
+          { text: "藤井[ふじい]さんのお父[とう]さんは 医者[いしゃ]" },
           { text: "だった", blank: true },
           { text: "？" },
         ],
@@ -347,7 +347,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "けんじさんのお父[とう]さんが 医者[いしゃ]" },
+          { text: "藤井[ふじい]さんのお父[とう]さんが 医者[いしゃ]" },
           { text: "でした", blank: true },
           { text: "か" },
         ],
@@ -355,7 +355,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "けんじさんのお父[とう]さんが 医者[いしゃ]" },
+          { text: "藤井[ふじい]さんのお父[とう]さんが 医者[いしゃ]" },
           { text: "だった", blank: true },
           { text: "？" },
         ],
@@ -363,7 +363,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "けんじさんのお父[とう]さんは 医者[いしゃ]" },
+          { text: "藤井[ふじい]さんのお父[とう]さんは 医者[いしゃ]" },
           { text: "だった", blank: true },
           { text: "か" },
         ],
@@ -372,7 +372,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "けんじさんのお父[とう]さんが 医者[いしゃ]" },
+          { text: "藤井[ふじい]さんのお父[とう]さんが 医者[いしゃ]" },
           { text: "だった", blank: true },
           { text: "か" },
         ],
@@ -381,12 +381,12 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Takeshi's mother was actually a lawyer!",
-    hint: "Takeshi = たけし",
+    english: "Saito's mother was actually a lawyer!",
+    hint: "Saito = 斎藤 (さいとう)",
     answers: [
       {
         segments: [
-          { text: "たけしさんのお母[かあ]さんは 実[じつ]は 弁護士[べんごし]" },
+          { text: "斎藤[さいとう]さんのお母[かあ]さんは 実[じつ]は 弁護士[べんごし]" },
           { text: "でした", blank: true },
           { text: "！" },
         ],
@@ -394,7 +394,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "たけしさんのお母[かあ]さんは 実[じつ]は 弁護士[べんごし]" },
+          { text: "斎藤[さいとう]さんのお母[かあ]さんは 実[じつ]は 弁護士[べんごし]" },
           { text: "だった", blank: true },
           { text: "！" },
         ],
@@ -402,7 +402,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "たけしさんのお母[かあ]さんは 実[じつ]は 弁護士[べんごし]" },
+          { text: "斎藤[さいとう]さんのお母[かあ]さんは 実[じつ]は 弁護士[べんごし]" },
           { text: "だった", blank: true },
           { text: "んだ！" },
         ],
@@ -410,7 +410,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "たけしさんのお母[かあ]さんは 実[じつ]は 弁護士[べんごし]" },
+          { text: "斎藤[さいとう]さんのお母[かあ]さんは 実[じつ]は 弁護士[べんごし]" },
           { text: "でした", blank: true },
           { text: "よ！" },
         ],
@@ -418,7 +418,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "たけしさんのお母[かあ]さんは 実[じつ]は 弁護士[べんごし]" },
+          { text: "斎藤[さいとう]さんのお母[かあ]さんは 実[じつ]は 弁護士[べんごし]" },
           { text: "だった", blank: true },
           { text: "よ！" },
         ],
@@ -426,7 +426,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "たけしさんのお母[かあ]さんは 実[じつ]は 弁護士[べんごし]" },
+          { text: "斎藤[さいとう]さんのお母[かあ]さんは 実[じつ]は 弁護士[べんごし]" },
           { text: "だった", blank: true },
           { text: "んだよ！" },
         ],
@@ -434,7 +434,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "実[じつ]はたけしさんのお母[かあ]さんは 弁護士[べんごし]" },
+          { text: "実[じつ]は斎藤[さいとう]さんのお母[かあ]さんは 弁護士[べんごし]" },
           { text: "でした", blank: true },
           { text: "！" },
         ],
@@ -442,7 +442,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "実[じつ]はたけしさんのお母[かあ]さんは 弁護士[べんごし]" },
+          { text: "実[じつ]は斎藤[さいとう]さんのお母[かあ]さんは 弁護士[べんごし]" },
           { text: "だった", blank: true },
           { text: "！" },
         ],
@@ -450,7 +450,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "実[じつ]はたけしさんのお母[かあ]さんは 弁護士[べんごし]" },
+          { text: "実[じつ]は斎藤[さいとう]さんのお母[かあ]さんは 弁護士[べんごし]" },
           { text: "だった", blank: true },
           { text: "んだ！" },
         ],

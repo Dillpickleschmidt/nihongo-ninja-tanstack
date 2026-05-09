@@ -9,8 +9,8 @@ const naAdj = {
 
 export const questions: Question[] = [
   {
-    english: "Mr. Takeda hates children.",
-    hint: "Takeda = たけだ",
+    english: "Takeda hates children.",
+    hint: "Takeda = 武田 (たけだ)",
     answers: [
       {
         segments: [
@@ -247,12 +247,12 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Is the book Kenji likes old?",
-    hint: "Kenji = けんじ",
+    english: "Is the book Kaede likes old?",
+    hint: "Kaede = 楓 (かえで)",
     answers: [
       {
         segments: [
-          { text: "けんじさんが" },
+          { text: "楓[かえで]さんが" },
           { text: "好[す]きな", blank: true },
           { text: "本[ほん]は" },
           {
@@ -271,7 +271,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "けんじさんの" },
+          { text: "楓[かえで]さんの" },
           { text: "好[す]きな", blank: true },
           { text: "本[ほん]は" },
           {
@@ -286,7 +286,7 @@ export const questions: Question[] = [
           { text: "か" },
         ],
         notes:
-          "Using の instead of が in the relative clause (けんじさんの好きな本)",
+          "Using の instead of が in the relative clause (楓さんの好きな本)",
       },
     ],
   },

@@ -16,12 +16,12 @@ const kikuPast = {
 
 export const questions: Question[] = [
   {
-    english: "Hana said she is living with a dog now.",
-    hint: "Hana = はな",
+    english: "Kaede said she is living with a dog now.",
+    hint: "Kaede = 楓 (かえで)",
     answers: [
       {
         segments: [
-          { text: "はなさんは 今[いま] 犬[いぬ]と 住[す]んで", blank: true },
+          { text: "楓[かえで]さんは 今[いま] 犬[いぬ]と 住[す]んで", blank: true },
           { text: "いる", blank: true },
           { text: "と", blank: true },
           { text: "言[い]って", blank: true },
@@ -39,7 +39,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "はなさんが 今[いま] 犬[いぬ]と 住[す]んで", blank: true },
+          { text: "楓[かえで]さんが 今[いま] 犬[いぬ]と 住[す]んで", blank: true },
           { text: "いる", blank: true },
           { text: "と", blank: true },
           { text: "言[い]って", blank: true },
@@ -58,7 +58,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "はなさんは 犬[いぬ]と 今[いま] 住[す]んで", blank: true },
+          { text: "楓[かえで]さんは 犬[いぬ]と 今[いま] 住[す]んで", blank: true },
           { text: "いる", blank: true },
           { text: "と", blank: true },
           { text: "言[い]って", blank: true },
@@ -78,7 +78,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "はなさんは 今[いま] 犬[いぬ]と 一緒[いっしょ]に 住[す]んで",
+            text: "楓[かえで]さんは 今[いま] 犬[いぬ]と 一緒[いっしょ]に 住[す]んで",
             blank: true,
           },
           { text: "いる", blank: true },
@@ -99,7 +99,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "はなさんは 今[いま] 犬[いぬ]と 住[す]んで", blank: true },
+          { text: "楓[かえで]さんは 今[いま] 犬[いぬ]と 住[す]んで", blank: true },
           { text: "いる", blank: true },
           { text: "と", blank: true },
           { text: "聞[き]く", blank: true, conjugation: kikuPast },
@@ -108,7 +108,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "はなさんは 今[いま] 犬[いぬ]と 暮[く]らして", blank: true },
+          { text: "楓[かえで]さんは 今[いま] 犬[いぬ]と 暮[く]らして", blank: true },
           { text: "いる", blank: true },
           { text: "と", blank: true },
           {
@@ -126,7 +126,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "はなさんは 今[いま] 犬[いぬ]と 暮[く]らして", blank: true },
+          { text: "楓[かえで]さんは 今[いま] 犬[いぬ]と 暮[く]らして", blank: true },
           { text: "いる", blank: true },
           { text: "と", blank: true },
           { text: "言[い]って", blank: true },
@@ -181,13 +181,13 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "I heard that Yuki is studying Japanese at the library now.",
-    hint: "Yuki = ゆき",
+    english: "I heard that Mizuki is studying Japanese at the library now.",
+    hint: "Mizuki = 瑞希 (みずき)",
     answers: [
       {
         segments: [
           {
-            text: "ゆきさんが 今[いま] 図書館[としょかん]で 日本語[にほんご]を ",
+            text: "瑞希[みずき]さんが 今[いま] 図書館[としょかん]で 日本語[にほんご]を ",
           },
           { text: "勉強[べんきょう]している", blank: true },
           { text: " " },
@@ -204,12 +204,12 @@ export const questions: Question[] = [
           },
         ],
         notes:
-          "Standard sentence with が marking Yuki as the subject of the quoted information.",
+          "Standard sentence with が marking Mizuki as the subject of the quoted information.",
       },
       {
         segments: [
           {
-            text: "ゆきさんは 今[いま] 図書館[としょかん]で 日本語[にほんご]を ",
+            text: "瑞希[みずき]さんは 今[いま] 図書館[としょかん]で 日本語[にほんご]を ",
           },
           { text: "勉強[べんきょう]している", blank: true },
           { text: " " },
@@ -225,12 +225,12 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Using は to mark Yuki as the topic of the quoted information.",
+        notes: "Using は to mark Mizuki as the topic of the quoted information.",
       },
       {
         segments: [
           {
-            text: "今[いま] ゆきさんが 図書館[としょかん]で 日本語[にほんご]を ",
+            text: "今[いま] 瑞希[みずき]さんが 図書館[としょかん]で 日本語[にほんご]を ",
           },
           { text: "勉強[べんきょう]している", blank: true },
           { text: " " },
@@ -251,7 +251,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "今[いま] ゆきさんは 図書館[としょかん]で 日本語[にほんご]を ",
+            text: "今[いま] 瑞希[みずき]さんは 図書館[としょかん]で 日本語[にほんご]を ",
           },
           { text: "勉強[べんきょう]している", blank: true },
           { text: " " },
@@ -267,12 +267,12 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Time phrase first, with は marking Yuki as topic.",
+        notes: "Time phrase first, with は marking Mizuki as topic.",
       },
       {
         segments: [
           {
-            text: "ゆきさんが 図書館[としょかん]で 今[いま] 日本語[にほんご]を ",
+            text: "瑞希[みずき]さんが 図書館[としょかん]で 今[いま] 日本語[にほんご]を ",
           },
           { text: "勉強[べんきょう]している", blank: true },
           { text: " " },
@@ -293,7 +293,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "ゆきさんは 図書館[としょかん]で 今[いま] 日本語[にほんご]を ",
+            text: "瑞希[みずき]さんは 図書館[としょかん]で 今[いま] 日本語[にほんご]を ",
           },
           { text: "勉強[べんきょう]している", blank: true },
           { text: " " },
@@ -309,12 +309,12 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Location before 今, with Yuki as topic.",
+        notes: "Location before 今, with Mizuki as topic.",
       },
       {
         segments: [
           {
-            text: "図書館[としょかん]で ゆきさんが 今[いま] 日本語[にほんご]を ",
+            text: "図書館[としょかん]で 瑞希[みずき]さんが 今[いま] 日本語[にほんご]を ",
           },
           { text: "勉強[べんきょう]している", blank: true },
           { text: " " },
@@ -335,7 +335,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "図書館[としょかん]で ゆきさんは 今[いま] 日本語[にほんご]を ",
+            text: "図書館[としょかん]で 瑞希[みずき]さんは 今[いま] 日本語[にほんご]を ",
           },
           { text: "勉強[べんきょう]している", blank: true },
           { text: " " },
@@ -351,12 +351,12 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Location first, with Yuki as topic.",
+        notes: "Location first, with Mizuki as topic.",
       },
       {
         segments: [
           {
-            text: "ゆきさんが 今[いま] 図書館[としょかん]で 日本語[にほんご]を ",
+            text: "瑞希[みずき]さんが 今[いま] 図書館[としょかん]で 日本語[にほんご]を ",
           },
           { text: "勉強[べんきょう]している", blank: true },
           { text: " " },
@@ -377,7 +377,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "ゆきさんは 今[いま] 図書館[としょかん]で 日本語[にほんご]を ",
+            text: "瑞希[みずき]さんは 今[いま] 図書館[としょかん]で 日本語[にほんご]を ",
           },
           { text: "勉強[べんきょう]している", blank: true },
           { text: " " },
@@ -393,12 +393,12 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Casual って with は for Yuki as topic.",
+        notes: "Casual って with は for Mizuki as topic.",
       },
       {
         segments: [
           {
-            text: "今[いま] ゆきさんが 図書館[としょかん]で 日本語[にほんご]を ",
+            text: "今[いま] 瑞希[みずき]さんが 図書館[としょかん]で 日本語[にほんご]を ",
           },
           { text: "勉強[べんきょう]している", blank: true },
           { text: " " },
@@ -419,7 +419,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "今[いま] ゆきさんは 図書館[としょかん]で 日本語[にほんご]を ",
+            text: "今[いま] 瑞希[みずき]さんは 図書館[としょかん]で 日本語[にほんご]を ",
           },
           { text: "勉強[べんきょう]している", blank: true },
           { text: " " },
@@ -440,7 +440,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "ゆきさんが 図書館[としょかん]で 今[いま] 日本語[にほんご]を ",
+            text: "瑞希[みずき]さんが 図書館[としょかん]で 今[いま] 日本語[にほんご]を ",
           },
           { text: "勉強[べんきょう]している", blank: true },
           { text: " " },
@@ -461,7 +461,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "ゆきさんは 図書館[としょかん]で 今[いま] 日本語[にほんご]を ",
+            text: "瑞希[みずき]さんは 図書館[としょかん]で 今[いま] 日本語[にほんご]を ",
           },
           { text: "勉強[べんきょう]している", blank: true },
           { text: " " },
@@ -482,7 +482,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "図書館[としょかん]で ゆきさんが 今[いま] 日本語[にほんご]を ",
+            text: "図書館[としょかん]で 瑞希[みずき]さんが 今[いま] 日本語[にほんご]を ",
           },
           { text: "勉強[べんきょう]している", blank: true },
           { text: " " },
@@ -503,7 +503,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "図書館[としょかん]で ゆきさんは 今[いま] 日本語[にほんご]を ",
+            text: "図書館[としょかん]で 瑞希[みずき]さんは 今[いま] 日本語[にほんご]を ",
           },
           { text: "勉強[べんきょう]している", blank: true },
           { text: " " },
@@ -525,12 +525,12 @@ export const questions: Question[] = [
   },
   {
     english: "Ami said she is eating lunch at the cafeteria today.",
-    hint: "Ami = あみ",
+    hint: "Ami = 亜美 (あみ)",
     answers: [
       {
         segments: [
           {
-            text: "あみさんは 今日[きょう] 食堂[しょくどう]で 昼[ひる]ご 飯[はん]を 食[た]べて",
+            text: "亜美[あみ]さんは 今日[きょう] 食堂[しょくどう]で 昼[ひる]ご 飯[はん]を 食[た]べて",
             blank: true,
           },
           { text: "いる", blank: true },
@@ -551,7 +551,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "あみさんは 食堂[しょくどう]で 今日[きょう] 昼[ひる]ご 飯[はん]を 食[た]べて",
+            text: "亜美[あみ]さんは 食堂[しょくどう]で 今日[きょう] 昼[ひる]ご 飯[はん]を 食[た]べて",
             blank: true,
           },
           { text: "いる", blank: true },
@@ -573,7 +573,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "あみさんは 今日[きょう] 昼[ひる]ご 飯[はん]を 食堂[しょくどう]で 食[た]べて",
+            text: "亜美[あみ]さんは 今日[きょう] 昼[ひる]ご 飯[はん]を 食堂[しょくどう]で 食[た]べて",
             blank: true,
           },
           { text: "いる", blank: true },
@@ -595,7 +595,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "あみさんが 今日[きょう] 食堂[しょくどう]で 昼[ひる]ご 飯[はん]を 食[た]べて",
+            text: "亜美[あみ]さんが 今日[きょう] 食堂[しょくどう]で 昼[ひる]ご 飯[はん]を 食[た]べて",
             blank: true,
           },
           { text: "いる", blank: true },
@@ -617,7 +617,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "あみさんは 今日[きょう] 食堂[しょくどう]で 昼[ひる]ご 飯[はん]を 食[た]べて",
+            text: "亜美[あみ]さんは 今日[きょう] 食堂[しょくどう]で 昼[ひる]ご 飯[はん]を 食[た]べて",
             blank: true,
           },
           { text: "いる", blank: true },
@@ -629,7 +629,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "あみさんは 今日[きょう] 食堂[しょくどう]で 昼[ひる]ご 飯[はん]を 食[た]べて",
+            text: "亜美[あみ]さんは 今日[きょう] 食堂[しょくどう]で 昼[ひる]ご 飯[はん]を 食[た]べて",
             blank: true,
           },
           { text: "いる", blank: true },
@@ -725,13 +725,13 @@ export const questions: Question[] = [
   },
   {
     english:
-      "I heard that Kenji takes pictures in front of the old castle these days.",
-    hint: "Kenji = 健二",
+      "I heard that Kobayashi takes pictures in front of the old castle these days.",
+    hint: "Kobayashi = 小林 (こばやし)",
     answers: [
       {
         segments: [
           {
-            text: "健二[けんじ]さんが 今[いま] 古[ふる]い お城[しろ]の 前[まえ]で 写真[しゃしん]を ",
+            text: "小林[こばやし]さんが 今[いま] 古[ふる]い お城[しろ]の 前[まえ]で 写真[しゃしん]を ",
           },
           { text: "撮[と]っている", blank: true },
           { text: "と " },
@@ -751,7 +751,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "健二[けんじ]さんは 今[いま] 古[ふる]い お城[しろ]の 前[まえ]で 写真[しゃしん]を ",
+            text: "小林[こばやし]さんは 今[いま] 古[ふる]い お城[しろ]の 前[まえ]で 写真[しゃしん]を ",
           },
           { text: "撮[と]っている", blank: true },
           { text: "と " },
@@ -766,12 +766,12 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Using は to mark Kenji as the topic",
+        notes: "Using は to mark Kobayashi as the topic",
       },
       {
         segments: [
           {
-            text: "今[いま]、健二[けんじ]さんが 古[ふる]い お城[しろ]の 前[まえ]で 写真[しゃしん]を ",
+            text: "今[いま]、小林[こばやし]さんが 古[ふる]い お城[しろ]の 前[まえ]で 写真[しゃしん]を ",
           },
           { text: "撮[と]っている", blank: true },
           { text: "と " },
@@ -791,7 +791,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "健二[けんじ]さんが 古[ふる]い お城[しろ]の 前[まえ]で 今[いま] 写真[しゃしん]を ",
+            text: "小林[こばやし]さんが 古[ふる]い お城[しろ]の 前[まえ]で 今[いま] 写真[しゃしん]を ",
           },
           { text: "撮[と]っている", blank: true },
           { text: "と " },
@@ -811,7 +811,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "健二[けんじ]さんが 最近[さいきん] 古[ふる]い 城[しろ]の 前[まえ]で 写真[しゃしん]を ",
+            text: "小林[こばやし]さんが 最近[さいきん] 古[ふる]い 城[しろ]の 前[まえ]で 写真[しゃしん]を ",
           },
           { text: "撮[と]っている", blank: true },
           { text: "と " },
@@ -831,7 +831,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "健二[けんじ]さんが 今[いま] 古[ふる]い お城[しろ]の 前[まえ]で 写真[しゃしん]を ",
+            text: "小林[こばやし]さんが 今[いま] 古[ふる]い お城[しろ]の 前[まえ]で 写真[しゃしん]を ",
           },
           { text: "撮[と]っている", blank: true },
           { text: "って", blank: true },
@@ -852,7 +852,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "健二[けんじ]さんは 今[いま] 古[ふる]い お城[しろ]の 前[まえ]で 写真[しゃしん]を ",
+            text: "小林[こばやし]さんは 今[いま] 古[ふる]い お城[しろ]の 前[まえ]で 写真[しゃしん]を ",
           },
           { text: "撮[と]っている", blank: true },
           { text: "って", blank: true },
@@ -873,7 +873,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "健二[けんじ]さんが 今[いま] 古[ふる]い お城[しろ]の 前[まえ]で 写真[しゃしん]を ",
+            text: "小林[こばやし]さんが 今[いま] 古[ふる]い お城[しろ]の 前[まえ]で 写真[しゃしん]を ",
           },
           { text: "撮[と]ってる", blank: true },
           { text: "と " },
@@ -893,7 +893,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "今[いま]、健二[けんじ]さんは 古[ふる]い お城[しろ]の 前[まえ]で 写真[しゃしん]を ",
+            text: "今[いま]、小林[こばやし]さんは 古[ふる]い お城[しろ]の 前[まえ]で 写真[しゃしん]を ",
           },
           { text: "撮[と]っている", blank: true },
           { text: "と " },
@@ -913,7 +913,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "健二[けんじ]さんが 今[いま] 写真[しゃしん]を 古[ふる]い お城[しろ]の 前[まえ]で ",
+            text: "小林[こばやし]さんが 今[いま] 写真[しゃしん]を 古[ふる]い お城[しろ]の 前[まえ]で ",
           },
           { text: "撮[と]っている", blank: true },
           { text: "と " },
@@ -933,7 +933,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "健二[けんじ]さんが 古[ふる]い お城[しろ]の 前[まえ]で 写真[しゃしん]を 今[いま] ",
+            text: "小林[こばやし]さんが 古[ふる]い お城[しろ]の 前[まえ]で 写真[しゃしん]を 今[いま] ",
           },
           { text: "撮[と]っている", blank: true },
           { text: "と " },
@@ -953,13 +953,13 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "I think Kenji is going to go home early tonight.",
-    hint: "Kenji = けんじ",
+    english: "I think Kobayashi is going to go home early tonight.",
+    hint: "Kobayashi = 小林 (こばやし)",
     answers: [
       {
         segments: [
           {
-            text: "私[わたし]はけんじさんは 今晩[こんばん] 早[はや]く 帰[かえ]ると",
+            text: "私[わたし]は小林[こばやし]さんは 今晩[こんばん] 早[はや]く 帰[かえ]ると",
             blank: true,
           },
           { text: "思[おも]う", blank: true, conjugation: omouPos },
@@ -968,17 +968,17 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "私[わたし]はけんじさんが 今晩[こんばん] 早[はや]く 帰[かえ]ると",
+            text: "私[わたし]は小林[こばやし]さんが 今晩[こんばん] 早[はや]く 帰[かえ]ると",
             blank: true,
           },
           { text: "思[おも]う", blank: true, conjugation: omouPos },
         ],
-        notes: "けんじさんが instead of けんじさんは",
+        notes: "小林[こばやし]さんが instead of 小林[こばやし]さんは",
       },
       {
         segments: [
           {
-            text: "私[わたし]はけんじさんは 今夜[こんや] 早[はや]く 帰[かえ]ると",
+            text: "私[わたし]は小林[こばやし]さんは 今夜[こんや] 早[はや]く 帰[かえ]ると",
             blank: true,
           },
           { text: "思[おも]う", blank: true, conjugation: omouPos },
@@ -988,17 +988,17 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "私[わたし]はけんじさんが 今夜[こんや] 早[はや]く 帰[かえ]ると",
+            text: "私[わたし]は小林[こばやし]さんが 今夜[こんや] 早[はや]く 帰[かえ]ると",
             blank: true,
           },
           { text: "思[おも]う", blank: true, conjugation: omouPos },
         ],
-        notes: "今夜 + けんじさんが",
+        notes: "今夜 + 小林[こばやし]さんが",
       },
       {
         segments: [
           {
-            text: "今晩[こんばん]、 私[わたし]はけんじさんは 早[はや]く 帰[かえ]ると",
+            text: "今晩[こんばん]、 私[わたし]は小林[こばやし]さんは 早[はや]く 帰[かえ]ると",
             blank: true,
           },
           { text: "思[おも]う", blank: true, conjugation: omouPos },
@@ -1008,7 +1008,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "今晩[こんばん]、 私[わたし]はけんじさんが 早[はや]く 帰[かえ]ると",
+            text: "今晩[こんばん]、 私[わたし]は小林[こばやし]さんが 早[はや]く 帰[かえ]ると",
             blank: true,
           },
           { text: "思[おも]う", blank: true, conjugation: omouPos },
@@ -1767,13 +1767,13 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Does Hana think her part-time job is too busy?",
-    hint: "Hana = はな",
+    english: "Does Kaede think her part-time job is too busy?",
+    hint: "Kaede = 楓 (かえで)",
     answers: [
       {
         segments: [
           {
-            text: "はなさんはアルバイトがすごく 忙[いそが]しいと",
+            text: "楓[かえで]さんはアルバイトがすごく 忙[いそが]しいと",
             blank: true,
           },
           { text: "思[おも]って", blank: true },
@@ -1793,7 +1793,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "はなさんはアルバイトはすごく 忙[いそが]しいと",
+            text: "楓[かえで]さんはアルバイトはすごく 忙[いそが]しいと",
             blank: true,
           },
           { text: "思[おも]って", blank: true },
@@ -1813,7 +1813,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "はなさんはアルバイトが 忙[いそが]しいと", blank: true },
+          { text: "楓[かえで]さんはアルバイトが 忙[いそが]しいと", blank: true },
           { text: "思[おも]って", blank: true },
           {
             text: "いる",
@@ -1831,7 +1831,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "はなさんはアルバイトが 忙[いそが]しすぎると", blank: true },
+          { text: "楓[かえで]さんはアルバイトが 忙[いそが]しすぎると", blank: true },
           { text: "思[おも]って", blank: true },
           {
             text: "いる",
@@ -1849,7 +1849,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "はなさんはアルバイトが 大変[たいへん]だと", blank: true },
+          { text: "楓[かえで]さんはアルバイトが 大変[たいへん]だと", blank: true },
           { text: "思[おも]って", blank: true },
           {
             text: "いる",
@@ -1867,7 +1867,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "はなさんはアルバイトは 大変[たいへん]だと", blank: true },
+          { text: "楓[かえで]さんはアルバイトは 大変[たいへん]だと", blank: true },
           { text: "思[おも]って", blank: true },
           {
             text: "いる",
@@ -1885,7 +1885,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "はなさんはバイトが 忙[いそが]しすぎると", blank: true },
+          { text: "楓[かえで]さんはバイトが 忙[いそが]しすぎると", blank: true },
           { text: "思[おも]って", blank: true },
           {
             text: "いる",
@@ -1905,13 +1905,13 @@ export const questions: Question[] = [
   },
   {
     english:
-      "Kenji said, “I’m tired today, so I’m not going to the party tonight.”",
-    hint: "Kenji = 健一",
+      "Kobayashi said, “I’m tired today, so I’m not going to the party tonight.”",
+    hint: "Kobayashi = 小林 (こばやし)",
     answers: [
       {
         segments: [
           {
-            text: "健一[けんじ]さんは「今日[きょう]は 疲[つか]れているから、今晩[こんばん] パーティーに 行[い]かない」",
+            text: "小林[こばやし]さんは「今日[きょう]は 疲[つか]れているから、今晩[こんばん] パーティーに 行[い]かない」",
           },
           { text: "と", blank: true },
           { text: " " },
@@ -1935,12 +1935,12 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Standard quotation with と; topic marker は for Kenji.",
+        notes: "Standard quotation with と; topic marker は for Kobayashi.",
       },
       {
         segments: [
           {
-            text: "健一[けんじ]さんは「今日[きょう]は 疲[つか]れているから、今晩[こんばん] パーティーに 行[い]かない」",
+            text: "小林[こばやし]さんは「今日[きょう]は 疲[つか]れているから、今晩[こんばん] パーティーに 行[い]かない」",
           },
           { text: "って", blank: true },
           { text: " " },
@@ -1969,7 +1969,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "健一[けんじ]さんが「今日[きょう]は 疲[つか]れているから、今晩[こんばん] パーティーに 行[い]かない」",
+            text: "小林[こばやし]さんが「今日[きょう]は 疲[つか]れているから、今晩[こんばん] パーティーに 行[い]かない」",
           },
           { text: "と", blank: true },
           { text: " " },
@@ -1993,12 +1993,12 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Using が to mark Kenji as the subject of the reported speech.",
+        notes: "Using が to mark Kobayashi as the subject of the reported speech.",
       },
       {
         segments: [
           {
-            text: "健一[けんじ]さんが「今日[きょう]は 疲[つか]れているから、今晩[こんばん] パーティーに 行[い]かない」",
+            text: "小林[こばやし]さんが「今日[きょう]は 疲[つか]れているから、今晩[こんばん] パーティーに 行[い]かない」",
           },
           { text: "って", blank: true },
           { text: " " },
@@ -2027,7 +2027,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "健一[けんじ]さんは「今日[きょう]は 疲[つか]れているから、今夜[こんや] パーティーに 行[い]かない」",
+            text: "小林[こばやし]さんは「今日[きょう]は 疲[つか]れているから、今夜[こんや] パーティーに 行[い]かない」",
           },
           { text: "と", blank: true },
           { text: " " },
@@ -2056,7 +2056,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "健一[けんじ]さんは「今日[きょう]は 疲[つか]れているから、今夜[こんや] パーティーに 行[い]かない」",
+            text: "小林[こばやし]さんは「今日[きょう]は 疲[つか]れているから、今夜[こんや] パーティーに 行[い]かない」",
           },
           { text: "って", blank: true },
           { text: " " },
@@ -2085,7 +2085,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "健一[けんじ]さんは「今日[きょう]は 疲[つか]れているから、今晩[こんばん]は パーティーに 行[い]かない」",
+            text: "小林[こばやし]さんは「今日[きょう]は 疲[つか]れているから、今晩[こんばん]は パーティーに 行[い]かない」",
           },
           { text: "と", blank: true },
           { text: " " },
@@ -2114,7 +2114,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "健一[けんじ]さんは「今日[きょう]は 疲[つか]れているから、今晩[こんばん]は パーティーに 行[い]かない」",
+            text: "小林[こばやし]さんは「今日[きょう]は 疲[つか]れているから、今晩[こんばん]は パーティーに 行[い]かない」",
           },
           { text: "って", blank: true },
           { text: " " },
@@ -2143,7 +2143,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "健一[けんじ]さんは「今日[きょう]は 疲[つか]れているから、今晩[こんばん] パーティーへ 行[い]かない」",
+            text: "小林[こばやし]さんは「今日[きょう]は 疲[つか]れているから、今晩[こんばん] パーティーへ 行[い]かない」",
           },
           { text: "と", blank: true },
           { text: " " },
@@ -2172,7 +2172,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "健一[けんじ]さんは「今日[きょう]は 疲[つか]れているから、今晩[こんばん] パーティーへ 行[い]かない」",
+            text: "小林[こばやし]さんは「今日[きょう]は 疲[つか]れているから、今晩[こんばん] パーティーへ 行[い]かない」",
           },
           { text: "って", blank: true },
           { text: " " },
@@ -2201,7 +2201,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "健一[けんじ]さんは「今日[きょう]は 疲[つか]れているから、今晩[こんばん] パーティーに 行[い]かない」",
+            text: "小林[こばやし]さんは「今日[きょう]は 疲[つか]れているから、今晩[こんばん] パーティーに 行[い]かない」",
           },
           { text: "と", blank: true },
           { text: " " },
@@ -2221,7 +2221,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "健一[けんじ]さんは「今日[きょう]は 疲[つか]れているから、今晩[こんばん] パーティーに 行[い]かない」",
+            text: "小林[こばやし]さんは「今日[きょう]は 疲[つか]れているから、今晩[こんばん] パーティーに 行[い]かない」",
           },
           { text: "って", blank: true },
           { text: " " },
@@ -2243,7 +2243,7 @@ export const questions: Question[] = [
             text: "「今日[きょう]は 疲[つか]れているから、今晩[こんばん] パーティーに 行[い]かない」",
           },
           { text: "と", blank: true },
-          { text: "、健一[けんじ]さんは " },
+          { text: "、小林[こばやし]さんは " },
           {
             text: "言[い]う",
             conjugation: {
@@ -2269,7 +2269,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "健一[けんじ]さんは 今日[きょう]は 疲[つか]れているから、今晩[こんばん] パーティーに 行[い]かない",
+            text: "小林[こばやし]さんは 今日[きょう]は 疲[つか]れているから、今晩[こんばん] パーティーに 行[い]かない",
           },
           { text: "と", blank: true },
           { text: " " },
@@ -2299,12 +2299,12 @@ export const questions: Question[] = [
   },
   {
     english: "Someone told me Sora is going on a date this weekend.",
-    hint: "Sora = そら",
+    hint: "Sora = 空 (そら)",
     answers: [
       {
         segments: [
           {
-            text: "そらさんは 今週末[こんしゅうまつ] デートに 行[い]くと",
+            text: "空[そら]さんは 今週末[こんしゅうまつ] デートに 行[い]くと",
             blank: true,
           },
           { text: "聞[き]く", blank: true, conjugation: kikuPast },
@@ -2313,7 +2313,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "そらさんが 今週末[こんしゅうまつ] デートに 行[い]くと",
+            text: "空[そら]さんが 今週末[こんしゅうまつ] デートに 行[い]くと",
             blank: true,
           },
           { text: "聞[き]く", blank: true, conjugation: kikuPast },
@@ -2323,7 +2323,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "そらさんは 週末[しゅうまつ] デートに 行[い]くと",
+            text: "空[そら]さんは 週末[しゅうまつ] デートに 行[い]くと",
             blank: true,
           },
           { text: "聞[き]く", blank: true, conjugation: kikuPast },
@@ -2333,7 +2333,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "そらさんは 今週末[こんしゅうまつ] デートに 行[い]くと",
+            text: "空[そら]さんは 今週末[こんしゅうまつ] デートに 行[い]くと",
             blank: true,
           },
           { text: "言[い]って", blank: true },
@@ -3249,13 +3249,13 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Sota thinks that Hana is good at singing.",
-    hint: "Sota = そうた, Hana = はな",
+    english: "Yosuke thinks that Kaede is good at singing.",
+    hint: "Yosuke = 陽介 (ようすけ), Kaede = 楓 (かえで)",
     answers: [
       {
         segments: [
           {
-            text: "そうたさんははなさんは 歌[うた]が 上手[じょうず]だと",
+            text: "陽介[ようすけ]さんは楓[かえで]さんは 歌[うた]が 上手[じょうず]だと",
             blank: true,
           },
           { text: "思[おも]って", blank: true },
@@ -3274,7 +3274,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "そうたさんははなさんが 歌[うた]が 上手[じょうず]だと",
+            text: "陽介[ようすけ]さんは楓[かえで]さんが 歌[うた]が 上手[じょうず]だと",
             blank: true,
           },
           { text: "思[おも]って", blank: true },
@@ -3289,12 +3289,12 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "はなさんが instead of はなさんは",
+        notes: "楓[かえで]さんが instead of 楓[かえで]さんは",
       },
       {
         segments: [
           {
-            text: "そうたさんがはなさんは 歌[うた]が 上手[じょうず]だと",
+            text: "陽介[ようすけ]さんが楓[かえで]さんは 歌[うた]が 上手[じょうず]だと",
             blank: true,
           },
           { text: "思[おも]って", blank: true },
@@ -3309,12 +3309,12 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "そうたさんが instead of そうたさんは",
+        notes: "陽介[ようすけ]さんが instead of 陽介[ようすけ]さんは",
       },
       {
         segments: [
           {
-            text: "そうたさんははなさんは 歌[うた]が 上手[じょうず]だと",
+            text: "陽介[ようすけ]さんは楓[かえで]さんは 歌[うた]が 上手[じょうず]だと",
             blank: true,
           },
           { text: "思[おも]う", blank: true, conjugation: omouPos },
@@ -3325,11 +3325,11 @@ export const questions: Question[] = [
   },
   {
     english: "Did Sora say, “I don’t know that man”?",
-    hint: "Sora = そら",
+    hint: "Sora = 空 (そら)",
     answers: [
       {
         segments: [
-          { text: "そらさんは「あの 男[おとこ]の 人[ひと]を 知[し]らない」" },
+          { text: "空[そら]さんは「あの 男[おとこ]の 人[ひと]を 知[し]らない」" },
           { text: "と", blank: true },
           { text: " 言[い]って" },
           {
@@ -3348,7 +3348,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "そらさんは「あの 男[おとこ]の 人[ひと]を 知[し]らない」" },
+          { text: "空[そら]さんは「あの 男[おとこ]の 人[ひと]を 知[し]らない」" },
           { text: "って", blank: true },
           { text: " 言[い]って" },
           {
@@ -3367,7 +3367,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "そらさんは「その 男[おとこ]の 人[ひと]を 知[し]らない」" },
+          { text: "空[そら]さんは「その 男[おとこ]の 人[ひと]を 知[し]らない」" },
           { text: "と", blank: true },
           { text: " 言[い]って" },
           {
@@ -3386,7 +3386,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "そらさんは「その 男[おとこ]の 人[ひと]を 知[し]らない」" },
+          { text: "空[そら]さんは「その 男[おとこ]の 人[ひと]を 知[し]らない」" },
           { text: "って", blank: true },
           { text: " 言[い]って" },
           {
@@ -3405,7 +3405,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "そらさんが「あの 男[おとこ]の 人[ひと]を 知[し]らない」" },
+          { text: "空[そら]さんが「あの 男[おとこ]の 人[ひと]を 知[し]らない」" },
           { text: "と", blank: true },
           { text: " 言[い]って" },
           {
@@ -3424,7 +3424,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "そらさんが「あの 男[おとこ]の 人[ひと]を 知[し]らない」" },
+          { text: "空[そら]さんが「あの 男[おとこ]の 人[ひと]を 知[し]らない」" },
           { text: "って", blank: true },
           { text: " 言[い]って" },
           {
@@ -3443,7 +3443,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "そらさんが「その 男[おとこ]の 人[ひと]を 知[し]らない」" },
+          { text: "空[そら]さんが「その 男[おとこ]の 人[ひと]を 知[し]らない」" },
           { text: "と", blank: true },
           { text: " 言[い]って" },
           {
@@ -3462,7 +3462,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "そらさんが「その 男[おとこ]の 人[ひと]を 知[し]らない」" },
+          { text: "空[そら]さんが「その 男[おとこ]の 人[ひと]を 知[し]らない」" },
           { text: "って", blank: true },
           { text: " 言[い]って" },
           {
@@ -3538,12 +3538,12 @@ export const questions: Question[] = [
   },
   {
     english: "Mika said she is studying biology.",
-    hint: "Mika = みか",
+    hint: "Mika = 美香 (みか)",
     answers: [
       {
         segments: [
           {
-            text: "みかさんは 生物学[せいぶつがく]を 勉強[べんきょう]して",
+            text: "美香[みか]さんは 生物学[せいぶつがく]を 勉強[べんきょう]して",
             blank: true,
           },
           { text: "いる", blank: true },
@@ -3564,7 +3564,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "みかさんが 生物学[せいぶつがく]を 勉強[べんきょう]して",
+            text: "美香[みか]さんが 生物学[せいぶつがく]を 勉強[べんきょう]して",
             blank: true,
           },
           { text: "いる", blank: true },
@@ -3586,7 +3586,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "みかさんは 生物学[せいぶつがく]を 勉強[べんきょう]して",
+            text: "美香[みか]さんは 生物学[せいぶつがく]を 勉強[べんきょう]して",
             blank: true,
           },
           { text: "いる", blank: true },
@@ -3607,7 +3607,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "みかさんは 生物学[せいぶつがく]を 勉強[べんきょう]して",
+            text: "美香[みか]さんは 生物学[せいぶつがく]を 勉強[べんきょう]して",
             blank: true,
           },
           { text: "いる", blank: true },

@@ -84,32 +84,32 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Is that Mr./Ms. Tanaka's pen?",
-    hint: "Name spelling: たなか; On the listener's desk",
+    english: "Is that Mori's pen?",
+    hint: "Mori = 森 (もり); On the listener's desk",
     answers: [
       {
         segments: [
           { text: "そのペンは", blank: true },
-          { text: "たなかさんのですか" },
+          { text: "森[もり]さんのですか" },
         ],
         notes: "そのペン variant",
       },
       {
         segments: [
           { text: "それは", blank: true },
-          { text: "たなかさんのペンですか" },
+          { text: "森[もり]さんのペンですか" },
         ],
         notes: "それは variant",
       },
       {
         segments: [
           { text: "それ、", blank: true },
-          { text: "たなかさんのペンですか" },
+          { text: "森[もり]さんのペンですか" },
         ],
         notes: "Shorter with 、instead of は"
       },
       {
-        segments: [{ text: "たなかさんのペンですか" }],
+        segments: [{ text: "森[もり]さんのペンですか" }],
         notes: "Version that drops それは",
       },
     ],
@@ -203,24 +203,24 @@ export const questions: Question[] = [
   },
   {
     english: "That umbrella over there is Professor Yamada's.",
-    hint: "Name spelling: やまだ; Visible at the end of the hallway",
+    hint: "Yamada = 山田 (やまだ); Visible at the end of the hallway",
     answers: [
       {
         segments: [
           { text: "あの 傘[かさ]は", blank: true },
-          { text: "やまだ 先生[せんせい]のです" },
+          { text: "山田[やまだ]先生[せんせい]のです" },
         ],
-        notes: "やまだ先生のです",
+        notes: "山田先生のです",
       },
       {
         segments: [
           { text: "あれは", blank: true },
-          { text: "やまだ 先生[せんせい]の 傘[かさ]です" },
+          { text: "山田[やまだ]先生[せんせい]の 傘[かさ]です" },
         ],
         notes: "あれは variant",
       },
       {
-        segments: [{ text: "やまだ 先生[せんせい]の 傘[かさ]です" }],
+        segments: [{ text: "山田[やまだ]先生[せんせい]の 傘[かさ]です" }],
         notes: "More natural, casual version without あれは",
       },
     ],
@@ -257,25 +257,25 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Is that Mr./Ms. Sato's watch?",
-    hint: "Name spelling: さとう; In the listener's hand",
+    english: "Is that Sato's watch?",
+    hint: "Sato = 佐藤 (さとう); In the listener's hand",
     answers: [
       {
         segments: [
           { text: "それは", blank: true },
-          { text: "さとうさんの 時計[とけい]ですか" },
+          { text: "佐藤[さとう]さんの 時計[とけい]ですか" },
         ],
         notes: "Full sentence with それ",
       },
       {
         segments: [
           { text: "それ、", blank: true },
-          { text: "さとうさんの 時計[とけい]ですか" },
+          { text: "佐藤[さとう]さんの 時計[とけい]ですか" },
         ],
         notes: "Shorter with 、instead of は"
       },
       {
-        segments: [{ text: "さとうさんの 時計[とけい]ですか" }],
+        segments: [{ text: "佐藤[さとう]さんの 時計[とけい]ですか" }],
         notes: "More natural, casual version without それは",
       },
     ],
@@ -333,24 +333,24 @@ export const questions: Question[] = [
   },
   {
     english: "Is that your (Yamada's) dictionary?",
-    hint: "Name spelling: やまだ; Next to where the listener is sitting; じしょ -> dictionary",
+    hint: "Yamada = 山田 (やまだ); Next to where the listener is sitting; dictionary = 辞書 (じしょ)",
     answers: [
       {
         segments: [
           { text: "それは", blank: true },
-          { text: "やまださんの 辞書[じしょ]ですか" },
+          { text: "山田[やまだ]さんの 辞書[じしょ]ですか" },
         ],
         notes: "Full sentence with それ",
       },
       {
         segments: [
           { text: "これ、", blank: true },
-          { text: "やまださんの 辞書[じしょ]ですか" },
+          { text: "山田[やまだ]さんの 辞書[じしょ]ですか" },
         ],
         notes: "Shorter with 、instead of は"
       },
       {
-        segments: [{ text: "やまださんの 辞書[じしょ]ですか" }],
+        segments: [{ text: "山田[やまだ]さんの 辞書[じしょ]ですか" }],
         notes: "More natural version without それは",
       },
     ],
@@ -440,25 +440,25 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Is that your (Tanaka's) bicycle?",
-    hint: "Name spelling: たなか; Bike parked near the listener",
+    english: "Is that your (Fujii's) bicycle?",
+    hint: "Fujii = 藤井 (ふじい); Bike parked near the listener",
     answers: [
       {
         segments: [
           { text: "それは", blank: true },
-          { text: "たなかさんの 自転車[じてんしゃ]ですか" },
+          { text: "藤井[ふじい]さんの 自転車[じてんしゃ]ですか" },
         ],
         notes: "Full sentence with それ",
       },
       {
         segments: [
           { text: "それ、", blank: true },
-          { text: "たなかさんの 自転車[じてんしゃ]ですか" },
+          { text: "藤井[ふじい]さんの 自転車[じてんしゃ]ですか" },
         ],
         notes: "Shorter with 、instead of は"
       },
       {
-        segments: [{ text: "たなかさんの 自転車[じてんしゃ]ですか" }],
+        segments: [{ text: "藤井[ふじい]さんの 自転車[じてんしゃ]ですか" }],
         notes: "More natural, casual version without それは",
       },
     ],
@@ -484,24 +484,24 @@ export const questions: Question[] = [
   },
   {
     english: "Is that your (Suzuki's) wallet?",
-    hint: "Name spelling: すずき; On the table between speaker and listener",
+    hint: "Suzuki = 鈴木 (すずき); On the table between speaker and listener",
     answers: [
       {
         segments: [
           { text: "それは", blank: true },
-          { text: "すずきさんの 財布[さいふ]ですか" },
+          { text: "鈴木[すずき]さんの 財布[さいふ]ですか" },
         ],
         notes: "Full sentence with それ",
       },
       {
         segments: [
           { text: "それ、", blank: true },
-          { text: "すずきさんの 財布[さいふ]ですか" },
+          { text: "鈴木[すずき]さんの 財布[さいふ]ですか" },
         ],
         notes: "Shorter with 、instead of は"
       },
       {
-        segments: [{ text: "すずきさんの 財布[さいふ]ですか" }],
+        segments: [{ text: "鈴木[すずき]さんの 財布[さいふ]ですか" }],
         notes: "More natural, casual version without それは",
       },
     ],
@@ -603,33 +603,33 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Kenji, where is your desk?",
-    hint: "Kenji = けんじ",
+    english: "Kaede, where is your desk?",
+    hint: "Kaede = 楓 (かえで)",
     answers: [
       {
         segments: [
-          { text: "けんじさん、" },
+          { text: "楓[かえで]さん、" },
           { text: "机[つくえ]はどこ", blank: true },
           { text: "ですか" },
         ],
-        notes: "Direct address to Kenji, asking where the desk is; possession implied by address",
+        notes: "Direct address to Kaede, asking where the desk is; possession implied by address",
       },
     ],
   },
   {
-    english: "Where is Yuki's bag?",
-    hint: "Yuki = ゆき",
+    english: "Where is Mizuki's bag?",
+    hint: "Mizuki = 瑞希 (みずき)",
     answers: [
       {
         segments: [
-          { text: "ゆきさんの" },
+          { text: "瑞希[みずき]さんの" },
           { text: "かばんはどこ", blank: true },
           { text: "ですか" },
         ],
       },
       {
         segments: [
-          { text: "ゆきさんの" },
+          { text: "瑞希[みずき]さんの" },
           { text: "鞄[かばん]はどこ", blank: true },
           { text: "ですか" },
         ],

@@ -2,12 +2,12 @@ import type { Question } from "../types"
 
 export const questions: Question[] = [
   {
-    english: "Kenji drank coffee with his teacher this morning.",
-    hint: "Kenji = けんじ",
+    english: "Yosuke drank coffee with his teacher this morning.",
+    hint: "Yosuke = 陽介 (ようすけ)",
     answers: [
       {
         segments: [
-          { text: "けんじさんは 今日[きょう]の 朝[あさ]、" },
+          { text: "陽介[ようすけ]さんは 今日[きょう]の 朝[あさ]、" },
           { text: "先生[せんせい]と", blank: true },
           { text: "コーヒーを" },
           {
@@ -21,11 +21,11 @@ export const questions: Question[] = [
           },
         ],
         notes:
-          "Standard word order: Kenji は, time, person と, object を, verb",
+          "Standard word order: Yosuke は, time, person と, object を, verb",
       },
       {
         segments: [
-          { text: "けんじさんは 朝[あさ]、" },
+          { text: "陽介[ようすけ]さんは 朝[あさ]、" },
           { text: "先生[せんせい]と", blank: true },
           { text: "コーヒーを" },
           {
@@ -42,7 +42,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "けんじさんは " },
+          { text: "陽介[ようすけ]さんは " },
           { text: "先生[せんせい]と", blank: true },
           { text: "今日[きょう]の 朝[あさ] コーヒーを" },
           {
@@ -60,7 +60,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "けんじさんは " },
+          { text: "陽介[ようすけ]さんは " },
           { text: "先生[せんせい]と", blank: true },
           { text: "朝[あさ] コーヒーを" },
           {
@@ -77,7 +77,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "けんじさんが 今日[きょう]の 朝[あさ]、" },
+          { text: "陽介[ようすけ]さんが 今日[きょう]の 朝[あさ]、" },
           { text: "先生[せんせい]と", blank: true },
           { text: "コーヒーを" },
           {
@@ -94,7 +94,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "けんじさんが 朝[あさ]、" },
+          { text: "陽介[ようすけ]さんが 朝[あさ]、" },
           { text: "先生[せんせい]と", blank: true },
           { text: "コーヒーを" },
           {
@@ -458,12 +458,12 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Is Kenji going to the park with his younger sister?",
-    hint: "Kenji = けんじ",
+    english: "Is Yosuke going to the park with his younger sister?",
+    hint: "Yosuke = 陽介 (ようすけ)",
     answers: [
       {
         segments: [
-          { text: "けんじさんは " },
+          { text: "陽介[ようすけ]さんは " },
           { text: "妹[いもうと]と", blank: true },
           { text: "公園[こうえん]に" },
           {
@@ -481,7 +481,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "けんじさんは 公園[こうえん]に " },
+          { text: "陽介[ようすけ]さんは 公園[こうえん]に " },
           { text: "妹[いもうと]と", blank: true },
           {
             text: "行[い]く",
@@ -498,7 +498,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "けんじさんが " },
+          { text: "陽介[ようすけ]さんが " },
           { text: "妹[いもうと]と", blank: true },
           { text: "公園[こうえん]に" },
           {
@@ -512,11 +512,11 @@ export const questions: Question[] = [
           },
           { text: "か" },
         ],
-        notes: "が instead of は for けんじ (neutral/fresh information)",
+        notes: "が instead of は for 陽介 (neutral/fresh information)",
       },
       {
         segments: [
-          { text: "けんじさんは " },
+          { text: "陽介[ようすけ]さんは " },
           { text: "妹[いもうと]と", blank: true },
           { text: "公園[こうえん]へ" },
           {
@@ -534,7 +534,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "けんじさんが " },
+          { text: "陽介[ようすけ]さんが " },
           { text: "妹[いもうと]と", blank: true },
           { text: "公園[こうえん]へ" },
           {
@@ -682,13 +682,13 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Did Yuki go back home with her younger brother?",
-    hint: "Yuki = ゆき",
+    english: "Did Mizuki go back home with her younger brother?",
+    hint: "Mizuki = 瑞希 (みずき)",
     answers: [
       {
         segments: [
           { text: "弟[おとうと]と", blank: true },
-          { text: "ゆきさんは家[いえ]に" },
+          { text: "瑞希[みずき]さんは家[いえ]に" },
           {
             text: "帰[かえ]る",
             conjugation: {
@@ -700,11 +700,11 @@ export const questions: Question[] = [
           },
           { text: "か" },
         ],
-        notes: "弟と fronted; explicit か question marker; ゆきは mid-sentence",
+        notes: "弟と fronted; explicit か question marker; 瑞希は mid-sentence",
       },
       {
         segments: [
-          { text: "ゆきさんは" },
+          { text: "瑞希[みずき]さんは" },
           { text: "弟[おとうと]と", blank: true },
           { text: "家[いえ]に" },
           {
@@ -722,7 +722,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "ゆきさんは" },
+          { text: "瑞希[みずき]さんは" },
           { text: "弟[おとうと]と", blank: true },
           { text: "うちに" },
           {
@@ -740,7 +740,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "ゆきさんは" },
+          { text: "瑞希[みずき]さんは" },
           { text: "弟[おとうと]と", blank: true },
           {
             text: "帰[かえ]る",
@@ -758,7 +758,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "ゆきさんは" },
+          { text: "瑞希[みずき]さんは" },
           { text: "弟[おとうと]と", blank: true },
           { text: "家[いえ]へ" },
           {
@@ -885,12 +885,12 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Is Yuki meeting her older brother at the hospital today?",
-    hint: "Yuki = ゆき",
+    english: "Is Mizuki meeting her older brother at the hospital today?",
+    hint: "Mizuki = 瑞希 (みずき)",
     answers: [
       {
         segments: [
-          { text: "ゆきさんは 今日[きょう]、" },
+          { text: "瑞希[みずき]さんは 今日[きょう]、" },
           { text: "お 兄[にい]さんと", blank: true },
           { text: " 病院[びょういん]で" },
           {
@@ -908,7 +908,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "今日[きょう]、ゆきさんは " },
+          { text: "今日[きょう]、瑞希[みずき]さんは " },
           { text: "お 兄[にい]さんと", blank: true },
           { text: " 病院[びょういん]で" },
           {
@@ -926,7 +926,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "ゆきさんは 今日[きょう]、 病院[びょういん]で " },
+          { text: "瑞希[みずき]さんは 今日[きょう]、 病院[びょういん]で " },
           { text: "お 兄[にい]さんと", blank: true },
           {
             text: "会[あ]う",
@@ -943,7 +943,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "ゆきさんが 今日[きょう]、" },
+          { text: "瑞希[みずき]さんが 今日[きょう]、" },
           { text: "お 兄[にい]さんと", blank: true },
           { text: " 病院[びょういん]で" },
           {
@@ -957,12 +957,12 @@ export const questions: Question[] = [
           },
           { text: "か" },
         ],
-        notes: "が instead of は for ゆき",
+        notes: "が instead of は for 瑞希",
       },
       {
         segments: [
           { text: "お 兄[にい]さんと", blank: true },
-          { text: "ゆきさんは 今日[きょう]、 病院[びょういん]で" },
+          { text: "瑞希[みずき]さんは 今日[きょう]、 病院[びょういん]で" },
           {
             text: "会[あ]う",
             conjugation: {
@@ -975,11 +975,11 @@ export const questions: Question[] = [
           { text: "か" },
         ],
         notes:
-          "お兄さんと placed before ゆきは (mirroring pattern from sentence 7)",
+          "お兄さんと placed before 瑞希は (mirroring pattern from sentence 7)",
       },
       {
         segments: [
-          { text: "ゆきさんは 今日[きょう]、" },
+          { text: "瑞希[みずき]さんは 今日[きょう]、" },
           { text: "お 兄[にい]さんと", blank: true },
           { text: " 病院[びょういん]に" },
           {

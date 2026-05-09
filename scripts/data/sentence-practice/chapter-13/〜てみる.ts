@@ -436,7 +436,7 @@ export const questions: Question[] = [
   },
   {
     english: "I tried buying a boxed lunch from that convenience store, but it wasn't very good.",
-    hint: "boxed lunch = お弁当[べんとう]",
+    hint: "boxed lunch = お弁当 (べんとう)",
     answers: [
       {
         segments: [
@@ -496,7 +496,7 @@ export const questions: Question[] = [
   },
   {
     english: "I've never climbed Mt. Fuji before, so I'll try it this summer!",
-    hint: "Mt. Fuji = 富士山[ふじさん]",
+    hint: "Mt. Fuji = 富士山 (ふじさん)",
     answers: [
       {
         segments: [

@@ -2,8 +2,8 @@ import type { Question } from "../types"
 
 export const questions: Question[] = [
   {
-    english: "Mr./Ms. Yamada's friend is Japanese.",
-    hint: "Name spelling: 山田（やまだ）",
+    english: "Yamada's friend is Japanese.",
+    hint: "Yamada = 山田 (やまだ)",
     answers: [
       {
         segments: [
@@ -14,33 +14,33 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Is Kenji's friend an international student?",
-    hint: "Kenji = けんじ",
+    english: "Is Kobayashi's friend an international student?",
+    hint: "Kobayashi = 小林 (こばやし)",
     answers: [
       {
         segments: [
-          { text: "けんじさんの 友達[ともだち]", blank: true },
+          { text: "小林[こばやし]さんの 友達[ともだち]", blank: true },
           { text: "は 留学生[りゅうがくせい]ですか" },
         ],
         notes: "Standard word order with は topic marker",
       },
       {
         segments: [
-          { text: "けんじさんの 友達[ともだち]", blank: true },
+          { text: "小林[こばやし]さんの 友達[ともだち]", blank: true },
           { text: "が 留学生[りゅうがくせい]ですか" },
         ],
         notes: "Using が instead of は — emphasises the subject in the question",
       },
       {
         segments: [
-          { text: "けんじさんの 友[とも]だち", blank: true },
+          { text: "小林[こばやし]さんの 友[とも]だち", blank: true },
           { text: "は 留学生[りゅうがくせい]ですか" },
         ],
         notes: "Using 友だち (mixed kana spelling) with は",
       },
       {
         segments: [
-          { text: "けんじさんの", blank: true },
+          { text: "小林[こばやし]さんの", blank: true },
           { text: "友[とも]だちが 留学生[りゅうがくせい]ですか" },
         ],
         notes: "Using 友だち with が",
@@ -70,29 +70,29 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "What is Kenji's major?",
-    hint: "Kenji = けんじ",
+    english: "What is Kaede's major?",
+    hint: "Kaede = 楓 (かえで)",
     answers: [
       {
         segments: [
-          { text: "けんじさんの 専攻[せんこう]", blank: true },
+          { text: "楓[かえで]さんの 専攻[せんこう]", blank: true },
           { text: "は 何[なん]ですか" },
         ],
         notes: "Standard form: の marks possession, は marks topic, なん before ですか",
       },
       {
         segments: [
-          { text: "けんじさんの 専攻[せんこう]", blank: true },
+          { text: "楓[かえで]さんの 専攻[せんこう]", blank: true },
           { text: "が 何[なん]ですか" },
         ],
         notes: "が instead of は for the topic particle — emphasizes the major itself",
       },
       {
         segments: [
-          { text: "何[なに]が けんじさんの", blank: true },
+          { text: "何[なに]が 楓[かえで]さんの", blank: true },
           { text: "専攻[せんこう]ですか" },
         ],
-        notes: "Reversed word order: 何が...ですか — \"What is it that is Kenji's major?\" (not the most natural but could be valid in some situations",
+        notes: "Reversed word order: 何が...ですか — \"What is it that is Kaede's major?\" (not the most natural but could be valid in some situations",
       },
     ],
   },
@@ -144,19 +144,19 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Hana's older sister is a lawyer.",
-    hint: "Hana = はな",
+    english: "Mizuki's older sister is a lawyer.",
+    hint: "Mizuki = 瑞希 (みずき)",
     answers: [
       {
         segments: [
-          { text: "はなさんのお 姉[ねえ]さん", blank: true },
+          { text: "瑞希[みずき]さんのお 姉[ねえ]さん", blank: true },
           { text: "は 弁護士[べんごし]です" },
         ],
-        notes: "Standard answer: はなさんのお姉さんは弁護士です",
+        notes: "Standard answer: 瑞希さんのお姉さんは弁護士です",
       },
       {
         segments: [
-          { text: "はなさんのお 姉[ねえ]さん", blank: true },
+          { text: "瑞希[みずき]さんのお 姉[ねえ]さん", blank: true },
           { text: "が 弁護士[べんごし]です" },
         ],
         notes: "が instead of は for the subject particle",
@@ -202,12 +202,12 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Kenji is a first-year engineering student.",
-    hint: "Kenji = けんじ",
+    english: "Yosuke is a first-year engineering student.",
+    hint: "Yosuke = 陽介 (ようすけ)",
     answers: [
       {
         segments: [
-          { text: "けんじさんは" },
+          { text: "陽介[ようすけ]さんは" },
           { text: "工学[こうがく]の一年生[いちねんせい]", blank: true },
           { text: "です" },
         ],
@@ -215,7 +215,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "けんじさんが" },
+          { text: "陽介[ようすけ]さんが" },
           { text: "工学[こうがく]の一年生[いちねんせい]", blank: true },
           { text: "です" },
         ],
@@ -224,12 +224,12 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "What is the name of Hana's university?",
-    hint: "Hana = はな",
+    english: "What is the name of Natsumi's university?",
+    hint: "Natsumi = 夏美 (なつみ)",
     answers: [
       {
         segments: [
-          { text: "はなさんの 大学[だいがく]の 名前[なまえ]", blank: true },
+          { text: "夏美[なつみ]さんの 大学[だいがく]の 名前[なまえ]", blank: true },
           { text: "は 何[なん]ですか" },
         ],
         notes: "Standard word order with は; both の instances are blanked as the grammar being tested",
@@ -293,33 +293,33 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Yuki's older brother is a high school student.",
-    hint: "Yuki = ゆき",
+    english: "Kaede's older brother is a high school student.",
+    hint: "Kaede = 楓 (かえで)",
     answers: [
       {
         segments: [
-          { text: "ゆきさんのお 兄[にい]さん", blank: true },
+          { text: "楓[かえで]さんのお 兄[にい]さん", blank: true },
           { text: "は 高校生[こうこうせい]です" },
         ],
         notes: "Standard answer with の as the blank",
       },
       {
         segments: [
-          { text: "ゆきさんの 兄[にい]さん", blank: true },
+          { text: "楓[かえで]さんの 兄[にい]さん", blank: true },
           { text: "は 高校生[こうこうせい]です" },
         ],
         notes: "Using 兄さん instead of お兄さん (less formal, no honorific お prefix)",
       },
       {
         segments: [
-          { text: "ゆきさんのお 兄[にい]さん", blank: true },
+          { text: "楓[かえで]さんのお 兄[にい]さん", blank: true },
           { text: "が 高校生[こうこうせい]です" },
         ],
         notes: "Using が instead of は (emphasizing the subject)",
       },
       {
         segments: [
-          { text: "ゆきさんの 兄[にい]ちゃん", blank: true },
+          { text: "楓[かえで]さんの 兄[にい]ちゃん", blank: true },
           { text: "は 高校生[こうこうせい]です" },
         ],
         notes: "Using 兄ちゃん (casual/affectionate term for older brother)",
@@ -327,45 +327,45 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Is Hana's mother a nurse?",
-    hint: "Hana = はな",
+    english: "Is Fujii's mother a nurse?",
+    hint: "Fujii = 藤井 (ふじい)",
     answers: [
       {
         segments: [
-          { text: "はなさんのお 母[かあ]さん", blank: true },
+          { text: "藤井[ふじい]さんのお 母[かあ]さん", blank: true },
           { text: "は 看護師[かんごし]ですか" },
         ],
       },
     ],
   },
   {
-    english: "Hana's friend's major is biology.",
-    hint: "Hana = はな",
+    english: "Mori's friend's major is biology.",
+    hint: "Mori = 森 (もり)",
     answers: [
       {
         segments: [
-          { text: "はなさんの 友達[ともだち]の 専攻[せんこう]", blank: true },
+          { text: "森[もり]さんの 友達[ともだち]の 専攻[せんこう]", blank: true },
           { text: "は 生物学[せいぶつがく]です" },
         ],
-        notes: "Standard: の chain as the blank — \"Hana's friend's [major is biology]\"",
+        notes: "Standard: の chain as the blank — \"Mori's friend's [major is biology]\"",
       },
       {
         segments: [
-          { text: "はなさんの 友だちの 専攻[せんこう]", blank: true },
+          { text: "森[もり]さんの 友だちの 専攻[せんこう]", blank: true },
           { text: "は 生物学[せいぶつがく]です" },
         ],
         notes: "Alternative spelling: 友だち instead of 友達",
       },
       {
         segments: [
-          { text: "はなさんの 友達[ともだち]の 専攻[せんこう]", blank: true },
+          { text: "森[もり]さんの 友達[ともだち]の 専攻[せんこう]", blank: true },
           { text: "が 生物学[せいぶつがく]です" },
         ],
         notes: "Using が instead of は for the subject particle",
       },
       {
         segments: [
-          { text: "はなさんの 友だちの 専攻[せんこう]", blank: true },
+          { text: "森[もり]さんの 友だちの 専攻[せんこう]", blank: true },
           { text: "が 生物学[せいぶつがく]です" },
         ],
         notes: "友だち spelling + が particle",
@@ -373,40 +373,40 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Yuki's younger brother is an office worker.",
-    hint: "Yuki = ゆき",
+    english: "Mizuki's younger brother is an office worker.",
+    hint: "Mizuki = 瑞希 (みずき)",
     answers: [
       {
         segments: [
-          { text: "ゆきさんの 弟[おとうと]さん", blank: true },
+          { text: "瑞希[みずき]さんの 弟[おとうと]さん", blank: true },
           { text: "は 会社員[かいしゃいん]です" },
         ],
         notes: "Standard variation using 弟さん (polite reference to someone else's younger brother)",
       },
       {
         segments: [
-          { text: "ゆきさんの 弟[おとうと]さん", blank: true },
+          { text: "瑞希[みずき]さんの 弟[おとうと]さん", blank: true },
           { text: "は 会社員[かいしゃいん]です" },
         ],
-        notes: "Blank on the の portion (ゆきさんの)",
+        notes: "Blank on the の portion (瑞希さんの)",
       },
       {
         segments: [
-          { text: "ゆきさんの弟[おとうと]さん", blank: true },
+          { text: "瑞希[みずき]さんの弟[おとうと]さん", blank: true },
           { text: "は 会社員[かいしゃいん]です" },
         ],
-        notes: "Blank on the topic (ゆきさんの弟さんは)",
+        notes: "Blank on the topic (瑞希さんの弟さんは)",
       },
       {
         segments: [
-          { text: "ゆきさんの 弟[おとうと]さん", blank: true },
+          { text: "瑞希[みずき]さんの 弟[おとうと]さん", blank: true },
           { text: "が 会社員[かいしゃいん]です" },
         ],
         notes: "Using が instead of は as the subject particle",
       },
       {
         segments: [
-          { text: "ゆきさんの 弟[おとうと]", blank: true },
+          { text: "瑞希[みずき]さんの 弟[おとうと]", blank: true },
           { text: "は 会社員[かいしゃいん]です" },
         ],
         notes: "Using plain 弟 without さん — if you're more familiar with the person",
@@ -427,15 +427,15 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "What is Yuki's phone number?",
-    hint: "Yuki = ゆき",
+    english: "What is Fujii's phone number?",
+    hint: "Fujii = 藤井 (ふじい)",
     answers: [
       {
         segments: [
-          { text: "ゆきさんの 電話[でんわ] 番号[ばんごう]", blank: true },
+          { text: "藤井[ふじい]さんの 電話[でんわ] 番号[ばんごう]", blank: true },
           { text: "は 何[なん]ですか" }
         ],
-        notes: "Standard: blank on ゆきさん, の connects possession to 電話番号",
+        notes: "Standard: blank on 藤井さん, の connects possession to 電話番号",
       },
     ],
   },
@@ -453,19 +453,19 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Yuki's younger sister is an international student in India.",
-    hint: "Yuki = ゆき",
+    english: "Natsumi's younger sister is an international student in India.",
+    hint: "Natsumi = 夏美 (なつみ)",
     answers: [
       {
         segments: [
-          { text: "ゆきさんの 妹[いもうと]さん", blank: true },
+          { text: "夏美[なつみ]さんの 妹[いもうと]さん", blank: true },
           { text: "はインドの 留学生[りゅうがくせい]です" },
         ],
-        notes: "Standard answer: ゆきさんの for possession, インドの留学生 for \"international student in India\"",
+        notes: "Standard answer: 夏美さんの for possession, インドの留学生 for \"international student in India\"",
       },
       {
         segments: [
-          { text: "ゆきさんの 妹[いもうと]", blank: true },
+          { text: "夏美[なつみ]さんの 妹[いもうと]", blank: true },
           { text: "はインドの 留学生[りゅうがくせい]です" },
         ],
         notes: "Without さん after 妹 — if you're more familiar with the person",

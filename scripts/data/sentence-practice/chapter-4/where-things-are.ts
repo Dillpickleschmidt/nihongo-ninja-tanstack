@@ -206,7 +206,7 @@ export const questions: Question[] = [
   },
   {
     english: "The cat is in the box.",
-    hint: "box -> 箱[はこ]",
+    hint: "box = 箱 (はこ)",
     answers: [
       {
         segments: [
@@ -375,7 +375,7 @@ export const questions: Question[] = [
   },
   {
     english: "The bus stop is in front of the train station.",
-    hint: "(train) station -> 駅[えき]",
+    hint: "(train) station = 駅 (えき)",
     answers: [
       {
         segments: [

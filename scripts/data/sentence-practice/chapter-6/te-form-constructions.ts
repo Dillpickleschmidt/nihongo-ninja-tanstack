@@ -539,12 +539,12 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Did Kenji go home and then call?",
-    hint: "Kenji = けんじ",
+    english: "Did Nakajima go home and then call?",
+    hint: "Nakajima = 中島 (なかじま)",
     answers: [
       {
         segments: [
-          { text: "けんじさんは" },
+          { text: "中島[なかじま]さんは" },
           { text: "帰[かえ]って", blank: true },
           { text: "、 電話[でんわ]しましたか" },
         ],
@@ -553,7 +553,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "けんじさんは" },
+          { text: "中島[なかじま]さんは" },
           { text: "帰[かえ]って", blank: true },
           { text: "、 電話[でんわ]" },
           {
@@ -571,7 +571,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "けんじさんは" },
+          { text: "中島[なかじま]さんは" },
           { text: "帰[かえ]って", blank: true },
           { text: "、 電話[でんわ]を" },
           {
@@ -589,7 +589,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "けんじさんが" },
+          { text: "小林[こばやし]さんが" },
           { text: "帰[かえ]って", blank: true },
           { text: "、 電話[でんわ]しましたか" },
         ],
@@ -597,7 +597,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "けんじさんが" },
+          { text: "小林[こばやし]さんが" },
           { text: "帰[かえ]って", blank: true },
           { text: "、 電話[でんわ]" },
           {
@@ -615,7 +615,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "けんじさんが" },
+          { text: "小林[こばやし]さんが" },
           { text: "帰[かえ]って", blank: true },
           { text: "、 電話[でんわ]を" },
           {

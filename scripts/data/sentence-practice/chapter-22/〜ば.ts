@@ -973,7 +973,7 @@ export const questions: Question[] = [
   },
   {
     english: "If Mika comes to the party tonight, it will probably get lively.",
-    hint: "Mika = 美香",
+    hint: "Mika = 美香 (みか)",
     answers: [
       {
         segments: [

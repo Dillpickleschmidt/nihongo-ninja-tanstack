@@ -13,12 +13,12 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Sakura waited for Kenji for thirty minutes.",
-    hint: "Name spellings: Sakura - 桜（さくら）, Kenji - ケンジ",
+    english: "Kaede waited for Yosuke for thirty minutes.",
+    hint: "Kaede = 楓 (かえで); Yosuke = 陽介 (ようすけ)",
     answers: [
       {
         segments: [
-          { text: "桜[さくら]さんはケンジさんを" },
+          { text: "楓[かえで]さんは陽介[ようすけ]さんを" },
           { text: "三[さん]十[じゅっ]分[ぷん]", blank: true },
           { text: "待[ま]ちました" },
         ],
@@ -27,7 +27,7 @@ export const questions: Question[] = [
   },
   {
     english: "I studied English with Yuko for four hours today.",
-    hint: "優子（ゆうこ）",
+    hint: "Yuko = 優子 (ゆうこ)",
     answers: [
       {
         segments: [
@@ -38,7 +38,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "今日[きょう]はゆうこさんと 英語[えいご]を" },
+          { text: "今日[きょう]は優子[ゆうこ]さんと 英語[えいご]を" },
           { text: "四[よ]時間[じかん]", blank: true },
           { text: "勉強[べんきょう]しました" },
         ],
@@ -47,7 +47,7 @@ export const questions: Question[] = [
   },
   {
     english: "Taro practiced Japanese for two and a half hours yesterday.",
-    hint: "practice -> 練習する (れんしゅうする), 太郎（たろう）",
+    hint: "Taro = 太郎 (たろう); practice = 練習する (れんしゅうする)",
     answers: [
       {
         segments: [
@@ -60,7 +60,7 @@ export const questions: Question[] = [
   },
   {
     english: "Hiroko ate at the restaurant for one and a half hours.",
-    hint: "寛子（ひろこ）",
+    hint: "Hiroko = 寛子 (ひろこ)",
     answers: [
       {
         segments: [
@@ -73,7 +73,7 @@ export const questions: Question[] = [
   },
   {
     english: "Jiro studied for one hour yesterday.",
-    hint: "次郎（じろう）",
+    hint: "Jiro = 次郎 (じろう)",
     answers: [
       {
         segments: [
@@ -86,7 +86,7 @@ export const questions: Question[] = [
   },
   {
     english: "Aiko read a book for thirty minutes.",
-    hint: "愛子（あいこ）",
+    hint: "Aiko = 愛子 (あいこ)",
     answers: [
       {
         segments: [
@@ -99,18 +99,19 @@ export const questions: Question[] = [
   },
   {
     english: "We played games with Haruka for two hours.",
+    hint: "Haruka = 遥 (はるか)",
     answers: [
       {
         segments: [
           { text: "二[に]時間[じかん]", blank: true },
-          { text: "はるかさんとゲームをしました" },
+          { text: "遥[はるか]さんとゲームをしました" },
         ],
       },
     ],
   },
   {
     english: "Ryota watched TV for forty-five minutes.",
-    hint: "亮太（りょうた）",
+    hint: "Ryota = 亮太 (りょうた)",
     answers: [
       {
         segments: [
@@ -123,7 +124,7 @@ export const questions: Question[] = [
   },
   {
     english: "Kaori listened to music for one and a half hours yesterday.",
-    hint: "香織（かおり）",
+    hint: "Kaori = 香織 (かおり)",
     answers: [
       {
         segments: [

@@ -110,13 +110,13 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "The letter I got from Kenji last week was really short.",
-    hint: "Kenji = けんじ",
+    english: "The letter I got from Kobayashi last week was really short.",
+    hint: "Kobayashi = 小林 (こばやし)",
     answers: [
       {
         segments: [
           { text: "先週[せんしゅう]" },
-          { text: "けんじさんが 書[か]いた 手紙[てがみ]", blank: true },
+          { text: "小林[こばやし]さんが 書[か]いた 手紙[てがみ]", blank: true },
           { text: "は すごく" },
           {
             text: " 短[みじか]い",
@@ -132,7 +132,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "けんじさんが 先週[せんしゅう]" },
+          { text: "小林[こばやし]さんが 先週[せんしゅう]" },
           { text: " 書[か]いた 手紙[てがみ]", blank: true },
           { text: "は すごく" },
           {
@@ -146,12 +146,12 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "けんじさん at start before 先週",
+        notes: "小林さん at start before 先週",
       },
       {
         segments: [
           { text: "先週[せんしゅう]" },
-          { text: "けんじさんが 書[か]いた 手紙[てがみ]", blank: true },
+          { text: "小林[こばやし]さんが 書[か]いた 手紙[てがみ]", blank: true },
           { text: "は とても" },
           {
             text: " 短[みじか]い",
@@ -169,7 +169,7 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "先週[せんしゅう]" },
-          { text: "けんじさんからもらった 手紙[てがみ]", blank: true },
+          { text: "小林[こばやし]さんからもらった 手紙[てがみ]", blank: true },
           { text: "は すごく" },
           {
             text: " 短[みじか]い",
@@ -370,12 +370,12 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "The song Yuki is singing right now is really popular.",
-    hint: "Yuki = ゆき",
+    english: "The song Kaede is singing right now is really popular.",
+    hint: "Kaede = 楓 (かえで)",
     answers: [
       {
         segments: [
-          { text: "ゆきさんが 今[いま] 歌[うた]って", blank: true },
+          { text: "楓[かえで]さんが 今[いま] 歌[うた]って", blank: true },
           { text: "いる", blank: true },
           { text: "歌[うた]", blank: true },
           { text: "は すごく 人気[にんき]が" },
@@ -384,7 +384,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "ゆきさんが 歌[うた]って", blank: true },
+          { text: "楓[かえで]さんが 歌[うた]って", blank: true },
           { text: "いる", blank: true },
           { text: "歌[うた]", blank: true },
           { text: "は すごく 人気[にんき]が" },
@@ -394,7 +394,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "ゆきさんが 今[いま] 歌[うた]って", blank: true },
+          { text: "楓[かえで]さんが 今[いま] 歌[うた]って", blank: true },
           { text: "いる", blank: true },
           { text: "歌[うた]", blank: true },
           { text: "は とても 人気[にんき]が" },
@@ -537,8 +537,8 @@ export const questions: Question[] = [
   },
   {
     english:
-      "The student who is studying in the library right now is Kenji's younger brother.",
-    hint: "Kenji = けんじ",
+      "The student who is studying in the library right now is Shunsuke's younger brother.",
+    hint: "Shunsuke = 俊介 (しゅんすけ)",
     answers: [
       {
         segments: [
@@ -546,7 +546,7 @@ export const questions: Question[] = [
           { text: " 勉強[べんきょう]して", blank: true },
           { text: "いる", blank: true },
           { text: "学生[がくせい]", blank: true },
-          { text: "は けんじさんの 弟[おとうと]" },
+          { text: "は 俊介[しゅんすけ]さんの 弟[おとうと]" },
           { text: "です" },
         ],
       },
@@ -556,7 +556,7 @@ export const questions: Question[] = [
           { text: " 勉強[べんきょう]して", blank: true },
           { text: "いる", blank: true },
           { text: "大学生[だいがくせい]", blank: true },
-          { text: "は けんじさんの 弟[おとうと]" },
+          { text: "は 俊介[しゅんすけ]さんの 弟[おとうと]" },
           { text: "です" },
         ],
         notes: "大学生 instead of 学生",
@@ -567,7 +567,7 @@ export const questions: Question[] = [
           { text: " 勉強[べんきょう]して", blank: true },
           { text: "いる", blank: true },
           { text: "人[ひと]", blank: true },
-          { text: "は けんじさんの 弟[おとうと]" },
+          { text: "は 俊介[しゅんすけ]さんの 弟[おとうと]" },
           { text: "です" },
         ],
         notes: "人 instead of 学生",
@@ -575,12 +575,12 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "The email I got from Yuki had a really long story.",
-    hint: "Yuki = ゆき",
+    english: "The email I got from Fujii had a really long story.",
+    hint: "Fujii = 藤井 (ふじい)",
     answers: [
       {
         segments: [
-          { text: "ゆきさんから" },
+          { text: "藤井[ふじい]さんから" },
           { text: " もらったメール", blank: true },
           { text: "は すごく 長[なが]い 話[はなし]が" },
           { text: "ある", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "normal", polarity: "positive", tense: "past" } },
@@ -588,7 +588,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "ゆきさんから" },
+          { text: "藤井[ふじい]さんから" },
           { text: " もらったメール", blank: true },
           { text: "には すごく 長[なが]い 話[はなし]が" },
           { text: "ある", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "normal", polarity: "positive", tense: "past" } },
@@ -679,13 +679,13 @@ export const questions: Question[] = [
   },
   {
     english:
-      "The store with a big red door is the one Yuki's older sister works at.",
-    hint: "Yuki = ゆき",
+      "The store with a big red door is the one Mizuki's older sister works at.",
+    hint: "Mizuki = 瑞希 (みずき)",
     answers: [
       {
         segments: [
           { text: " 大[おお]きい 赤[あか]いドアのある 店[みせ]は" },
-          { text: "ゆきさんのお 姉[ねえ]さんが 働[はたら]いて", blank: true },
+          { text: "瑞希[みずき]さんのお 姉[ねえ]さんが 働[はたら]いて", blank: true },
           { text: "いる", blank: true },
           { text: "店[みせ]", blank: true },
           { text: "です" },
@@ -693,7 +693,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "ゆきさんのお 姉[ねえ]さんが 働[はたら]いて" },
+          { text: "瑞希[みずき]さんのお 姉[ねえ]さんが 働[はたら]いて" },
           { text: "いる" },
           { text: "店[みせ]は" },
           {
@@ -817,12 +817,12 @@ export const questions: Question[] = [
   },
   {
     english:
-      "The girl with curly hair next to Yuki is a first-year student.",
-    hint: "Yuki = ゆき; curly hair = くせ 毛[げ] (くせげ)",
+      "The girl with curly hair next to Kaede is a first-year student.",
+    hint: "Kaede = 楓 (かえで); curly hair = くせ毛 (くせげ)",
     answers: [
       {
         segments: [
-          { text: "ゆきさんの 隣[となり]にいる、" },
+          { text: "楓[かえで]さんの 隣[となり]にいる、" },
           {
             text: "くせ 毛[げ]のある 女[おんな]の 人[ひと]",
             blank: true,
@@ -835,7 +835,7 @@ export const questions: Question[] = [
         segments: [
           { text: "くせ 毛[げ]のある、" },
           {
-            text: "ゆきさんの 隣[となり]にいる 女[おんな]の 人[ひと]",
+            text: "楓[かえで]さんの 隣[となり]にいる 女[おんな]の 人[ひと]",
             blank: true,
           },
           { text: "は 一年生[いちねんせい]" },
@@ -845,7 +845,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "ゆきさんの 隣[となり]にいる、" },
+          { text: "楓[かえで]さんの 隣[となり]にいる、" },
           {
             text: "くせ 毛[げ]がある 女[おんな]の 人[ひと]",
             blank: true,

@@ -71,12 +71,12 @@ export const questions: Question[] = [
   },
   {
     english:
-      "Kenji is a graduate student and sometimes teaches Japanese at school.",
-    hint: "Kenji = けんじ",
+      "Kobayashi is a graduate student and sometimes teaches Japanese at school.",
+    hint: "Kobayashi = 小林 (こばやし)",
     answers: [
       {
         segments: [
-          { text: "けんじさんは" },
+          { text: "小林[こばやし]さんは" },
           { text: "大学院生[だいがくいんせい]で", blank: true },
           { text: "、 学校[がっこう]で 時々[ときどき] 日本語[にほんご]を" },
           {
@@ -92,7 +92,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "けんじさんは 大学院生[だいがくいんせい]で、 時々[ときどき] 学校[がっこう]で 日本語[にほんご]を" },
+          { text: "小林[こばやし]さんは 大学院生[だいがくいんせい]で、 時々[ときどき] 学校[がっこう]で 日本語[にほんご]を" },
           {
             text: "教[おし]える",
             conjugation: {
@@ -108,12 +108,12 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Hana's room is quiet and beautiful, so I always study there.",
-    hint: "Hana = 花",
+    english: "Kaede's room is quiet and beautiful, so I always study there.",
+    hint: "Kaede = 楓 (かえで)",
     answers: [
       {
         segments: [
-          { text: "花[はな]さんの 部屋[へや]は" },
+          { text: "楓[かえで]さんの 部屋[へや]は" },
           { text: "静[しず]かできれいで", blank: true },
           { text: "、いつもそこで 勉強[べんきょう]" },
           {
@@ -129,7 +129,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "花[はな]さんの 部屋[へや]は" },
+          { text: "楓[かえで]さんの 部屋[へや]は" },
           { text: "静[しず]かできれいだから", blank: true },
           { text: "、いつもそこで 勉強[べんきょう]" },
           {
@@ -146,7 +146,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "花[はな]の 部屋[へや]は" },
+          { text: "楓[かえで]の 部屋[へや]は" },
           { text: "静[しず]かできれいで", blank: true },
           { text: "、いつもそこで 勉強[べんきょう]" },
           {
@@ -159,11 +159,11 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "花 without さん",
+        notes: "楓 without さん",
       },
       {
         segments: [
-          { text: "花[はな]の 部屋[へや]は" },
+          { text: "楓[かえで]の 部屋[へや]は" },
           { text: "静[しず]かできれいだから", blank: true },
           { text: "、いつもそこで 勉強[べんきょう]" },
           {
@@ -176,7 +176,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "花 without さん + だから",
+        notes: "楓 without さん + だから",
       },
     ],
   },
@@ -248,12 +248,12 @@ export const questions: Question[] = [
   },
   {
     english:
-      "Takeshi's older sister is smart and kind, so she has lots of friends at her company.",
-    hint: "Takeshi = たけし",
+      "Shunsuke's older sister is smart and kind, so she has lots of friends at her company.",
+    hint: "Shunsuke = 俊介 (しゅんすけ)",
     answers: [
       {
         segments: [
-          { text: "たけしさんのお 姉[ねえ]さんは" },
+          { text: "俊介[しゅんすけ]さんのお 姉[ねえ]さんは" },
           { text: "頭[あたま]がよくて 親切[しんせつ]で", blank: true },
           { text: "、 会社[かいしゃ]で 友達[ともだち]がたくさん" },
           {
@@ -269,7 +269,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "たけしさんのお 姉[ねえ]さんは 頭[あたま]がよくて 親切[しんせつ]で、 会社[かいしゃ]に 友達[ともだち]がたくさん" },
+          { text: "俊介[しゅんすけ]さんのお 姉[ねえ]さんは 頭[あたま]がよくて 親切[しんせつ]で、 会社[かいしゃ]に 友達[ともだち]がたくさん" },
           {
             text: "いる",
             conjugation: {
@@ -284,7 +284,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "たけしさんのお 姉[ねえ]さんは 頭[あたま]がよくて 親切[しんせつ]なので、 会社[かいしゃ]で 友達[ともだち]がたくさん" },
+          { text: "俊介[しゅんすけ]さんのお 姉[ねえ]さんは 頭[あたま]がよくて 親切[しんせつ]なので、 会社[かいしゃ]で 友達[ともだち]がたくさん" },
           {
             text: "いる",
             conjugation: {
@@ -439,31 +439,31 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Kenji is a nurse and very kind, so everyone likes him.",
-    hint: "Kenji = けんじ",
+    english: "Fujii is a nurse and very kind, so everyone likes him.",
+    hint: "Fujii = 藤井 (ふじい)",
     answers: [
       {
         segments: [
-          { text: "けんじさんは" },
+          { text: "藤井[ふじい]さんは" },
           { text: "看護師[かんごし]で とても 親切[しんせつ]で", blank: true },
-          { text: "、みんながけんじさんが 好[す]き" },
+          { text: "、みんなが 藤井[ふじい]さんが 好[す]き" },
           { text: "です" },
         ],
       },
       {
         segments: [
-          { text: "けんじさんは" },
+          { text: "藤井[ふじい]さんは" },
           { text: "看護師[かんごし]で、 とても 親切[しんせつ]で", blank: true },
-          { text: "、みんながけんじさんが 好[す]き" },
+          { text: "、みんなが 藤井[ふじい]さんが 好[す]き" },
           { text: "です" },
         ],
         notes: "With comma after 看護師で",
       },
       {
         segments: [
-          { text: "けんじさんは" },
+          { text: "藤井[ふじい]さんは" },
           { text: "看護師[かんごし]で とても 親切[しんせつ]だから", blank: true },
-          { text: "、みんながけんじさんが 好[す]き" },
+          { text: "、みんなが 藤井[ふじい]さんが 好[す]き" },
           { text: "です" },
         ],
         notes: "Using だから instead of the で-chain for 'so'",
@@ -545,11 +545,11 @@ export const questions: Question[] = [
   },
   {
     english: "Sora's dog is cute and small, so everyone likes it.",
-    hint: "Sora = そら",
+    hint: "Sora = 空 (そら)",
     answers: [
       {
         segments: [
-          { text: "そらさんの 犬[いぬ]は" },
+          { text: "空[そら]さんの 犬[いぬ]は" },
           { text: "かわいくて 小[ちい]さくて", blank: true },
           { text: "、みんながいつも 好[す]き" },
           { text: "です" },
@@ -557,16 +557,16 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "そらの 犬[いぬ]は" },
+          { text: "空[そら]の 犬[いぬ]は" },
           { text: "かわいくて 小[ちい]さくて", blank: true },
           { text: "、みんながいつも 好[す]き" },
           { text: "です" },
         ],
-        notes: "そら without さん",
+        notes: "空 without さん",
       },
       {
         segments: [
-          { text: "そらさんの 犬[いぬ]は" },
+          { text: "空[そら]さんの 犬[いぬ]は" },
           { text: "かわいくて 小[ちい]さいから", blank: true },
           { text: "、みんながいつも 好[す]き" },
           { text: "です" },
@@ -575,12 +575,12 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "そらの 犬[いぬ]は" },
+          { text: "空[そら]の 犬[いぬ]は" },
           { text: "かわいくて 小[ちい]さいから", blank: true },
           { text: "、みんながいつも 好[す]き" },
           { text: "です" },
         ],
-        notes: "そら without さん + から",
+        notes: "空 without さん + から",
       },
     ],
   },
@@ -658,12 +658,28 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Sora is a lawyer and very busy, so she can't come to the party.",
-    hint: "Sora = そら",
+    english: "Mori is a lawyer and very busy, so she can't come to the party.",
+    hint: "Mori = 森 (もり)",
     answers: [
       {
         segments: [
-          { text: "そらさんは" },
+          { text: "森[もり]さんは" },
+          { text: "弁護士[べんごし]で とても 忙[いそが]しくて", blank: true },
+          { text: "、パーティーに" },
+          {
+            text: "来[く]",
+            conjugation: {
+              pos: "Kuru verb - special class",
+              form: "potential",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+        ],
+      },
+      {
+        segments: [
+          { text: "森[もり]は" },
           { text: "弁護士[べんごし]で とても 忙[いそが]しくて", blank: true },
           { text: "、パーティーに" },
           {
@@ -676,27 +692,11 @@ export const questions: Question[] = [
             },
           },
         ],
+        notes: "森 without さん",
       },
       {
         segments: [
-          { text: "そらは" },
-          { text: "弁護士[べんごし]で とても 忙[いそが]しくて", blank: true },
-          { text: "、パーティーに" },
-          {
-            text: "来[く]る",
-            conjugation: {
-              pos: "Kuru verb - special class",
-              form: "potential",
-              polarity: "negative",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "そら without さん",
-      },
-      {
-        segments: [
-          { text: "そらさんは" },
+          { text: "森[もり]さんは" },
           { text: "弁護士[べんごし]で、 とても 忙[いそが]しくて", blank: true },
           { text: "、パーティーに" },
           {
@@ -713,7 +713,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "そらさんは" },
+          { text: "森[もり]さんは" },
           { text: "弁護士[べんごし]で とても 忙[いそが]しくて", blank: true },
           { text: "、パーティーに" },
           {
@@ -1117,11 +1117,11 @@ export const questions: Question[] = [
   {
     english:
       "Miho's older sister is a doctor and kind, so she always teaches me about Japanese carefully.",
-    hint: "Miho = みほ",
+    hint: "Miho = 美穂 (みほ)",
     answers: [
       {
         segments: [
-          { text: "みほさんのお 姉[ねえ]さんは" },
+          { text: "美穂[みほ]さんのお 姉[ねえ]さんは" },
           { text: "医者[いしゃ]で 親切[しんせつ]で", blank: true },
           { text: "、いつも 私[わたし]に 日本語[にほんご]をやさしく" },
           {
@@ -1137,7 +1137,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "みほさんのお 姉[ねえ]さんは" },
+          { text: "美穂[みほ]さんのお 姉[ねえ]さんは" },
           { text: "医者[いしゃ]で 親切[しんせつ]だから", blank: true },
           { text: "、いつも 私[わたし]に 日本語[にほんご]をやさしく" },
           {
@@ -1154,7 +1154,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "みほのお 姉[ねえ]さんは" },
+          { text: "美穂[みほ]のお 姉[ねえ]さんは" },
           { text: "医者[いしゃ]で 親切[しんせつ]で", blank: true },
           { text: "、いつも 私[わたし]に 日本語[にほんご]をやさしく" },
           {
@@ -1167,11 +1167,11 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "みほ without さん",
+        notes: "美穂 without さん",
       },
       {
         segments: [
-          { text: "みほのお 姉[ねえ]さんは" },
+          { text: "美穂[みほ]のお 姉[ねえ]さんは" },
           { text: "医者[いしゃ]で 親切[しんせつ]だから", blank: true },
           { text: "、いつも 私[わたし]に 日本語[にほんご]をやさしく" },
           {
@@ -1184,7 +1184,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "みほ without さん + だから",
+        notes: "美穂 without さん + だから",
       },
     ],
   },
@@ -1262,12 +1262,12 @@ export const questions: Question[] = [
   },
   {
     english:
-      "Yuki's apartment is new and clean, so she lives there very comfortably.",
-    hint: "Yuki = ゆき; apartment = アパート",
+      "Mizuki's apartment is new and clean, so she lives there very comfortably.",
+    hint: "Mizuki = 瑞希 (みずき); apartment = アパート",
     answers: [
       {
         segments: [
-          { text: "ゆきさんのアパートは" },
+          { text: "瑞希[みずき]さんのアパートは" },
           { text: "新[あたら]しくてきれいで", blank: true },
           { text: "、とても 楽[たの]しく 住[す]んで" },
           { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
@@ -1275,7 +1275,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "ゆきさんのアパートは" },
+          { text: "瑞希[みずき]さんのアパートは" },
           { text: "新[あたら]しくてきれいだから", blank: true },
           { text: "、とても 楽[たの]しく 住[す]んで" },
           { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
@@ -1284,7 +1284,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "ゆきさんのアパートは" },
+          { text: "瑞希[みずき]さんのアパートは" },
           { text: "新[あたら]しくてきれいなので", blank: true },
           { text: "、とても 楽[たの]しく 住[す]んで" },
           { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
@@ -1293,7 +1293,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "ゆきさんのアパートは" },
+          { text: "瑞希[みずき]さんのアパートは" },
           { text: "新[あたら]しくてきれいで", blank: true },
           { text: "、とても 楽[たの]しくそこに 住[す]んで" },
           { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
@@ -1302,7 +1302,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "ゆきさんのアパートは" },
+          { text: "瑞希[みずき]さんのアパートは" },
           { text: "新[あたら]しくてきれいだから", blank: true },
           { text: "、とても 楽[たの]しくそこに 住[す]んで" },
           { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
@@ -1311,12 +1311,12 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "ゆきさんのアパートは" },
+          { text: "瑞希[みずき]さんのアパートは" },
           { text: "新[あたら]しくてきれいで", blank: true },
-          { text: "、ゆきさんはそこにとても 楽[たの]しく 住[す]んで" },
+          { text: "、瑞希[みずき]さんはそこにとても 楽[たの]しく 住[す]んで" },
           { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
         ],
-        notes: "With ゆきさんは re-introduced + そこに",
+        notes: "With 瑞希[みずき]さんは re-introduced + そこに",
       },
     ],
   },

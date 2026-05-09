@@ -2,12 +2,12 @@ import type { Question } from "../types"
 
 export const questions: Question[] = [
   {
-    english: "Kenji's older brother has really big eyes.",
-    hint: "Kenji = けんじ",
+    english: "Yosuke's older brother has really big eyes.",
+    hint: "Yosuke = 陽介 (ようすけ)",
     answers: [
       {
         segments: [
-          { text: "けんじさんのお 兄[にい]さんは" },
+          { text: "陽介[ようすけ]さんのお 兄[にい]さんは" },
           { text: "目[め]が", blank: true },
           { text: "すごく" },
           {
@@ -24,7 +24,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "けんじさんのお 兄[にい]さんは" },
+          { text: "陽介[ようすけ]さんのお 兄[にい]さんは" },
           { text: "目[め]が", blank: true },
           { text: "とても" },
           {

@@ -3,7 +3,7 @@ import type { Question } from "../types";
 export const questions: Question[] = [
   {
     english: "Taro, do your homework now.",
-    hint: "Taro = 太郎",
+    hint: "Taro = 太郎 (たろう)",
     answers: [
       {
         segments: [
@@ -80,18 +80,18 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Kenji, turn off the TV and go to bed.",
-    hint: "Kenji = 健二; TV = テレビ",
+    english: "Shunsuke, turn off the TV and go to bed.",
+    hint: "Shunsuke = 俊介 (しゅんすけ); TV = テレビ",
     answers: [
       {
         segments: [
-          { text: "健二[けんじ]、テレビを 消[け]して" },
+          { text: "俊介[しゅんすけ]、テレビを 消[け]して" },
           { text: "寝[ね]なさい", blank: true },
         ],
       },
       {
         segments: [
-          { text: "健二[けんじ]、テレビを" },
+          { text: "俊介[しゅんすけ]、テレビを" },
           { text: "消[け]しなさい", blank: true },
           { text: "。それから" },
           { text: "寝[ね]なさい", blank: true },
@@ -99,13 +99,13 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "健二[けんじ]、テレビを 消[け]してから" },
+          { text: "俊介[しゅんすけ]、テレビを 消[け]してから" },
           { text: "寝[ね]なさい", blank: true },
         ],
       },
       {
         segments: [
-          { text: "健二[けんじ]、" },
+          { text: "俊介[しゅんすけ]、" },
           { text: "寝[ね]なさい", blank: true },
           { text: "。その 前[まえ]に テレビを 消[け]しなさい" },
         ],
@@ -114,7 +114,7 @@ export const questions: Question[] = [
   },
   {
     english: "Mika, practice the piano for one hour.",
-    hint: "Mika = 美香",
+    hint: "Mika = 美香 (みか)",
     answers: [
       {
         segments: [
@@ -239,7 +239,7 @@ export const questions: Question[] = [
   },
   {
     english: "Hana, apologize to your older sister right away.",
-    hint: "Hana = 花",
+    hint: "Hana = 花 (はな)",
     answers: [
       {
         segments: [
@@ -582,7 +582,7 @@ export const questions: Question[] = [
   },
   {
     english: "Kenta, give the dog its food before going to school.",
-    hint: "Kenta = 健太",
+    hint: "Kenta = 健太 (けんた)",
     answers: [
       {
         segments: [
@@ -884,7 +884,7 @@ export const questions: Question[] = [
   },
   {
     english: "Sakura, lock the door before going out.",
-    hint: "Sakura = 桜",
+    hint: "Sakura = 桜 (さくら)",
     answers: [
       {
         segments: [
@@ -1028,7 +1028,7 @@ export const questions: Question[] = [
   },
   {
     english: "Sho, carry these documents to the reception desk before the meeting.",
-    hint: "Sho = 翔",
+    hint: "Sho = 翔 (しょう)",
     answers: [
       {
         segments: [
@@ -1130,7 +1130,7 @@ export const questions: Question[] = [
   },
   {
     english: "Hinata, look at the sky and count the clouds.",
-    hint: "Hinata = 日向",
+    hint: "Hinata = 日向 (ひなた)",
     answers: [
       {
         segments: [

@@ -11,8 +11,8 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Mr./Ms. Tanaka is a doctor.",
-    hint: "Name spelling: 田中（たなか）",
+    english: "Tanaka is a doctor.",
+    hint: "Tanaka = 田中 (たなか)",
     answers: [
       {
         segments: [
@@ -22,8 +22,8 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Mr./Ms. Yamada is an office worker.",
-    hint: "Name spelling: 山田（やまだ）",
+    english: "Yamada is an office worker.",
+    hint: "Yamada = 山田 (やまだ)",
     answers: [
       {
         segments: [
@@ -62,8 +62,8 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Mr./Ms. Satou is Japanese.",
-    hint: "Name spelling: 砂糖（さとう）",
+    english: "Sato is Japanese.",
+    hint: "Sato = 佐藤 (さとう)",
     answers: [
       {
         segments: [
@@ -73,8 +73,8 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Mr./Ms. Nakamura is a university student.",
-    hint: "Name spelling: 中村（なかむら）",
+    english: "Nakamura is a university student.",
+    hint: "Nakamura = 中村 (なかむら)",
     answers: [
       {
         segments: [
@@ -116,8 +116,8 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Mr./Ms. Suzuki is a nurse.",
-    hint: "Name spelling: 鈴木（すずき）",
+    english: "Suzuki is a nurse.",
+    hint: "Suzuki = 鈴木 (すずき)",
     answers: [
       {
         segments: [
@@ -128,7 +128,7 @@ export const questions: Question[] = [
   },
   {
     english: "Kobayashi is a high school student.",
-    hint: "Name spelling: 小林（こばやし）",
+    hint: "Kobayashi = 小林 (こばやし)",
     answers: [
       {
         segments: [
@@ -138,26 +138,12 @@ export const questions: Question[] = [
           },
         ],
       },
-      {
-        segments: [
-          { text: "賢司[けんじ]さんは 高校生[こうこうせい]です", blank: true },
-        ],
-      },
-      {
-        segments: [
-          { text: "謙治[けんじ]さんは 高校生[こうこうせい]です", blank: true },
-        ],
-      },
-      {
-        segments: [
-          { text: "研司[けんじ]さんは 高校生[こうこうせい]です", blank: true },
-        ],
-      },
+
     ],
   },
   {
-    english: "Ms. Hanako is a housewife.",
-    hint: "Name spelling: 花子（はなこ）",
+    english: "Hanako is a housewife.",
+    hint: "Hanako = 花子 (はなこ)",
     answers: [
       {
         segments: [
@@ -178,8 +164,8 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Mr./Ms. Murata is a lawyer.",
-    hint: "Name spelling: 村田（むらた）",
+    english: "Murata is a lawyer.",
+    hint: "Murata = 村田 (むらた)",
     answers: [
       {
         segments: [
@@ -189,32 +175,32 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Ms. Mei is a biology major.",
-    hint: "Mei = めい",
+    english: "Mei is a biology major.",
+    hint: "Mei = 芽衣 (めい)",
     answers: [
       {
         segments: [
-          { text: "めいさんは 生物学[せいぶつがく] 専攻[せんこう]です", blank: true },
+          { text: "芽衣[めい]さんは 生物学[せいぶつがく] 専攻[せんこう]です", blank: true },
         ],
         notes: "Compact form — 生物学専攻 used as a compound noun without の",
       },
       {
         segments: [
-          { text: "めいさんは 生物学[せいぶつがく]の 専攻[せんこう]です", blank: true },
+          { text: "芽衣[めい]さんは 生物学[せいぶつがく]の 専攻[せんこう]です", blank: true },
         ],
         notes: "Topic is Mei; 生物学の専攻 = biology major",
       },
       {
         segments: [
-          { text: "めいさんの 専攻[せんこう]は 生物学[せいぶつがく]です", blank: true },
+          { text: "芽衣[めい]さんの 専攻[せんこう]は 生物学[せいぶつがく]です", blank: true },
         ],
         notes: "Topic is Mei's major; は marks 専攻 as topic",
       },
     ],
   },
   {
-    english: "Mr./Ms. Yoshida is an international student.",
-    hint: "Name spelling: 吉田（よしだ）",
+    english: "Yoshida is an international student.",
+    hint: "Yoshida = 吉田 (よしだ)",
     answers: [
       {
         segments: [
@@ -256,8 +242,8 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Mr./Ms. Katou is a doctor.",
-    hint: "Name spelling: 加藤（かとう）",
+    english: "Kato is a doctor.",
+    hint: "Kato = 加藤 (かとう)",
     answers: [
       {
         segments: [
@@ -267,8 +253,8 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Mr./Ms. Okada is an office worker.",
-    hint: "Name spelling: 岡田（おかだ）",
+    english: "Okada is an office worker.",
+    hint: "Okada = 岡田 (おかだ)",
     answers: [
       {
         segments: [
@@ -278,8 +264,8 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Mr./Ms. Mori is a nurse.",
-    hint: "Name spelling: 森（もり）",
+    english: "Mori is a nurse.",
+    hint: "Mori = 森 (もり)",
     answers: [
       {
         segments: [
@@ -289,8 +275,8 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "Ms. Kimura is a housewife.",
-    hint: "Name spelling: 木村（きむら）",
+    english: "Kimura is a housewife.",
+    hint: "Kimura = 木村 (きむら)",
     answers: [
       {
         segments: [

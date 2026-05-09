@@ -2,33 +2,33 @@ import type { Question } from "../types";
 
 export const questions: Question[] = [
   {
-    english: "I was invited to the Christmas party by Yuki.",
-    hint: "Yuki = ゆき; Christmas party = クリスマスパーティー",
+    english: "I was invited to the Christmas party by Mizuki.",
+    hint: "Mizuki = 瑞希 (みずき); Christmas party = クリスマスパーティー",
     answers: [
       {
         segments: [
-          { text: "私[わたし]は ゆきさんに クリスマスパーティーに " },
+          { text: "私[わたし]は 瑞希[みずき]さんに クリスマスパーティーに " },
           { text: "招待[しょうたい]される", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "past" } },
         ],
         notes: "Standard passive sentence with the agent marked by に",
       },
       {
         segments: [
-          { text: "私[わたし]は ゆきさんから クリスマスパーティーに " },
+          { text: "私[わたし]は 瑞希[みずき]さんから クリスマスパーティーに " },
           { text: "招待[しょうたい]される", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "past" } },
         ],
         notes: "Using から for the inviter/source instead of に",
       },
       {
         segments: [
-          { text: "私[わたし]は クリスマスパーティーに ゆきさんに " },
+          { text: "私[わたし]は クリスマスパーティーに 瑞希[みずき]さんに " },
           { text: "招待[しょうたい]される", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "past" } },
         ],
         notes: "Reordered phrases: party before inviter",
       },
       {
         segments: [
-          { text: "私[わたし]は クリスマスパーティーに ゆきさんから " },
+          { text: "私[わたし]は クリスマスパーティーに 瑞希[みずき]さんから " },
           { text: "招待[しょうたい]される", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "past" } },
         ],
         notes: "Reordered phrases with から marking the inviter/source",

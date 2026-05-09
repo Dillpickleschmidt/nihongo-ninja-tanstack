@@ -262,7 +262,7 @@ export const questions: Question[] = [
   },
   {
     english: "I go to the dentist once a month.",
-    hint: "dentist = 歯科[しか]",
+    hint: "dentist = 歯科 (しか)",
     answers: [
       {
         segments: [

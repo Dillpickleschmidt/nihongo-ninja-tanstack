@@ -282,14 +282,14 @@ export const questions: Question[] = [
   },
   {
     english:
-      "Isn't that Kenji's bicycle over there? Kenji doesn't take the bus on Mondays.",
-    hint: "Kenji = 健二",
+      "Isn't that Kobayashi's bicycle over there? Kobayashi doesn't take the bus on Mondays.",
+    hint: "Kobayashi = 小林 (こばやし)",
     answers: [
       {
         segments: [
-          { text: "あれは 健二[けんじ]の 自転車[じてんしゃ]" },
+          { text: "あれは 小林[こばやし]の 自転車[じてんしゃ]" },
           { text: "じゃない", blank: true },
-          { text: "？ 健二[けんじ]は 月曜日[げつようび]は バスに " },
+          { text: "？ 小林[こばやし]は 月曜日[げつようび]は バスに " },
           { text: "乗[の]らない", blank: true },
         ],
         notes:
@@ -298,10 +298,10 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "あの 自転車[じてんしゃ]は 健二[けんじ]の 自転車[じてんしゃ]",
+            text: "あの 自転車[じてんしゃ]は 小林[こばやし]の 自転車[じてんしゃ]",
           },
           { text: "じゃない", blank: true },
-          { text: "？ 健二[けんじ]は 月曜日[げつようび]は バスに " },
+          { text: "？ 小林[こばやし]は 月曜日[げつようび]は バスに " },
           { text: "乗[の]らない", blank: true },
         ],
         notes: "Uses あの自転車 for “that bicycle over there.”",
@@ -309,38 +309,38 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "あそこの 自転車[じてんしゃ]は 健二[けんじ]の 自転車[じてんしゃ]",
+            text: "あそこの 自転車[じてんしゃ]は 小林[こばやし]の 自転車[じてんしゃ]",
           },
           { text: "じゃない", blank: true },
-          { text: "？ 健二[けんじ]は 月曜日[げつようび]は バスに " },
+          { text: "？ 小林[こばやし]は 月曜日[げつようび]は バスに " },
           { text: "乗[の]らない", blank: true },
         ],
         notes: "More literal “the bicycle over there” with あそこ の.",
       },
       {
         segments: [
-          { text: "あれは 健二[けんじ]の " },
+          { text: "あれは 小林[こばやし]の " },
           { text: "じゃない", blank: true },
-          { text: "？ 健二[けんじ]は 月曜日[げつようび]は バスに " },
+          { text: "？ 小林[こばやし]は 月曜日[げつようび]は バスに " },
           { text: "乗[の]らない", blank: true },
         ],
         notes:
-          "Uses の to mean “Kenji’s one/bicycle,” avoiding repeating 自転車.",
+          "Uses の to mean “Kobayashi’s one/bicycle,” avoiding repeating 自転車.",
       },
       {
         segments: [
-          { text: "あれは 健二[けんじ]の 自転車[じてんしゃ]" },
+          { text: "あれは 小林[こばやし]の 自転車[じてんしゃ]" },
           { text: "じゃない", blank: true },
-          { text: "？ 月曜日[げつようび]は 健二[けんじ]は バスに " },
+          { text: "？ 月曜日[げつようび]は 小林[こばやし]は バスに " },
           { text: "乗[の]らない", blank: true },
         ],
         notes: "Moves the time expression to the start of the second sentence.",
       },
       {
         segments: [
-          { text: "あれ、健二[けんじ]の 自転車[じてんしゃ]" },
+          { text: "あれ、小林[こばやし]の 自転車[じてんしゃ]" },
           { text: "じゃない", blank: true },
-          { text: "？ 健二[けんじ]は 月曜日[げつようび]、バスに " },
+          { text: "？ 小林[こばやし]は 月曜日[げつようび]、バスに " },
           { text: "乗[の]らない", blank: true },
         ],
         notes:
