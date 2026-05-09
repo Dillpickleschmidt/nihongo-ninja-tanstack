@@ -1,5 +1,4 @@
 import { defineConfig } from 'vite'
-import tsConfigPaths from 'vite-tsconfig-paths'
 import { tanstackStart } from '@tanstack/solid-start/plugin/vite'
 import viteSolid from 'vite-plugin-solid'
 import tailwindcss from '@tailwindcss/vite'
@@ -16,11 +15,11 @@ export default defineConfig({
   ssr: {
     noExternal: ["@convex-dev/better-auth"],
   },
+  resolve: {
+    tsconfigPaths: true,
+  },
   plugins: [
     cloudflare({ viteEnvironment: { name: 'ssr' } }),
-    tsConfigPaths({
-      projects: ['./tsconfig.json'],
-    }),
     lucidePreprocess(),
     solidSvg(),
     tailwindcss(),
