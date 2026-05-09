@@ -8,14 +8,8 @@ import { queryKeys } from "~/query/query-keys"
 import { CompletionsSyncDialog } from "@/features/learn/CompletionsSyncDialog"
 import { FloatingKanji } from "@/features/homepage/components/floating-kanji"
 import { LearningPathProvider } from "@/features/learn/context/learning-path"
-import {
-  HeroSection,
-  LearningPathControls,
-} from "@/features/learn/hero/HeroSection"
-// import { SSRMediaQuery } from "@/components/SSRMediaQuery"
-// import { PracticeToolsSection } from "@/features/learn/practice-tools/PracticeToolsSection"
-// import { ViewToggle } from "@/features/learn/hero/ViewToggle"
-import { LearningPathSection } from "@/features/learn/learning-path/LearningPathSection"
+import { LearningPathHeader } from "@/features/learn/LearningPathHeader"
+import { LearningPathSection } from "@/features/learn/LearningPathSection"
 
 export const Route = createFileRoute("/_home/learn")({
   loader: ({ context, preload }) => {
@@ -29,7 +23,10 @@ export const Route = createFileRoute("/_home/learn")({
 
     const prefs = parsePreferencesCookie()
     const anki = prefs.srsServicePreferences.anki
-    if (context.auth.userId && !(anki.mode === "enabled" && anki.is_api_key_valid)) {
+    if (
+      context.auth.userId &&
+      !(anki.mode === "enabled" && anki.is_api_key_valid)
+    ) {
       context.queryClient.prefetchQuery(
         convexQuery(api.api.fsrs.getDueFSRSCardsCount, {}),
       )
@@ -51,7 +48,7 @@ function LearnComponent() {
 
   // Dynamic background blur: 4 at top, 0 when scrolled
   createEffect(() => {
-    const atTop = scrollY() < 400
+    const atTop = scrollY() < 150
     queryClient.setQueryData(queryKeys.backgroundSettings(), {
       blur: atTop ? 4 : 12,
       opacityOffset: -0.22,
@@ -77,31 +74,16 @@ function LearnComponent() {
 
       <CompletionsSyncDialog />
 
-      <FloatingKanji char="忍" class="top-20 left-[10%]" delay={0} />
+      <FloatingKanji char="忍" class="top-52 left-10" delay={0} />
 
       <main class="pt-20 md:pt-20 2xl:pt-28 pb-32 px-4 md:px-6">
         <LearningPathProvider>
-          <HeroSection
+          <LearningPathHeader />
+
+          <LearningPathSection
             selectedView={selectedView}
             setSelectedView={setSelectedView}
           />
-
-          <LearningPathControls
-            selectedView={selectedView}
-            setSelectedView={setSelectedView}
-            class="sticky top-2 z-20 mt-3"
-          />
-
-          {/* <SSRMediaQuery hideFrom="md">
-            <PracticeToolsSection />
-            <ViewToggle
-              selectedView={selectedView}
-              setSelectedView={setSelectedView}
-              class="mt-4"
-            />
-          </SSRMediaQuery> */}
-
-          <LearningPathSection selectedView={selectedView} />
         </LearningPathProvider>
       </main>
     </div>

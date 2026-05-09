@@ -49,16 +49,15 @@ export function ModuleDetailDialog(props: ModuleDetailDialogProps) {
         </DialogHeader>
 
         <div class="flex-1 overflow-y-auto">
-          <Show
-            when={!detailQuery.isLoading()}
-            fallback={<LoadingSkeleton />}
-          >
+          <Show when={!detailQuery.isLoading()} fallback={<LoadingSkeleton />}>
             <Show when={!detailQuery.error()}>
               <Show
                 when={detailQuery.data()?.sourceType === "grammar"}
                 fallback={
                   <ModuleDetailVocabulary
-                    transcriptGroups={detailQuery.data()?.transcriptGroups ?? []}
+                    transcriptGroups={
+                      detailQuery.data()?.transcriptGroups ?? []
+                    }
                     vocabularyItems={detailQuery.data()?.vocabularyItems ?? []}
                     linkTo={props.linkTo}
                   />

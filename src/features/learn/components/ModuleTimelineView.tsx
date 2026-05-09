@@ -24,9 +24,7 @@ export function ModuleTimelineView(props: ModuleTimelineViewProps) {
                 : undefined
             }
             class={isCompleted ? "text-green-500" : undefined}
-            dotClass={
-              isCompleted ? "border-green-500 bg-green-500" : undefined
-            }
+            dotClass={isCompleted ? "border-green-500 bg-green-500" : undefined}
           />
         )
       }}

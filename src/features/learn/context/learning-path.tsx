@@ -55,9 +55,7 @@ export function LearningPathProvider(props: { children: JSX.Element }) {
 export function useLearningPath() {
   const context = useContext(LearningPathContext)
   if (!context) {
-    throw new Error(
-      "useLearningPath must be used within LearningPathProvider",
-    )
+    throw new Error("useLearningPath must be used within LearningPathProvider")
   }
   return context
 }

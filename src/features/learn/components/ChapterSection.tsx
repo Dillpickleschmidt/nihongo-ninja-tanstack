@@ -5,7 +5,10 @@ import { ModuleTimelineView } from "./ModuleTimelineView"
 import { ExternalResourcesSection } from "./ExternalResourcesSection"
 import { cn } from "@/utils"
 
-import type { LearningPathChapter, LearningPathModule } from "convex/model/learning_paths"
+import type {
+  LearningPathChapter,
+  LearningPathModule,
+} from "convex/model/learning_paths"
 
 interface ChapterSectionProps {
   chapter: LearningPathChapter
@@ -31,9 +34,7 @@ export function ChapterSection(props: ChapterSectionProps) {
       >
         <div class={cn(hasExternalResources() && "min-w-0 flex-1")}>
           <Show when={props.chapter.description}>
-            <p class="text-neutral-300">
-              {props.chapter.description}
-            </p>
+            <p class="text-neutral-300">{props.chapter.description}</p>
           </Show>
 
           <Show

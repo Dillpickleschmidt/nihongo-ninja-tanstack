@@ -33,21 +33,21 @@ export function ModuleDetailVocabulary(props: ModuleDetailVocabularyProps) {
       <div>
         <p class="mb-2 text-sm font-medium text-white/40">Words</p>
         <div class="flex flex-wrap gap-2">
-        <For each={props.vocabularyItems}>
-          {(word, index) => (
-            <button
-              type="button"
-              onClick={() => setFocusedIndex(index())}
-              class={`rounded-full px-3.5 py-1 text-sm font-medium transition-colors duration-200 ${
-                focusedIndex() === index()
-                  ? "bg-orange-500/15 text-orange-300 ring-1 ring-orange-400/25"
-                  : "text-muted-foreground hover:bg-white/5 hover:text-white/60"
-              }`}
-            >
-              <span class="font-japanese">{word.word}</span>
-            </button>
-          )}
-        </For>
+          <For each={props.vocabularyItems}>
+            {(word, index) => (
+              <button
+                type="button"
+                onClick={() => setFocusedIndex(index())}
+                class={`rounded-full px-3.5 py-1 text-sm font-medium transition-colors duration-200 ${
+                  focusedIndex() === index()
+                    ? "bg-orange-500/15 text-orange-300 ring-1 ring-orange-400/25"
+                    : "text-muted-foreground hover:bg-white/5 hover:text-white/60"
+                }`}
+              >
+                <span class="font-japanese">{word.word}</span>
+              </button>
+            )}
+          </For>
         </div>
       </div>
 
@@ -88,9 +88,7 @@ export function ModuleDetailVocabulary(props: ModuleDetailVocabularyProps) {
 
             {/* Context sentences — bare list with left border */}
             <Show
-              when={
-                (props.transcriptGroups[focusedIndex()] || []).length > 0
-              }
+              when={(props.transcriptGroups[focusedIndex()] || []).length > 0}
             >
               <div>
                 <p class="mb-3 text-xs font-medium uppercase tracking-wider text-white/25">

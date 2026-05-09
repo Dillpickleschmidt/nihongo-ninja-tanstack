@@ -107,7 +107,9 @@ export function ModuleCategorizedView(props: ModuleCategorizedViewProps) {
                     const ModuleIcon = getModuleIcon(
                       enrichedModule.module.module_type,
                     )
-                    const isCompleted = props.isCompleted(enrichedModule.moduleId)
+                    const isCompleted = props.isCompleted(
+                      enrichedModule.moduleId,
+                    )
                     const originalIndex = props.modules.findIndex(
                       (m) => m.moduleId === enrichedModule.moduleId,
                     )
@@ -140,7 +142,8 @@ export function ModuleCategorizedView(props: ModuleCategorizedViewProps) {
 
                     const baseClasses = cn(
                       "block transition-colors",
-                      enrichedModule.disabled && "cursor-not-allowed opacity-50",
+                      enrichedModule.disabled &&
+                        "cursor-not-allowed opacity-50",
                     )
 
                     if (props.openInDialog) {

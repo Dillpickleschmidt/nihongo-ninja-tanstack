@@ -1,7 +1,10 @@
 import { For } from "solid-js"
 import { Link } from "@tanstack/solid-router"
 import { CircleCheckBig } from "lucide-solid"
-import { getModuleIcon, getModuleIconClasses } from "@/data/utils/module-helpers"
+import {
+  getModuleIcon,
+  getModuleIconClasses,
+} from "@/data/utils/module-helpers"
 import { cn } from "@/utils"
 import type { LearningPathModule } from "convex/model/learning_paths"
 
@@ -84,7 +87,9 @@ function ModuleListItem(props: ModuleListItemProps) {
     "bg-gradient-to-br dark:from-neutral-600/15 dark:to-gray-600/10",
     "ease-instant-hover-200",
     props.isCompleted && "border-green-500/50 font-semibold text-green-500",
-    disabled ? "cursor-not-allowed opacity-50" : "hover:bg-accent cursor-pointer",
+    disabled
+      ? "cursor-not-allowed opacity-50"
+      : "hover:bg-accent cursor-pointer",
   )
 
   return (
