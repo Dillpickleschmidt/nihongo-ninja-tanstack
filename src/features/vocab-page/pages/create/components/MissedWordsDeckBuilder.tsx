@@ -3,6 +3,7 @@ import { useNavigate } from "@tanstack/solid-router"
 import { useMutation } from "convex-solidjs"
 import { useConvexQuery } from "@/lib/convex-query"
 import { api } from "convex/_generated/api"
+import { getUser } from "@/lib/auth"
 import { Button } from "@/components/ui/button"
 import {
   Slider,
@@ -21,6 +22,7 @@ export function MissedWordsDeckBuilder() {
   const [maxIdx, setMaxIdx] = createSignal(2)
   const [mode, setMode] = createSignal<PracticeMode>("meanings")
   const [isCreating, setIsCreating] = createSignal(false)
+  const user = getUser()
 
   const daysBack = () => DAYS_PRESETS[daysIdx()]
   const maxItems = () => MAX_ITEMS_PRESETS[maxIdx()]
@@ -28,6 +30,7 @@ export function MissedWordsDeckBuilder() {
   const missedQuery = useConvexQuery(
     api.api.missedWords.getMostMissedItems,
     () => ({ daysBack: daysBack(), maxItems: maxItems(), mode: mode() }),
+    () => ({ enabled: !!user() }),
   )
 
   const buildDeck = useMutation(api.api.missedWords.buildMissedWordsDeck)

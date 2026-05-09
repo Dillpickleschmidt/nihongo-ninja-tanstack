@@ -2,6 +2,7 @@ import { Show, createMemo } from "solid-js"
 import { useConvexQuery } from "@/lib/convex-query"
 import { api } from "convex/_generated/api"
 import { usePreferences } from "@/lib/preferences"
+import { getUser } from "@/lib/auth"
 import { FolderBrowser } from "./FolderBrowser"
 import { RecentlyStudiedSection } from "./RecentlyStudiedSection"
 import { ComingUpSection } from "./ComingUpSection"
@@ -9,9 +10,11 @@ import { useVocab } from "../../../context/VocabContext"
 
 export function VocabDashboard() {
   const ctx = useVocab()
+  const user = getUser()
   const recentActivity = useConvexQuery(
     api.api.progress.getRecentModuleActivity,
     () => ({ limit: 20 }),
+    () => ({ enabled: !!user() }),
   )
   const { preferences } = usePreferences()
 

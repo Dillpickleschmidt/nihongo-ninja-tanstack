@@ -29,7 +29,7 @@ export const Route = createFileRoute("/_home/learn")({
 
     const prefs = parsePreferencesCookie()
     const anki = prefs.srsServicePreferences.anki
-    if (!(anki.mode === "enabled" && anki.is_api_key_valid)) {
+    if (context.auth.userId && !(anki.mode === "enabled" && anki.is_api_key_valid)) {
       context.queryClient.prefetchQuery(
         convexQuery(api.api.fsrs.getDueFSRSCardsCount, {}),
       )

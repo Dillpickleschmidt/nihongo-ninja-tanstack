@@ -29,9 +29,11 @@ export const Route = createFileRoute("/_home/dashboard")({
         showGradient: false,
       })
     }
-    context.queryClient.prefetchQuery(
-      convexQuery(api.api.fsrs.getDueFSRSCardsCount, {}),
-    )
+    if (context.auth.userId) {
+      context.queryClient.prefetchQuery(
+        convexQuery(api.api.fsrs.getDueFSRSCardsCount, {}),
+      )
+    }
     const prefs = parsePreferencesCookie()
     const pathId = prefs.activeLearningPath
     if (pathId) {

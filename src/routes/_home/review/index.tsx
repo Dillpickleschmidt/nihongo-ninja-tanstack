@@ -9,6 +9,7 @@ import {
   getLocalDateKey,
 } from "@/lib/progress/weights"
 import { useSrs } from "@/features/srs/use-srs"
+import { getUser } from "@/lib/auth"
 import { ProgressRing, getProgressColor } from "@/features/stats/ProgressRing"
 import { ModuleCard } from "@/features/stats/ModuleCard"
 import { DistributionBar } from "@/features/stats/DistributionBar"
@@ -35,20 +36,22 @@ export const Route = createFileRoute("/_home/review/")({
     const todayKey = getLocalDateKey()
     const range = getLastNDaysRange(7)
 
-    context.queryClient.prefetchQuery(
-      convexQuery(api.api.progress.getDailyModuleStatsForDate, {
-        dateKey: todayKey,
-      }),
-    )
-    context.queryClient.prefetchQuery(
-      convexQuery(api.api.progress.getRecentModuleActivity, { limit: 12 }),
-    )
-    context.queryClient.prefetchQuery(
-      convexQuery(api.api.progress.getDistribution, {
-        fromDateKey: range.fromDateKey,
-        toDateKey: range.toDateKey,
-      }),
-    )
+    if (context.auth.userId) {
+      context.queryClient.prefetchQuery(
+        convexQuery(api.api.progress.getDailyModuleStatsForDate, {
+          dateKey: todayKey,
+        }),
+      )
+      context.queryClient.prefetchQuery(
+        convexQuery(api.api.progress.getRecentModuleActivity, { limit: 12 }),
+      )
+      context.queryClient.prefetchQuery(
+        convexQuery(api.api.progress.getDistribution, {
+          fromDateKey: range.fromDateKey,
+          toDateKey: range.toDateKey,
+        }),
+      )
+    }
   },
   component: RouteComponent,
 })
@@ -57,16 +60,19 @@ function RouteComponent() {
   const todayKey = () => getLocalDateKey()
   const range = createMemo(() => getLastNDaysRange(7))
   const { dueCounts } = useSrs()
+  const user = getUser()
   const [dialogOpen, setDialogOpen] = createSignal(false)
 
   const dailyStatsQuery = useConvexQuery(
     api.api.progress.getDailyModuleStatsForDate,
     () => ({ dateKey: todayKey() }),
+    () => ({ enabled: !!user() }),
   )
 
   const recentActivityQuery = useConvexQuery(
     api.api.progress.getRecentModuleActivity,
     () => ({ limit: 12 }),
+    () => ({ enabled: !!user() }),
   )
 
   const distributionQuery = useConvexQuery(
@@ -75,6 +81,7 @@ function RouteComponent() {
       fromDateKey: range().fromDateKey,
       toDateKey: range().toDateKey,
     }),
+    () => ({ enabled: !!user() }),
   )
 
   const derived = createMemo(() => {

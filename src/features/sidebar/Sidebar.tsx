@@ -25,32 +25,58 @@ import { SidebarAuthFooter } from "./SidebarAuthFooter"
 const guidesNavigation = [
   {
     category: "Nihongo Ninja",
-    items: [
-      { id: "home", title: "Home", href: "/guides" },
-    ],
+    items: [{ id: "home", title: "Home", href: "/guides" }],
   },
   {
     category: "Guides",
     items: [
-      { id: "japanese-guide", title: "Japanese Guide", href: "/guides/japanese-guide" },
-      { id: "hiragana", title: "Hiragana + Katakana", href: "/guides/hiragana" },
+      {
+        id: "japanese-guide",
+        title: "Japanese Guide",
+        href: "/guides/japanese-guide",
+      },
+      {
+        id: "hiragana",
+        title: "Hiragana + Katakana",
+        href: "/guides/hiragana",
+      },
       { id: "typing", title: "Typing in Japanese", href: "/guides/typing" },
-      { id: "finding-shows", title: "Finding Shows & Movies", href: "/guides/finding-shows" },
-      { id: "writing-practice", title: "Writing Practice", href: "/guides/writing-practice" },
-      { id: "creator-support", title: "Support the Creators", href: "/guides/creator-support" },
+      {
+        id: "finding-shows",
+        title: "Finding Shows & Movies",
+        href: "/guides/finding-shows",
+      },
+      {
+        id: "writing-practice",
+        title: "Writing Practice",
+        href: "/guides/writing-practice",
+      },
+      {
+        id: "creator-support",
+        title: "Support the Creators",
+        href: "/guides/creator-support",
+      },
     ],
   },
   {
     category: "Browser Extension",
     items: [
-      { id: "nihongo-extension", title: "Nihongo Extension", href: "/guides/nihongo-extension" },
+      {
+        id: "nihongo-extension",
+        title: "Nihongo Extension",
+        href: "/guides/nihongo-extension",
+      },
     ],
   },
   {
     category: "FAQ",
     items: [
       { id: "srs", title: "Spaced Repetition System", href: "/guides/srs" },
-      { id: "comparison", title: "Using Anki or Other SRS?", href: "/guides/comparison" },
+      {
+        id: "comparison",
+        title: "Using Anki or Other SRS?",
+        href: "/guides/comparison",
+      },
     ],
   },
 ]
@@ -58,7 +84,8 @@ const guidesNavigation = [
 // --- Shared style tokens ---
 const iconSize = "size-3.5! 2xl:size-4!"
 const textSize = "text-[0.78rem] 2xl:text-[0.85rem] font-medium"
-const labelSize = "text-[0.6rem] 2xl:text-[0.68rem] font-semibold tracking-wide uppercase"
+const labelSize =
+  "text-[0.6rem] 2xl:text-[0.68rem] font-semibold tracking-wide uppercase"
 const activeClass = "text-dynamic-accent brightness-150"
 
 // --- Types ---
@@ -205,7 +232,12 @@ const navigation: NavigationSection[] = [
 
 // --- Shared nav item renderer ---
 function NavButton(props: {
-  item: { href: string; title: string; icon?: LucideIcon | string; class?: string }
+  item: {
+    href: string
+    title: string
+    icon?: LucideIcon | string
+    class?: string
+  }
   isActive: boolean
   onNavigate?: () => void
 }) {
@@ -258,7 +290,9 @@ function DefaultNavigation(props: NavigationContentProps) {
         {(section) => (
           <div class="flex flex-col gap-0.5">
             <Show when={section.label}>
-              <div class={cn("text-muted-foreground px-3 pt-2 xl:pt-3", labelSize)}>
+              <div
+                class={cn("text-muted-foreground px-3 pt-2 xl:pt-3", labelSize)}
+              >
                 {section.label}
               </div>
             </Show>
@@ -293,7 +327,9 @@ function GuidesNavigation(props: NavigationContentProps) {
       <For each={guidesNavigation}>
         {(section) => (
           <div class="flex flex-col gap-0.5">
-            <div class={cn("text-muted-foreground px-3 pt-2 xl:pt-3", labelSize)}>
+            <div
+              class={cn("text-muted-foreground px-3 pt-2 xl:pt-3", labelSize)}
+            >
               {section.category}
             </div>
             <For each={section.items}>
@@ -319,14 +355,25 @@ export function NavigationContent(props: NavigationContentProps) {
 
   return (
     <div class="flex h-full flex-col px-6 pt-6 pb-4 gap-4 xl:gap-0">
-      <Link to="/" class="flex items-center gap-2 text-lg tracking-tight font-bold" onClick={props.onNavigate}>
-        <img src="/icons/ninja.png" alt="Ninja" class="size-6 2xl:size-8 -mb-1.25" />
+      <Link
+        to="/"
+        class="flex items-center gap-2 text-lg tracking-tight font-bold"
+        onClick={props.onNavigate}
+      >
+        <img
+          src="/icons/ninja.png"
+          alt="Ninja"
+          class="size-6 2xl:size-8 -mb-1.25"
+        />
         <span class="text-muted-foreground text-sm 2xl:text-base">
           Nihongo Ninja
         </span>
       </Link>
 
-      <Show when={isGuidesSection()} fallback={<DefaultNavigation {...props} />}>
+      <Show
+        when={isGuidesSection()}
+        fallback={<DefaultNavigation {...props} />}
+      >
         <GuidesNavigation {...props} />
       </Show>
 
@@ -352,10 +399,7 @@ export function Sidebar(props: SidebarProps) {
       class="h-full"
       style={props.animated ? getInitialAnimationStyles("left") : undefined}
     >
-      <NavigationContent
-        isActive={isActive}
-        onSignOut={props.onSignOut}
-      />
+      <NavigationContent isActive={isActive} onSignOut={props.onSignOut} />
     </div>
   )
 }

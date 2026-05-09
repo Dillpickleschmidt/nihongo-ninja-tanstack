@@ -13,16 +13,18 @@ const vocabSearchSchema = z.object({
 export const Route = createFileRoute("/_home/vocab/")({
   validateSearch: (search) => vocabSearchSchema.parse(search),
   loader: ({ context }) => {
-    context.queryClient.prefetchQuery(
-      convexQuery(api.api.progress.getRecentModuleActivity, { limit: 20 }),
-    )
-    context.queryClient.prefetchQuery(
-      convexQuery(api.api.missedWords.getMostMissedItems, {
-        daysBack: 14,
-        maxItems: 25,
-        mode: "meanings",
-      }),
-    )
+    if (context.auth.userId) {
+      context.queryClient.prefetchQuery(
+        convexQuery(api.api.progress.getRecentModuleActivity, { limit: 20 }),
+      )
+      context.queryClient.prefetchQuery(
+        convexQuery(api.api.missedWords.getMostMissedItems, {
+          daysBack: 14,
+          maxItems: 25,
+          mode: "meanings",
+        }),
+      )
+    }
     const pathId = parsePreferencesCookie().activeLearningPath
     if (pathId) {
       context.queryClient.prefetchQuery(

@@ -3,6 +3,7 @@ import { useConvexQuery } from "@/lib/convex-query"
 import { api } from "convex/_generated/api"
 import { extractKanjiCharacters } from "@/data/utils/text/japanese"
 import { useVocab } from "@/features/vocab-page/context/VocabContext"
+import { getUser } from "@/lib/auth"
 import { resolveDeckScopeId } from "@/features/vocab-page/utils/scope"
 import type { UnifiedDeck } from "convex/model/decks"
 import type { VocabularyItem, KanjiEntry } from "convex/validators"
@@ -57,6 +58,7 @@ interface UseDeckViewReturn {
 
 export function useDeckView(options: UseDeckViewOptions): UseDeckViewReturn {
   const { deck } = options
+  const user = getUser()
 
   // State
   const [activeTab, setActiveTab] = createSignal<TabValue>("vocabulary")
@@ -89,13 +91,13 @@ export function useDeckView(options: UseDeckViewOptions): UseDeckViewReturn {
   const meaningsFsrsQuery = useConvexQuery(
     api.api.fsrs.getFSRSCardsForItems,
     () => ({ keys: hierarchyKeys(), mode: "meanings" as const }),
-    () => ({ enabled: hierarchyKeys().length > 0 }),
+    () => ({ enabled: !!user() && hierarchyKeys().length > 0 }),
   )
 
   const spellingsFsrsQuery = useConvexQuery(
     api.api.fsrs.getFSRSCardsForItems,
     () => ({ keys: hierarchyKeys(), mode: "spellings" as const }),
-    () => ({ enabled: hierarchyKeys().length > 0 }),
+    () => ({ enabled: !!user() && hierarchyKeys().length > 0 }),
   )
 
   // Vocab index for IK ranking (orderedKeys)
@@ -113,6 +115,7 @@ export function useDeckView(options: UseDeckViewOptions): UseDeckViewReturn {
   const knownVocabQuery = useConvexQuery(
     api.api.vocabulary.getKnownVocabWords,
     () => ({}),
+    () => ({ enabled: !!user() }),
   )
   const knownWords = () => knownVocabQuery.data() ?? []
 
