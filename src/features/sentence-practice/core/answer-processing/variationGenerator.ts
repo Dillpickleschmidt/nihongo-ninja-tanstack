@@ -11,7 +11,6 @@ const PRONOUNS = [
   "僕[ぼく]",
   "俺[おれ]",
   "あたし",
-  "うち",
 ]
 const PLURAL_PRONOUNS = ["私[わたし]たち", "僕[ぼく]たち", "俺[おれ]たち"]
 const HONORIFIC_VARIATIONS: Record<string, string[]> = {
@@ -254,12 +253,14 @@ function generatePronounVariations(answers: RichAnswer[]): RichAnswer[] {
   return Array.from(resultMap.values())
 }
 
-// Some words contain さん/ちゃん as part of the lexical word rather than as a
-// person-name honorific. Swapping those endings would produce nonsense like
-// お父くん or 赤さん, so skip these positions during honorific variation.
+// Some forms contain さん/ちゃん as part of a fixed word or expression rather
+// than as a swappable person-name honorific. Swapping those endings would
+// produce nonsense like お父くん, 赤さん, or 皆くん, so skip these positions
+// during honorific variation.
 const HONORIFIC_SWAP_PROTECTED_FORMS = [
   ...KINSHIP_GROUPS.flat(),
   "赤[あか]ちゃん",
+  "皆[みな]さん",
 ]
 
 function isInHonorificSwapProtectedForm(

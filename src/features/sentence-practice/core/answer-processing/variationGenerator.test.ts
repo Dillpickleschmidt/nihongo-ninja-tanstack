@@ -238,8 +238,7 @@ describe("position-based replacement", () => {
           a.original.includes("私[わたくし]") ||
           a.original.includes("僕[ぼく]") ||
           a.original.includes("俺[おれ]") ||
-          a.original.includes("あたし") ||
-          a.original.includes("うち"),
+          a.original.includes("あたし"),
       ),
     ).toBe(true)
   })
