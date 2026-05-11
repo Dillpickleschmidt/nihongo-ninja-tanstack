@@ -31,7 +31,15 @@ export function DashboardCard(props: DashboardCardProps) {
     >
       <Link
         to={props.card.href}
-        class="group block overflow-hidden rounded-2xl border border-white/5 bg-white/2 transition-colors duration-300 hover:border-dynamic-accent/20"
+        class="group block overflow-hidden rounded-[22px] border border-white/5 transition-colors duration-300 hover:border-dynamic-accent/20"
+        style={{
+          "box-shadow": `
+            inset 0 1px 0 rgba(255, 255, 255, 0.12),
+            inset 0 -1px 0 rgba(0, 0, 0, 0.55),
+            0 1px 0 rgba(255, 255, 255, 0.025),
+            0 16px 36px -18px rgba(0, 0, 0, 0.6)
+          `,
+        }}
       >
         <div class="relative aspect-[16/10] overflow-hidden">
           <img
@@ -39,8 +47,13 @@ export function DashboardCard(props: DashboardCardProps) {
             alt={props.card.title}
             class="size-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
+          <div
+            class="pointer-events-none absolute inset-0"
+            style={{
+              background: `linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.012) 38%, transparent 62%)`,
+            }}
+          />
           <div class="absolute inset-0 bg-gradient-to-t from-background to-transparent" />
-          <div class="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-dynamic-accent/30 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
           {/* Tags */}
           <Show when={props.card.tags?.length}>

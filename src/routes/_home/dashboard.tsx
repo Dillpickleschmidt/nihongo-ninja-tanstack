@@ -107,7 +107,7 @@ function DashboardComponent() {
         {/* Hero */}
         <section class="mx-auto grid max-w-7xl gap-8 px-6 pt-16 lg:pt-24">
           <div class="mx-auto text-center">
-            <h1 class="font-excalifont text-4xl font-bold text-white/90 sm:text-5xl lg:whitespace-nowrap">
+            <h1 class="font-excalifont text-4xl text-white/90 sm:text-5xl lg:whitespace-nowrap">
               The best materials, at the right time
             </h1>
           </div>
