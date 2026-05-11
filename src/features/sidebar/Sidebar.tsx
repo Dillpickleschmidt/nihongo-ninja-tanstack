@@ -40,6 +40,7 @@ const guidesNavigation = [
         title: "Hiragana + Katakana",
         href: "/guides/hiragana",
       },
+      { id: "tools", title: "Tools", href: "/guides/tools" },
       { id: "typing", title: "Typing in Japanese", href: "/guides/typing" },
       {
         id: "finding-shows",
