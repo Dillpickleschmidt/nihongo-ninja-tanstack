@@ -388,8 +388,8 @@ export const sentenceAnswerValidator = v.object({
 })
 
 export const sentenceAnswerTokenValidator = v.object({
-  text: v.string(),
-  pos: v.array(v.string()),
+  t: v.string(),
+  p: v.string(),
 })
 
 // Inferred types for sentence practice

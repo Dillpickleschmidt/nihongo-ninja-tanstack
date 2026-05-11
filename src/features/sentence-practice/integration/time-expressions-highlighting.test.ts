@@ -4,7 +4,7 @@ import { prepareQuestion } from "../core/questionProcessor"
 import { checkAnswer } from "../core/answer-processing/answerChecker"
 
 describe("time expressions highlighting", () => {
-  it("highlights the missing ろ instead of drifting into テレビ", () => {
+  it("highlights omitted kana in the matched answer script", () => {
     const source = timeExpressionQuestions.find(
       (question) => question.english === "I usually watch TV at around nine o'clock.",
     )
@@ -17,7 +17,7 @@ describe("time expressions highlighting", () => {
       english: source.english,
       hint: source.hint,
       answers: source.answers,
-      preparedAnswerTokens: [],
+      canonicalAnswerTokens: [],
     })
 
     const result = checkAnswer(
@@ -25,17 +25,17 @@ describe("time expressions highlighting", () => {
       prepared.preparedAnswersForMatching,
     )
 
-    expect(result.bestMatch).toBe("たいてい九時ごろにテレビを見る")
+    expect(result.bestMatch).toBe("たいていくじごろにテレビをみる")
     expect(result.errorRanges).toEqual([])
     expect(result.bestMatchErrors).toEqual([{ start: 7, end: 8 }])
 
     const noPronounAlternative = result.allMatches.find(
-      (match) => match.displayText === "たいてい九時ごろテレビを見る",
+      (match) => match.displayText === "たいていくじごろテレビをみる",
     )
     expect(noPronounAlternative?.answerErrors).toEqual([{ start: 7, end: 8 }])
   })
 
-  it("maps kana-space alternative highlights onto the plain display text", () => {
+  it("highlights omitted alternative text in the matched answer script", () => {
     const source = timeExpressionQuestions.find(
       (question) => question.english === "I usually watch TV at around nine o'clock.",
     )
@@ -48,7 +48,7 @@ describe("time expressions highlighting", () => {
       english: source.english,
       hint: source.hint,
       answers: source.answers,
-      preparedAnswerTokens: [],
+      canonicalAnswerTokens: [],
     })
 
     const result = checkAnswer(
@@ -56,10 +56,10 @@ describe("time expressions highlighting", () => {
       prepared.preparedAnswersForMatching,
     )
     const pronounAlternative = result.allMatches.find(
-      (match) => match.displayText === "僕、たいてい九時ごろテレビを見る",
+      (match) => match.displayText === "ぼく、たいていくじごろテレビをみる",
     )
 
-    expect(pronounAlternative?.displayText).toBe("僕、たいてい九時ごろテレビを見る")
-    expect(pronounAlternative?.answerErrors).toEqual([{ start: 0, end: 2 }])
+    expect(pronounAlternative?.displayText).toBe("ぼく、たいていくじごろテレビをみる")
+    expect(pronounAlternative?.answerErrors).toEqual([{ start: 0, end: 3 }])
   })
 })

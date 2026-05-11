@@ -10,7 +10,7 @@ import {
 } from "../common/posHelpers"
 
 interface PosHintBoxProps {
-  pos: string[]
+  pos: string
   width: number
 }
 

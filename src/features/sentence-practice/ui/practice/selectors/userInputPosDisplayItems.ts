@@ -1,8 +1,11 @@
 import type { SentenceAnswerToken } from "../../../../../../convex/validators"
-import type { ProcessedQuestion, RichSegment } from "../../../core/types"
+import type { ProcessedQuestion, RichAnswer } from "../../../core/types"
 import { containsKanji } from "@/data/utils/text/japanese"
 import { createKanjiFuriganaGroupRegex } from "@/data/utils/text/furigana"
-import { isIgnoredForAnswerMatching } from "../../../core/textProcessor"
+import {
+  isIgnoredForAnswerMatching,
+  SEGMENT_SEPARATOR,
+} from "../../../core/textProcessor"
 
 const FURIGANA_AT_CURRENT_POSITION = new RegExp(
   `^${createKanjiFuriganaGroupRegex("").source}`,
@@ -12,7 +15,7 @@ export type UserInputPosDisplayItem =
   | {
       kind: "token"
       text: string
-      pos: string[]
+      pos: string
     }
   | {
       kind: "incomplete"
@@ -25,9 +28,14 @@ export function getUserInputPosDisplayItems(
 ): UserInputPosDisplayItem[] {
   if (!question || !originalInput.trim()) return []
 
-  const answerIndex = findBestAnswerIndex(originalInput, question.answers)
-  const answer = question.answers[answerIndex]
-  const tokens = question.preparedAnswerTokens[answerIndex]
+  const answerIndex = findBestAnswerIndex(
+    originalInput,
+    question.canonicalAnswers,
+  )
+  const answer = question.canonicalAnswers[answerIndex]
+  const tokens = question.canonicalAnswerTokens[answerIndex]
+  if (!answer || !tokens) return []
+
   const input = originalInput.trim()
   const answerText = getAnswerText(answer)
 
@@ -36,7 +44,7 @@ export function getUserInputPosDisplayItems(
 
 function findBestAnswerIndex(
   input: string,
-  answers: RichSegment[][],
+  answers: RichAnswer[],
 ): number {
   let bestIndex = 0
   let bestScore = -1
@@ -68,11 +76,13 @@ function buildDisplayItems(
   for (const token of tokens) {
     if (inputPos >= input.length) break
 
-    const tokenStart = answerText.plain.indexOf(token.text, plainPos)
+    const tokenStart = answerText.plain.indexOf(token.t, plainPos)
     if (tokenStart === -1) return appendIncomplete(items, input, inputPos)
 
-    const tokenEnd = tokenStart + token.text.length
-    const targetStart = usesKanji ? tokenStart : answerText.plainToKana[tokenStart]
+    const tokenEnd = tokenStart + token.t.length
+    const targetStart = usesKanji
+      ? tokenStart
+      : answerText.plainToKana[tokenStart]
     const targetEnd = usesKanji ? tokenEnd : answerText.plainToKana[tokenEnd]
     const tokenTargetText = targetText.slice(targetStart, targetEnd)
     const tokenMatchText = normalizeForInputMatching(tokenTargetText)
@@ -86,7 +96,7 @@ function buildDisplayItems(
       items.push({
         kind: "token",
         text: input.slice(inputPos, inputPos + tokenMatchText.length),
-        pos: token.pos,
+        pos: token.p,
       })
       inputPos += tokenMatchText.length
       plainPos = tokenEnd
@@ -105,9 +115,9 @@ function buildDisplayItems(
   return items
 }
 
-function getTargetText(input: string, answer: RichSegment[]): string {
+function getTargetText(input: string, answer: RichAnswer): string {
   const field = containsKanji(input) ? "plain" : "kana"
-  return answer.map((segment) => segment[field]).join("")
+  return stripSegmentSeparators(answer[field])
 }
 
 function appendIncomplete(
@@ -126,25 +136,16 @@ interface AnswerText {
   plainToKana: number[]
 }
 
-function getAnswerText(answer: RichSegment[]): AnswerText {
-  const plainToKana: number[] = []
-  let plain = ""
-  let kana = ""
-
-  for (const segment of answer) {
-    const segmentMap = buildPlainToKanaMap(segment.original)
-    const plainOffset = plain.length
-    const kanaOffset = kana.length
-
-    plain += segment.plain
-    kana += segment.kana
-
-    for (let i = 0; i < segmentMap.length; i++) {
-      plainToKana[plainOffset + i] = kanaOffset + segmentMap[i]
-    }
+function getAnswerText(answer: RichAnswer): AnswerText {
+  return {
+    plain: stripSegmentSeparators(answer.plain),
+    kana: stripSegmentSeparators(answer.kana),
+    plainToKana: buildPlainToKanaMap(answer.original),
   }
+}
 
-  return { plain, kana, plainToKana }
+function stripSegmentSeparators(text: string): string {
+  return text.split(SEGMENT_SEPARATOR).join("").replace(/\s+/g, "")
 }
 
 function buildPlainToKanaMap(original: string): number[] {
@@ -155,7 +156,7 @@ function buildPlainToKanaMap(original: string): number[] {
 
   while (index < original.length) {
     const char = original[index]
-    if (/\s/.test(char)) {
+    if (/\s/.test(char) || char === SEGMENT_SEPARATOR) {
       index++
       continue
     }

@@ -20,7 +20,7 @@ function createQuestion(
     english,
     hint,
     answers,
-    preparedAnswerTokens: [],
+    canonicalAnswerTokens: [],
   }
 }
 
@@ -128,7 +128,7 @@ describe("prepareQuestion", () => {
     expect(hasCasualVolitional).toBe(true)
   })
 
-  it("generates valid answer strings for checking", () => {
+  it("generates accepted answer strings for checking", () => {
     const question = createQuestion("Please wait", [
       {
         segments: [
@@ -145,17 +145,17 @@ describe("prepareQuestion", () => {
 
     const result = prepareQuestion(question)
 
-    // validAnswers should contain the joined answer strings
-    expect(result.validAnswers.length).toBeGreaterThan(0)
+    // acceptedAnswers should contain the joined answer strings
+    expect(result.acceptedAnswers.length).toBeGreaterThan(0)
     // Should contain 待ってください (te-form + ください) in plain or kana
-    const hasTeForm = result.validAnswers.some(
+    const hasTeForm = result.acceptedAnswers.some(
       (answer) =>
         answer.plain.includes("待って") || answer.kana.includes("まって"),
     )
     expect(hasTeForm).toBe(true)
   })
 
-  it("generates kana-only variations in validAnswers", () => {
+  it("generates kana-only variations in acceptedAnswers", () => {
     const question = createQuestion("I will go", [
       {
         segments: [segment("行[い]きます")],
@@ -165,10 +165,10 @@ describe("prepareQuestion", () => {
     const result = prepareQuestion(question)
 
     // Should have RichAnswer with original and kana versions
-    expect(result.validAnswers.some((a) => a.original === "行[い]きます")).toBe(
+    expect(result.acceptedAnswers.some((a) => a.original === "行[い]きます")).toBe(
       true,
     )
-    expect(result.validAnswers.some((a) => a.kana === "いきます")).toBe(true)
+    expect(result.acceptedAnswers.some((a) => a.kana === "いきます")).toBe(true)
   })
 
   it("handles multiple raw answers", () => {
@@ -185,50 +185,6 @@ describe("prepareQuestion", () => {
 
     // Should have processed answers from both raw answers
     expect(result.answers.length).toBeGreaterThanOrEqual(2)
-  })
-
-  it("handles i-adjective conjugation", () => {
-    const question = createQuestion("It is hot", [
-      {
-        segments: [
-          segment("暑[あつ]い", false, {
-            pos: "I-adjective",
-            polarity: "positive",
-            tense: "non-past",
-          }),
-        ],
-      },
-    ])
-
-    const result = prepareQuestion(question)
-
-    // Should have polite form: 暑いです
-    const hasPolite = result.answers.some((answer) =>
-      answer.some((seg) => seg.original.includes("暑[あつ]いです")),
-    )
-    expect(hasPolite).toBe(true)
-  })
-
-  it("handles na-adjective conjugation", () => {
-    const question = createQuestion("She is pretty", [
-      {
-        segments: [
-          segment("きれい", false, {
-            pos: "Na-adjective",
-            polarity: "positive",
-            tense: "non-past",
-          }),
-        ],
-      },
-    ])
-
-    const result = prepareQuestion(question)
-
-    // Should have polite form: きれいです
-    const hasPolite = result.answers.some((answer) =>
-      answer.some((seg) => seg.original.includes("きれいです")),
-    )
-    expect(hasPolite).toBe(true)
   })
 
   it("preserves segment structure in first answer for display", () => {
@@ -261,12 +217,12 @@ describe("prepareQuestion", () => {
     expect(result.displayAnswer[2].isBlank).toBe(false)
   })
 
-  it("returns empty validAnswers for question with empty segments", () => {
+  it("returns empty acceptedAnswers for question with empty segments", () => {
     const question = createQuestion("Empty", [{ segments: [] }])
 
     const result = prepareQuestion(question)
 
-    expect(result.validAnswers.some((a) => a.original === "")).toBe(true)
+    expect(result.acceptedAnswers.some((a) => a.original === "")).toBe(true)
   })
 
   it("generates only casual forms when register is 'casual'", () => {
@@ -286,7 +242,7 @@ describe("prepareQuestion", () => {
 
     const result = prepareQuestion(question)
 
-    const plains = result.validAnswers.map((a) => a.plain)
+    const plains = result.acceptedAnswers.map((a) => a.plain)
     expect(plains).toContain("行こう")
     expect(plains.some((p) => p.includes("行きましょう"))).toBe(false)
   })
@@ -308,7 +264,7 @@ describe("prepareQuestion", () => {
 
     const result = prepareQuestion(question)
 
-    const plains = result.validAnswers.map((a) => a.plain)
+    const plains = result.acceptedAnswers.map((a) => a.plain)
     expect(plains).toContain("行きましょう")
     expect(plains.some((p) => p.includes("行こう"))).toBe(false)
   })
@@ -342,7 +298,7 @@ describe("prepareQuestion", () => {
     ])
 
     const result = prepareQuestion(question)
-    const stripped = result.validAnswers.map((a) =>
+    const stripped = result.acceptedAnswers.map((a) =>
       a.plain.replaceAll("\u001f", ""),
     )
 

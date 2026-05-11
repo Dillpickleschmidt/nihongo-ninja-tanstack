@@ -57,17 +57,13 @@ async function main() {
 function buildQuestionReport(question: Question, index: number) {
   const processed = prepareQuestion({
     ...question,
-    preparedAnswerTokens: [],
+    canonicalAnswerTokens: [],
   })
-  const nonKanaAnswers = processed.validAnswers.filter(
-    (a) => !a.isKanaVariation,
-  )
-
   const acceptedPlain = unique(
-    nonKanaAnswers.map((a) => cleanAnswerText(a.plain)),
+    processed.canonicalAnswers.map((a) => cleanAnswerText(a.plain)),
   )
-  const strippedParticles = getStrippableParticles(processed.validAnswers)
-  const groupedAnswers = groupDebugAnswers(nonKanaAnswers)
+  const strippedParticles = getStrippableParticles(processed.acceptedAnswers)
+  const groupedAnswers = groupDebugAnswers(processed.canonicalAnswers)
 
   return {
     index: index + 1,
@@ -186,8 +182,8 @@ function unique<T>(values: T[]): T[] {
   return [...new Set(values)]
 }
 
-function getStrippableParticles(validAnswers: RichAnswer[]): string[] {
-  const cleaned = validAnswers.map((a) => cleanAnswerText(a.plain))
+function getStrippableParticles(acceptedAnswers: RichAnswer[]): string[] {
+  const cleaned = acceptedAnswers.map((a) => cleanAnswerText(a.plain))
   if (cleaned.some((t) => t.endsWith("か") || t.endsWith("？"))) return []
   return ["よね", "ね", "よ"].filter(
     (p) => !cleaned.some((t) => t.endsWith(p)),

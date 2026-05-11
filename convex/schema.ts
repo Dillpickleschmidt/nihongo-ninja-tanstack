@@ -284,7 +284,7 @@ export default defineSchema({
     english: v.string(),
     hint: v.optional(v.string()),
     answers: v.array(sentenceAnswerValidator),
-    preparedAnswerTokens: v.array(v.array(sentenceAnswerTokenValidator)),
+    canonicalAnswerTokens: v.array(v.array(sentenceAnswerTokenValidator)),
   }).index("by_setId", ["setId"]),
 
 })

@@ -28,9 +28,7 @@ export function getEasyModeBlankVariations(
   for (const blankIndex of blankIndices) {
     const variationSet = new Set<string>()
 
-    for (const answer of question.validAnswers) {
-      if (answer.isKanaVariation) continue
-
+    for (const answer of question.canonicalAnswers) {
       const segments = answer.plain.split(SEGMENT_SEPARATOR)
       const segment = segments[blankIndex]
       if (!segment) continue

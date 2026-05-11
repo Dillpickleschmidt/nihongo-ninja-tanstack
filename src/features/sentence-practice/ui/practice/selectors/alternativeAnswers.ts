@@ -10,7 +10,7 @@ export function getAlternativeAnswers(
   return allMatches.filter((match, index) => {
     if (index === bestMatchIndex) return false
     if (match.answer.isVariation) return false
-    if (match.answer.isKanaVariation) return false
+    if (match.answer.isInputAlias) return false
     if (shouldHidePronounVariant(match)) return false
     if (shouldHideHonorificVariant(match)) return false
     return match.answer.originalPoliteForm === bestMatchPoliteForm

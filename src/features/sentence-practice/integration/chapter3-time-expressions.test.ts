@@ -32,7 +32,7 @@ function getRawQuestion() {
     english: source.english,
     hint: source.hint,
     answers: source.answers,
-    preparedAnswerTokens: [],
+    canonicalAnswerTokens: [],
   }
 }
 
@@ -67,13 +67,13 @@ describe("chapter 3 time expressions hard-mode pipeline", () => {
     ])
   })
 
-  it("keeps representative authored polite variants in validAnswers", () => {
+  it("keeps representative authored polite variants in acceptedAnswers", () => {
     const question = getPreparedQuestion()
     const plains = new Set(
-      question.validAnswers.map((answer) => normalizeText(answer.plain)),
+      question.acceptedAnswers.map((answer) => normalizeText(answer.plain)),
     )
     const kana = new Set(
-      question.validAnswers.map((answer) => normalizeText(answer.kana)),
+      question.acceptedAnswers.map((answer) => normalizeText(answer.kana)),
     )
 
     expect(plains.has("私は時々朝八時ごろに音楽を聞きます")).toBe(true)
@@ -85,13 +85,13 @@ describe("chapter 3 time expressions hard-mode pipeline", () => {
     )
   })
 
-  it("keeps representative authored casual variants in validAnswers", () => {
+  it("keeps representative authored casual variants in acceptedAnswers", () => {
     const question = getPreparedQuestion()
     const plains = new Set(
-      question.validAnswers.map((answer) => normalizeText(answer.plain)),
+      question.acceptedAnswers.map((answer) => normalizeText(answer.plain)),
     )
     const kana = new Set(
-      question.validAnswers.map((answer) => normalizeText(answer.kana)),
+      question.acceptedAnswers.map((answer) => normalizeText(answer.kana)),
     )
 
     expect(plains.has("私は時々朝八時ごろに音楽を聞く")).toBe(true)

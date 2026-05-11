@@ -5,7 +5,7 @@ import { removeFurigana } from "../../core/textProcessor"
 import { groupDebugAnswers } from "./selectors/debugAnswers"
 
 interface DebugPanelProps {
-  allAnswers: RichAnswer[] // All validAnswers from ProcessedQuestion
+  allAnswers: RichAnswer[] // All acceptedAnswers from ProcessedQuestion
 }
 
 const SPACE_REGEX = /\s+/g

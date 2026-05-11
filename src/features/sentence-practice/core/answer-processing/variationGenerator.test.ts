@@ -1,20 +1,23 @@
 // core/answer-processing/variationGenerator.test.ts
 import { describe, it, expect } from "vitest"
-import { generateValidAnswers } from "./variationGenerator"
+import {
+  generateAcceptedAnswers,
+  generateCanonicalAnswers,
+} from "./variationGenerator"
 import type { RichSegment } from "../types"
 import { createRichSegment } from "../textProcessor"
 
 // Helper to strip segment separators for test assertions
 const stripSeparators = (s: string) => s.replace(/\x1F/g, "")
 
-describe("generateValidAnswers", () => {
+describe("generateCanonicalAnswers", () => {
   it("combines segments into answer strings", () => {
     const segments: RichSegment[] = [
       createRichSegment("給料[きゅうりょう]を", false),
       createRichSegment("もらったら", true),
       createRichSegment("行[い]きましょう", false),
     ]
-    const result = generateValidAnswers(segments, 0, true)
+    const result = generateCanonicalAnswers(segments, 0, true)
 
     // Strip separators for comparison (separators are internal implementation detail)
     expect(
@@ -26,12 +29,14 @@ describe("generateValidAnswers", () => {
     ).toBe(true)
   })
 
-  it("generates kana variations", () => {
+  it("generates kana input aliases for accepted answers", () => {
     const segments: RichSegment[] = [
       createRichSegment("給料[きゅうりょう]を", false),
       createRichSegment("もらったら", true),
     ]
-    const result = generateValidAnswers(segments, 0, true)
+    const result = generateAcceptedAnswers(
+      generateCanonicalAnswers(segments, 0, true),
+    )
 
     // Check that kana field has the kana version
     expect(
@@ -39,8 +44,8 @@ describe("generateValidAnswers", () => {
         (a) => stripSeparators(a.kana) === "きゅうりょうをもらったら",
       ),
     ).toBe(true)
-    // Check that isKanaVariation flag is set
-    expect(result.some((a) => a.isKanaVariation === true)).toBe(true)
+    // Check that input alias metadata is set
+    expect(result.some((a) => a.isInputAlias === true)).toBe(true)
   })
 
   it("generates pronoun variations when applicable", () => {
@@ -48,7 +53,7 @@ describe("generateValidAnswers", () => {
       createRichSegment("私[わたし]は", false),
       createRichSegment("学生[がくせい]です", false),
     ]
-    const result = generateValidAnswers(segments, 0, true)
+    const result = generateCanonicalAnswers(segments, 0, true)
 
     expect(result.some((a) => a.original.includes("僕"))).toBe(true)
     // Check that pronounType metadata is set
@@ -57,19 +62,19 @@ describe("generateValidAnswers", () => {
 
   it("sets metadata correctly", () => {
     const segments: RichSegment[] = [createRichSegment("こんにちは", false)]
-    const result = generateValidAnswers(segments, 1, false)
+    const result = generateCanonicalAnswers(segments, 1, false)
 
     // Check that metadata is set correctly
     expect(result[0].sourceAnswerIndex).toBe(1)
     expect(result[0].originalPoliteForm).toBe(false)
     expect(result[0].pronounType).toBe("none")
     expect(result[0].honorificType).toBe("none")
-    expect(result[0].isKanaVariation).toBe(false)
+    expect(result[0].isInputAlias).toBeUndefined()
   })
 
   it("handles empty segments array", () => {
     const segments: RichSegment[] = []
-    const result = generateValidAnswers(segments, 0, true)
+    const result = generateCanonicalAnswers(segments, 0, true)
 
     expect(result).toEqual([
       {
@@ -80,7 +85,6 @@ describe("generateValidAnswers", () => {
         originalPoliteForm: true,
         pronounType: "none",
         honorificType: "none",
-        isKanaVariation: false,
       },
     ])
   })
@@ -91,7 +95,7 @@ describe("honorific variations", () => {
     const segments: RichSegment[] = [
       createRichSegment("田中[たなか]さんは先生[せんせい]です", false),
     ]
-    const result = generateValidAnswers(segments, 0, true)
+    const result = generateCanonicalAnswers(segments, 0, true)
 
     // Should have variations with くん, ちゃん, 先生
     expect(result.some((a) => a.original.includes("田中[たなか]くん"))).toBe(
@@ -112,7 +116,7 @@ describe("honorific variations", () => {
     const segments: RichSegment[] = [
       createRichSegment("田中[たなか]さんと山田[やまだ]さん", false),
     ]
-    const result = generateValidAnswers(segments, 0, true)
+    const result = generateCanonicalAnswers(segments, 0, true)
 
     // Should have variations where ONLY first さん is replaced
     expect(
@@ -136,13 +140,11 @@ describe("honorific variations", () => {
     const segments: RichSegment[] = [
       createRichSegment("今日[きょう]は暑[あつ]いです", false),
     ]
-    const result = generateValidAnswers(segments, 0, true)
+    const result = generateCanonicalAnswers(segments, 0, true)
 
-    // Should only have original + kana variation (no honorific variations)
-    // Filter to non-kana variations
-    const nonKana = result.filter((a) => !a.isKanaVariation)
-    expect(nonKana).toHaveLength(1)
-    expect(stripSeparators(nonKana[0].original)).toBe(
+    // Should only have the original canonical answer (no honorific variations)
+    expect(result).toHaveLength(1)
+    expect(stripSeparators(result[0].original)).toBe(
       "今日[きょう]は暑[あつ]いです",
     )
   })
@@ -152,28 +154,26 @@ describe("honorific variations", () => {
       createRichSegment("三階[さんがい]にございます", false),
       createRichSegment("参加[さんか]いたします", false),
     ]
-    const result = generateValidAnswers(segments, 0, true)
-    const nonKana = result.filter((a) => !a.isKanaVariation)
+    const result = generateCanonicalAnswers(segments, 0, true)
 
-    expect(nonKana).toHaveLength(1)
-    expect(stripSeparators(nonKana[0].original)).toBe(
+    expect(result).toHaveLength(1)
+    expect(stripSeparators(result[0].original)).toBe(
       "三階[さんがい]にございます参加[さんか]いたします",
     )
-    expect(nonKana[0].honorificType).toBe("none")
+    expect(result[0].honorificType).toBe("none")
   })
 
   it("does not replace honorific-looking text in protected lexical words", () => {
     const segments: RichSegment[] = [
       createRichSegment("赤[あか]ちゃんが泣[な]いています", false),
     ]
-    const result = generateValidAnswers(segments, 0, true)
-    const nonKana = result.filter((a) => !a.isKanaVariation)
+    const result = generateCanonicalAnswers(segments, 0, true)
 
     expect(
-      nonKana.some((a) => stripSeparators(a.original).includes("赤[あか]ちゃん")),
+      result.some((a) => stripSeparators(a.original).includes("赤[あか]ちゃん")),
     ).toBe(true)
     expect(
-      nonKana.every(
+      result.every(
         (a) =>
           !stripSeparators(a.original).includes("赤[あか]さん") &&
           !stripSeparators(a.original).includes("赤[あか]くん"),
@@ -190,7 +190,7 @@ describe("position-based replacement", () => {
         false,
       ),
     ]
-    const result = generateValidAnswers(segments, 0, true)
+    const result = generateCanonicalAnswers(segments, 0, true)
 
     // Should have variation where ONLY first pronoun is replaced
     expect(
@@ -210,7 +210,7 @@ describe("position-based replacement", () => {
     const segments: RichSegment[] = [
       createRichSegment("私[わたし]は学生[がくせい]です", false),
     ]
-    const result = generateValidAnswers(segments, 0, true)
+    const result = generateCanonicalAnswers(segments, 0, true)
 
     // Should have dropped pronoun variation
     expect(
@@ -224,15 +224,12 @@ describe("position-based replacement", () => {
     const segments: RichSegment[] = [
       createRichSegment("学生[がくせい]の私[わたし]は", false),
     ]
-    const result = generateValidAnswers(segments, 0, true)
-
-    // Filter to non-kana variations (kana variations convert furigana brackets)
-    const nonKana = result.filter((a) => !a.isKanaVariation)
+    const result = generateCanonicalAnswers(segments, 0, true)
 
     // Should NOT have variation with dropped pronoun (not at beginning)
     // Check for all possible pronouns that could be generated
     expect(
-      nonKana.every(
+      result.every(
         (a) =>
           a.original.includes("私[わたし]") ||
           a.original.includes("私[わたくし]") ||
@@ -249,34 +246,35 @@ describe("plural pronouns", () => {
     const segments: RichSegment[] = [
       createRichSegment("私[わたし]たちは学生[がくせい]です", false),
     ]
-    const result = generateValidAnswers(segments, 0, true)
+    const result = generateCanonicalAnswers(segments, 0, true)
 
     // Should include 僕たち, 俺たち variations
     expect(result.some((a) => a.original.includes("僕[ぼく]たち"))).toBe(true)
     expect(result.some((a) => a.original.includes("俺[おれ]たち"))).toBe(true)
 
-    // Check that pronounType metadata is set for variations (excluding kana)
+    // Check that pronounType metadata is set for canonical variations
     // Note: When "私[わたし]" in "私たち" is replaced with "僕[ぼく]",
     // pronounType is set to the base pronoun "僕[ぼく]", not the full plural "僕[ぼく]たち"
-    const nonKanaResults = result.filter((a) => !a.isKanaVariation)
     expect(
-      nonKanaResults.some(
+      result.some(
         (a) => a.pronounType === "僕[ぼく]" || a.pronounType === "俺[おれ]",
       ),
     ).toBe(true)
   })
 })
 
-describe("kana variation preservation", () => {
-  it("keeps original alongside kana variation", () => {
+describe("kana input alias preservation", () => {
+  it("keeps the canonical answer alongside the kana input alias", () => {
     const segments: RichSegment[] = [
       createRichSegment("給料[きゅうりょう]をもらったら", false),
     ]
-    const result = generateValidAnswers(segments, 0, true)
+    const result = generateAcceptedAnswers(
+      generateCanonicalAnswers(segments, 0, true),
+    )
 
-    // Should have both original (with furigana) and kana version
-    const original = result.find((a) => !a.isKanaVariation)
-    const kanaVar = result.find((a) => a.isKanaVariation)
+    // Should have both canonical answer (with furigana) and kana alias
+    const original = result.find((a) => !a.isInputAlias)
+    const kanaVar = result.find((a) => a.isInputAlias)
 
     expect(original).toBeDefined()
     expect(stripSeparators(original!.original)).toBe(
@@ -285,15 +283,17 @@ describe("kana variation preservation", () => {
 
     expect(kanaVar).toBeDefined()
     expect(stripSeparators(kanaVar!.original)).toBe("きゅうりょうをもらったら")
-    expect(kanaVar!.isKanaVariation).toBe(true)
+    expect(kanaVar!.isInputAlias).toBe(true)
   })
 
   it("does not duplicate when text has no furigana", () => {
     const segments: RichSegment[] = [createRichSegment("ください", false)]
-    const result = generateValidAnswers(segments, 0, true)
+    const result = generateAcceptedAnswers(
+      generateCanonicalAnswers(segments, 0, true),
+    )
 
-    // Should only have 1 answer (no kana variation since no kanji)
+    // Should only have 1 accepted answer (no kana alias since no kanji)
     expect(result).toHaveLength(1)
-    expect(result[0].isKanaVariation).toBe(false)
+    expect(result[0].isInputAlias).toBeUndefined()
   })
 })

@@ -5,20 +5,23 @@ import type {
 import type { ProcessedQuestion, RichSegment, RichAnswer } from "./types"
 import { prepareAnswersForMatching } from "./answer-processing/preparedMatching"
 import { processSegments } from "./segmentProcessor"
-import { generateValidAnswers } from "./answer-processing/variationGenerator"
+import {
+  generateAcceptedAnswers,
+  generateCanonicalAnswers,
+} from "./answer-processing/variationGenerator"
 import { SEGMENT_SEPARATOR } from "./textProcessor"
 
-// Processes segments (polite + casual) and generates all valid answer strings
+// Processes segments (polite + casual), canonical answers, and input aliases
 export function prepareQuestion(question: {
   english: string
   hint?: string
   answers: SentenceAnswer[]
-  preparedAnswerTokens: SentenceAnswerToken[][]
+  canonicalAnswerTokens: SentenceAnswerToken[][]
 }): ProcessedQuestion {
   const { english, hint, answers: rawAnswers } = question
   const processedAnswers: RichSegment[][] = []
   const seenSequences = new Set<string>()
-  const validAnswers = new Map<string, RichAnswer>()
+  const canonicalAnswers = new Map<string, RichAnswer>()
 
   const addSequence = (
     seq: RichSegment[],
@@ -31,8 +34,8 @@ export function prepareQuestion(question: {
       seenSequences.add(key)
       processedAnswers.push(seq)
     }
-    for (const answer of generateValidAnswers(seq, sourceIndex, isPolite)) {
-      validAnswers.set(answer.original, { ...answer, notes })
+    for (const answer of generateCanonicalAnswers(seq, sourceIndex, isPolite)) {
+      canonicalAnswers.set(answer.original, { ...answer, notes })
     }
   }
 
@@ -54,16 +57,18 @@ export function prepareQuestion(question: {
     }
   }
 
-  const answerList = Array.from(validAnswers.values())
+  const canonicalAnswerList = Array.from(canonicalAnswers.values())
+  const acceptedAnswerList = generateAcceptedAnswers(canonicalAnswerList)
 
   return {
     english,
     hint,
-    preparedAnswerTokens: question.preparedAnswerTokens,
+    canonicalAnswerTokens: question.canonicalAnswerTokens,
     displayAnswer: processedAnswers[0] ?? [],
     answers: processedAnswers,
-    validAnswers: answerList,
-    preparedAnswersForMatching: prepareAnswersForMatching(answerList),
+    canonicalAnswers: canonicalAnswerList,
+    acceptedAnswers: acceptedAnswerList,
+    preparedAnswersForMatching: prepareAnswersForMatching(acceptedAnswerList),
   }
 }
 

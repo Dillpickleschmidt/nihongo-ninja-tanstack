@@ -23,7 +23,7 @@ export default function FullInput() {
     <div class="space-y-4">
       {/* POS hint boxes */}
       <div>
-        <PosHintDisplay tokens={computed.getCurrentQuestion()?.preparedAnswerTokens[0]} />
+        <PosHintDisplay tokens={computed.getCurrentQuestion()?.canonicalAnswerTokens[0]} />
         <UserInputPosDisplay
           originalInput={store.answerText}
           question={computed.getCurrentQuestion()}

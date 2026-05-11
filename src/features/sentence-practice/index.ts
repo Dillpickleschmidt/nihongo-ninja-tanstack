@@ -22,7 +22,10 @@ export { default as EasyModeDebugPanel } from "./ui/practice/EasyModeDebugPanel"
 export { prepareQuestion } from "./core/questionProcessor"
 export { checkAnswer } from "./core/answer-processing/answerChecker"
 export { processSegments } from "./core/segmentProcessor"
-export { generateValidAnswers } from "./core/answer-processing/variationGenerator"
+export {
+  generateAcceptedAnswers,
+  generateCanonicalAnswers,
+} from "./core/answer-processing/variationGenerator"
 
 // Types
 export type {

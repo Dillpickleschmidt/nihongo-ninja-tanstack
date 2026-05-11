@@ -24,9 +24,9 @@ const PosHintDisplay: Component<PosHintDisplayProps> = (props) => {
       >
         <For each={props.tokens}>
           {(token) => {
-            const category = getPosCategory(token.pos)
+            const category = getPosCategory(token.p)
             const width = getWidthForCategory(category)
-            return <PosHintBox pos={token.pos} width={width} />
+            return <PosHintBox pos={token.p} width={width} />
           }}
         </For>
       </div>

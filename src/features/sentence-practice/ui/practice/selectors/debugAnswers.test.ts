@@ -13,7 +13,7 @@ describe("groupDebugAnswers", () => {
         pronounType: "none",
         honorificType: "none",
         sourceAnswerIndex: 0,
-        isKanaVariation: false,
+        isInputAlias: false,
       },
       {
         original: "僕[ぼく]は学生[がくせい]です",
@@ -23,7 +23,7 @@ describe("groupDebugAnswers", () => {
         pronounType: "僕[ぼく]",
         honorificType: "none",
         sourceAnswerIndex: 0,
-        isKanaVariation: false,
+        isInputAlias: false,
       },
       {
         original: "ぼくはがくせいです",
@@ -33,7 +33,8 @@ describe("groupDebugAnswers", () => {
         pronounType: "僕[ぼく]",
         honorificType: "none",
         sourceAnswerIndex: 0,
-        isKanaVariation: true,
+        isInputAlias: true,
+        inputAliasType: "kana",
       },
       {
         original: "田中[たなか]くんだ",
@@ -43,7 +44,7 @@ describe("groupDebugAnswers", () => {
         pronounType: "none",
         honorificType: "くん",
         sourceAnswerIndex: 1,
-        isKanaVariation: false,
+        isInputAlias: false,
       },
     ]
 

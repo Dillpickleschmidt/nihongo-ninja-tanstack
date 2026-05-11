@@ -17,7 +17,8 @@ export interface RichAnswer {
 
   // Variation tracking for filtering/display
   isVariation?: boolean
-  isKanaVariation?: boolean // Pure kana version of kanji answer
+  isInputAlias?: boolean // Derived typing alias, not a canonical Japanese answer
+  inputAliasType?: "kana"
   originalPoliteForm?: boolean // true=polite, false=casual
   pronounType?: string // "私[わたし]" | "僕[ぼく]" | "none" | etc.
   honorificType?: string // "さん" | "くん+ちゃん" | "none" | etc.
@@ -30,8 +31,9 @@ export interface PreparedAnswerForMatching {
   normalizedPlain: string
   normalizedKana: string
   visiblePlain: string
+  visibleKana: string
   plainToVisible: (pos: number) => number
-  kanaToPlainVisible: (pos: number) => number
+  kanaToVisible: (pos: number) => number
 }
 
 export interface AnswerMatch {
@@ -45,10 +47,11 @@ export interface AnswerMatch {
 export interface ProcessedQuestion {
   english: string
   hint?: string
-  preparedAnswerTokens: SentenceAnswerToken[][]
-  displayAnswer: RichSegment[] // canonical answer used for display and easy-mode assembly
-  answers: RichSegment[][] // all processed answer variants
-  validAnswers: RichAnswer[] // all valid answers for checking
+  canonicalAnswerTokens: SentenceAnswerToken[][]
+  displayAnswer: RichSegment[] // canonical segment answer used for display and easy-mode assembly
+  answers: RichSegment[][] // all processed segment answer variants
+  canonicalAnswers: RichAnswer[] // real Japanese answer forms
+  acceptedAnswers: RichAnswer[] // canonical answers plus input aliases for checking
   preparedAnswersForMatching: PreparedAnswerForMatching[]
 }
 

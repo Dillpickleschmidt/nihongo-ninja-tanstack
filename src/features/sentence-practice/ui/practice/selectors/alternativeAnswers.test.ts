@@ -28,7 +28,7 @@ function createMatch({
 }
 
 describe("getAlternativeAnswers", () => {
-  it("filters out the best match, kana variations, and opposite politeness", () => {
+  it("filters out the best match, input aliases, and opposite politeness", () => {
     const matches = [
       createMatch({
         answerOverrides: { original: "行きましょう", originalPoliteForm: true },
@@ -37,7 +37,7 @@ describe("getAlternativeAnswers", () => {
         answerOverrides: { original: "参りましょう", originalPoliteForm: true },
       }),
       createMatch({
-        answerOverrides: { original: "いきましょう", isKanaVariation: true },
+        answerOverrides: { original: "いきましょう", isInputAlias: true },
       }),
       createMatch({
         answerOverrides: { original: "行こう", originalPoliteForm: false },

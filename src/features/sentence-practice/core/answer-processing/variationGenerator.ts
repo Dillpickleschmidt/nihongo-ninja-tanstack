@@ -157,7 +157,8 @@ function generateKanaVariations(answers: RichAnswer[]): RichAnswer[] {
           original: newOriginal,
           plain: removeFurigana(newOriginal),
           kana: newOriginal,
-          isKanaVariation: true,
+          isInputAlias: true,
+          inputAliasType: "kana",
         })
       }
     }
@@ -347,7 +348,7 @@ function generateHonorificVariations(answers: RichAnswer[]): RichAnswer[] {
   return Array.from(resultMap.values())
 }
 
-export function generateValidAnswers(
+export function generateCanonicalAnswers(
   segments: RichSegment[],
   sourceAnswerIndex: number,
   isPoliteForm: boolean,
@@ -365,7 +366,6 @@ export function generateValidAnswers(
         originalPoliteForm: isPoliteForm,
         pronounType: "none",
         honorificType: "none",
-        isKanaVariation: false,
       },
     ]
   }
@@ -378,7 +378,6 @@ export function generateValidAnswers(
     originalPoliteForm: isPoliteForm,
     pronounType: "none",
     honorificType: "none",
-    isKanaVariation: false,
   }
 
   let variations = [baseAnswer]
@@ -386,7 +385,12 @@ export function generateValidAnswers(
   variations = generateHonorificVariations(variations)
   variations = generateKinshipVariations(variations)
   variations = generateTeIruContractions(variations)
-  variations = generateKanaVariations(variations)
 
   return variations
+}
+
+export function generateAcceptedAnswers(
+  canonicalAnswers: RichAnswer[],
+): RichAnswer[] {
+  return generateKanaVariations(canonicalAnswers)
 }

@@ -15,10 +15,11 @@ function createQuestion(segments: Array<{ text: string; isBlank: boolean }>): Pr
 
   return {
     english: "Test",
-    preparedAnswerTokens: [],
+    canonicalAnswerTokens: [],
     displayAnswer,
     answers: [displayAnswer],
-    validAnswers: [],
+    canonicalAnswers: [],
+    acceptedAnswers: [],
     preparedAnswersForMatching: [],
   }
 }

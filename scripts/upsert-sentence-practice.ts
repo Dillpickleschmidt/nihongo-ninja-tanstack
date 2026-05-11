@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
 /**
  * Imports sentence practice questions into Convex
- * Generates preparedAnswerTokens using Kagome + grammar-cli
+ * Generates canonicalAnswerTokens using Kagome + grammar-cli
  *
  * Usage: bun run scripts/upsert-sentence-practice.ts
  *
@@ -23,13 +23,14 @@ import { join } from "path"
 import { createHash } from "crypto"
 import type { Question } from "./data/sentence-practice/types"
 import { prepareQuestion } from "../src/features/sentence-practice/core/questionProcessor"
+import { SEGMENT_SEPARATOR } from "../src/features/sentence-practice/core/textProcessor"
 
 const DATA_DIR = join(import.meta.dirname, "data/sentence-practice")
 const TEMP_FILE = join(import.meta.dirname, ".tmp-sentence-questions.jsonl")
 const CACHE_FILE = join(import.meta.dirname, ".sentence-practice-cache.json")
 const KAGOME_PORT = 6060
 const GRAMMAR_CLI = join(process.cwd(), "bin/grammar-cli")
-const CACHE_VERSION = 3
+const CACHE_VERSION = 6
 const GRAMMAR_CONCURRENCY = Math.max(
   1,
   Number(process.env.GRAMMAR_CONCURRENCY ?? 8),
@@ -63,7 +64,7 @@ function saveCache(cache: Cache): void {
 }
 
 // Unit Separator for batching multiple sentences in one Kagome request
-const SEPARATOR = "\x1F"
+const SEPARATOR = SEGMENT_SEPARATOR
 
 // --- Kagome Server ---
 
@@ -165,25 +166,34 @@ async function mapWithConcurrency<T, R>(
 
 /**
  * Batch process all questions in a file with a single Kagome request.
- * Returns preparedAnswerTokens for each question.
+ * Returns canonicalAnswerTokens for each question.
  */
 async function processFileQuestions(
   questions: Question[],
   kagome: KagomeServer,
-): Promise<{ text: string; pos: string[] }[][][]> {
+): Promise<{ t: string; p: string }[][][]> {
   const preparedQuestions = questions.map((q) => prepareQuestion({
     ...q,
-    preparedAnswerTokens: [],
+    canonicalAnswerTokens: [],
   }))
-  const entries: { questionIndex: number; answerIndex: number; text: string }[] = []
+  const entries: {
+    questionIndex: number
+    canonicalAnswerIndex: number
+    text: string
+  }[] = []
 
   for (let questionIndex = 0; questionIndex < preparedQuestions.length; questionIndex++) {
     const prepared = preparedQuestions[questionIndex]
-    for (let answerIndex = 0; answerIndex < prepared.answers.length; answerIndex++) {
-      const text = prepared.answers[answerIndex]
-        .map((segment) => segment.plain)
+    for (
+      let canonicalAnswerIndex = 0;
+      canonicalAnswerIndex < prepared.canonicalAnswers.length;
+      canonicalAnswerIndex++
+    ) {
+      const text = prepared.canonicalAnswers[canonicalAnswerIndex].plain
+        .split(SEPARATOR)
         .join("")
-      if (text) entries.push({ questionIndex, answerIndex, text })
+        .replace(/\s+/g, "")
+      if (text) entries.push({ questionIndex, canonicalAnswerIndex, text })
     }
   }
 
@@ -210,8 +220,8 @@ async function processFileQuestions(
   tokenGroups.push(normalizeTokenPositions(currentGroup))
 
   // 4. Run grammar-cli on each group and build results
-  const results: { text: string; pos: string[] }[][][] = preparedQuestions.map(
-    (question) => question.answers.map(() => []),
+  const results: { t: string; p: string }[][][] = preparedQuestions.map(
+    (question) => question.canonicalAnswers.map(() => []),
   )
 
   const analysisResults = await mapWithConcurrency(
@@ -221,11 +231,11 @@ async function processFileQuestions(
   )
 
   for (let i = 0; i < entries.length; i++) {
-    const { questionIndex, answerIndex } = entries[i]
+    const { questionIndex, canonicalAnswerIndex } = entries[i]
     const analysisResult = analysisResults[i]
-    results[questionIndex][answerIndex] = analysisResult.tokens.map((token) => ({
-      text: token.surface,
-      pos: token.pos,
+    results[questionIndex][canonicalAnswerIndex] = analysisResult.tokens.map((token) => ({
+      t: token.surface,
+      p: token.pos[0] ?? "",
     }))
   }
 
@@ -310,7 +320,7 @@ async function main() {
 
         const module = await import(file)
         const questions: Question[] = module.questions
-        const preparedAnswerTokens = await processFileQuestions(questions, kagome)
+        const canonicalAnswerTokens = await processFileQuestions(questions, kagome)
 
         const processedQuestions = questions.map((q, i) => ({
           setId,
@@ -318,7 +328,7 @@ async function main() {
           english: q.english,
           hint: q.hint,
           answers: q.answers,
-          preparedAnswerTokens: preparedAnswerTokens[i],
+          canonicalAnswerTokens: canonicalAnswerTokens[i],
         }))
 
         cache[setId] = { hash, questions: processedQuestions }

@@ -4,7 +4,7 @@ import { createRichSegment, SEGMENT_SEPARATOR } from "../../../core/textProcesso
 import { getEasyModeBlankVariations } from "./easyModeVariations"
 
 describe("getEasyModeBlankVariations", () => {
-  it("collects non-kana blank variations from valid answers", () => {
+  it("collects blank variations from canonical answers", () => {
     const displayAnswer = [
       createRichSegment("九時[くじ]", true),
       createRichSegment("ごろ", true),
@@ -12,10 +12,10 @@ describe("getEasyModeBlankVariations", () => {
     ]
     const question: ProcessedQuestion = {
       english: "Test",
-      preparedAnswerTokens: [],
+      canonicalAnswerTokens: [],
       displayAnswer,
       answers: [displayAnswer],
-      validAnswers: [
+      canonicalAnswers: [
         {
           original: `九時[くじ]${SEGMENT_SEPARATOR}ごろ${SEGMENT_SEPARATOR}見[み]ます`,
           plain: `九時${SEGMENT_SEPARATOR}ごろ${SEGMENT_SEPARATOR}見ます`,
@@ -24,7 +24,6 @@ describe("getEasyModeBlankVariations", () => {
           pronounType: "none",
           honorificType: "none",
           sourceAnswerIndex: 0,
-          isKanaVariation: false,
         },
         {
           original: `七時[しちじ]${SEGMENT_SEPARATOR}ごろ${SEGMENT_SEPARATOR}見[み]ます`,
@@ -34,19 +33,9 @@ describe("getEasyModeBlankVariations", () => {
           pronounType: "none",
           honorificType: "none",
           sourceAnswerIndex: 0,
-          isKanaVariation: false,
-        },
-        {
-          original: `くじ${SEGMENT_SEPARATOR}ごろ${SEGMENT_SEPARATOR}みます`,
-          plain: `くじ${SEGMENT_SEPARATOR}ごろ${SEGMENT_SEPARATOR}みます`,
-          kana: `くじ${SEGMENT_SEPARATOR}ごろ${SEGMENT_SEPARATOR}みます`,
-          originalPoliteForm: true,
-          pronounType: "none",
-          honorificType: "none",
-          sourceAnswerIndex: 0,
-          isKanaVariation: true,
         },
       ],
+      acceptedAnswers: [],
       preparedAnswersForMatching: [],
     }
 

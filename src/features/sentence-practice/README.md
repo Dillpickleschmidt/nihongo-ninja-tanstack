@@ -3,20 +3,22 @@
 ## Files to know
 
 - `core/questionProcessor.ts` — turns Convex/source questions into `ProcessedQuestion` objects.
-- `core/segmentProcessor.ts` — applies segment conjugations and creates prepared answer variants.
-- `core/answer-processing/answerChecker.ts` — checks `answerText` against generated valid answers.
+- `core/segmentProcessor.ts` — applies segment conjugations and creates prepared segment variants.
+- `core/answer-processing/variationGenerator.ts` — creates canonical Japanese answers, then accepted input aliases.
+- `core/answer-processing/answerChecker.ts` — checks `answerText` against accepted answers.
 - `session/easyModeAnswerProjection.ts` — projects easy-mode blanks into the same `answerText` used by hard mode.
-- `ui/practice/selectors/userInputPosDisplayItems.ts` — maps user input to precomputed answer tokens for POS box display.
-- `scripts/upsert-sentence-practice.ts` — generates `preparedAnswerTokens` and imports questions into Convex.
+- `ui/practice/selectors/userInputPosDisplayItems.ts` — maps user input to canonical answer tokens for POS box display.
+- `scripts/upsert-sentence-practice.ts` — generates `canonicalAnswerTokens` and imports questions into Convex.
 
 ## Core flow
 
 ```txt
 source question
 → prepareQuestion()
-→ ProcessedQuestion.answers              // prepared answer variants
-→ ProcessedQuestion.validAnswers         // accepted answer strings for checking
-→ preparedAnswerTokens                   // token/POS data aligned by prepared answer index
+→ ProcessedQuestion.answers             // segment-based prepared variants
+→ ProcessedQuestion.canonicalAnswers    // real Japanese answer forms
+→ ProcessedQuestion.acceptedAnswers     // canonical answers + input aliases
+→ canonicalAnswerTokens                 // token/POS data aligned by canonical answer index
 ```
 
 Hard mode edits `answerText` directly. Easy mode edits blanks, then projects them into `answerText`. Both modes call:
@@ -25,20 +27,33 @@ Hard mode edits `answerText` directly. Easy mode edits blanks, then projects the
 checkAnswer(answerText, question.preparedAnswersForMatching)
 ```
 
+`preparedAnswersForMatching` is built from `acceptedAnswers`, so users can type aliases like plain kana while the rest of the UI stays anchored to canonical answers.
+
+## Canonical answers vs input aliases
+
+The app primarily works with canonical Japanese answer forms: the actual Japanese strings, preserving kanji/furigana when known. Generated forms such as pronoun swaps, honorific swaps, kinship swaps, and `〜ている → 〜てる` contractions are canonical answers.
+
+Kana-only strings are input aliases. They exist so users can type plain kana, but they are not the answer forms that POS display, easy-mode variation lists, or grammar tokenization reason about.
+
+```txt
+canonical answer: 楓[かえで]さんは 図書館[としょかん]で␟歌[うた]ってた
+input alias:      かえでさんは としょかんで␟うたってた
+```
+
 ## POS display flow
 
-The POS display does not tokenize the user's input directly. It treats the user's input as progress through one of the prepared answer variants.
+The POS display does not tokenize the user's input directly. It treats the user's input as progress through one canonical answer form.
 
 ```txt
 answerText
-→ choose the best prepared answer variant
-→ remap that variant's stored tokens into the script the user typed
+→ choose the best canonical answer
+→ remap that answer's stored tokens into the script the user typed
 → compare user input against those remapped token strings
 → render completed tokens with POS colors
 → render the first unmatched/incomplete suffix as one gray box
 ```
 
-`preparedAnswerTokens[i]` corresponds to `ProcessedQuestion.answers[i]`.
+`canonicalAnswerTokens[i]` corresponds to `ProcessedQuestion.canonicalAnswers[i]`.
 
 ## Concrete mapping example
 
@@ -50,42 +65,26 @@ Source segments:
 { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", tense: "past", polarity: "positive" } }
 ```
 
-`prepareQuestion()` turns that into a prepared answer variant with both scripts available:
+`prepareQuestion()` creates canonical answers such as:
 
 ```txt
-plain answer: 楓さんは図書館で歌っていた
-kana answer:  かえでさんはとしょかんでうたっていた
+楓[かえで]さんは 図書館[としょかん]で␟歌[うた]って␟いた
+楓[かえで]さんは 図書館[としょかん]で␟歌[うた]ってた
 ```
 
-The upsert script stores tokens for the plain answer:
+The upsert script stores tokens for each canonical answer's plain text. For the contracted answer:
 
 ```txt
-楓 / さん / は / 図書館 / で / 歌っていた
+楓 / さん / は / 図書館 / で / 歌ってた
 ```
-
-with POS attached to each token.
 
 If the user types kana:
 
 ```txt
-かえでさんはとしょか
+かえでさんはとしょかんでうたってた
 ```
 
-then the display selector follows this flow:
-
-### 1. Choose an answer variant
-
-The selector compares the input against each prepared answer's kana form and picks the closest variant.
-
-### 2. Remap stored tokens to the user's script
-
-Stored tokens are plain-text tokens:
-
-```txt
-楓 / さん / は / 図書館 / で / 歌っていた
-```
-
-But the user typed kana, so each token is remapped through the prepared answer's furigana data:
+the selector maps canonical tokens through furigana:
 
 ```txt
 楓       → かえで
@@ -93,39 +92,23 @@ But the user typed kana, so each token is remapped through the prepared answer's
 は       → は
 図書館   → としょかん
 で       → で
-歌っていた → うたっていた
+歌ってた → うたってた
 ```
 
 The POS stays attached to the token during this remap. Only the displayed/matched text changes.
 
-### 3. Walk the user input left-to-right
+## What happens with partial input or mistakes
 
-The selector compares the current user input slice to each remapped token:
-
-```txt
-かえで   matches かえで      → colored token box
-さん     matches さん        → colored token box
-は       matches は          → colored token box
-としょか partially matches としょかん → gray incomplete box
-```
-
-Displayed result:
+If the user is midway through a token, completed tokens stay colored and the uncertain suffix is gray:
 
 ```txt
-かえで | さん | は | としょか(gray)
+expected token: としょかん
+user typed:    としょか
+
+result: かえで | さん | は | としょか(gray)
 ```
 
-When the user completes the token:
-
-```txt
-かえでさんはとしょかん
-```
-
-`としょかん` fully matches the remapped `図書館` token, so it becomes a normal colored token box using `図書館`'s stored POS.
-
-## What happens with mistakes
-
-If the user diverges inside the current token, the confirmed prefix stays colored and the uncertain suffix becomes gray:
+If the user diverges inside the current token, the confirmed prefix still stays colored:
 
 ```txt
 expected token: としょかん
@@ -134,7 +117,7 @@ user typed:    としょかの
 result: かえで | さん | は | としょかの(gray)
 ```
 
-The selector does not try to recover after the first mismatch yet. Everything from the mismatch point onward is treated as the current uncertain suffix.
+The selector does not try to recover after the first mismatch yet. Everything from that point onward is treated as the current uncertain suffix.
 
 ## Matching normalization
 
@@ -151,7 +134,9 @@ The stored comma token is ignored for matching, so matching continues from `き�
 
 ## Data invariants
 
-- `preparedAnswerTokens[i]` must correspond to `prepareQuestion(question).answers[i]`.
+- `canonicalAnswerTokens[i]` must correspond to `prepareQuestion(question).canonicalAnswers[i]`.
+- `canonicalAnswers` are real Japanese forms used by POS display and easy-mode variation lists.
+- `acceptedAnswers` are canonical answers plus input aliases used by answer checking.
 - `RichSegment.original` preserves authored furigana text.
 - `RichSegment.plain` and `RichSegment.kana` remove whitespace.
 - Token POS comes from the stored plain token, even when the displayed user text is kana.

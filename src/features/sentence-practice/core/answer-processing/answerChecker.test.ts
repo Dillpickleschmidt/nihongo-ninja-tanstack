@@ -75,7 +75,7 @@ describe("matchAnswer error positions", () => {
 })
 
 describe("checkAnswer", () => {
-  const validAnswers = toRichAnswers([
+  const acceptedAnswers = toRichAnswers([
     "給料をもらったらショッピングモールに行きましょう",
     "給料をもらったらショッピングモールに行こう",
     "きゅうりょうをもらったらしょっぴんぐもーるにいきましょう",
@@ -85,7 +85,7 @@ describe("checkAnswer", () => {
   it("returns correct for exact match", () => {
     const result = checkAnswer(
       "給料をもらったらショッピングモールに行きましょう",
-      prepareAnswersForMatching(validAnswers),
+      prepareAnswersForMatching(acceptedAnswers),
     )
     expect(result.isCorrect).toBe(true)
     expect(result.similarity).toBe(1)
@@ -94,7 +94,7 @@ describe("checkAnswer", () => {
   it("returns correct for any valid variation", () => {
     const result = checkAnswer(
       "給料をもらったらショッピングモールに行こう",
-      prepareAnswersForMatching(validAnswers),
+      prepareAnswersForMatching(acceptedAnswers),
     )
     expect(result.isCorrect).toBe(true)
   })
@@ -102,18 +102,18 @@ describe("checkAnswer", () => {
   it("returns correct for kana-only answer", () => {
     const result = checkAnswer(
       "きゅうりょうをもらったらしょっぴんぐもーるにいきましょう",
-      prepareAnswersForMatching(validAnswers),
+      prepareAnswersForMatching(acceptedAnswers),
     )
     expect(result.isCorrect).toBe(true)
   })
 
   it("returns incorrect for wrong answer", () => {
-    const result = checkAnswer("全然違う答え", prepareAnswersForMatching(validAnswers))
+    const result = checkAnswer("全然違う答え", prepareAnswersForMatching(acceptedAnswers))
     expect(result.isCorrect).toBe(false)
     expect(result.similarity).toBeLessThan(1)
   })
 
-  it("strips ending particle よ when not in valid answers", () => {
+  it("strips ending particle よ when not in accepted answers", () => {
     const result = checkAnswer(
       "行きましょうよ",
       toPreparedAnswers(["行きましょう"]),
@@ -122,7 +122,7 @@ describe("checkAnswer", () => {
     expect(result.strippedParticle).toBe("よ")
   })
 
-  it("strips ending particle よね when not in valid answers", () => {
+  it("strips ending particle よね when not in accepted answers", () => {
     const result = checkAnswer(
       "行きましょうよね",
       toPreparedAnswers(["行きましょう"]),
@@ -176,6 +176,19 @@ describe("checkAnswer", () => {
     expect(result.isCorrect).toBe(true)
   })
 
+  it("shows kana answer text when kana input omits part of a kanji reading", () => {
+    const answers = toRichAnswers([
+      "楓[かえで]さんは図書館[としょかん]で歌[うた]っていた",
+    ])
+    const result = checkAnswer(
+      "かえでさんはとしょかんでうっていた",
+      prepareAnswersForMatching(answers),
+    )
+
+    expect(result.bestMatch).toBe("かえでさんはとしょかんでうたっていた")
+    expect(result.bestMatchErrors).toEqual([{ start: 13, end: 14 }])
+  })
+
   it("maps error positions correctly when input and answer have punctuation", () => {
     // Both input and answer have comma at position 12
     // Input: きゅうりょうをもらったら、もーるにいこう (20 chars)
@@ -206,8 +219,8 @@ describe("checkAnswer", () => {
 
 describe("allMatches and bestMatchIndex", () => {
   it("returns allMatches array with AnswerMatch objects", () => {
-    const validAnswers = toRichAnswers(["行きましょう", "行こう"])
-    const result = checkAnswer("行きましょう", prepareAnswersForMatching(validAnswers))
+    const acceptedAnswers = toRichAnswers(["行きましょう", "行こう"])
+    const result = checkAnswer("行きましょう", prepareAnswersForMatching(acceptedAnswers))
 
     // Verify allMatches exists and has correct structure
     expect(result.allMatches).toBeDefined()
@@ -225,12 +238,12 @@ describe("allMatches and bestMatchIndex", () => {
   })
 
   it("sets bestMatchIndex to highest similarity match", () => {
-    const validAnswers = toRichAnswers([
+    const acceptedAnswers = toRichAnswers([
       "行きます", // Lower similarity
       "行きましょう", // Exact match (highest similarity)
       "行こう", // Lower similarity
     ])
-    const result = checkAnswer("行きましょう", prepareAnswersForMatching(validAnswers))
+    const result = checkAnswer("行きましょう", prepareAnswersForMatching(acceptedAnswers))
 
     // bestMatchIndex should point to the exact match
     expect(result.bestMatchIndex).toBe(0) // Always 0 after sorting
@@ -241,12 +254,12 @@ describe("allMatches and bestMatchIndex", () => {
   })
 
   it("sorts allMatches by similarity (highest first)", () => {
-    const validAnswers = toRichAnswers([
+    const acceptedAnswers = toRichAnswers([
       "全然違う", // Very low similarity
       "行きます", // Medium similarity
       "行きましょう", // Exact match
     ])
-    const result = checkAnswer("行きましょう", prepareAnswersForMatching(validAnswers))
+    const result = checkAnswer("行きましょう", prepareAnswersForMatching(acceptedAnswers))
 
     // Verify sorted descending by similarity
     for (let i = 0; i < result.allMatches.length - 1; i++) {
@@ -260,7 +273,7 @@ describe("allMatches and bestMatchIndex", () => {
   })
 
   it("preserves RichAnswer metadata in matches", () => {
-    const validAnswers: RichAnswer[] = [
+    const acceptedAnswers: RichAnswer[] = [
       {
         original: "行きましょう",
         plain: "行きましょう",
@@ -280,7 +293,7 @@ describe("allMatches and bestMatchIndex", () => {
         sourceAnswerIndex: 0,
       },
     ]
-    const result = checkAnswer("行きましょう", prepareAnswersForMatching(validAnswers))
+    const result = checkAnswer("行きましょう", prepareAnswersForMatching(acceptedAnswers))
 
     // Verify metadata is accessible in allMatches
     const politeMatch = result.allMatches.find(
@@ -299,14 +312,14 @@ describe("allMatches and bestMatchIndex", () => {
   })
 
   it("highlights only the dropped subject in an alternative answer", () => {
-    const validAnswers = toRichAnswers([
+    const acceptedAnswers = toRichAnswers([
       "私[わたし]は時々[ときどき]朝[あさ]八時[はちじ]ごろに音楽[おんがく]を聞[き]きます",
       "時々[ときどき]朝[あさ]八時[はちじ]ごろに音楽[おんがく]を聞[き]きます",
     ])
 
     const result = checkAnswer(
       "時々朝八時ごろに音楽を聞きます",
-      prepareAnswersForMatching(validAnswers),
+      prepareAnswersForMatching(acceptedAnswers),
     )
 
     expect(result.bestMatch).toBe("時々朝八時ごろに音楽を聞きます")
@@ -319,43 +332,45 @@ describe("allMatches and bestMatchIndex", () => {
     expect(subjectAlternative?.answerErrors).toEqual([{ start: 0, end: 2 }])
   })
 
-  it("maps omitted 私、 alternatives to the full prefix instead of 、た", () => {
-    const validAnswers = toPreparedAnswers([
+  it("maps omitted 私、 alternatives to the full kana prefix", () => {
+    const acceptedAnswers = toPreparedAnswers([
       "私[わたし]、\x1Fたいてい\x1F九時[くじ]\x1Fごろ\x1Fテレビを\x1F見[み]る",
       "たいてい\x1F九時[くじ]\x1Fごろ\x1Fテレビを\x1F見[み]る",
     ])
 
-    const result = checkAnswer("たいてい、くじごろテレビをみる", validAnswers)
+    const result = checkAnswer("たいてい、くじごろテレビをみる", acceptedAnswers)
     const pronounAlternative = result.allMatches.find(
-      (match) => match.displayText === "私、たいてい九時ごろテレビを見る",
+      (match) => match.answer.plain === "私、\x1Fたいてい\x1F九時\x1Fごろ\x1Fテレビを\x1F見る",
     )
 
-    expect(pronounAlternative?.answerErrors).toEqual([{ start: 0, end: 2 }])
+    expect(pronounAlternative?.displayText).toBe("わたし、たいていくじごろテレビをみる")
+    expect(pronounAlternative?.answerErrors).toEqual([{ start: 0, end: 4 }])
   })
 
-  it("maps omitted mid-sentence 私は alternatives to just 私は", () => {
-    const validAnswers = toPreparedAnswers([
+  it("maps omitted mid-sentence 私は alternatives to the kana subject", () => {
+    const acceptedAnswers = toPreparedAnswers([
       "たいてい\x1F九時[くじ]\x1Fごろ\x1F私[わたし]はテレビを\x1F見[み]る",
       "たいてい\x1F九時[くじ]\x1Fごろ\x1Fテレビを\x1F見[み]る",
     ])
 
-    const result = checkAnswer("たいてい、くじごろテレビをみる", validAnswers)
+    const result = checkAnswer("たいてい、くじごろテレビをみる", acceptedAnswers)
     const pronounAlternative = result.allMatches.find(
-      (match) => match.displayText === "たいてい九時ごろ私はテレビを見る",
+      (match) => match.answer.plain === "たいてい\x1F九時\x1Fごろ\x1F私はテレビを\x1F見る",
     )
 
-    expect(pronounAlternative?.answerErrors).toEqual([{ start: 8, end: 10 }])
+    expect(pronounAlternative?.displayText).toBe("たいていくじごろわたしはテレビをみる")
+    expect(pronounAlternative?.answerErrors).toEqual([{ start: 8, end: 12 }])
   })
 
   it("highlights only の in the 朝の八時 alternative", () => {
-    const validAnswers = toRichAnswers([
+    const acceptedAnswers = toRichAnswers([
       "私[わたし]は時々[ときどき]朝[あさ]八時[はちじ]ごろに音楽[おんがく]を聞[き]きます",
       "私[わたし]は時々[ときどき]朝[あさ]の八時[はちじ]ごろに音楽[おんがく]を聞[き]きます",
     ])
 
     const result = checkAnswer(
       "私は時々朝八時ごろに音楽を聞きます",
-      prepareAnswersForMatching(validAnswers),
+      prepareAnswersForMatching(acceptedAnswers),
     )
 
     expect(result.bestMatch).toBe("私は時々朝八時ごろに音楽を聞きます")
@@ -369,14 +384,14 @@ describe("allMatches and bestMatchIndex", () => {
   })
 
   it("highlights the changed verb ending in the casual alternative", () => {
-    const validAnswers = toRichAnswers([
+    const acceptedAnswers = toRichAnswers([
       "私[わたし]は時々[ときどき]朝[あさ]八時[はちじ]ごろに音楽[おんがく]を聞[き]きます",
       "私[わたし]は時々[ときどき]朝[あさ]八時[はちじ]ごろに音楽[おんがく]を聞[き]く",
     ])
 
     const result = checkAnswer(
       "私は時々朝八時ごろに音楽を聞きます",
-      prepareAnswersForMatching(validAnswers),
+      prepareAnswersForMatching(acceptedAnswers),
     )
 
     expect(result.bestMatch).toBe("私は時々朝八時ごろに音楽を聞きます")

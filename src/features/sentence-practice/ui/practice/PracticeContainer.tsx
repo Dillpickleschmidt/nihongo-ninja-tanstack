@@ -84,7 +84,7 @@ export default function PracticeContainer(props: PracticeContainerProps) {
                       <EasyModeDebugPanel currentQuestion={question()} />
                     }
                   >
-                    <DebugPanel allAnswers={question().validAnswers} />
+                    <DebugPanel allAnswers={question().acceptedAnswers} />
                   </Show>
                 </CollapsibleContent>
               </Collapsible>

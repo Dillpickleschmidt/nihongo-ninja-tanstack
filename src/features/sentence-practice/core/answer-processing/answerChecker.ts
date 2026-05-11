@@ -270,12 +270,12 @@ function compressPositionsToRanges(positions: number[]): ErrorRange[] {
 }
 
 // Returns particles (よ/ね/よね) that can be stripped (not in any answer)
-function getStrippableParticles(validAnswers: RichAnswer[]): string[] {
+function getStrippableParticles(acceptedAnswers: RichAnswer[]): string[] {
   const particles = ["よね", "ね", "よ"]
   const strippable: string[] = []
 
   // Don't strip particles from questions
-  const anyAnswerIsQuestion = validAnswers.some(
+  const anyAnswerIsQuestion = acceptedAnswers.some(
     (a) => a.plain.endsWith("か") || a.plain.endsWith("？"),
   )
   if (anyAnswerIsQuestion) {
@@ -283,7 +283,7 @@ function getStrippableParticles(validAnswers: RichAnswer[]): string[] {
   }
 
   for (const particle of particles) {
-    const anyAnswerEndsWithParticle = validAnswers.some((a) =>
+    const anyAnswerEndsWithParticle = acceptedAnswers.some((a) =>
       a.plain.endsWith(particle),
     )
     if (!anyAnswerEndsWithParticle) {
@@ -320,18 +320,20 @@ export function checkAnswer(
       const kanjiMatch = matchAnswer(userText, preparedAnswer.normalizedPlain)
       const kanaMatch = matchAnswer(userText, preparedAnswer.normalizedKana)
 
-      // Use whichever matched better, display that version
-      const kanaWon = kanaMatch.similarity > kanjiMatch.similarity
-      const toVisible = kanaWon
-        ? preparedAnswer.kanaToPlainVisible
+      const useKanaMatch = kanaMatch.similarity > kanjiMatch.similarity
+      const toVisible = useKanaMatch
+        ? preparedAnswer.kanaToVisible
         : preparedAnswer.plainToVisible
-      const errors = kanaWon ? kanaMatch : kanjiMatch
+      const displayText = useKanaMatch
+        ? preparedAnswer.visibleKana
+        : preparedAnswer.visiblePlain
+      const errors = useKanaMatch ? kanaMatch : kanjiMatch
 
-      // Map error positions back to original (un-normalized) space
       const mappedUserErrors = errors.userErrors.map((e) => ({
         start: userToOriginal(e.start),
         end: userToOriginal(e.end),
       }))
+
       const mappedAnswerErrors = errors.answerErrors.map((e) => ({
         start: toVisible(e.start),
         end: toVisible(e.end),
@@ -340,7 +342,7 @@ export function checkAnswer(
       // Return AnswerMatch with full RichAnswer
       return {
         answer: preparedAnswer.answer,
-        displayText: preparedAnswer.visiblePlain,
+        displayText,
         similarity: Math.max(kanjiMatch.similarity, kanaMatch.similarity),
         userErrors: mappedUserErrors,
         answerErrors: mappedAnswerErrors,

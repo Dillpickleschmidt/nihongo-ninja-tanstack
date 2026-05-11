@@ -8,10 +8,9 @@ export type PosCategory = "orange" | "green" | "blue"
  * - Green: Verbs and い-adjectives
  * - Blue: Particles, copulas, and everything else
  */
-export function getPosCategory(pos: string[]): PosCategory {
-  const mainPos = pos[0]
-  if (mainPos === "名詞" || mainPos === "形容動詞") return "orange"
-  if (mainPos === "動詞" || mainPos === "形容詞") return "green"
+export function getPosCategory(pos: string): PosCategory {
+  if (pos === "名詞" || pos === "形容動詞") return "orange"
+  if (pos === "動詞" || pos === "形容詞") return "green"
   return "blue"
 }
 

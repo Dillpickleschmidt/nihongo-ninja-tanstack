@@ -40,7 +40,7 @@ export function groupDebugAnswers(allAnswers: RichAnswer[]): HierarchicalGroup[]
     const politeForm = answer.originalPoliteForm ? "polite" : "casual"
     const pronounType = answer.pronounType ?? "none"
     const honorificType = answer.honorificType ?? "none"
-    const isKana = answer.isKanaVariation ?? false
+    const isKana = answer.inputAliasType === "kana"
 
     if (!groups.has(sourceIndex)) {
       groups.set(sourceIndex, {
