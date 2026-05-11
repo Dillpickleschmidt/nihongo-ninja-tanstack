@@ -14,10 +14,6 @@ describe("time expressions highlighting", () => {
     }
 
     const prepared = prepareQuestion({
-      _id: "highlight-time-expression" as any,
-      _creationTime: 0,
-      setId: "chapter-3-time-expressions",
-      order: 0,
       english: source.english,
       hint: source.hint,
       answers: source.answers,
@@ -49,10 +45,6 @@ describe("time expressions highlighting", () => {
     }
 
     const prepared = prepareQuestion({
-      _id: "highlight-time-expression-alt" as any,
-      _creationTime: 0,
-      setId: "chapter-3-time-expressions",
-      order: 0,
       english: source.english,
       hint: source.hint,
       answers: source.answers,

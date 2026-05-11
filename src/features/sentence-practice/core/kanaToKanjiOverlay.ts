@@ -6,6 +6,10 @@ import type { RichSegment } from "./types"
 import { containsKanji } from "@/data/utils/text/japanese"
 import { createKanjiFuriganaGroupRegex } from "@/data/utils/text/furigana"
 
+const FURIGANA_AT_CURRENT_POSITION = new RegExp(
+  `^${createKanjiFuriganaGroupRegex("").source}`,
+)
+
 export interface OverlayResult {
   overlaidText: string
   characterMap: Map<number, number> // overlay position → user position (boundaries)
@@ -83,10 +87,13 @@ function calculateMatchScore(userKana: string, segmentKana: string): number {
 }
 
 /**
- * Builds character-by-character mapping by parsing the original segment text.
- * Kanji with furigana uses proportional mapping, plain kana uses 1:1 mapping.
+ * Maps token boundary positions from overlaid text back to the user's input.
+ *
+ * segment.original keeps source whitespace used to delimit furigana groups, while
+ * segment.plain and segment.kana have whitespace removed. Whitespace in the
+ * original source therefore does not advance either mapped position.
  */
-function buildCharacterMap(
+function mapSegmentBoundaries(
   original: string,
   overlaidStart: number,
   userStart: number,
@@ -97,8 +104,8 @@ function buildCharacterMap(
   let i = 0
 
   while (i < original.length) {
-    // Match kanji with furigana: 給料[きゅうりょう]
-    const match = original.substring(i).match(createKanjiFuriganaGroupRegex(""))
+    // Match kanji with furigana at the current parse position: 給料[きゅうりょう]
+    const match = original.slice(i).match(FURIGANA_AT_CURRENT_POSITION)
 
     if (match) {
       const kanjiText = match[1]
@@ -119,6 +126,12 @@ function buildCharacterMap(
       kanaPos += kanaText.length
       i += match[0].length
     } else {
+      const char = original[i]
+      if (/\s/.test(char)) {
+        i++
+        continue
+      }
+
       // Plain character (kana/punctuation) - 1:1 mapping
       plainPos++
       kanaPos++
@@ -159,7 +172,7 @@ function applyOverlay(
       overlaidText += segPlain
 
       // Parse original to build accurate character mappings
-      buildCharacterMap(seg.original, overlaidStart, userStart, characterMap)
+      mapSegmentBoundaries(seg.original, overlaidStart, userStart, characterMap)
 
       userPos += segKana.length
     } else {

@@ -26,7 +26,7 @@ export default function FullInput() {
     <div class="space-y-4">
       {/* POS hint boxes */}
       <div>
-        <PosHintDisplay tokens={store.modelAnswerTokens} />
+        <PosHintDisplay pos={computed.getCurrentQuestion()?.modelAnswerPOS} />
         <UserInputPosDisplay
           tokens={store.userInputTokens}
           overlayResult={store.overlayResult}

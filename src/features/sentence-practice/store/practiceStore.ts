@@ -25,7 +25,6 @@ export interface PracticeState {
   isLoading: boolean
   // Tokenization state
   kagomeReady: boolean
-  modelAnswerTokens: KagomeToken[]
   userInputTokens: KagomeToken[]
   overlayResult: OverlayResult | null
   currentSetId: string | null
@@ -43,7 +42,6 @@ const initialState: PracticeState = {
   isLoading: true,
   // Tokenization initial state
   kagomeReady: false,
-  modelAnswerTokens: [],
   userInputTokens: [],
   overlayResult: null,
   currentSetId: null,
@@ -98,7 +96,6 @@ export function createPracticeStore(
           isLoading: false,
           currentSetId: nextSetId,
           // Reset tokenization state
-          modelAnswerTokens: [],
           userInputTokens: [],
           overlayResult: null,
         })
@@ -146,7 +143,6 @@ export function createPracticeStore(
           checkResult: undefined,
           effectiveDifficulty: session.effectiveDifficulty,
           // Reset tokenization state
-          modelAnswerTokens: [],
           userInputTokens: [],
           overlayResult: null,
         })
@@ -183,10 +179,6 @@ export function createPracticeStore(
       // Tokenization actions
       setKagomeReady: (ready: boolean) => {
         setStore("kagomeReady", ready)
-      },
-
-      setModelAnswerTokens: (tokens: KagomeToken[]) => {
-        setStore("modelAnswerTokens", tokens)
       },
 
       setUserInputTokens: (

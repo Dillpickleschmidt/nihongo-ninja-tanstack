@@ -21,13 +21,18 @@ import {
 } from "fs"
 import { join } from "path"
 import { createHash } from "crypto"
-import type { Question, Segment } from "./data/sentence-practice/types"
+import type { Question } from "./data/sentence-practice/types"
+import {
+  getPrimaryModelAnswerText,
+  prepareQuestion,
+} from "../src/features/sentence-practice/core/questionProcessor"
 
 const DATA_DIR = join(import.meta.dirname, "data/sentence-practice")
 const TEMP_FILE = join(import.meta.dirname, ".tmp-sentence-questions.jsonl")
 const CACHE_FILE = join(import.meta.dirname, ".sentence-practice-cache.json")
 const KAGOME_PORT = 6060
 const GRAMMAR_CLI = join(process.cwd(), "bin/grammar-cli")
+const CACHE_VERSION = 2
 
 // --- Cache ---
 
@@ -42,7 +47,7 @@ interface Cache {
 
 function computeFileHash(filePath: string): string {
   const content = readFileSync(filePath, "utf-8")
-  return createHash("md5").update(content).digest("hex")
+  return createHash("md5").update(`${CACHE_VERSION}\n${content}`).digest("hex")
 }
 
 function loadCache(): Cache {
@@ -55,9 +60,6 @@ function loadCache(): Cache {
 function saveCache(cache: Cache): void {
   writeFileSync(CACHE_FILE, JSON.stringify(cache), "utf-8")
 }
-
-// Remove furigana brackets and spaces for kagome tokenization
-const CLEANUP_REGEX = /\[([^\]]+)\]|\s+/g
 
 // Unit Separator for batching multiple sentences in one Kagome request
 const SEPARATOR = "\x1F"
@@ -123,11 +125,7 @@ function analyzeGrammar(tokens: any[]): { tokens: { pos: string[] }[] } {
   }
 }
 
-// --- Segment Processing ---
-
-function segmentsToText(segments: Segment[]): string {
-  return segments.map((seg) => seg.text.replace(CLEANUP_REGEX, "")).join("")
-}
+// --- Question Text Preparation ---
 
 /**
  * Batch process all questions in a file with a single Kagome request.
@@ -137,9 +135,9 @@ async function processFileQuestions(
   questions: Question[],
   kagome: KagomeServer,
 ): Promise<string[][][]> {
-  // 1. Extract text from each question's first answer
+  // 1. Extract the prepared primary model answer for each question.
   const texts = questions.map((q) =>
-    q.answers[0] ? segmentsToText(q.answers[0].segments) : "",
+    getPrimaryModelAnswerText(prepareQuestion(q)),
   )
 
   // Find which questions have text to process
@@ -276,7 +274,6 @@ async function main() {
       kagome.shutdown()
     }
 
-    saveCache(cache)
   }
 
   if (allQuestions.length === 0) {
@@ -296,6 +293,7 @@ async function main() {
     { stdio: "inherit" },
   )
 
+  saveCache(cache)
   unlinkSync(TEMP_FILE)
   console.log(`\n✓ Done! Imported ${allQuestions.length} questions`)
 }

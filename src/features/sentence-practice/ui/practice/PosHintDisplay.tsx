@@ -1,12 +1,11 @@
 // PosHintDisplay - shows colored POS boxes for the model answer structure
 
 import { For, Show, type Component } from "solid-js"
-import type { KagomeToken } from "../../kagome/types"
 import PosHintBox from "./PosHintBox"
 import { getPosCategory, getWidthForCategory } from "../common/posHelpers"
 
 interface PosHintDisplayProps {
-  tokens: KagomeToken[] | undefined
+  pos: string[][] | undefined
 }
 
 /**
@@ -16,17 +15,17 @@ interface PosHintDisplayProps {
  */
 const PosHintDisplay: Component<PosHintDisplayProps> = (props) => {
   return (
-    <Show when={props.tokens && props.tokens.length > 0}>
+    <Show when={props.pos && props.pos.length > 0}>
       <div
         class="mb-3 flex flex-wrap items-center gap-0.5"
         role="status"
         aria-label="Part of speech hint"
       >
-        <For each={props.tokens}>
-          {(token) => {
-            const category = getPosCategory(token.pos)
+        <For each={props.pos}>
+          {(pos) => {
+            const category = getPosCategory(pos)
             const width = getWidthForCategory(category)
-            return <PosHintBox pos={token.pos} width={width} />
+            return <PosHintBox pos={pos} width={width} />
           }}
         </For>
       </div>

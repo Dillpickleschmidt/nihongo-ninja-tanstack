@@ -20,29 +20,6 @@ export function useTokenization() {
     })
   })
 
-  // Tokenize model answer when question changes
-  createEffect(() => {
-    const question = computed.getCurrentQuestion()
-    if (!question || !store.kagomeReady) return
-
-    // Get the plain text of the first answer (model answer)
-    const modelText = question.displayAnswer.map((seg) => seg.plain).join("")
-    if (!modelText) return
-
-    tokenizationSession
-      .tokenizeModelAnswer(question)
-      .then((tokens) => {
-        if (!tokens) return
-        actions.setModelAnswerTokens(tokens)
-      })
-      .catch((error) => {
-        console.error(
-          "[useTokenization] Model answer tokenization failed:",
-          error,
-        )
-      })
-  })
-
   // Tokenize user input when it changes (debounced)
   let debounceTimer: ReturnType<typeof setTimeout> | null = null
 

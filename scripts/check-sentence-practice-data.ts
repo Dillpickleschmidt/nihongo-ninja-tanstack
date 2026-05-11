@@ -55,7 +55,7 @@ async function main() {
 }
 
 function buildQuestionReport(question: Question, index: number) {
-  const processed = prepareQuestion(question as never)
+  const processed = prepareQuestion(question)
   const nonKanaAnswers = processed.validAnswers.filter(
     (a) => !a.isKanaVariation,
   )

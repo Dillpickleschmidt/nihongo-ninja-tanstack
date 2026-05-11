@@ -1,4 +1,4 @@
-import type { Doc } from "../../../../convex/_generated/dataModel"
+import type { SentenceAnswer } from "../../../../convex/validators"
 import type { ProcessedQuestion, RichSegment, RichAnswer } from "./types"
 import { prepareAnswersForMatching } from "./answer-processing/preparedMatching"
 import { processSegments } from "./segmentProcessor"
@@ -6,9 +6,12 @@ import { generateValidAnswers } from "./answer-processing/variationGenerator"
 import { SEGMENT_SEPARATOR } from "./textProcessor"
 
 // Processes segments (polite + casual) and generates all valid answer strings
-export function prepareQuestion(
-  question: Doc<"sentencePracticeQuestions">,
-): ProcessedQuestion {
+export function prepareQuestion(question: {
+  english: string
+  hint?: string
+  answers: SentenceAnswer[]
+  modelAnswerPOS?: string[][]
+}): ProcessedQuestion {
   const { english, hint, answers: rawAnswers } = question
   const processedAnswers: RichSegment[][] = []
   const seenSequences = new Set<string>()
@@ -48,16 +51,24 @@ export function prepareQuestion(
     }
   }
 
+  const answerList = Array.from(validAnswers.values())
+
   return {
     english,
     hint,
+    modelAnswerPOS: question.modelAnswerPOS ?? [],
     displayAnswer: processedAnswers[0] ?? [],
     answers: processedAnswers,
-    validAnswers: Array.from(validAnswers.values()),
-    preparedAnswersForMatching: prepareAnswersForMatching(
-      Array.from(validAnswers.values()),
-    ),
+    validAnswers: answerList,
+    preparedAnswersForMatching: prepareAnswersForMatching(answerList),
   }
+}
+
+export function getPrimaryModelAnswerText(question: ProcessedQuestion): string {
+  return question.displayAnswer
+    .map((segment) => segment.plain)
+    .join("")
+    .replace(/\s+/g, "")
 }
 
 function joinSegments(segments: RichSegment[]): string {

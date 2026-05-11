@@ -50,6 +50,23 @@ describe("overlayKanji", () => {
     expect(result?.characterMap.get(12)).toBe(12)
   })
 
+  it("ignores source whitespace when matching and mapping kana input", () => {
+    const result = overlayKanji("かえでさんはとしょかんでうたっていた", [
+      [
+        createRichSegment("楓[かえで]さんは 図書館[としょかん]で", false),
+        createRichSegment("歌[うた]って", true),
+        createRichSegment("いた", true),
+      ],
+    ])
+
+    expect(result?.overlaidText).toBe("楓さんは図書館で歌っていた")
+    expect(result?.characterMap.get(0)).toBe(0)
+    expect(result?.characterMap.get(1)).toBe(3)
+    expect(result?.characterMap.get(4)).toBe(6)
+    expect(result?.characterMap.get(7)).toBe(11)
+    expect(result?.characterMap.get(13)).toBe(18)
+  })
+
   it("returns null when there are no candidate answers", () => {
     expect(overlayKanji("くじごろ", [])).toBeNull()
   })

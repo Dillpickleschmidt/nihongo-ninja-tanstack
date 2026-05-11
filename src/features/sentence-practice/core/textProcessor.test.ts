@@ -5,6 +5,7 @@ import {
   normalizeText,
   normalizeWithPositions,
   removeFurigana,
+  createRichSegment,
 } from "./textProcessor"
 
 describe("normalizeText", () => {
@@ -55,6 +56,14 @@ describe("furigana conversion", () => {
 
   it("leaves plain kana text unchanged", () => {
     expect(convertToKana("ください")).toBe("ください")
+  })
+
+  it("keeps original text while removing whitespace from rich plain and kana forms", () => {
+    const segment = createRichSegment("お 父[とう]さん", false)
+
+    expect(segment.original).toBe("お 父[とう]さん")
+    expect(segment.plain).toBe("お父さん")
+    expect(segment.kana).toBe("おとうさん")
   })
 })
 

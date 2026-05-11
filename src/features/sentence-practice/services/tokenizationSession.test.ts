@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 import { createRichSegment } from "../core/textProcessor"
 import type { ProcessedQuestion } from "../core/types"
-import { createTokenizationSession, getModelAnswerText, prepareUserTokenization } from "./tokenizationSession"
+import { createTokenizationSession, prepareUserTokenization } from "./tokenizationSession"
 
 function createQuestion(segments: Array<{ text: string; isBlank: boolean }>): ProcessedQuestion {
   const displayAnswer = segments.map((segment) =>
@@ -10,6 +10,7 @@ function createQuestion(segments: Array<{ text: string; isBlank: boolean }>): Pr
 
   return {
     english: "Test",
+    modelAnswerPOS: [],
     displayAnswer,
     answers: [displayAnswer],
     validAnswers: [],
@@ -27,15 +28,6 @@ function deferred<T>() {
 }
 
 describe("tokenizationSession", () => {
-  it("builds model answer text from the display answer", () => {
-    const question = createQuestion([
-      { text: "九時[くじ]ごろに", isBlank: false },
-      { text: "見[み]ます", isBlank: false },
-    ])
-
-    expect(getModelAnswerText(question)).toBe("九時ごろに見ます")
-  })
-
   it("prepares user tokenization with overlay for kana input", () => {
     const question = createQuestion([
       { text: "九時[くじ]ごろに", isBlank: false },

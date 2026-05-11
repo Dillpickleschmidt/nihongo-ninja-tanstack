@@ -43,6 +43,7 @@ export interface AnswerMatch {
 export interface ProcessedQuestion {
   english: string
   hint?: string
+  modelAnswerPOS: string[][]
   displayAnswer: RichSegment[] // canonical answer used for display and easy-mode assembly
   answers: RichSegment[][] // all processed answer variants
   validAnswers: RichAnswer[] // all valid answers for checking

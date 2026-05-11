@@ -17,10 +17,6 @@ export interface UserTokenizationOutcome {
   overlay: OverlayResult | null
 }
 
-export function getModelAnswerText(question: ProcessedQuestion): string {
-  return question.displayAnswer.map((segment) => segment.plain).join("")
-}
-
 export function prepareUserTokenization(
   userInput: string,
   question: ProcessedQuestion,
@@ -35,22 +31,10 @@ export function prepareUserTokenization(
 }
 
 export function createTokenizationSession(worker: TokenizationWorker) {
-  let latestModelRequestId = 0
   let latestUserRequestId = 0
 
   return {
     waitForReady: () => worker.waitForReady(),
-
-    async tokenizeModelAnswer(question: ProcessedQuestion) {
-      const modelText = getModelAnswerText(question)
-      if (!modelText) return undefined
-
-      const requestId = ++latestModelRequestId
-      const result = await worker.tokenize(modelText)
-      if (requestId !== latestModelRequestId) return undefined
-
-      return result.tokens
-    },
 
     async tokenizeUserInput(
       userInput: string,

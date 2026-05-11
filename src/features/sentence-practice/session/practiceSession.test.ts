@@ -15,6 +15,7 @@ function createQuestion(segments: Array<{ text: string; isBlank: boolean }>): Pr
 
   return {
     english: "Test",
+    modelAnswerPOS: [],
     displayAnswer,
     answers: [displayAnswer],
     validAnswers: [],

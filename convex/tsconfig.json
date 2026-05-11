@@ -12,10 +12,10 @@
     "jsxImportSource": "solid-js",
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
-    "baseUrl": "..",
+    "types": ["node"],
     "paths": {
-      "@/*": ["./src/*"],
-      "~/*": ["./src/*"]
+      "@/*": ["../src/*"],
+      "~/*": ["../src/*"]
     },
     /* These compiler options are required by Convex */
     "target": "ESNext",

@@ -142,8 +142,8 @@ export function createRichSegment(
 ): RichSegment {
   return {
     original,
-    plain: removeFurigana(original),
-    kana: convertToKana(original),
+    plain: removeFurigana(original).replace(/\s+/g, ""),
+    kana: convertToKana(original).replace(/\s+/g, ""),
     ruby: convertToRuby(original),
     isBlank,
   }
