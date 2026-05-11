@@ -1,8 +1,6 @@
 import { createStore } from "solid-js/store"
 import type { Doc } from "../../../../convex/_generated/dataModel"
 import type { ProcessedQuestion, CheckResult, Difficulty } from "../core/types"
-import type { KagomeToken } from "../kagome/types"
-import type { OverlayResult } from "../core/kanaToKanjiOverlay"
 import { prepareQuestion } from "../core/questionProcessor"
 import { checkAnswer } from "../core/answer-processing/answerChecker"
 import {
@@ -23,10 +21,6 @@ export interface PracticeState {
   effectiveDifficulty: Difficulty
   showFurigana: boolean
   isLoading: boolean
-  // Tokenization state
-  kagomeReady: boolean
-  userInputTokens: KagomeToken[]
-  overlayResult: OverlayResult | null
   currentSetId: string | null
 }
 
@@ -40,10 +34,6 @@ const initialState: PracticeState = {
   effectiveDifficulty: "hard",
   showFurigana: true,
   isLoading: true,
-  // Tokenization initial state
-  kagomeReady: false,
-  userInputTokens: [],
-  overlayResult: null,
   currentSetId: null,
 }
 
@@ -95,9 +85,6 @@ export function createPracticeStore(
           effectiveDifficulty: session.effectiveDifficulty,
           isLoading: false,
           currentSetId: nextSetId,
-          // Reset tokenization state
-          userInputTokens: [],
-          overlayResult: null,
         })
       },
 
@@ -142,9 +129,6 @@ export function createPracticeStore(
           showResult: false,
           checkResult: undefined,
           effectiveDifficulty: session.effectiveDifficulty,
-          // Reset tokenization state
-          userInputTokens: [],
-          overlayResult: null,
         })
       },
 
@@ -176,27 +160,6 @@ export function createPracticeStore(
         setStore("showFurigana", (prev) => !prev)
       },
 
-      // Tokenization actions
-      setKagomeReady: (ready: boolean) => {
-        setStore("kagomeReady", ready)
-      },
-
-      setUserInputTokens: (
-        tokens: KagomeToken[],
-        overlayResult: OverlayResult | null,
-      ) => {
-        setStore({
-          userInputTokens: tokens,
-          overlayResult,
-        })
-      },
-
-      clearUserInputTokens: () => {
-        setStore({
-          userInputTokens: [],
-          overlayResult: null,
-        })
-      },
     },
     // Computed values
     computed: {

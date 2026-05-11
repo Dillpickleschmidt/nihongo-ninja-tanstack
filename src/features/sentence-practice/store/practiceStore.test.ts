@@ -11,7 +11,7 @@ describe("initializeSession", () => {
       order: 0,
       english,
       answers: [{ segments: [{ text: "こんにちは" }] }],
-      modelAnswerPOS: [],
+      preparedAnswerTokens: [],
     }
   }
 

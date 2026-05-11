@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
 /**
  * Imports sentence practice questions into Convex
- * Generates modelAnswerPOS using Kagome + grammar-cli
+ * Generates preparedAnswerTokens using Kagome + grammar-cli
  *
  * Usage: bun run scripts/upsert-sentence-practice.ts
  *
@@ -22,17 +22,18 @@ import {
 import { join } from "path"
 import { createHash } from "crypto"
 import type { Question } from "./data/sentence-practice/types"
-import {
-  getPrimaryModelAnswerText,
-  prepareQuestion,
-} from "../src/features/sentence-practice/core/questionProcessor"
+import { prepareQuestion } from "../src/features/sentence-practice/core/questionProcessor"
 
 const DATA_DIR = join(import.meta.dirname, "data/sentence-practice")
 const TEMP_FILE = join(import.meta.dirname, ".tmp-sentence-questions.jsonl")
 const CACHE_FILE = join(import.meta.dirname, ".sentence-practice-cache.json")
 const KAGOME_PORT = 6060
 const GRAMMAR_CLI = join(process.cwd(), "bin/grammar-cli")
-const CACHE_VERSION = 2
+const CACHE_VERSION = 3
+const GRAMMAR_CONCURRENCY = Math.max(
+  1,
+  Number(process.env.GRAMMAR_CONCURRENCY ?? 8),
+)
 
 // --- Cache ---
 
@@ -112,50 +113,86 @@ class KagomeServer {
 
 // --- Grammar Analysis ---
 
-function analyzeGrammar(tokens: any[]): { tokens: { pos: string[] }[] } {
-  try {
-    const output = execSync(GRAMMAR_CLI, {
-      input: JSON.stringify(tokens),
-      encoding: "utf-8",
-      maxBuffer: 10 * 1024 * 1024,
+async function analyzeGrammar(
+  tokens: any[],
+): Promise<{ tokens: { surface: string; pos: string[] }[] }> {
+  return new Promise((resolve) => {
+    const child = spawn(GRAMMAR_CLI, [], { stdio: ["pipe", "pipe", "ignore"] })
+    let stdout = ""
+
+    child.stdout.setEncoding("utf-8")
+    child.stdout.on("data", (chunk) => {
+      stdout += chunk
     })
-    return JSON.parse(output)
-  } catch {
-    return { tokens: [] }
+    child.on("close", (code) => {
+      if (code !== 0) {
+        resolve({ tokens: [] })
+        return
+      }
+
+      try {
+        resolve(JSON.parse(stdout))
+      } catch {
+        resolve({ tokens: [] })
+      }
+    })
+    child.stdin.end(JSON.stringify(tokens))
+  })
+}
+
+async function mapWithConcurrency<T, R>(
+  items: T[],
+  concurrency: number,
+  fn: (item: T, index: number) => Promise<R>,
+): Promise<R[]> {
+  const results = new Array<R>(items.length)
+  let nextIndex = 0
+
+  async function worker() {
+    while (nextIndex < items.length) {
+      const index = nextIndex++
+      results[index] = await fn(items[index], index)
+    }
   }
+
+  await Promise.all(
+    Array.from({ length: Math.min(concurrency, items.length) }, worker),
+  )
+  return results
 }
 
 // --- Question Text Preparation ---
 
 /**
  * Batch process all questions in a file with a single Kagome request.
- * Returns modelAnswerPOS for each question.
+ * Returns preparedAnswerTokens for each question.
  */
 async function processFileQuestions(
   questions: Question[],
   kagome: KagomeServer,
-): Promise<string[][][]> {
-  // 1. Extract the prepared primary model answer for each question.
-  const texts = questions.map((q) =>
-    getPrimaryModelAnswerText(prepareQuestion(q)),
-  )
+): Promise<{ text: string; pos: string[] }[][][]> {
+  const preparedQuestions = questions.map((q) => prepareQuestion({
+    ...q,
+    preparedAnswerTokens: [],
+  }))
+  const entries: { questionIndex: number; answerIndex: number; text: string }[] = []
 
-  // Find which questions have text to process
-  const nonEmptyIndices: number[] = []
-  const nonEmptyTexts: string[] = []
-  for (let i = 0; i < texts.length; i++) {
-    if (texts[i]) {
-      nonEmptyIndices.push(i)
-      nonEmptyTexts.push(texts[i])
+  for (let questionIndex = 0; questionIndex < preparedQuestions.length; questionIndex++) {
+    const prepared = preparedQuestions[questionIndex]
+    for (let answerIndex = 0; answerIndex < prepared.answers.length; answerIndex++) {
+      const text = prepared.answers[answerIndex]
+        .map((segment) => segment.plain)
+        .join("")
+      if (text) entries.push({ questionIndex, answerIndex, text })
     }
   }
 
-  if (nonEmptyTexts.length === 0) {
+  if (entries.length === 0) {
     return questions.map(() => [])
   }
 
   // 2. Batch tokenize with separator
-  const batchedText = nonEmptyTexts.join(SEPARATOR)
+  const batchedText = entries.map((entry) => entry.text).join(SEPARATOR)
   const allTokens = await kagome.tokenize(batchedText)
 
   // 3. Split tokens by separator
@@ -164,25 +201,44 @@ async function processFileQuestions(
 
   for (const token of allTokens) {
     if (token.surface === SEPARATOR) {
-      tokenGroups.push(currentGroup)
+      tokenGroups.push(normalizeTokenPositions(currentGroup))
       currentGroup = []
     } else {
       currentGroup.push(token)
     }
   }
-  tokenGroups.push(currentGroup)
+  tokenGroups.push(normalizeTokenPositions(currentGroup))
 
   // 4. Run grammar-cli on each group and build results
-  const results: string[][][] = questions.map(() => [])
+  const results: { text: string; pos: string[] }[][][] = preparedQuestions.map(
+    (question) => question.answers.map(() => []),
+  )
 
-  for (let i = 0; i < nonEmptyIndices.length; i++) {
-    const questionIndex = nonEmptyIndices[i]
-    const tokens = tokenGroups[i] || []
-    const analysisResult = analyzeGrammar(tokens)
-    results[questionIndex] = analysisResult.tokens.map((t) => t.pos)
+  const analysisResults = await mapWithConcurrency(
+    tokenGroups.slice(0, entries.length),
+    GRAMMAR_CONCURRENCY,
+    analyzeGrammar,
+  )
+
+  for (let i = 0; i < entries.length; i++) {
+    const { questionIndex, answerIndex } = entries[i]
+    const analysisResult = analysisResults[i]
+    results[questionIndex][answerIndex] = analysisResult.tokens.map((token) => ({
+      text: token.surface,
+      pos: token.pos,
+    }))
   }
 
   return results
+}
+
+function normalizeTokenPositions(tokens: any[]): any[] {
+  const offset = tokens[0]?.start ?? 0
+  return tokens.map((token) => ({
+    ...token,
+    start: token.start - offset,
+    end: token.end - offset,
+  }))
 }
 
 // --- File Discovery ---
@@ -254,7 +310,7 @@ async function main() {
 
         const module = await import(file)
         const questions: Question[] = module.questions
-        const allPOS = await processFileQuestions(questions, kagome)
+        const preparedAnswerTokens = await processFileQuestions(questions, kagome)
 
         const processedQuestions = questions.map((q, i) => ({
           setId,
@@ -262,7 +318,7 @@ async function main() {
           english: q.english,
           hint: q.hint,
           answers: q.answers,
-          modelAnswerPOS: allPOS[i],
+          preparedAnswerTokens: preparedAnswerTokens[i],
         }))
 
         cache[setId] = { hash, questions: processedQuestions }

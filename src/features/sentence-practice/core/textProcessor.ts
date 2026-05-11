@@ -5,15 +5,31 @@ import type { RichSegment } from "./types"
 
 export const SEGMENT_SEPARATOR = "\x1F" // segment boundary marker
 
-// Normalizes: strips punctuation, whitespace, separators
+// Normalizes: strips punctuation accepted by answer matching, whitespace, and separators
 export function normalizeText(text: string): string {
-  return text
-    .trim()
-    .normalize("NFKC")
-    .replace(/\s+/g, "")
-    .replace(/\x1F/g, "")
-    .replace(/、/g, "")
-    .replace(/[。?!？！]$/, "")
+  const normalized = text.trim().normalize("NFKC")
+  let result = ""
+
+  for (let i = 0; i < normalized.length; i++) {
+    if (!isIgnoredForAnswerMatching(normalized[i], i, normalized)) {
+      result += normalized[i]
+    }
+  }
+
+  return result
+}
+
+export function isIgnoredForAnswerMatching(
+  char: string,
+  index: number,
+  text: string,
+): boolean {
+  return (
+    char === "\x1F" ||
+    char === "、" ||
+    /\s/.test(char) ||
+    (/[。?!？！]/.test(char) && index === text.length - 1)
+  )
 }
 
 export interface NormalizedWithMap {
@@ -36,13 +52,7 @@ export function normalizeWithPositions(text: string): NormalizedWithMap {
 
   for (let i = 0; i < trimmed.length; i++) {
     const char = trimmed[i]
-    const isEndPunctuation = /[。?!？！]/.test(char) && i === trimmed.length - 1
-    if (
-      char !== "\x1F" &&
-      char !== "、" &&
-      !/\s/.test(char) &&
-      !isEndPunctuation
-    ) {
+    if (!isIgnoredForAnswerMatching(char, i, trimmed)) {
       survivingPositions.push(i)
       normalized += char
     }

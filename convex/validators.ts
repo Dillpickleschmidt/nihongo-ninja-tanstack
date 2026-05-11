@@ -387,8 +387,14 @@ export const sentenceAnswerValidator = v.object({
   register: v.optional(v.union(v.literal("polite"), v.literal("casual"))),
 })
 
+export const sentenceAnswerTokenValidator = v.object({
+  text: v.string(),
+  pos: v.array(v.string()),
+})
+
 // Inferred types for sentence practice
 export type SentenceConjugation = Infer<typeof sentenceConjugationValidator>
 export type SentenceSegment = Infer<typeof sentenceSegmentValidator>
 export type SentenceAnswer = Infer<typeof sentenceAnswerValidator>
+export type SentenceAnswerToken = Infer<typeof sentenceAnswerTokenValidator>
 export type PartOfSpeech = Infer<typeof partOfSpeechValidator>

@@ -13,7 +13,7 @@ function createQuestion(segments: Array<{ text: string; isBlank: boolean }>): Pr
 
   return {
     english: "Test",
-    modelAnswerPOS: [],
+    preparedAnswerTokens: [],
     displayAnswer,
     answers: [displayAnswer],
     validAnswers: [],

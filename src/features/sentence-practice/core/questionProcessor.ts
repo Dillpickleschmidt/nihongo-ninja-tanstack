@@ -1,4 +1,7 @@
-import type { SentenceAnswer } from "../../../../convex/validators"
+import type {
+  SentenceAnswer,
+  SentenceAnswerToken,
+} from "../../../../convex/validators"
 import type { ProcessedQuestion, RichSegment, RichAnswer } from "./types"
 import { prepareAnswersForMatching } from "./answer-processing/preparedMatching"
 import { processSegments } from "./segmentProcessor"
@@ -10,7 +13,7 @@ export function prepareQuestion(question: {
   english: string
   hint?: string
   answers: SentenceAnswer[]
-  modelAnswerPOS?: string[][]
+  preparedAnswerTokens: SentenceAnswerToken[][]
 }): ProcessedQuestion {
   const { english, hint, answers: rawAnswers } = question
   const processedAnswers: RichSegment[][] = []
@@ -56,19 +59,12 @@ export function prepareQuestion(question: {
   return {
     english,
     hint,
-    modelAnswerPOS: question.modelAnswerPOS ?? [],
+    preparedAnswerTokens: question.preparedAnswerTokens,
     displayAnswer: processedAnswers[0] ?? [],
     answers: processedAnswers,
     validAnswers: answerList,
     preparedAnswersForMatching: prepareAnswersForMatching(answerList),
   }
-}
-
-export function getPrimaryModelAnswerText(question: ProcessedQuestion): string {
-  return question.displayAnswer
-    .map((segment) => segment.plain)
-    .join("")
-    .replace(/\s+/g, "")
 }
 
 function joinSegments(segments: RichSegment[]): string {

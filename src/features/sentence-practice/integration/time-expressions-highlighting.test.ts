@@ -17,7 +17,7 @@ describe("time expressions highlighting", () => {
       english: source.english,
       hint: source.hint,
       answers: source.answers,
-      modelAnswerPOS: [],
+      preparedAnswerTokens: [],
     })
 
     const result = checkAnswer(
@@ -48,7 +48,7 @@ describe("time expressions highlighting", () => {
       english: source.english,
       hint: source.hint,
       answers: source.answers,
-      modelAnswerPOS: [],
+      preparedAnswerTokens: [],
     })
 
     const result = checkAnswer(

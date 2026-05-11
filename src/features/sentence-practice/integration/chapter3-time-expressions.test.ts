@@ -32,7 +32,7 @@ function getRawQuestion() {
     english: source.english,
     hint: source.hint,
     answers: source.answers,
-    modelAnswerPOS: [],
+    preparedAnswerTokens: [],
   }
 }
 
@@ -62,7 +62,7 @@ describe("chapter 3 time expressions hard-mode pipeline", () => {
       "朝",
       "八時",
       "ごろ",
-      "に 音楽を",
+      "に音楽を",
       "聞きます",
     ])
   })

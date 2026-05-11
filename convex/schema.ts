@@ -13,6 +13,7 @@ import {
   practiceItemTypeValidator,
   vocabularyItemValidator,
   sentenceAnswerValidator,
+  sentenceAnswerTokenValidator,
 } from "./validators"
 
 export default defineSchema({
@@ -283,7 +284,7 @@ export default defineSchema({
     english: v.string(),
     hint: v.optional(v.string()),
     answers: v.array(sentenceAnswerValidator),
-    modelAnswerPOS: v.array(v.array(v.string())),
+    preparedAnswerTokens: v.array(v.array(sentenceAnswerTokenValidator)),
   }).index("by_setId", ["setId"]),
 
 })

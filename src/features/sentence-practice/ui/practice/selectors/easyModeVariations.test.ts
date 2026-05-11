@@ -12,7 +12,7 @@ describe("getEasyModeBlankVariations", () => {
     ]
     const question: ProcessedQuestion = {
       english: "Test",
-      modelAnswerPOS: [],
+      preparedAnswerTokens: [],
       displayAnswer,
       answers: [displayAnswer],
       validAnswers: [

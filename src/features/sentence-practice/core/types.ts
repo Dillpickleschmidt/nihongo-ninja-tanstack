@@ -1,3 +1,5 @@
+import type { SentenceAnswerToken } from "../../../../convex/validators"
+
 // RichSegment: single source of truth - compute once, use everywhere
 export interface RichSegment {
   original: string // "行[い]く" - with furigana brackets
@@ -43,7 +45,7 @@ export interface AnswerMatch {
 export interface ProcessedQuestion {
   english: string
   hint?: string
-  modelAnswerPOS: string[][]
+  preparedAnswerTokens: SentenceAnswerToken[][]
   displayAnswer: RichSegment[] // canonical answer used for display and easy-mode assembly
   answers: RichSegment[][] // all processed answer variants
   validAnswers: RichAnswer[] // all valid answers for checking

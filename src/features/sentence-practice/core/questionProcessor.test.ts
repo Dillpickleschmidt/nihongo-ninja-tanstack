@@ -20,7 +20,7 @@ function createQuestion(
     english,
     hint,
     answers,
-    modelAnswerPOS: [],
+    preparedAnswerTokens: [],
   }
 }
 
