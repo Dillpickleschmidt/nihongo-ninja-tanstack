@@ -95,7 +95,7 @@ function buildDisplayItems(
     if (input.startsWith(tokenMatchText, inputPos)) {
       items.push({
         kind: "token",
-        text: input.slice(inputPos, inputPos + tokenMatchText.length),
+        text: token.t,
         pos: token.p,
       })
       inputPos += tokenMatchText.length
