@@ -2,16 +2,19 @@ import { Show } from "solid-js"
 import { usePractice } from "../../store/PracticeContext"
 import FuriganaText from "../common/FuriganaText"
 import AlternativeAnswers from "./AlternativeAnswers"
+import { getAnswerMatchDisplay } from "./selectors/answerMatchDisplay"
 
 export default function ResultDisplay() {
   const { store, computed } = usePractice()
 
   const currentQuestion = () => computed.getCurrentQuestion()
 
-  const bestAnswer = () => {
+  const bestAnswerDisplay = () => {
     const question = currentQuestion()
     if (!question || !store.checkResult) return null
-    return store.checkResult.bestMatch
+    return getAnswerMatchDisplay(store.checkResult.allMatches[0], {
+      showFurigana: store.showFurigana,
+    })
   }
 
   return (
@@ -62,9 +65,9 @@ export default function ResultDisplay() {
               }`}
             >
               <FuriganaText
-                text={bestAnswer() || ""}
-                showFurigana={store.showFurigana}
-                errors={store.checkResult!.bestMatchErrors}
+                text={bestAnswerDisplay()?.text || ""}
+                showFurigana={bestAnswerDisplay()?.showFurigana}
+                errors={bestAnswerDisplay()?.errors}
                 highlightClass="rounded-md border-2 border-black bg-emerald-500 text-black font-medium"
                 class="font-japanese"
               />

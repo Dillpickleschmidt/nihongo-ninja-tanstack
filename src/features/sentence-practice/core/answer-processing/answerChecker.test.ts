@@ -186,7 +186,7 @@ describe("checkAnswer", () => {
     )
 
     expect(result.bestMatch).toBe("かえでさんはとしょかんでうたっていた")
-    expect(result.bestMatchErrors).toEqual([{ start: 13, end: 14 }])
+    expect(result.bestMatchDisplayErrors).toEqual([{ start: 13, end: 14 }])
   })
 
   it("maps error positions correctly when input and answer have punctuation", () => {
@@ -210,7 +210,7 @@ describe("checkAnswer", () => {
 
     // Answer errors mapped to original positions (after comma):
     // Positions 13-19: ショッピングモ (missing), Position 21: ル (vs る)
-    expect(result.bestMatchErrors).toEqual([
+    expect(result.bestMatchDisplayErrors).toEqual([
       { start: 13, end: 20 },
       { start: 21, end: 22 },
     ])
@@ -233,7 +233,7 @@ describe("allMatches and bestMatchIndex", () => {
       expect(match.similarity).toBeGreaterThanOrEqual(0)
       expect(match.similarity).toBeLessThanOrEqual(1)
       expect(match.userErrors).toBeDefined()
-      expect(match.answerErrors).toBeDefined()
+      expect(match.displayTextErrors).toBeDefined()
     })
   })
 
@@ -323,13 +323,13 @@ describe("allMatches and bestMatchIndex", () => {
     )
 
     expect(result.bestMatch).toBe("時々朝八時ごろに音楽を聞きます")
-    expect(result.bestMatchErrors).toEqual([])
+    expect(result.bestMatchDisplayErrors).toEqual([])
 
     const subjectAlternative = result.allMatches.find(
       (match) => match.answer.plain === "私は時々朝八時ごろに音楽を聞きます",
     )
 
-    expect(subjectAlternative?.answerErrors).toEqual([{ start: 0, end: 2 }])
+    expect(subjectAlternative?.displayTextErrors).toEqual([{ start: 0, end: 2 }])
   })
 
   it("maps omitted 私、 alternatives to the full kana prefix", () => {
@@ -344,7 +344,7 @@ describe("allMatches and bestMatchIndex", () => {
     )
 
     expect(pronounAlternative?.displayText).toBe("わたし、たいていくじごろテレビをみる")
-    expect(pronounAlternative?.answerErrors).toEqual([{ start: 0, end: 4 }])
+    expect(pronounAlternative?.displayTextErrors).toEqual([{ start: 0, end: 4 }])
   })
 
   it("maps omitted mid-sentence 私は alternatives to the kana subject", () => {
@@ -359,7 +359,7 @@ describe("allMatches and bestMatchIndex", () => {
     )
 
     expect(pronounAlternative?.displayText).toBe("たいていくじごろわたしはテレビをみる")
-    expect(pronounAlternative?.answerErrors).toEqual([{ start: 8, end: 12 }])
+    expect(pronounAlternative?.displayTextErrors).toEqual([{ start: 8, end: 12 }])
   })
 
   it("highlights only の in the 朝の八時 alternative", () => {
@@ -374,13 +374,13 @@ describe("allMatches and bestMatchIndex", () => {
     )
 
     expect(result.bestMatch).toBe("私は時々朝八時ごろに音楽を聞きます")
-    expect(result.bestMatchErrors).toEqual([])
+    expect(result.bestMatchDisplayErrors).toEqual([])
 
     const noAlternative = result.allMatches.find(
       (match) => match.answer.plain === "私は時々朝の八時ごろに音楽を聞きます",
     )
 
-    expect(noAlternative?.answerErrors).toEqual([{ start: 5, end: 6 }])
+    expect(noAlternative?.displayTextErrors).toEqual([{ start: 5, end: 6 }])
   })
 
   it("highlights the changed verb ending in the casual alternative", () => {
@@ -395,12 +395,12 @@ describe("allMatches and bestMatchIndex", () => {
     )
 
     expect(result.bestMatch).toBe("私は時々朝八時ごろに音楽を聞きます")
-    expect(result.bestMatchErrors).toEqual([])
+    expect(result.bestMatchDisplayErrors).toEqual([])
 
     const casualAlternative = result.allMatches.find(
       (match) => match.answer.plain === "私は時々朝八時ごろに音楽を聞く",
     )
 
-    expect(casualAlternative?.answerErrors).toEqual([{ start: 14, end: 15 }])
+    expect(casualAlternative?.displayTextErrors).toEqual([{ start: 14, end: 15 }])
   })
 })

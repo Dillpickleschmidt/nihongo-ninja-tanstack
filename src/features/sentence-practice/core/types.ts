@@ -36,12 +36,15 @@ export interface PreparedAnswerForMatching {
   kanaToVisible: (pos: number) => number
 }
 
+export type AnswerMatchDisplayMode = "plain" | "kana"
+
 export interface AnswerMatch {
   answer: RichAnswer
-  displayText: string // The text actually shown (kana or plain)
+  displayText: string
+  displayTextMode: AnswerMatchDisplayMode
   similarity: number // 0-1 score
   userErrors: ErrorRange[] // Errors in user input
-  answerErrors: ErrorRange[] // Errors in correct answer (for highlighting)
+  displayTextErrors: ErrorRange[]
 }
 
 export interface ProcessedQuestion {
@@ -60,7 +63,7 @@ export interface CheckResult {
   bestMatch: string
   similarity: number // 0-1
   errorRanges: ErrorRange[] // errors in user input
-  bestMatchErrors: ErrorRange[] // errors in correct answer (for display)
+  bestMatchDisplayErrors: ErrorRange[]
   strippedParticle?: string // particle stripped for comparison (よ/ね)
 
   // All matches for alternatives & debug

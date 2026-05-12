@@ -15,9 +15,10 @@ function createMatch(overrides: Partial<AnswerMatch>): AnswerMatch {
       sourceAnswerIndex: 0,
     },
     displayText: "私は時々朝八時ごろに音楽を聞きます",
+    displayTextMode: "plain",
     similarity: 1,
     userErrors: [],
-    answerErrors: [],
+    displayTextErrors: [],
     ...overrides,
   }
 }
@@ -40,7 +41,7 @@ describe("AlternativeAnswers", () => {
             displayText: "時々朝八時ごろに音楽を聞きます",
             similarity: 1,
           }),
-          createMatch({ answerErrors: [{ start: 0, end: 2 }], similarity: 0.95 }),
+          createMatch({ displayTextErrors: [{ start: 0, end: 2 }], similarity: 0.95 }),
         ]}
         bestMatchIndex={0}
         showFurigana={false}

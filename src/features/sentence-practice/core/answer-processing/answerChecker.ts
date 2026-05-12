@@ -327,6 +327,7 @@ export function checkAnswer(
       const displayText = useKanaMatch
         ? preparedAnswer.visibleKana
         : preparedAnswer.visiblePlain
+      const displayTextMode = useKanaMatch ? "kana" as const : "plain" as const
       const errors = useKanaMatch ? kanaMatch : kanjiMatch
 
       const mappedUserErrors = errors.userErrors.map((e) => ({
@@ -334,7 +335,7 @@ export function checkAnswer(
         end: userToOriginal(e.end),
       }))
 
-      const mappedAnswerErrors = errors.answerErrors.map((e) => ({
+      const mappedDisplayTextErrors = errors.answerErrors.map((e) => ({
         start: toVisible(e.start),
         end: toVisible(e.end),
       }))
@@ -343,9 +344,10 @@ export function checkAnswer(
       return {
         answer: preparedAnswer.answer,
         displayText,
+        displayTextMode,
         similarity: Math.max(kanjiMatch.similarity, kanaMatch.similarity),
         userErrors: mappedUserErrors,
-        answerErrors: mappedAnswerErrors,
+        displayTextErrors: mappedDisplayTextErrors,
       }
     })
     .sort((a, b) => b.similarity - a.similarity)
@@ -357,7 +359,7 @@ export function checkAnswer(
     bestMatch: matches[0].displayText,
     similarity: matches[0].similarity,
     errorRanges: matches[0].userErrors,
-    bestMatchErrors: matches[0].answerErrors,
+    bestMatchDisplayErrors: matches[0].displayTextErrors,
     strippedParticle,
     allMatches: matches,
     bestMatchIndex,

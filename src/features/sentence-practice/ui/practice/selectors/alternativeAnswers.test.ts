@@ -20,9 +20,10 @@ function createMatch({
       ...answerOverrides,
     },
     displayText: "行きましょう",
+    displayTextMode: "plain",
     similarity: 1,
     userErrors: [],
-    answerErrors: [],
+    displayTextErrors: [],
     ...matchOverrides,
   }
 }

@@ -27,12 +27,12 @@ describe("time expressions highlighting", () => {
 
     expect(result.bestMatch).toBe("たいていくじごろにテレビをみる")
     expect(result.errorRanges).toEqual([])
-    expect(result.bestMatchErrors).toEqual([{ start: 7, end: 8 }])
+    expect(result.bestMatchDisplayErrors).toEqual([{ start: 7, end: 8 }])
 
     const noPronounAlternative = result.allMatches.find(
       (match) => match.displayText === "たいていくじごろテレビをみる",
     )
-    expect(noPronounAlternative?.answerErrors).toEqual([{ start: 7, end: 8 }])
+    expect(noPronounAlternative?.displayTextErrors).toEqual([{ start: 7, end: 8 }])
   })
 
   it("highlights omitted alternative text in the matched answer script", () => {
@@ -60,6 +60,6 @@ describe("time expressions highlighting", () => {
     )
 
     expect(pronounAlternative?.displayText).toBe("ぼく、たいていくじごろテレビをみる")
-    expect(pronounAlternative?.answerErrors).toEqual([{ start: 0, end: 3 }])
+    expect(pronounAlternative?.displayTextErrors).toEqual([{ start: 0, end: 3 }])
   })
 })
