@@ -37,7 +37,7 @@ describe("getUserInputPosDisplayItems", () => {
         { kind: "token", text: "楓", pos: "名詞" },
         { kind: "token", text: "さん", pos: "名詞" },
         { kind: "token", text: "は", pos: "助詞" },
-        { kind: "incomplete", text: "としょか" },
+        { kind: "neutral", text: "としょか" },
       ])
   })
 
@@ -47,7 +47,7 @@ describe("getUserInputPosDisplayItems", () => {
         { kind: "token", text: "楓", pos: "名詞" },
         { kind: "token", text: "さん", pos: "名詞" },
         { kind: "token", text: "は", pos: "助詞" },
-        { kind: "incomplete", text: "としょかの" },
+        { kind: "neutral", text: "としょかの" },
       ])
   })
 
@@ -93,6 +93,47 @@ describe("getUserInputPosDisplayItems", () => {
         { kind: "token", text: "兄", pos: "名詞" },
         { kind: "token", text: "は", pos: "助詞" },
         { kind: "token", text: "昨日", pos: "名詞" },
+        { kind: "token", text: "公園", pos: "名詞" },
+        { kind: "token", text: "で", pos: "助詞" },
+        { kind: "token", text: "テニス", pos: "名詞" },
+        { kind: "token", text: "を", pos: "助詞" },
+        { kind: "token", text: "していた", pos: "動詞" },
+      ])
+  })
+
+  it("does not block matching when the user types ignored punctuation", () => {
+    const answer = [
+      createRichSegment("昨日[きのう]", false),
+      createRichSegment("兄[あに]は 公園[こうえん]で", false),
+      createRichSegment("テニスをしていた", true),
+    ]
+    const question: ProcessedQuestion = {
+      english: "Test",
+      canonicalAnswerTokens: [
+        [
+          { t: "昨日", p: "名詞" },
+          { t: "兄", p: "名詞" },
+          { t: "は", p: "助詞" },
+          { t: "公園", p: "名詞" },
+          { t: "で", p: "助詞" },
+          { t: "テニス", p: "名詞" },
+          { t: "を", p: "助詞" },
+          { t: "していた", p: "動詞" },
+        ],
+      ],
+      displayAnswer: answer,
+      answers: [answer],
+      canonicalAnswers: [toCanonicalAnswer(answer)],
+      acceptedAnswers: [],
+      preparedAnswersForMatching: [],
+    }
+
+    expect(getUserInputPosDisplayItems("きのう、あにはこうえんでテニスをしていた", question))
+      .toEqual([
+        { kind: "token", text: "昨日", pos: "名詞" },
+        { kind: "neutral", text: "、" },
+        { kind: "token", text: "兄", pos: "名詞" },
+        { kind: "token", text: "は", pos: "助詞" },
         { kind: "token", text: "公園", pos: "名詞" },
         { kind: "token", text: "で", pos: "助詞" },
         { kind: "token", text: "テニス", pos: "名詞" },

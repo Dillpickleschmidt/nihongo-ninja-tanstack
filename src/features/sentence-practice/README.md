@@ -140,7 +140,7 @@ The stored comma token is ignored for matching, so matching continues from `き�
 - `RichSegment.original` preserves authored furigana text.
 - `RichSegment.plain` and `RichSegment.kana` remove whitespace.
 - Token POS comes from the stored plain token, even when the displayed user text is kana.
-- Gray boxes mean “current unmatched/incomplete suffix”; they are not POS-tagged.
+- Gray boxes are neutral text such as punctuation or unmatched/incomplete input; they are not POS-tagged.
 
 ## Useful commands
 

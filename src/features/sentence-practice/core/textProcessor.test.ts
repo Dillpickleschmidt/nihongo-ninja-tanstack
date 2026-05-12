@@ -6,7 +6,21 @@ import {
   normalizeWithPositions,
   removeFurigana,
   createRichSegment,
+  isNeutralPosText,
 } from "./textProcessor"
+
+describe("isNeutralPosText", () => {
+  it("returns true for punctuation-only POS display text", () => {
+    expect(isNeutralPosText("、")).toBe(true)
+    expect(isNeutralPosText("。")).toBe(true)
+    expect(isNeutralPosText(" ?！ ")).toBe(true)
+  })
+
+  it("returns false for text that should receive a POS color", () => {
+    expect(isNeutralPosText("昨日")).toBe(false)
+    expect(isNeutralPosText("、昨日")).toBe(false)
+  })
+})
 
 describe("normalizeText", () => {
   it("removes separators and trailing punctuation", () => {

@@ -2,7 +2,9 @@
 
 import { For, Show, type Component } from "solid-js"
 import PosHintBox from "./PosHintBox"
+import NeutralPosBox from "./NeutralPosBox"
 import { getPosCategory, getWidthForCategory } from "../common/posHelpers"
+import { isNeutralPosText } from "../../core/textProcessor"
 import type { SentenceAnswerToken } from "../../../../../convex/validators"
 
 interface PosHintDisplayProps {
@@ -24,6 +26,10 @@ const PosHintDisplay: Component<PosHintDisplayProps> = (props) => {
       >
         <For each={props.tokens}>
           {(token) => {
+            if (isNeutralPosText(token.t)) {
+              return <NeutralPosBox text={token.t} />
+            }
+
             const category = getPosCategory(token.p)
             const width = getWidthForCategory(category)
             return <PosHintBox pos={token.p} width={width} />

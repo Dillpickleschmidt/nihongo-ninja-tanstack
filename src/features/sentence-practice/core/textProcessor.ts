@@ -32,6 +32,11 @@ export function isIgnoredForAnswerMatching(
   )
 }
 
+export function isNeutralPosText(text: string): boolean {
+  const normalized = text.normalize("NFKC")
+  return normalized.length > 0 && /^[\s、。?!？！]+$/.test(normalized)
+}
+
 export interface NormalizedWithMap {
   text: string
   toOriginal: (pos: number) => number

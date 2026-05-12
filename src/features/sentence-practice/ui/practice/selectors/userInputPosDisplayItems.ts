@@ -4,6 +4,7 @@ import { containsKanji } from "@/data/utils/text/japanese"
 import { createKanjiFuriganaGroupRegex } from "@/data/utils/text/furigana"
 import {
   isIgnoredForAnswerMatching,
+  isNeutralPosText,
   SEGMENT_SEPARATOR,
 } from "../../../core/textProcessor"
 
@@ -18,7 +19,7 @@ export type UserInputPosDisplayItem =
       pos: string
     }
   | {
-      kind: "incomplete"
+      kind: "neutral"
       text: string
     }
 
@@ -74,10 +75,11 @@ function buildDisplayItems(
   let plainPos = 0
 
   for (const token of tokens) {
+    inputPos = appendIgnoredInput(items, input, inputPos)
     if (inputPos >= input.length) break
 
     const tokenStart = answerText.plain.indexOf(token.t, plainPos)
-    if (tokenStart === -1) return appendIncomplete(items, input, inputPos)
+    if (tokenStart === -1) return appendNeutral(items, input, inputPos)
 
     const tokenEnd = tokenStart + token.t.length
     const targetStart = usesKanji
@@ -104,13 +106,13 @@ function buildDisplayItems(
     }
 
     if (hasSharedPrefix(input.slice(inputPos), tokenMatchText)) {
-      return appendIncomplete(items, input, inputPos)
+      return appendNeutral(items, input, inputPos)
     }
 
-    return appendIncomplete(items, input, inputPos)
+    return appendNeutral(items, input, inputPos)
   }
 
-  if (inputPos < input.length) return appendIncomplete(items, input, inputPos)
+  if (inputPos < input.length) return appendNeutral(items, input, inputPos)
 
   return items
 }
@@ -120,13 +122,29 @@ function getTargetText(input: string, answer: RichAnswer): string {
   return stripSegmentSeparators(answer[field])
 }
 
-function appendIncomplete(
+function appendIgnoredInput(
+  items: UserInputPosDisplayItem[],
+  input: string,
+  start: number,
+): number {
+  let index = start
+  while (index < input.length && isNeutralPosText(input[index])) {
+    index++
+  }
+
+  if (index > start) {
+    items.push({ kind: "neutral", text: input.slice(start, index) })
+  }
+  return index
+}
+
+function appendNeutral(
   items: UserInputPosDisplayItem[],
   input: string,
   start: number,
 ): UserInputPosDisplayItem[] {
   const text = input.slice(start)
-  if (text) items.push({ kind: "incomplete", text })
+  if (text) items.push({ kind: "neutral", text })
   return items
 }
 

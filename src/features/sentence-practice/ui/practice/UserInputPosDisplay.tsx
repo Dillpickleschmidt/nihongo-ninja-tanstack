@@ -2,6 +2,7 @@
 
 import { For, Show, type Component } from "solid-js"
 import { ClickableTooltip } from "@/components/ClickableTooltip"
+import NeutralPosBox from "./NeutralPosBox"
 import type { ProcessedQuestion } from "../../core/types"
 import {
   getPosCategory,
@@ -33,14 +34,8 @@ const UserInputPosDisplay: Component<UserInputPosDisplayProps> = (props) => {
       >
         <For each={displayItems()}>
           {(item) => {
-            if (item.kind === "incomplete") {
-              return (
-                <ClickableTooltip content="In progress">
-                  <span class="font-japanese inline-block rounded-md bg-white/20 px-1 py-0.5 text-base font-medium text-white/80">
-                    {item.text}
-                  </span>
-                </ClickableTooltip>
-              )
+            if (item.kind === "neutral") {
+              return <NeutralPosBox text={item.text} />
             }
 
             const category = getPosCategory(item.pos)
