@@ -5,11 +5,20 @@ import { usePractice } from "../../store/PracticeContext"
 import PracticeInput from "./PracticeInput"
 import PosHintDisplay from "./PosHintDisplay"
 import UserInputPosDisplay from "./UserInputPosDisplay"
+import { getBestCanonicalAnswerIndex } from "./selectors/userInputPosDisplayItems"
 
 export default function FullInput() {
   const { store, actions, computed } = usePractice()
 
   const isAnswerCorrect = () => store.showResult && store.checkResult?.isCorrect
+
+  const posHintTokens = () => {
+    const question = computed.getCurrentQuestion()
+    if (!question) return undefined
+
+    const answerIndex = getBestCanonicalAnswerIndex(store.answerText, question)
+    return question.canonicalAnswerTokens[answerIndex]
+  }
 
   const handleMainButton = () => {
     if (isAnswerCorrect()) {
@@ -23,7 +32,7 @@ export default function FullInput() {
     <div class="space-y-4">
       {/* POS hint boxes */}
       <div>
-        <PosHintDisplay tokens={computed.getCurrentQuestion()?.canonicalAnswerTokens[0]} />
+        <PosHintDisplay tokens={posHintTokens()} />
         <UserInputPosDisplay
           originalInput={store.answerText}
           question={computed.getCurrentQuestion()}

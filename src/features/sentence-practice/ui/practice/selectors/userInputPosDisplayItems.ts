@@ -29,10 +29,7 @@ export function getUserInputPosDisplayItems(
 ): UserInputPosDisplayItem[] {
   if (!question || !originalInput.trim()) return []
 
-  const answerIndex = findBestAnswerIndex(
-    originalInput,
-    question.canonicalAnswers,
-  )
+  const answerIndex = getBestCanonicalAnswerIndex(originalInput, question)
   const answer = question.canonicalAnswers[answerIndex]
   const tokens = question.canonicalAnswerTokens[answerIndex]
   if (!answer || !tokens) return []
@@ -43,10 +40,15 @@ export function getUserInputPosDisplayItems(
   return buildDisplayItems(input, answerText, tokens)
 }
 
-function findBestAnswerIndex(
+export function getBestCanonicalAnswerIndex(
   input: string,
-  answers: RichAnswer[],
+  question: ProcessedQuestion,
 ): number {
+  if (!input.trim()) return 0
+  return findBestAnswerIndex(input, question.canonicalAnswers)
+}
+
+function findBestAnswerIndex(input: string, answers: RichAnswer[]): number {
   let bestIndex = 0
   let bestScore = -1
 
@@ -220,10 +222,7 @@ function hasSharedPrefix(a: string, b: string): boolean {
 }
 
 function calculateMatchScore(input: string, target: string): number {
-  const sharedPrefixLength = getSharedPrefixLength(input, target)
-  const lengthSimilarity =
-    1 - Math.abs(input.length - target.length) / Math.max(input.length, target.length, 1)
-  return sharedPrefixLength * 10 + lengthSimilarity
+  return getSharedPrefixLength(input, target)
 }
 
 function getSharedPrefixLength(a: string, b: string): number {

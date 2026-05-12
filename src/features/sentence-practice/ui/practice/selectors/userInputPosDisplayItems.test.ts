@@ -1,7 +1,10 @@
 import { describe, expect, it } from "vitest"
 import type { ProcessedQuestion, RichAnswer, RichSegment } from "../../../core/types"
 import { createRichSegment, convertToKana, removeFurigana, SEGMENT_SEPARATOR } from "../../../core/textProcessor"
-import { getUserInputPosDisplayItems } from "./userInputPosDisplayItems"
+import {
+  getBestCanonicalAnswerIndex,
+  getUserInputPosDisplayItems,
+} from "./userInputPosDisplayItems"
 
 function createQuestion(): ProcessedQuestion {
   const answer = [
@@ -29,6 +32,38 @@ function createQuestion(): ProcessedQuestion {
     preparedAnswersForMatching: [],
   }
 }
+
+describe("getBestCanonicalAnswerIndex", () => {
+  it("uses the first canonical answer before the user types", () => {
+    expect(getBestCanonicalAnswerIndex("", createQuestion())).toBe(0)
+  })
+
+  it("keeps canonical order when early input matches multiple variants equally", () => {
+    const baseAnswer = [
+      createRichSegment("藤井[ふじい]さんは", false),
+      createRichSegment("結婚[けっこん]しています", true),
+    ]
+    const contractedAnswer = [
+      createRichSegment("藤井[ふじい]さんは", false),
+      createRichSegment("結婚[けっこん]してる", true),
+    ]
+    const question: ProcessedQuestion = {
+      english: "Test",
+      canonicalAnswerTokens: [[], []],
+      displayAnswer: baseAnswer,
+      answers: [baseAnswer, contractedAnswer],
+      canonicalAnswers: [
+        toCanonicalAnswer(baseAnswer),
+        toCanonicalAnswer(contractedAnswer),
+      ],
+      acceptedAnswers: [],
+      preparedAnswersForMatching: [],
+    }
+
+    expect(getBestCanonicalAnswerIndex("ふ", question)).toBe(0)
+    expect(getBestCanonicalAnswerIndex("藤井", question)).toBe(0)
+  })
+})
 
 describe("getUserInputPosDisplayItems", () => {
   it("renders completed tokens and keeps the current partial token gray", () => {
