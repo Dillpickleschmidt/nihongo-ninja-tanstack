@@ -18,7 +18,7 @@ export default function DifficultySelector() {
           class={`rounded-full px-3 py-1 text-sm font-medium transition-colors ${
             store.difficulty === d.value
               ? "bg-dynamic-accent/80 text-white"
-              : "bg-white/5 text-white/40 hover:bg-white/10"
+              : "bg-card/60 text-muted-foreground hover:bg-muted dark:bg-white/5 dark:text-white/40 dark:hover:bg-white/10"
           }`}
         >
           {d.label}

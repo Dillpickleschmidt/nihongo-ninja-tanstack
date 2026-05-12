@@ -20,7 +20,7 @@ function BigNumbersLesson() {
   return (
     <div class="relative pb-32">
       {/* Background character */}
-      <span class="pointer-events-none absolute top-8 left-24 select-none font-japanese text-[10rem] leading-none text-white/[0.03] sm:top-11 sm:left-auto sm:right-8 sm:text-[11rem]">
+      <span class="pointer-events-none absolute top-8 left-24 select-none font-japanese text-[10rem] leading-none text-foreground/[0.04] dark:text-white/[0.03] sm:top-11 sm:left-auto sm:right-8 sm:text-[11rem]">
         万
       </span>
 
@@ -41,7 +41,7 @@ function BigNumbersLesson() {
       <div class="space-y-14 px-8">
         {/* Intro */}
         <div class="space-y-4">
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             Understanding big numbers in Japanese is essential for navigating
             everyday situations, such as reading prices, dealing with currency,
             or discussing quantities. It's especially important because Japanese
@@ -58,7 +58,7 @@ function BigNumbersLesson() {
 
           <BigNumbers />
 
-          <p class="text-sm italic text-white/40">
+          <p class="text-sm italic text-muted-foreground dark:text-white/40">
             *Note that <span class="font-japanese not-italic">一万</span> is{" "}
             <span class="font-japanese not-italic">
               <span class="underline underline-offset-[3px]">いち</span>まん
@@ -74,7 +74,7 @@ function BigNumbersLesson() {
         {/* Digits Practice */}
         <div class="space-y-4">
           <SectionLabel>Read the digits</SectionLabel>
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             Read the following numbers. Fill in the answers (in{" "}
             <span class="font-japanese">ひらがな</span>) if you want to check
             your knowledge.
@@ -85,12 +85,12 @@ function BigNumbersLesson() {
         {/* Kanji Numbers Practice */}
         <div class="space-y-4">
           <SectionLabel>Read the kanji</SectionLabel>
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             Read the following <span class="font-japanese">漢字</span> (kanji)
             numbers. Fill in the answers (in{" "}
             <span class="font-japanese">ひらがな</span>) if you want to check
             your knowledge{" "}
-            <span class="text-sm text-white/40">
+            <span class="text-sm text-muted-foreground dark:text-white/40">
               (this might feel painful at first, but you'll improve if you
               practice!)
             </span>
@@ -148,7 +148,7 @@ function DigitsPractice() {
       <For each={items}>
         {(item) => (
           <div class="flex flex-col items-center">
-            <label class="mb-1 text-center text-base text-white/70">
+            <label class="mb-1 text-center text-base text-foreground/75 dark:text-white/70">
               {item}
             </label>
             <TextField class="w-full max-w-xs">
@@ -192,7 +192,7 @@ function NumbersKanjiPractice() {
       <For each={items}>
         {(item) => (
           <div class="flex flex-col items-center">
-            <label class="font-japanese mb-1 text-center text-base text-white/70">
+            <label class="font-japanese mb-1 text-center text-base text-foreground/75 dark:text-white/70">
               {item}
             </label>
             <TextField class="w-full max-w-xs">

@@ -27,7 +27,7 @@ export function VocabularyCard(props: VocabularyCardProps) {
   return (
     <div class="@container w-full">
       <div
-        class={`border-card-foreground/70 relative rounded-lg border shadow-md backdrop-blur-sm ${
+        class={`border-border/60 dark:border-card-foreground/70 relative rounded-lg border shadow-md backdrop-blur-sm ${
           (props.index + 1) % 2 === 0 ? "bg-card/60" : "bg-card/50"
         }`}
       >
@@ -88,7 +88,7 @@ export function VocabularyCard(props: VocabularyCardProps) {
               <div class="w-1/2 border-l-2 border-orange-400/60 pl-6 saturate-75">
                 <VocabInfo item={props.item} />
               </div>
-              <div class="bg-background/40 border-card-foreground/70 w-1/2 rounded-lg border p-4 backdrop-blur-sm">
+              <div class="bg-background/40 border-border/60 dark:border-card-foreground/70 w-1/2 rounded-lg border p-4 backdrop-blur-sm">
                 <TabsContent value="examples-simple">
                   <SimpleExamples item={props.item} />
                 </TabsContent>

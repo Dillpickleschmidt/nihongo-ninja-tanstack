@@ -154,7 +154,7 @@ export function BannerContent(props: BannerContentProps) {
               {/* Right Column */}
               <div class="flex w-full min-w-0 flex-col items-center self-end md:items-end md:pr-5">
                 <Show when={anime().description}>
-                  <p class="text-muted-foreground/80 line-clamp-2 max-w-[90%] pt-3 text-center text-xs text-balance md:line-clamp-3 md:max-w-[75%] md:text-right md:text-sm">
+                  <p class="line-clamp-2 max-w-[90%] pt-3 text-center text-xs text-white/75 text-balance drop-shadow md:line-clamp-3 md:max-w-[75%] md:text-right md:text-sm">
                     {stripHtml(anime().description)}
                   </p>
                 </Show>
@@ -196,7 +196,7 @@ export function BannerContent(props: BannerContentProps) {
                   onClick={() => props.onSelectIndex(index())}
                 >
                   <div
-                    class="progress-badge mr-2 overflow-clip rounded bg-neutral-800"
+                    class="progress-badge mr-2 overflow-clip rounded bg-white/30 dark:bg-neutral-800"
                     classList={{ active: isActive() }}
                     style={{
                       height: "4px",

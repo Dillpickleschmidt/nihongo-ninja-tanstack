@@ -25,22 +25,32 @@ export function DashboardCard(props: DashboardCardProps) {
   }
 
   return (
-    <div
-      class="relative animate-fade-up opacity-0"
-      style={{ "animation-delay": `${props.index * 75}ms` }}
-    >
-      <Link
-        to={props.card.href}
-        class="group block overflow-hidden rounded-[22px] border border-white/5 transition-colors duration-300 hover:border-dynamic-accent/20"
-        style={{
-          "box-shadow": `
+    <>
+      <style>{`
+        .dashboard-card {
+          box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.35),
+            inset 0 -1px 0 rgba(15, 23, 42, 0.04),
+            0 10px 28px -24px rgba(15, 23, 42, 0.28);
+        }
+
+        .dark .dashboard-card,
+        [data-kb-theme="dark"] .dashboard-card {
+          box-shadow:
             inset 0 1px 0 rgba(255, 255, 255, 0.12),
             inset 0 -1px 0 rgba(0, 0, 0, 0.55),
             0 1px 0 rgba(255, 255, 255, 0.025),
-            0 16px 36px -18px rgba(0, 0, 0, 0.6)
-          `,
-        }}
+            0 16px 36px -18px rgba(0, 0, 0, 0.6);
+        }
+      `}</style>
+      <div
+        class="relative animate-fade-up opacity-0"
+        style={{ "animation-delay": `${props.index * 75}ms` }}
       >
+        <Link
+          to={props.card.href}
+          class="dashboard-card group block overflow-hidden rounded-[22px] border border-border/40 transition-colors duration-300 hover:border-dynamic-accent/25 dark:border-white/5 dark:hover:border-dynamic-accent/20"
+        >
         <div class="relative aspect-[16/10] overflow-hidden">
           <img
             src={props.card.image}
@@ -53,14 +63,14 @@ export function DashboardCard(props: DashboardCardProps) {
               background: `linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.012) 38%, transparent 62%)`,
             }}
           />
-          <div class="absolute inset-0 bg-gradient-to-t from-background to-transparent" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/65 via-black/20 to-transparent" />
 
           {/* Tags */}
           <Show when={props.card.tags?.length}>
             <div class="absolute right-2 bottom-2 flex flex-wrap justify-end gap-1">
               <For each={props.card.tags}>
                 {(tag) => (
-                  <span class="rounded-full bg-background/80 px-1.5 py-0.5 text-[10px] font-excalifont text-white/60">
+                  <span class="rounded-full bg-white/90 px-1.5 py-0.5 text-[10px] font-excalifont text-slate-700 shadow-sm dark:bg-background/80 dark:text-white/60 dark:shadow-none">
                     {tag}
                   </span>
                 )}
@@ -83,7 +93,7 @@ export function DashboardCard(props: DashboardCardProps) {
                 {props.card.title}
               </h3>
             </div>
-            <p class="mt-1 text-sm text-white/50 line-clamp-2">
+            <p class="mt-1 text-sm text-white/75 line-clamp-2 dark:text-white/50">
               {props.card.description}
             </p>
           </div>
@@ -92,7 +102,7 @@ export function DashboardCard(props: DashboardCardProps) {
 
       <Show when={props.card.dueCountType}>
         <div
-          class="pointer-events-none absolute top-3 right-3 rounded-full border bg-background/80 px-2.5 py-1 text-xs font-medium"
+          class="pointer-events-none absolute top-3 right-3 rounded-full border bg-white/90 px-2.5 py-1 text-xs font-medium shadow-sm backdrop-blur dark:bg-background/80 dark:shadow-none"
           style={{
             color: "var(--dynamic-accent)",
             "border-color":
@@ -102,6 +112,7 @@ export function DashboardCard(props: DashboardCardProps) {
           {dueLabel()} due
         </div>
       </Show>
-    </div>
+      </div>
+    </>
   )
 }

@@ -26,7 +26,7 @@ function AdjectiveConjugation() {
   return (
     <div class="relative pb-32">
       {/* Background character */}
-      <span class="pointer-events-none absolute top-8 left-24 select-none font-japanese text-[10rem] leading-none text-white/[0.03] sm:top-11 sm:left-auto sm:right-8 sm:text-[11rem]">
+      <span class="pointer-events-none absolute top-8 left-24 select-none font-japanese text-[10rem] leading-none text-foreground/[0.04] dark:text-white/[0.03] sm:top-11 sm:left-auto sm:right-8 sm:text-[11rem]">
         形
       </span>
 
@@ -53,7 +53,7 @@ function AdjectiveConjugation() {
 
       <div class="space-y-14 px-8">
         {/* Intro */}
-        <div class="leading-relaxed text-white/70">
+        <div class="leading-relaxed text-foreground/75 dark:text-white/70">
           <p>
             Japanese adjectives come in two varieties - each type follows its
             own rules for conjugation and modifying nouns.
@@ -116,45 +116,45 @@ function AdjectiveConjugation() {
 
         {/* Adjective Types */}
         <div class="grid gap-4 md:grid-cols-2">
-          <div class="relative rounded-xl bg-white/[0.04] p-5 backdrop-blur-sm before:absolute before:-inset-px before:rounded-xl before:bg-gradient-to-br before:from-teal-500/15 before:to-transparent before:content-['']">
+          <div class="relative rounded-xl bg-card/60 dark:bg-white/[0.04] p-5 backdrop-blur-sm before:absolute before:-inset-px before:rounded-xl before:bg-gradient-to-br before:from-teal-500/15 before:to-transparent before:content-['']">
             <h2 class="text-xl font-bold">
               <span class="text-teal-400">い</span>-Adjectives
             </h2>
             <div class="mt-3 grid grid-cols-3 gap-3">
-              <div class="rounded-lg bg-white/[0.04] p-3 text-center">
-                <span class="font-japanese text-lg text-white/90">高い</span>
-                <p class="text-sm text-white/40">tall</p>
+              <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-3 text-center">
+                <span class="font-japanese text-lg text-foreground dark:text-white/90">高い</span>
+                <p class="text-sm text-muted-foreground dark:text-white/40">tall</p>
               </div>
-              <div class="rounded-lg bg-white/[0.04] p-3 text-center">
-                <span class="font-japanese text-lg text-white/90">安い</span>
-                <p class="text-sm text-white/40">cheap</p>
+              <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-3 text-center">
+                <span class="font-japanese text-lg text-foreground dark:text-white/90">安い</span>
+                <p class="text-sm text-muted-foreground dark:text-white/40">cheap</p>
               </div>
-              <div class="rounded-lg bg-white/[0.04] p-3 text-center">
-                <span class="font-japanese text-lg text-white/90">寒い</span>
-                <p class="text-sm text-white/40">cold</p>
+              <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-3 text-center">
+                <span class="font-japanese text-lg text-foreground dark:text-white/90">寒い</span>
+                <p class="text-sm text-muted-foreground dark:text-white/40">cold</p>
               </div>
             </div>
           </div>
 
-          <div class="relative rounded-xl bg-white/[0.04] p-5 backdrop-blur-sm before:absolute before:-inset-px before:rounded-xl before:bg-gradient-to-br before:from-yellow-500/15 before:to-transparent before:content-['']">
+          <div class="relative rounded-xl bg-card/60 dark:bg-white/[0.04] p-5 backdrop-blur-sm before:absolute before:-inset-px before:rounded-xl before:bg-gradient-to-br before:from-yellow-500/15 before:to-transparent before:content-['']">
             <h2 class="text-xl font-bold">
               <span class="text-yellow-400">な</span>-Adjectives
             </h2>
             <div class="mt-3 grid grid-cols-3 gap-3">
-              <div class="rounded-lg bg-white/[0.04] p-3 text-center">
-                <span class="font-japanese text-lg text-white/90">静か</span>
-                <p class="text-sm text-white/40">quiet</p>
+              <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-3 text-center">
+                <span class="font-japanese text-lg text-foreground dark:text-white/90">静か</span>
+                <p class="text-sm text-muted-foreground dark:text-white/40">quiet</p>
               </div>
-              <div class="rounded-lg bg-white/[0.04] p-3 text-center">
-                <span class="font-japanese text-lg text-white/90">元気</span>
-                <p class="text-sm text-white/40">healthy, energetic</p>
+              <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-3 text-center">
+                <span class="font-japanese text-lg text-foreground dark:text-white/90">元気</span>
+                <p class="text-sm text-muted-foreground dark:text-white/40">healthy, energetic</p>
               </div>
-              <div class="rounded-lg bg-white/[0.04] p-3 text-center">
-                <span class="font-japanese text-lg text-white/90">*きれい</span>
-                <p class="text-sm text-white/40">beautiful, clean</p>
+              <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-3 text-center">
+                <span class="font-japanese text-lg text-foreground dark:text-white/90">*きれい</span>
+                <p class="text-sm text-muted-foreground dark:text-white/40">beautiful, clean</p>
               </div>
             </div>
-            <p class="mt-3 text-sm text-white/40">
+            <p class="mt-3 text-sm text-muted-foreground dark:text-white/40">
               Fun fact: many な-adjectives originally come from China/other
               countries.
             </p>
@@ -167,40 +167,40 @@ function AdjectiveConjugation() {
 
           <div class="grid gap-4 md:grid-cols-2">
             {/* い Present */}
-            <div class="space-y-3 relative rounded-xl bg-white/[0.04] p-5 backdrop-blur-sm before:absolute before:-inset-px before:rounded-xl before:bg-gradient-to-br before:from-teal-500/15 before:to-transparent before:content-['']">
+            <div class="space-y-3 relative rounded-xl bg-card/60 dark:bg-white/[0.04] p-5 backdrop-blur-sm before:absolute before:-inset-px before:rounded-xl before:bg-gradient-to-br before:from-teal-500/15 before:to-transparent before:content-['']">
               <h3 class="text-xl font-bold">
                 <span class="text-teal-400">い</span>-Adjectives
               </h3>
 
-              <div class="rounded-lg bg-white/[0.04] p-4">
+              <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
                 <div class="flex items-center gap-2">
                   <span class="text-2xl font-bold text-green-500">+</span>
-                  <span class="font-semibold text-white/90">Positive:</span>
-                  <span class="text-sm text-white/60">
+                  <span class="font-semibold text-foreground dark:text-white/90">Positive:</span>
+                  <span class="text-sm text-muted-foreground dark:text-white/60">
                     Just add です (for polite form)
                   </span>
                 </div>
-                <p class="mt-3 font-japanese text-lg text-white/80">
+                <p class="mt-3 font-japanese text-lg text-foreground/80 dark:text-white/80">
                   寒い → 寒い
                   <span class="font-medium text-teal-400">です</span>
                 </p>
-                <p class="mt-1 text-sm text-white/40">It's cold</p>
+                <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">It's cold</p>
               </div>
 
-              <div class="rounded-lg bg-white/[0.04] p-4">
+              <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
                 <div class="flex items-center gap-2">
                   <span class="text-2xl font-bold text-red-500">-</span>
-                  <span class="font-semibold text-white/90">Negative:</span>
-                  <span class="text-sm text-white/60">
+                  <span class="font-semibold text-foreground dark:text-white/90">Negative:</span>
+                  <span class="text-sm text-muted-foreground dark:text-white/60">
                     Replace い with くない
                   </span>
                 </div>
-                <p class="mt-3 font-japanese text-lg text-white/80">
+                <p class="mt-3 font-japanese text-lg text-foreground/80 dark:text-white/80">
                   寒い → 寒
                   <span class="font-medium text-teal-400">くないです</span>
                 </p>
-                <p class="mt-1 text-sm text-white/40">It's not cold</p>
-                <p class="mt-2 text-sm text-white/30">
+                <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">It's not cold</p>
+                <p class="mt-2 text-sm text-muted-foreground/70 dark:text-white/30">
                   Extra formal:{" "}
                   <span class="font-japanese">寒くありません</span>
                 </p>
@@ -208,38 +208,38 @@ function AdjectiveConjugation() {
             </div>
 
             {/* な Present */}
-            <div class="space-y-3 relative rounded-xl bg-white/[0.04] p-5 backdrop-blur-sm before:absolute before:-inset-px before:rounded-xl before:bg-gradient-to-br before:from-yellow-500/15 before:to-transparent before:content-['']">
+            <div class="space-y-3 relative rounded-xl bg-card/60 dark:bg-white/[0.04] p-5 backdrop-blur-sm before:absolute before:-inset-px before:rounded-xl before:bg-gradient-to-br before:from-yellow-500/15 before:to-transparent before:content-['']">
               <h3 class="text-xl font-bold">
                 <span class="text-yellow-400">な</span>-Adjectives
               </h3>
 
-              <div class="rounded-lg bg-white/[0.04] p-4">
+              <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
                 <div class="flex items-center gap-2">
                   <span class="text-2xl font-bold text-green-500">+</span>
-                  <span class="font-semibold text-white/90">Positive:</span>
-                  <span class="text-sm text-white/60">
+                  <span class="font-semibold text-foreground dark:text-white/90">Positive:</span>
+                  <span class="text-sm text-muted-foreground dark:text-white/60">
                     Just add です (for polite form)
                   </span>
                 </div>
-                <p class="mt-3 font-japanese text-lg text-white/80">
+                <p class="mt-3 font-japanese text-lg text-foreground/80 dark:text-white/80">
                   元気 → 元気
                   <span class="font-medium text-yellow-400">です</span>
                 </p>
-                <p class="mt-1 text-sm text-white/40">I'm healthy</p>
+                <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">I'm healthy</p>
               </div>
 
-              <div class="rounded-lg bg-white/[0.04] p-4">
+              <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
                 <div class="flex items-center gap-2">
                   <span class="text-2xl font-bold text-red-500">-</span>
-                  <span class="font-semibold text-white/90">Negative:</span>
-                  <span class="text-sm text-white/60">Add じゃない</span>
+                  <span class="font-semibold text-foreground dark:text-white/90">Negative:</span>
+                  <span class="text-sm text-muted-foreground dark:text-white/60">Add じゃない</span>
                 </div>
-                <p class="mt-3 font-japanese text-lg text-white/80">
+                <p class="mt-3 font-japanese text-lg text-foreground/80 dark:text-white/80">
                   元気 → 元気
                   <span class="font-medium text-yellow-400">じゃないです</span>
                 </p>
-                <p class="mt-1 text-sm text-white/40">I'm not healthy</p>
-                <p class="mt-2 text-sm text-white/30">
+                <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">I'm not healthy</p>
+                <p class="mt-2 text-sm text-muted-foreground/70 dark:text-white/30">
                   Extra formal:{" "}
                   <span class="font-japanese">元気ではありません</span>
                 </p>
@@ -254,44 +254,44 @@ function AdjectiveConjugation() {
 
           <div class="grid gap-4 md:grid-cols-2">
             {/* い Past */}
-            <div class="space-y-3 relative rounded-xl bg-white/[0.04] p-5 backdrop-blur-sm before:absolute before:-inset-px before:rounded-xl before:bg-gradient-to-br before:from-teal-500/15 before:to-transparent before:content-['']">
+            <div class="space-y-3 relative rounded-xl bg-card/60 dark:bg-white/[0.04] p-5 backdrop-blur-sm before:absolute before:-inset-px before:rounded-xl before:bg-gradient-to-br before:from-teal-500/15 before:to-transparent before:content-['']">
               <h3 class="text-xl font-bold">
                 <span class="text-teal-400">い</span>-Adjectives
               </h3>
 
-              <div class="rounded-lg bg-white/[0.04] p-4">
+              <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
                 <div class="flex items-center gap-2">
                   <span class="text-2xl font-bold text-green-500">+</span>
-                  <span class="font-semibold text-white/90">Positive:</span>
-                  <span class="text-sm text-white/60">
+                  <span class="font-semibold text-foreground dark:text-white/90">Positive:</span>
+                  <span class="text-sm text-muted-foreground dark:text-white/60">
                     Replace い with かった
                   </span>
                 </div>
-                <p class="mt-3 font-japanese text-lg text-white/80">
+                <p class="mt-3 font-japanese text-lg text-foreground/80 dark:text-white/80">
                   寒い → 寒
                   <span class="font-medium text-teal-400">かったです</span>
                 </p>
-                <p class="mt-1 text-sm text-white/40">It was cold</p>
+                <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">It was cold</p>
               </div>
 
-              <div class="rounded-lg bg-white/[0.04] p-4">
+              <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
                 <div class="flex items-center gap-2">
                   <span class="text-2xl font-bold text-red-500">-</span>
-                  <span class="font-semibold text-white/90">Negative:</span>
-                  <span class="text-sm text-white/60">
+                  <span class="font-semibold text-foreground dark:text-white/90">Negative:</span>
+                  <span class="text-sm text-muted-foreground dark:text-white/60">
                     Replace い with くなかった
                   </span>
                 </div>
-                <p class="mt-3 font-japanese text-lg text-white/80">
+                <p class="mt-3 font-japanese text-lg text-foreground/80 dark:text-white/80">
                   寒い → 寒
                   <span class="font-medium text-teal-400">くなかったです</span>
                 </p>
-                <p class="mt-1 text-sm text-white/40">It wasn't cold</p>
-                <p class="mt-2 text-sm text-white/30">
+                <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">It wasn't cold</p>
+                <p class="mt-2 text-sm text-muted-foreground/70 dark:text-white/30">
                   Extra formal:{" "}
                   <span class="font-japanese">寒くありませんでした</span>
                 </p>
-                <div class="mt-3 border-t border-white/5 pt-3 text-sm leading-relaxed text-white/60">
+                <div class="mt-3 border-t border-border/50 dark:border-white/5 pt-3 text-sm leading-relaxed text-muted-foreground dark:text-white/60">
                   <p>
                     Another way to think about past tense negative conjugation
                     is to stack the present-negative with the past-positive.
@@ -316,46 +316,46 @@ function AdjectiveConjugation() {
             </div>
 
             {/* な Past */}
-            <div class="space-y-3 relative rounded-xl bg-white/[0.04] p-5 backdrop-blur-sm before:absolute before:-inset-px before:rounded-xl before:bg-gradient-to-br before:from-yellow-500/15 before:to-transparent before:content-['']">
+            <div class="space-y-3 relative rounded-xl bg-card/60 dark:bg-white/[0.04] p-5 backdrop-blur-sm before:absolute before:-inset-px before:rounded-xl before:bg-gradient-to-br before:from-yellow-500/15 before:to-transparent before:content-['']">
               <h3 class="text-xl font-bold">
                 <span class="text-yellow-400">な</span>-Adjectives
               </h3>
 
-              <div class="rounded-lg bg-white/[0.04] p-4">
+              <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
                 <div class="flex items-center gap-2">
                   <span class="text-2xl font-bold text-green-500">+</span>
-                  <span class="font-semibold text-white/90">Positive:</span>
-                  <span class="text-sm text-white/60">
+                  <span class="font-semibold text-foreground dark:text-white/90">Positive:</span>
+                  <span class="text-sm text-muted-foreground dark:text-white/60">
                     Replace です with でした
                   </span>
                 </div>
-                <p class="mt-3 font-japanese text-lg text-white/80">
+                <p class="mt-3 font-japanese text-lg text-foreground/80 dark:text-white/80">
                   元気 → 元気
                   <span class="font-medium text-yellow-400">でした</span>
                 </p>
-                <p class="mt-1 text-sm text-white/40">I was healthy</p>
+                <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">I was healthy</p>
               </div>
 
-              <div class="rounded-lg bg-white/[0.04] p-4">
+              <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
                 <div class="flex items-center gap-2">
                   <span class="text-2xl font-bold text-red-500">-</span>
-                  <span class="font-semibold text-white/90">Negative:</span>
-                  <span class="text-sm text-white/60">
+                  <span class="font-semibold text-foreground dark:text-white/90">Negative:</span>
+                  <span class="text-sm text-muted-foreground dark:text-white/60">
                     Replace です with じゃなかったです
                   </span>
                 </div>
-                <p class="mt-3 font-japanese text-lg text-white/80">
+                <p class="mt-3 font-japanese text-lg text-foreground/80 dark:text-white/80">
                   元気 → 元気
                   <span class="font-medium text-yellow-400">
                     じゃなかったです
                   </span>
                 </p>
-                <p class="mt-1 text-sm text-white/40">I wasn't healthy</p>
-                <p class="mt-2 text-sm text-white/30">
+                <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">I wasn't healthy</p>
+                <p class="mt-2 text-sm text-muted-foreground/70 dark:text-white/30">
                   Extra formal:{" "}
                   <span class="font-japanese">元気ではありませんでした</span>
                 </p>
-                <div class="mt-3 border-t border-white/5 pt-3 text-sm leading-relaxed text-white/60">
+                <div class="mt-3 border-t border-border/50 dark:border-white/5 pt-3 text-sm leading-relaxed text-muted-foreground dark:text-white/60">
                   <p>
                     Another way to think about past tense negative conjugation
                     is to stack the present-negative with the past-positive.
@@ -384,17 +384,17 @@ function AdjectiveConjugation() {
 
         {/* Warning: Not all い words */}
         <AsideBlock label="Not all words ending in い are い-adjectives!">
-          <ul class="mt-2 space-y-1.5 text-sm leading-relaxed text-white/60">
+          <ul class="mt-2 space-y-1.5 text-sm leading-relaxed text-muted-foreground dark:text-white/60">
             <li>
-              <span class="font-japanese text-white/80">きれい</span> (pretty)
+              <span class="font-japanese text-foreground/80 dark:text-white/80">きれい</span> (pretty)
               → な-adjective
             </li>
             <li>
-              <span class="font-japanese text-white/80">嫌い</span> (dislike) →
+              <span class="font-japanese text-foreground/80 dark:text-white/80">嫌い</span> (dislike) →
               な-adjective
             </li>
           </ul>
-          <p class="mt-3 text-sm leading-relaxed text-white/60">
+          <p class="mt-3 text-sm leading-relaxed text-muted-foreground dark:text-white/60">
             You'll just have to memorize which words are い-adjectives and which
             are な-adjectives. If it doesn't end in い, you can at least safely
             say it's not an い-Adjective.
@@ -404,7 +404,7 @@ function AdjectiveConjugation() {
         {/* Special: いい */}
         <div class="space-y-4">
           <SectionLabel>Special note about いい (good)</SectionLabel>
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             Pro tip: <span class="font-japanese">いい</span> is actually the
             conversational, plain form of{" "}
             <span class="font-japanese">良い</span> (よい). Why does this
@@ -412,23 +412,23 @@ function AdjectiveConjugation() {
           </p>
 
           <div class="grid gap-2 sm:grid-cols-2">
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="text-sm text-white/40">Present</p>
-              <p class="mt-1 font-japanese text-lg text-white/80">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="text-sm text-muted-foreground dark:text-white/40">Present</p>
+              <p class="mt-1 font-japanese text-lg text-foreground/80 dark:text-white/80">
                 いい / よい
               </p>
             </div>
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="text-sm text-white/40">Negative</p>
-              <p class="mt-1 font-japanese text-lg text-white/80">よくない</p>
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="text-sm text-muted-foreground dark:text-white/40">Negative</p>
+              <p class="mt-1 font-japanese text-lg text-foreground/80 dark:text-white/80">よくない</p>
             </div>
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="text-sm text-white/40">Past</p>
-              <p class="mt-1 font-japanese text-lg text-white/80">よかった</p>
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="text-sm text-muted-foreground dark:text-white/40">Past</p>
+              <p class="mt-1 font-japanese text-lg text-foreground/80 dark:text-white/80">よかった</p>
             </div>
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="text-sm text-white/40">Past Negative</p>
-              <p class="mt-1 font-japanese text-lg text-white/80">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="text-sm text-muted-foreground dark:text-white/40">Past Negative</p>
+              <p class="mt-1 font-japanese text-lg text-foreground/80 dark:text-white/80">
                 よくなかった
               </p>
             </div>
@@ -439,22 +439,22 @@ function AdjectiveConjugation() {
               <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-red-400/60">
                 Incorrect
               </p>
-              <p class="font-japanese text-base text-white/50 line-through">
+              <p class="font-japanese text-base text-muted-foreground dark:text-white/50 line-through">
                 天気はいくないです。
               </p>
             </div>
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-white/30">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground/70 dark:text-white/30">
                 Correct
               </p>
-              <p class="font-japanese text-base text-white/80">
+              <p class="font-japanese text-base text-foreground/80 dark:text-white/80">
                 天気は
                 <Furigana furigana={<span class="text-xs">よ</span>}>
                   良
                 </Furigana>
                 くないです。
               </p>
-              <p class="mt-1 text-sm text-white/40">
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">
                 The weather isn't good.
               </p>
             </div>
@@ -484,13 +484,13 @@ function AdjectiveConjugation() {
         {/* Practice */}
         <div class="space-y-5">
           <h3 class="text-center text-2xl font-bold">Practice</h3>
-          <p class="text-center text-sm italic text-white/40">
+          <p class="text-center text-sm italic text-muted-foreground dark:text-white/40">
             *Choose the correct answer in each situation*
           </p>
 
           <div class="space-y-6">
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 How would you say "This movie is interesting"?
               </p>
               <SelectText
@@ -504,7 +504,7 @@ function AdjectiveConjugation() {
             </div>
 
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 How would you say "That room isn't quiet"?
               </p>
               <SelectText
@@ -518,7 +518,7 @@ function AdjectiveConjugation() {
             </div>
 
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 How would you say "Today is cold"?
               </p>
               <SelectText
@@ -532,7 +532,7 @@ function AdjectiveConjugation() {
             </div>
 
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 If something was cold yesterday, how would you say it?
               </p>
               <SelectText
@@ -546,7 +546,7 @@ function AdjectiveConjugation() {
             </div>
 
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 How would you say "I'm not busy today"?
               </p>
               <SelectText
@@ -560,7 +560,7 @@ function AdjectiveConjugation() {
             </div>
 
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 How would you say "That person wasn't kind"?
               </p>
               <SelectText
@@ -574,7 +574,7 @@ function AdjectiveConjugation() {
             </div>
 
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 How would you say "This cake was delicious"?
               </p>
               <SelectText
@@ -588,7 +588,7 @@ function AdjectiveConjugation() {
             </div>
 
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 How would you say "Japanese wasn't difficult"?
               </p>
               <SelectText

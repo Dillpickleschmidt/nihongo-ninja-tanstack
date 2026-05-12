@@ -23,13 +23,13 @@ export default function ResultDisplay() {
         {/* User's Answer Section (hard mode only) */}
         <Show when={store.effectiveDifficulty === "hard"}>
           <div class="space-y-1">
-            <div class="text-sm font-medium text-white/50">Your answer:</div>
+            <div class="text-sm font-medium text-muted-foreground dark:text-white/50">Your answer:</div>
             <div class="flex w-full items-center">
               <div
-                class={`w-full rounded-xl border bg-white/5 p-2 text-xl ${
+                class={`w-full rounded-xl border p-2 text-xl ${
                   store.checkResult!.isCorrect
                     ? "border-emerald-500/50 bg-emerald-500/10"
-                    : "border-white/10"
+                    : "border-border/70 bg-card/60 dark:border-white/10 dark:bg-white/5"
                 }`}
               >
                 <FuriganaText
@@ -58,9 +58,9 @@ export default function ResultDisplay() {
         {/* Correct Answer Section (when wrong) */}
         <Show when={!store.checkResult!.isCorrect}>
           <div class="space-y-1">
-            <div class="text-sm font-medium text-white/50">Correct answer:</div>
+            <div class="text-sm font-medium text-muted-foreground dark:text-white/50">Correct answer:</div>
             <div
-              class={`rounded-xl border border-white/10 bg-white/5 text-xl ${
+              class={`rounded-xl border border-border/70 dark:border-white/10 bg-card/60 dark:bg-white/5 text-xl ${
                 store.showFurigana ? "px-2 pt-3 pb-1" : "p-2"
               }`}
             >
@@ -81,7 +81,7 @@ export default function ResultDisplay() {
             !store.checkResult!.isCorrect && store.checkResult!.similarity > 0
           }
         >
-          <div class="text-sm text-white/30">
+          <div class="text-sm text-muted-foreground/70 dark:text-white/30">
             Similarity: {Math.round(store.checkResult!.similarity * 100)}%
           </div>
         </Show>

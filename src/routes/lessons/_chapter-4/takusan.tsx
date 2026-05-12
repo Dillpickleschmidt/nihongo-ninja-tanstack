@@ -20,7 +20,7 @@ function Takusan() {
   return (
     <div class="relative pb-32">
       {/* Background character */}
-      <span class="pointer-events-none absolute top-8 left-24 select-none font-japanese text-[10rem] leading-none text-white/[0.03] sm:top-11 sm:left-auto sm:right-8 sm:text-[11rem]">
+      <span class="pointer-events-none absolute top-8 left-24 select-none font-japanese text-[10rem] leading-none text-foreground/[0.04] dark:text-white/[0.03] sm:top-11 sm:left-auto sm:right-8 sm:text-[11rem]">
         多
       </span>
 
@@ -41,9 +41,9 @@ function Takusan() {
 
       <div class="space-y-14 px-8">
         {/* Intro */}
-        <div class="leading-relaxed text-white/70">
+        <div class="leading-relaxed text-foreground/75 dark:text-white/70">
           <p>
-            <span class="font-japanese font-medium text-white/90">
+            <span class="font-japanese font-medium text-foreground dark:text-white/90">
               たくさん
             </span>{" "}
             is a versatile word meaning "a lot" or "many," and it can be used in
@@ -55,28 +55,28 @@ function Takusan() {
         <div class="space-y-4">
           <SectionLabel>Patterns for using <span class="font-japanese text-xs">たくさん</span></SectionLabel>
           <div class="grid gap-3 sm:grid-cols-2">
-            <div class="flex flex-col justify-center rounded-lg bg-white/[0.04] p-4 text-center">
-              <p class="font-japanese text-lg text-white/90">
+            <div class="flex flex-col justify-center rounded-lg bg-card/60 dark:bg-white/[0.04] p-4 text-center">
+              <p class="font-japanese text-lg text-foreground dark:text-white/90">
                 たくさん +{" "}
                 <span class="font-medium text-emerald-500">Verb</span>
               </p>
-              <p class="mt-1 text-sm text-white/40">
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">
                 When describing doing "a lot" of something
               </p>
             </div>
-            <div class="rounded-lg bg-white/[0.04] p-4 text-center">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4 text-center">
               <div>
-                <p class="font-japanese text-lg text-white/90">
+                <p class="font-japanese text-lg text-foreground dark:text-white/90">
                   たくさん +{" "}
                   <span class="font-medium text-amber-300">Noun</span>
                 </p>
-                <p class="text-xs italic text-white/30">or</p>
-                <p class="font-japanese text-lg text-white/90">
+                <p class="text-xs italic text-muted-foreground/70 dark:text-white/30">or</p>
+                <p class="font-japanese text-lg text-foreground dark:text-white/90">
                   たくさん
                   <span class="font-medium text-orange-400">の</span> +{" "}
                   <span class="font-medium text-amber-300">Noun</span>
                 </p>
-                <p class="mt-1 text-sm text-white/40">
+                <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">
                   When describing "many" of something
                 </p>
               </div>
@@ -90,14 +90,14 @@ function Takusan() {
             <p class="font-japanese text-2xl">たくさん + <span class="text-emerald-500">Verb</span></p>
             <SectionLabel class="mt-1">Pattern 1</SectionLabel>
           </div>
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             When you want to say you did "a lot" of something:
           </p>
-          <div class="rounded-lg bg-white/[0.04] p-4">
-            <p class="font-japanese text-lg text-white/80">
+          <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+            <p class="font-japanese text-lg text-foreground/80 dark:text-white/80">
               日本語をたくさん勉強しました。
             </p>
-            <p class="mt-1 text-white/50">I studied Japanese a lot.</p>
+            <p class="mt-1 text-muted-foreground dark:text-white/50">I studied Japanese a lot.</p>
           </div>
         </div>
 
@@ -107,16 +107,16 @@ function Takusan() {
             <p class="font-japanese text-2xl">たくさん<span class="text-orange-400">の</span> + <span class="text-amber-300">Noun</span></p>
             <SectionLabel class="mt-1">Pattern 2</SectionLabel>
           </div>
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             When you want to say there are "many" of something:
           </p>
-          <div class="rounded-lg bg-white/[0.04] p-4">
-            <p class="font-japanese text-lg text-white/80">
+          <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+            <p class="font-japanese text-lg text-foreground/80 dark:text-white/80">
               図書館にたくさんの本があります。
             </p>
-            <p class="mt-1 text-white/50">
+            <p class="mt-1 text-muted-foreground dark:text-white/50">
               There are many books in the library{" "}
-              <span class="italic text-white/40">(focusing on the books)</span>.
+              <span class="italic text-muted-foreground dark:text-white/40">(focusing on the books)</span>.
             </p>
           </div>
         </div>
@@ -127,16 +127,16 @@ function Takusan() {
             <p class="font-japanese text-2xl">たくさん + <span class="text-amber-300">Noun</span></p>
             <SectionLabel class="mt-1">Pattern 3</SectionLabel>
           </div>
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             You can also drop the の, making it slightly less explicit:
           </p>
-          <div class="rounded-lg bg-white/[0.04] p-4">
-            <p class="font-japanese text-lg text-white/80">
+          <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+            <p class="font-japanese text-lg text-foreground/80 dark:text-white/80">
               図書館にたくさん本があります。
             </p>
-            <p class="mt-1 text-white/50">
+            <p class="mt-1 text-muted-foreground dark:text-white/50">
               There are many books in the library{" "}
-              <span class="italic text-white/40">
+              <span class="italic text-muted-foreground dark:text-white/40">
                 (focusing on the library)
               </span>
               .
@@ -144,7 +144,7 @@ function Takusan() {
           </div>
 
           <AsideBlock>
-            <p class="text-sm italic leading-relaxed text-white/60">
+            <p class="text-sm italic leading-relaxed text-muted-foreground dark:text-white/60">
               "
               <span class="font-japanese font-medium not-italic">たくさん</span>{" "}
               may be used before a noun without also using{" "}
@@ -173,7 +173,7 @@ function Takusan() {
               Are there any other instances where you want to keep the の?
             </StudentBubble>
 
-            <p class="leading-relaxed text-white/70">
+            <p class="leading-relaxed text-foreground/75 dark:text-white/70">
               Whenever you're already using の in the same sentence for the same
               noun, mixing and matching decisions of when to use の would quickly
               get confusing. It would also not sound correct. Take a look at the
@@ -185,7 +185,7 @@ function Takusan() {
                 <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-red-400/60">
                   Incorrect
                 </p>
-                <p class="font-japanese text-base text-white/50">
+                <p class="font-japanese text-base text-muted-foreground dark:text-white/50">
                   おばあちゃん
                   <span class="font-medium text-orange-400">の</span>家
                   <span class="font-medium text-orange-400">の</span>
@@ -197,11 +197,11 @@ function Takusan() {
                   たくさん本を読みました。
                 </p>
               </div>
-              <div class="rounded-lg bg-white/[0.04] p-4">
-                <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-white/30">
+              <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+                <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground/70 dark:text-white/30">
                   Correct
                 </p>
-                <p class="font-japanese text-base text-white/80">
+                <p class="font-japanese text-base text-foreground/80 dark:text-white/80">
                   おばあちゃん
                   <span class="font-medium text-orange-400">の</span>家
                   <span class="font-medium text-orange-400">の</span>
@@ -213,16 +213,16 @@ function Takusan() {
                   <span class="font-medium text-orange-400">の</span>
                   本を読みました。
                 </p>
-                <p class="mt-1 text-sm text-white/40">
+                <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">
                   I read many books from the library near grandma's house.
                 </p>
-                <p class="mt-1 text-sm text-white/40">
+                <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">
                   近所 → near area/neighborhood
                 </p>
               </div>
             </div>
 
-            <p class="text-sm text-white/40">
+            <p class="text-sm text-muted-foreground dark:text-white/40">
               Source: Adapted from{" "}
               <a
                 href="https://japanese.stackexchange.com/questions/27483/"
@@ -233,7 +233,7 @@ function Takusan() {
               </a>
             </p>
 
-            <p class="leading-relaxed text-white/70">
+            <p class="leading-relaxed text-foreground/75 dark:text-white/70">
               Even though it's correct,{" "}
               <span class="italic">
                 "this sentence contains five{" "}
@@ -246,8 +246,8 @@ function Takusan() {
               (HiruneDiver 2020):
             </p>
 
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="font-japanese text-base text-white/80">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="font-japanese text-base text-foreground/80 dark:text-white/80">
                 おばあちゃん
                 <span class="font-medium text-orange-400">の</span>家
                 <span class="font-medium text-orange-400">の</span>近所
@@ -255,23 +255,23 @@ function Takusan() {
                 <span class="font-medium text-orange-400">の</span>
                 本をたくさん読みました。
               </p>
-              <p class="mt-2 text-sm text-white/50">
+              <p class="mt-2 text-sm text-muted-foreground dark:text-white/50">
                 By using Pattern 1 (with a verb), we were able to drop a{" "}
                 <span class="font-medium text-orange-400">の</span> without
                 further confusion.
               </p>
             </div>
 
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-white/30">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground/70 dark:text-white/30">
                 Advanced
               </p>
-              <p class="text-sm italic leading-relaxed text-white/60">
+              <p class="text-sm italic leading-relaxed text-muted-foreground dark:text-white/60">
                 "And dividing a sequence of <span class="not-italic">の</span>{" "}
                 is commonly preferred. The sentence above can be modified like
                 this:"
               </p>
-              <p class="mt-2 font-japanese text-base text-white/80">
+              <p class="mt-2 font-japanese text-base text-foreground/80 dark:text-white/80">
                 おばあちゃん
                 <span class="font-medium text-orange-400">の</span>家
                 <span class="font-medium text-orange-400">の</span>
@@ -279,7 +279,7 @@ function Takusan() {
                 <span class="font-medium text-orange-400">の</span>
                 本をたくさん読みました。
               </p>
-              <p class="mt-2 text-sm text-white/40">
+              <p class="mt-2 text-sm text-muted-foreground dark:text-white/40">
                 The above uses advanced grammar (like qualifying nouns → ある図書
                 館), which you'll learn in later chapters.
               </p>
@@ -288,10 +288,10 @@ function Takusan() {
         </RevealBlock>
 
         {/* TLDR */}
-        <p class="leading-relaxed text-white/70">
-          <span class="font-semibold text-white/90">TLDR</span> - As a rule,
+        <p class="leading-relaxed text-foreground/75 dark:text-white/70">
+          <span class="font-semibold text-foreground dark:text-white/90">TLDR</span> - As a rule,
           you can just use{" "}
-          <span class="font-japanese font-medium text-white/90">たくさん</span>{" "}
+          <span class="font-japanese font-medium text-foreground dark:text-white/90">たくさん</span>{" "}
           without a{" "}
           <span class="font-medium text-orange-400">の</span> (with verbs and
           nouns) unless you're stringing together multiple{" "}
@@ -305,13 +305,13 @@ function Takusan() {
         {/* Practice */}
         <div class="space-y-5">
           <h3 class="text-center text-2xl font-bold">Practice</h3>
-          <p class="text-center text-sm italic text-white/40">
+          <p class="text-center text-sm italic text-muted-foreground dark:text-white/40">
             *Some questions have more than 1 correct answer*
           </p>
 
           <div class="space-y-6">
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 How would you say "There are many students in the classroom"?
               </p>
               <SelectText
@@ -324,7 +324,7 @@ function Takusan() {
             </div>
 
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 You want to say "I drank a lot of water". Which is correct?
               </p>
               <SelectText
@@ -341,7 +341,7 @@ function Takusan() {
             </div>
 
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 How would you say "I want to read many books"?
               </p>
               <SelectText
@@ -358,7 +358,7 @@ function Takusan() {
             </div>
 
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 Which sentence correctly says "I have many friends"?
               </p>
               <SelectText

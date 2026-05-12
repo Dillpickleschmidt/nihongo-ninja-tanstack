@@ -69,7 +69,7 @@ export function CenterNavBar() {
 
   return (
     <div class="sticky top-0 z-10 flex items-center justify-center px-4 py-3">
-      <div class="bg-background/50 border-card-foreground/70 flex rounded-[10px] border p-1 shadow-md backdrop-blur-md">
+      <div class="bg-background/70 border-border/70 flex rounded-[10px] border p-1 shadow-md backdrop-blur-md dark:bg-background/50 dark:border-card-foreground/70">
         <For each={navItems}>
           {(item) => {
             const isActive = () => item.isActive(currentPathname())
@@ -83,7 +83,7 @@ export function CenterNavBar() {
                 class={cn(
                   "flex h-8 items-center gap-2 rounded-md px-3 transition-all duration-200",
                   isActive()
-                    ? "bg-background/70 text-foreground font-medium shadow backdrop-blur-sm"
+                    ? "bg-card text-foreground font-medium shadow backdrop-blur-sm dark:bg-background/70"
                     : "text-muted-foreground hover:text-foreground hover:bg-background/50",
                 )}
               >

@@ -64,7 +64,7 @@ export function MissedWordsDeckBuilder() {
   return (
     <div class="mx-auto max-w-5xl space-y-6 p-2 pb-8 sm:px-4 lg:px-6">
       {/* Header */}
-      <div class="rounded-lg bg-background/40 -mx-2 p-4 backdrop-blur-md border-card-foreground/70 border">
+      <div class="rounded-lg bg-background/60 -mx-2 p-4 backdrop-blur-md border-border/60 border dark:bg-background/40 dark:border-card-foreground/70">
         <h1 class="text-2xl leading-tight font-semibold">
           Build from Missed Words
         </h1>
@@ -77,13 +77,13 @@ export function MissedWordsDeckBuilder() {
       <div class="space-y-5">
         {/* Practice mode */}
         <div class="space-y-2">
-          <label class="text-sm font-medium text-white/50">Practice Mode</label>
-          <div class="flex items-center gap-1 rounded-lg bg-white/[0.04] p-1 w-fit">
+          <label class="text-sm font-medium text-muted-foreground dark:text-white/50">Practice Mode</label>
+          <div class="flex items-center gap-1 rounded-lg bg-muted/70 p-1 w-fit dark:bg-white/[0.04]">
             <button
               class={`px-4 py-1.5 rounded-md text-sm transition-colors ${
                 mode() === "meanings"
-                  ? "bg-white/10 text-white/90"
-                  : "text-white/40 hover:text-white/60"
+                  ? "bg-card text-foreground shadow-sm dark:bg-white/10 dark:text-white/90"
+                  : "text-muted-foreground hover:text-foreground dark:text-white/40 dark:hover:text-white/60"
               }`}
               onClick={() => setMode("meanings")}
             >
@@ -92,8 +92,8 @@ export function MissedWordsDeckBuilder() {
             <button
               class={`px-4 py-1.5 rounded-md text-sm transition-colors ${
                 mode() === "spellings"
-                  ? "bg-white/10 text-white/90"
-                  : "text-white/40 hover:text-white/60"
+                  ? "bg-card text-foreground shadow-sm dark:bg-white/10 dark:text-white/90"
+                  : "text-muted-foreground hover:text-foreground dark:text-white/40 dark:hover:text-white/60"
               }`}
               onClick={() => setMode("spellings")}
             >
@@ -105,9 +105,9 @@ export function MissedWordsDeckBuilder() {
         {/* Sliders row */}
         <div class="flex flex-wrap gap-8">
           <div class="space-y-2">
-            <label class="text-sm font-medium text-white/50">
+            <label class="text-sm font-medium text-muted-foreground dark:text-white/50">
               Time Range
-              <span class="ml-2 text-white/70">{daysBack()} days</span>
+              <span class="ml-2 text-foreground/70 dark:text-white/70">{daysBack()} days</span>
             </label>
             <Slider
               value={[daysIdx()]}
@@ -117,17 +117,17 @@ export function MissedWordsDeckBuilder() {
               step={1}
               class="w-48"
             >
-              <SliderTrack class="bg-white/[0.06] h-1.5">
-                <SliderFill class="bg-white/20" />
-                <SliderThumb class="border-white/40 bg-background size-4 -top-[5px]" />
+              <SliderTrack class="bg-muted h-1.5 dark:bg-white/[0.06]">
+                <SliderFill class="bg-dynamic-accent/50 dark:bg-white/20" />
+                <SliderThumb class="border-border bg-background size-4 -top-[5px] dark:border-white/40" />
               </SliderTrack>
             </Slider>
           </div>
 
           <div class="space-y-2">
-            <label class="text-sm font-medium text-white/50">
+            <label class="text-sm font-medium text-muted-foreground dark:text-white/50">
               Max Words
-              <span class="ml-2 text-white/70">{maxItems()}</span>
+              <span class="ml-2 text-foreground/70 dark:text-white/70">{maxItems()}</span>
             </label>
             <Slider
               value={[maxIdx()]}
@@ -137,9 +137,9 @@ export function MissedWordsDeckBuilder() {
               step={1}
               class="w-48"
             >
-              <SliderTrack class="bg-white/[0.06] h-1.5">
-                <SliderFill class="bg-white/20" />
-                <SliderThumb class="border-white/40 bg-background size-4 -top-[5px]" />
+              <SliderTrack class="bg-muted h-1.5 dark:bg-white/[0.06]">
+                <SliderFill class="bg-dynamic-accent/50 dark:bg-white/20" />
+                <SliderThumb class="border-border bg-background size-4 -top-[5px] dark:border-white/40" />
               </SliderTrack>
             </Slider>
           </div>
@@ -150,16 +150,16 @@ export function MissedWordsDeckBuilder() {
       <Show
         when={missedQuery.data() !== undefined}
         fallback={
-          <div class="rounded-lg border border-dashed border-white/10 p-8 text-center">
-            <p class="text-sm text-white/30">Loading missed words...</p>
+          <div class="rounded-lg border border-dashed border-border/70 p-8 text-center dark:border-white/10">
+            <p class="text-sm text-muted-foreground dark:text-white/30">Loading missed words...</p>
           </div>
         }
       >
         <Show
           when={missedItems().length > 0}
           fallback={
-            <div class="rounded-lg border border-dashed border-white/10 p-8 text-center">
-              <p class="text-sm text-white/30">
+            <div class="rounded-lg border border-dashed border-border/70 p-8 text-center dark:border-white/10">
+              <p class="text-sm text-muted-foreground dark:text-white/30">
                 No missed words found for the selected criteria.
               </p>
             </div>
@@ -167,7 +167,7 @@ export function MissedWordsDeckBuilder() {
         >
           <div class="space-y-3">
             <div class="flex items-center justify-between">
-              <span class="text-sm font-medium text-white/50">
+              <span class="text-sm font-medium text-muted-foreground dark:text-white/50">
                 {missedItems().length} words found
               </span>
               <Button
@@ -181,15 +181,15 @@ export function MissedWordsDeckBuilder() {
               </Button>
             </div>
 
-            <div class="rounded-lg border border-white/[0.06] bg-white/[0.02] p-4 max-h-80 overflow-y-auto">
+            <div class="rounded-lg border border-border/60 bg-card/40 p-4 max-h-80 overflow-y-auto dark:border-white/[0.06] dark:bg-white/[0.02]">
               <div class="flex flex-wrap gap-2">
                 <For each={missedItems()}>
                   {(item) => (
-                    <div class="flex items-baseline gap-1.5 rounded-md bg-white/[0.04] px-3 py-1.5">
-                      <span class="font-japanese text-sm text-white/70">
+                    <div class="flex items-baseline gap-1.5 rounded-md bg-muted/70 px-3 py-1.5 dark:bg-white/[0.04]">
+                      <span class="font-japanese text-sm text-foreground/70 dark:text-white/70">
                         {item.practiceItemKey}
                       </span>
-                      <span class="text-xs text-white/25">
+                      <span class="text-xs text-muted-foreground/70 dark:text-white/25">
                         x{item.missCount}
                       </span>
                     </div>

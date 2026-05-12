@@ -64,7 +64,7 @@ function ModuleListItem(props: ModuleListItemProps) {
         </span>
         <span
           class={cn(
-            "text-primary dark:text-muted-foreground",
+            "text-foreground dark:text-muted-foreground",
             props.isCompleted && "font-bold text-green-500",
           )}
         >
@@ -82,9 +82,9 @@ function ModuleListItem(props: ModuleListItemProps) {
   )
 
   const baseClasses = cn(
-    "group bg-card font-outfit relative block h-12 w-full rounded-md text-sm whitespace-nowrap",
-    "border-card-foreground/70 border backdrop-blur-sm",
-    "bg-gradient-to-br dark:from-neutral-600/15 dark:to-gray-600/10",
+    "group bg-card font-outfit relative block h-12 w-full rounded-md text-sm whitespace-nowrap shadow-sm",
+    "border-border/70 border backdrop-blur-sm dark:border-card-foreground/70",
+    "bg-gradient-to-br from-white/80 to-muted/40 dark:from-neutral-600/15 dark:to-gray-600/10",
     "ease-instant-hover-200",
     props.isCompleted && "border-green-500/50 font-semibold text-green-500",
     disabled

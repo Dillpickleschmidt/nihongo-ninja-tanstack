@@ -19,17 +19,17 @@ export function ViewToggle(props: ViewToggleProps) {
       class={props.class}
     >
       <div class="flex items-center gap-2 font-excalifont">
-        <span class="text-sm text-white/40">{label()}</span>
+        <span class="text-sm text-muted-foreground dark:text-white/40">{label()}</span>
         <TabsList class="flex h-8 justify-end bg-transparent">
           <TabsTrigger
             value="grid"
-            class="data-selected:dark:bg-card-foreground/70 h-6 px-2"
+            class="data-selected:bg-accent data-selected:dark:bg-card-foreground/70 h-6 px-2"
           >
             <Rows3 class="h-4 w-4" />
           </TabsTrigger>
           <TabsTrigger
             value="compact"
-            class="data-selected:dark:bg-card-foreground/70 h-6 px-2"
+            class="data-selected:bg-accent data-selected:dark:bg-card-foreground/70 h-6 px-2"
           >
             <List class="h-4 w-4" />
           </TabsTrigger>

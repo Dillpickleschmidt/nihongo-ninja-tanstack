@@ -99,11 +99,11 @@ export function PracticePage(props: PracticePageProps) {
         <button
           type="button"
           onClick={props.onReturnToSettings}
-          class="text-white/30 transition-transform duration-200 hover:scale-125 hover:text-white/60"
+          class="text-muted-foreground/70 transition-transform duration-200 hover:scale-125 hover:text-muted-foreground dark:text-white/30 dark:hover:text-white/60"
         >
           <X size={24} />
         </button>
-        <div class="h-3.5 flex-1 overflow-hidden rounded-full bg-white/10">
+        <div class="h-3.5 flex-1 overflow-hidden rounded-full bg-muted dark:bg-white/10">
           <div
             class="h-full rounded-full transition-all duration-500"
             style={{
@@ -113,7 +113,7 @@ export function PracticePage(props: PracticePageProps) {
             }}
           />
         </div>
-        <span class="text-sm text-white/30">
+        <span class="text-sm text-muted-foreground/70 dark:text-white/30">
           {sessionState.currentIndex + 1}/{totalQuestions()}
         </span>
       </div>
@@ -124,7 +124,7 @@ export function PracticePage(props: PracticePageProps) {
           <div class="space-y-6 px-2">
             {/* Question display */}
             <div class="flex flex-col items-center">
-              <span class="text-sm text-white/40">Conjugate this word</span>
+              <span class="text-sm text-muted-foreground dark:text-white/40">Conjugate this word</span>
               <span class="mt-1 rounded-full bg-teal-500/10 px-3 py-1 text-xs font-medium text-teal-400">
                 {question().type[3] === "te-form" ? (
                   <>
@@ -153,17 +153,17 @@ export function PracticePage(props: PracticePageProps) {
               </Show>
 
               <Show when={props.showMeaning}>
-                <p class="mt-2 text-lg text-white/40">
+                <p class="mt-2 text-lg text-muted-foreground dark:text-white/40">
                   {question().term.meaning}
                 </p>
               </Show>
 
               {/* Conjugation details */}
-              <div class="mt-3 flex flex-wrap items-center justify-center gap-1.5 text-xs text-white/30">
+              <div class="mt-3 flex flex-wrap items-center justify-center gap-1.5 text-xs text-muted-foreground/70 dark:text-white/30">
                 <span>{question().type[0]}</span>
-                <span class="text-white/15">·</span>
+                <span class="text-muted-foreground/40 dark:text-white/15">·</span>
                 <span>{question().type[1]}</span>
-                <span class="text-white/15">·</span>
+                <span class="text-muted-foreground/40 dark:text-white/15">·</span>
                 <span>{question().type[2]}</span>
               </div>
             </div>
@@ -183,8 +183,8 @@ export function PracticePage(props: PracticePageProps) {
                     disabled={isAnswered()}
                     onKeyDown={handleKeyDown}
                     class={cn(
-                      "font-japanese h-12 rounded-2xl border bg-white/5 py-4 text-center text-lg font-medium outline-none transition-colors placeholder:text-white/30",
-                      !isAnswered() && "border-white/10 focus:border-cyan-500",
+                      "font-japanese h-12 rounded-2xl border bg-card/70 py-4 text-center text-lg font-medium outline-none transition-colors placeholder:text-muted-foreground/60 dark:bg-white/5 dark:placeholder:text-white/30",
+                      !isAnswered() && "border-border/70 focus:border-cyan-500 dark:border-white/10",
                       isAnswered() &&
                         question().correct &&
                         "border-emerald-500 bg-emerald-500/10 text-emerald-400",

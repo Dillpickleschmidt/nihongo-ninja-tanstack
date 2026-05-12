@@ -22,7 +22,7 @@ function TheNoParticle() {
   return (
     <div class="relative pb-32">
       {/* Background character */}
-      <span class="pointer-events-none absolute top-8 left-24 select-none font-japanese text-[10rem] leading-none text-white/[0.03] sm:top-11 sm:left-auto sm:right-8 sm:text-[11rem]">
+      <span class="pointer-events-none absolute top-8 left-24 select-none font-japanese text-[10rem] leading-none text-foreground/[0.04] dark:text-white/[0.03] sm:top-11 sm:left-auto sm:right-8 sm:text-[11rem]">
         の
       </span>
 
@@ -37,7 +37,7 @@ function TheNoParticle() {
       >
         <OverviewItem>
           How{" "}
-          <span class="font-japanese font-semibold text-white/60">の</span>{" "}
+          <span class="font-japanese font-semibold text-muted-foreground dark:text-white/60">の</span>{" "}
           links nouns together
         </OverviewItem>
         <OverviewItem>Possession with [Noun 1] の [Noun 2]</OverviewItem>
@@ -46,12 +46,12 @@ function TheNoParticle() {
 
       <div class="space-y-14 px-8">
         {/* Introduction */}
-        <div class="leading-relaxed text-white/70">
+        <div class="leading-relaxed text-foreground/75 dark:text-white/70">
           <p>
             Today, we're gonna make our first step towards making longer and
             more complex sentences. Say hello to{" "}
-            <span class="font-japanese text-xl font-bold text-white/90">の</span>
-            <span class="text-white/40"> (no)</span> — the particle which
+            <span class="font-japanese text-xl font-bold text-foreground dark:text-white/90">の</span>
+            <span class="text-muted-foreground dark:text-white/40"> (no)</span> — the particle which
             connects nouns.
           </p>
         </div>
@@ -69,49 +69,49 @@ function TheNoParticle() {
         <div class="space-y-4">
           <SectionLabel>
             The basics: possession with{" "}
-            <span class="font-japanese text-white/50">の</span>
+            <span class="font-japanese text-muted-foreground dark:text-white/50">の</span>
           </SectionLabel>
-          <p class="leading-relaxed text-white/70">
-            The <span class="font-japanese font-semibold text-white/90">の</span>{" "}
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
+            The <span class="font-japanese font-semibold text-foreground dark:text-white/90">の</span>{" "}
             particle is used to connect two nouns, indicating possession or a
             close relationship. It's similar to the apostrophe-s ('s) in
             English.
           </p>
 
-          <div class="rounded-lg bg-white/[0.04] p-4">
-            <p class="text-xs font-semibold uppercase tracking-wider text-white/30">
+          <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+            <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground/70 dark:text-white/30">
               Example
             </p>
-            <p class="mt-2 font-japanese text-xl text-white/90">
+            <p class="mt-2 font-japanese text-xl text-foreground dark:text-white/90">
               たけしさん
               <span class="text-dynamic-accent">の</span>
               <Furigana furigana={<span class="text-sm">でんわばんごう</span>}>
                 電話番号
               </Furigana>
             </p>
-            <p class="mt-1 text-sm text-white/40">
+            <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">
               (Takeshi-san no denwa bangou)
             </p>
-            <p class="mt-1 text-sm font-semibold text-white/70">
+            <p class="mt-1 text-sm font-semibold text-foreground/75 dark:text-white/70">
               Takeshi's phone number
             </p>
           </div>
 
-          <p class="leading-relaxed text-white/70">Here's the structure:</p>
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">Here's the structure:</p>
 
           <GlowBox>
-            <p class="text-center text-[1.75rem] font-medium text-white/90">
+            <p class="text-center text-[1.75rem] font-medium text-foreground dark:text-white/90">
               [Noun 1] +{" "}
               <span class="font-japanese text-dynamic-accent">の</span> + [Noun
               2]
             </p>
-            <p class="mt-2 text-center text-sm text-white/40">
+            <p class="mt-2 text-center text-sm text-muted-foreground dark:text-white/40">
               *Noun 1 is the owner, and Noun 2 is the possessed
             </p>
           </GlowBox>
 
           <div class="space-y-2">
-            <p class="text-sm font-medium text-white/40">More examples</p>
+            <p class="text-sm font-medium text-muted-foreground dark:text-white/40">More examples</p>
             <div class="space-y-2">
               <ExampleRow
                 jp={
@@ -153,7 +153,7 @@ function TheNoParticle() {
         {/* Practical Examples */}
         <div class="space-y-4">
           <SectionLabel>More practical examples</SectionLabel>
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             Since you've recently learned family terms, countries, majors, and
             occupations, let's use these topics for more examples.
           </p>
@@ -226,8 +226,8 @@ function TheNoParticle() {
         {/* Multiple の */}
         <div class="space-y-4">
           <SectionLabel>Chaining multiple nouns</SectionLabel>
-          <p class="leading-relaxed text-white/70">
-            <span class="font-semibold text-white/90">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
+            <span class="font-semibold text-foreground dark:text-white/90">
               You can connect more than just two nouns in a single sentence:
             </span>
           </p>
@@ -280,7 +280,7 @@ function TheNoParticle() {
             />
           </div>
 
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             Btw, の also has other uses that you'll learn later. If you see it used in a
             way that doesn't look like possession, don't worry about it yet.
           </p>
@@ -289,10 +289,10 @@ function TheNoParticle() {
         {/* Activity */}
         <div class="space-y-4">
           <SectionLabel>Activity: who owns what?</SectionLabel>
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             Let's play a quick game to reinforce what we've learned. Connect the
             following pictures using{" "}
-            <span class="font-japanese text-lg font-semibold text-white/90">
+            <span class="font-japanese text-lg font-semibold text-foreground dark:text-white/90">
               の
             </span>
             .
@@ -300,10 +300,10 @@ function TheNoParticle() {
 
           {/* Q1 */}
           <div class="mt-4">
-            <h3 class="font-japanese text-center text-2xl font-medium text-white/90">
+            <h3 class="font-japanese text-center text-2xl font-medium text-foreground dark:text-white/90">
               <Romaji
                 romaji={
-                  <span class="font-outfit text-sm text-white/40">Who</span>
+                  <span class="font-outfit text-sm text-muted-foreground dark:text-white/40">Who</span>
                 }
               >
                 <Furigana furigana={<span class="text-base">だれ</span>}>
@@ -321,7 +321,7 @@ function TheNoParticle() {
 
           {/* Q2 */}
           <div class="mt-4">
-            <h3 class="font-japanese text-center text-2xl font-medium text-white/90">
+            <h3 class="font-japanese text-center text-2xl font-medium text-foreground dark:text-white/90">
               <Furigana furigana={<span class="text-base">だれ</span>}>
                 誰
               </Furigana>
@@ -362,9 +362,9 @@ import type { JSX } from "solid-js"
 
 function ExampleRow(props: { jp: JSX.Element | string; en: string }) {
   return (
-    <div class="flex items-baseline justify-between gap-4 rounded-lg bg-white/[0.04] px-4 py-3">
-      <span class="font-japanese text-lg text-white/90">{props.jp}</span>
-      <span class="shrink-0 text-sm text-white/40">{props.en}</span>
+    <div class="flex items-baseline justify-between gap-4 rounded-lg bg-card/60 dark:bg-white/[0.04] px-4 py-3">
+      <span class="font-japanese text-lg text-foreground dark:text-white/90">{props.jp}</span>
+      <span class="shrink-0 text-sm text-muted-foreground dark:text-white/40">{props.en}</span>
     </div>
   )
 }
@@ -374,9 +374,9 @@ function ActivityInput() {
   return (
     <div class="mt-6">
       <div class="flex items-center justify-center">
-        <div class="h-48 w-48 rounded-lg bg-white/[0.04]" />
-        <div class="mx-12 text-4xl text-white/30">+</div>
-        <div class="h-48 w-48 rounded-lg bg-white/[0.04]" />
+        <div class="h-48 w-48 rounded-lg bg-card/60 dark:bg-white/[0.04]" />
+        <div class="mx-12 text-4xl text-muted-foreground/70 dark:text-white/30">+</div>
+        <div class="h-48 w-48 rounded-lg bg-card/60 dark:bg-white/[0.04]" />
       </div>
       <div class="mt-4 flex w-full max-w-sm justify-center">
         <TextField class="w-full">

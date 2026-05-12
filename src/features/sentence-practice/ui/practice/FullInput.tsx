@@ -52,9 +52,9 @@ export default function FullInput() {
           class="font-noto-sans-jp w-full py-6 text-2xl"
           placeholder="Type your answer in Japanese..."
         />
-        <p class="pt-1 text-sm text-white/30">*use caps for katakana</p>
+        <p class="pt-1 text-sm text-muted-foreground/70 dark:text-white/30">*use caps for katakana</p>
         <Show when={store.checkResult?.strippedParticle}>
-          <div class="inline-flex items-center gap-1 pt-0.5 text-sm text-white/30">
+          <div class="inline-flex items-center gap-1 pt-0.5 text-sm text-muted-foreground/70 dark:text-white/30">
             <span>
               {store.checkResult?.strippedParticle} may or may not be correct
             </span>
@@ -65,7 +65,7 @@ export default function FullInput() {
         </Show>
       </div>
       <Button3D
-        color={isAnswerCorrect() ? "rgb(34,197,94)" : "rgb(245,158,11)"}
+        color={isAnswerCorrect() ? "rgb(34,197,94)" : "var(--sentence-practice-action)"}
         onClick={handleMainButton}
       >
         {isAnswerCorrect()

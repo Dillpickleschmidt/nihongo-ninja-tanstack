@@ -34,7 +34,7 @@ function LessonTestLayout() {
   }
 
   return (
-    <div class="relative min-h-screen">
+    <div class="relative min-h-screen text-foreground dark:text-white">
       {/* Dust texture overlay */}
       <div
         class="pointer-events-none fixed inset-0 z-0 opacity-[0.03]"
@@ -67,7 +67,7 @@ function LessonTestLayout() {
       <div class="fixed top-4 left-4 z-50">
         <Link
           to="/learn"
-          class="flex items-center gap-1 text-sm text-white/30 transition-colors hover:text-white/60"
+          class="flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground dark:text-white/30 dark:hover:text-white/60"
         >
           <ArrowLeft class="size-3.5" />
           Back

@@ -110,25 +110,25 @@ function KanaPage() {
       <header class="anim-up">
         <div class="flex items-end justify-between gap-6">
           <div>
-            <p class="text-xs uppercase tracking-[0.2em] text-white/25 mb-2">
+            <p class="text-xs uppercase tracking-[0.2em] text-muted-foreground/70 mb-2 dark:text-white/25">
               五十音 | Gojūon
             </p>
             <h1 class="text-3xl font-bold lg:text-4xl">
-              <span class="text-white/90">Kana</span>{" "}
+              <span class="text-foreground dark:text-white/90">Kana</span>{" "}
               <span class="text-dynamic-accent">Practice</span>
             </h1>
-            <p class="text-sm text-white/35 mt-1.5 max-w-md">
+            <p class="text-sm text-muted-foreground mt-1.5 max-w-md dark:text-white/35">
               Master the Japanese syllabaries through timed quizzes. Track your
               accuracy and build recognition speed.
             </p>
           </div>
-          <div class="hidden sm:flex items-center gap-4 text-xs text-white/25 tabular-nums shrink-0">
+          <div class="hidden sm:flex items-center gap-4 text-xs text-muted-foreground/70 tabular-nums shrink-0 dark:text-white/25">
             <span>
-              <span class="text-white/40">156</span>/214 learned
+              <span class="text-muted-foreground dark:text-white/40">156</span>/214 learned
             </span>
-            <span class="text-white/8">·</span>
+            <span class="text-muted-foreground/40 dark:text-white/8">·</span>
             <span>
-              <span class="text-white/40">72%</span> mastery
+              <span class="text-muted-foreground dark:text-white/40">72%</span> mastery
             </span>
           </div>
         </div>
@@ -137,7 +137,7 @@ function KanaPage() {
       {/* ── Hiragana ───────────────────────────────────────────── */}
       <section class="mt-8">
         <h2
-          class="text-sm font-medium text-white/40 mb-3 anim-up"
+          class="text-sm font-medium text-muted-foreground mb-3 anim-up dark:text-white/40"
           style={{ "animation-delay": "40ms" }}
         >
           Hiragana
@@ -154,7 +154,7 @@ function KanaPage() {
         {/* Katakana column */}
         <section>
           <h2
-            class="text-sm font-medium text-white/40 mb-3 anim-up"
+            class="text-sm font-medium text-muted-foreground mb-3 anim-up dark:text-white/40"
             style={{ "animation-delay": "340ms" }}
           >
             Katakana
@@ -165,14 +165,14 @@ function KanaPage() {
         {/* Review column */}
         <section>
           <h2
-            class="text-xs uppercase tracking-[0.2em] text-rose-400/40 mb-3 leading-5 anim-up"
+            class="text-xs uppercase tracking-[0.2em] text-rose-500/70 mb-3 leading-5 anim-up dark:text-rose-400/40"
             style={{ "animation-delay": "400ms" }}
           >
             Review
           </h2>
           <Link
             to={"/kana/weak-spots" as string}
-            class="group relative block overflow-hidden rounded-xl border border-rose-400/10 bg-rose-500/3 p-5 transition-colors hover:border-rose-400/20 hover:bg-rose-500/6 anim-up"
+            class="group relative block overflow-hidden rounded-xl border border-rose-400/20 bg-rose-500/5 p-5 shadow-sm transition-colors hover:border-rose-400/30 hover:bg-rose-500/8 anim-up dark:border-rose-400/10 dark:bg-rose-500/3 dark:shadow-none dark:hover:border-rose-400/20 dark:hover:bg-rose-500/6"
             style={{ "animation-delay": "440ms" }}
           >
             <NoiseOverlay />
@@ -180,14 +180,14 @@ function KanaPage() {
             <div class="relative flex items-start justify-between gap-4">
               <div class="min-w-0 flex-1">
                 <div class="flex items-center gap-2">
-                  <h3 class="text-lg font-semibold text-rose-300/80 group-hover:text-rose-300 transition-colors">
+                  <h3 class="text-lg font-semibold text-rose-600 transition-colors group-hover:text-rose-500 dark:text-rose-300/80 dark:group-hover:text-rose-300">
                     Weak Spots
                   </h3>
-                  <span class="text-[10px] uppercase tracking-wider text-rose-400/50 border border-rose-400/20 rounded-full px-2 py-0.5">
+                  <span class="text-[10px] uppercase tracking-wider text-rose-500/70 border border-rose-400/30 rounded-full px-2 py-0.5 dark:text-rose-400/50 dark:border-rose-400/20">
                     Dynamic
                   </span>
                 </div>
-                <p class="text-sm text-white/25 mt-0.5">
+                <p class="text-sm text-muted-foreground mt-0.5 dark:text-white/25">
                   Practice your most-missed characters
                 </p>
               </div>
@@ -198,12 +198,12 @@ function KanaPage() {
             <div class="relative flex gap-3 flex-wrap mt-3">
               <For each={WEAK_KANA.slice(0, 4)}>
                 {(k) => (
-                  <span class="font-japanese text-lg text-rose-300/30 group-hover:text-rose-300/50 transition-colors">
+                  <span class="font-japanese text-lg text-rose-500/40 transition-colors group-hover:text-rose-500/60 dark:text-rose-300/30 dark:group-hover:text-rose-300/50">
                     {k.char}
                   </span>
                 )}
               </For>
-              <span class="text-lg text-rose-300/15 group-hover:text-rose-300/30 transition-colors">
+              <span class="text-lg text-rose-500/25 transition-colors group-hover:text-rose-500/40 dark:text-rose-300/15 dark:group-hover:text-rose-300/30">
                 …
               </span>
             </div>
@@ -237,7 +237,7 @@ function QuizCard(props: { mod: QuizModule; delay: number }) {
   return (
     <Link
       to={href()}
-      class={`group relative block overflow-hidden rounded-xl border border-white/6 bg-white/2.5 transition-colors hover:border-dynamic-accent/25 hover:bg-white/4.5 anim-up ${props.mod.span ? "md:col-span-2 p-6" : "p-5"}`}
+      class={`group relative block overflow-hidden rounded-xl border border-border/50 bg-card/50 shadow-sm transition-colors hover:border-dynamic-accent/30 hover:bg-card/70 anim-up dark:border-white/6 dark:bg-white/2.5 dark:shadow-none dark:hover:border-dynamic-accent/25 dark:hover:bg-white/4.5 ${props.mod.span ? "md:col-span-2 p-6" : "p-5"}`}
       style={{ "animation-delay": `${props.delay}ms` }}
     >
       <NoiseOverlay />
@@ -246,17 +246,17 @@ function QuizCard(props: { mod: QuizModule; delay: number }) {
       {/* Header row */}
       <div class="relative flex items-start justify-between gap-4">
         <div class="min-w-0 flex-1">
-          <h3 class="text-lg font-semibold text-white/90 group-hover:text-dynamic-accent transition-colors">
+          <h3 class="text-lg font-semibold text-foreground/90 transition-colors group-hover:text-dynamic-accent dark:text-white/90">
             {props.mod.label}
           </h3>
-          <p class="text-sm text-white/30 mt-0.5">{props.mod.subtitle}</p>
+          <p class="text-sm text-muted-foreground mt-0.5 dark:text-white/30">{props.mod.subtitle}</p>
         </div>
 
         <div class="text-right shrink-0 mt-0.5">
-          <span class="text-sm tabular-nums text-white/35">
+          <span class="text-sm tabular-nums text-muted-foreground dark:text-white/35">
             {props.mod.mastery}%
           </span>
-          <p class="text-[11px] text-white/20">last session</p>
+          <p class="text-[11px] text-muted-foreground/70 dark:text-white/20">last session</p>
         </div>
       </div>
 
@@ -267,7 +267,7 @@ function QuizCard(props: { mod: QuizModule; delay: number }) {
         <For each={props.mod.sample}>
           {(ch) => (
             <span
-              class={`font-japanese text-white/20 group-hover:text-dynamic-accent/40 transition-colors ${props.mod.span ? "text-xl" : "text-lg"}`}
+              class={`font-japanese text-muted-foreground/40 transition-colors group-hover:text-dynamic-accent/60 dark:text-white/20 dark:group-hover:text-dynamic-accent/40 ${props.mod.span ? "text-xl" : "text-lg"}`}
             >
               {ch}
             </span>
@@ -287,7 +287,7 @@ function QuizCard(props: { mod: QuizModule; delay: number }) {
 function BgChar(props: { char: string; large?: boolean; rose?: boolean }) {
   return (
     <span
-      class={`absolute top-1/2 -translate-y-1/2 pointer-events-none select-none font-japanese leading-none ${props.rose ? "text-rose-400/4" : "text-white/4"} ${props.large ? "text-[7.5rem] right-24" : "text-[5.5rem] right-18"}`}
+      class={`absolute top-1/2 -translate-y-1/2 pointer-events-none select-none font-japanese leading-none ${props.rose ? "text-rose-400/8 dark:text-rose-400/4" : "text-foreground/5 dark:text-white/4"} ${props.large ? "text-[7.5rem] right-24" : "text-[5.5rem] right-18"}`}
     >
       {props.char}
     </span>

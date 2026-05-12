@@ -63,7 +63,7 @@ function LearnComponent() {
   })
 
   return (
-    <div class="relative min-h-screen text-white">
+    <div class="relative min-h-screen text-foreground dark:text-white">
       <style>{`
         @keyframes fade-up {
           from { opacity: 0; transform: translateY(20px); }

@@ -17,7 +17,7 @@ function ToParticle() {
   return (
     <div class="relative pb-32">
       {/* Background character */}
-      <span class="pointer-events-none absolute top-8 left-24 select-none font-japanese text-[10rem] leading-none text-white/[0.03] sm:top-11 sm:left-auto sm:right-8 sm:text-[11rem]">
+      <span class="pointer-events-none absolute top-8 left-24 select-none font-japanese text-[10rem] leading-none text-foreground/[0.04] dark:text-white/[0.03] sm:top-11 sm:left-auto sm:right-8 sm:text-[11rem]">
         と
       </span>
 
@@ -48,14 +48,14 @@ function ToParticle() {
 
       <div class="space-y-14 px-8">
         {/* Intro */}
-        <div class="leading-relaxed text-white/70">
+        <div class="leading-relaxed text-foreground/75 dark:text-white/70">
           <p>
             In Japanese, the{" "}
             <span class="font-japanese text-xl">と</span> particle has several
             uses, but today we'll focus on two essential functions: connecting
-            nouns (like "<span class="font-semibold text-white/90">and</span>")
+            nouns (like "<span class="font-semibold text-foreground dark:text-white/90">and</span>")
             and indicating who you do something{" "}
-            <span class="font-semibold text-white/90">with</span>.
+            <span class="font-semibold text-foreground dark:text-white/90">with</span>.
           </p>
         </div>
 
@@ -65,15 +65,15 @@ function ToParticle() {
             1. Connecting nouns with{" "}
             <span class="font-japanese text-purple-500">と</span>
           </SectionLabel>
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             When connecting nouns,{" "}
             <span class="font-japanese text-xl">と</span> works like "
-            <span class="font-semibold text-white/90">and</span>" in English.
+            <span class="font-semibold text-foreground dark:text-white/90">and</span>" in English.
             You put it after each item except the last one:
           </p>
 
-          <div class="rounded-lg bg-white/[0.04] p-4 text-center">
-            <p class="font-japanese text-xl text-white/90">
+          <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4 text-center">
+            <p class="font-japanese text-xl text-foreground dark:text-white/90">
               <Furigana furigana={<span class="text-xs">ねこ</span>}>
                 猫
               </Furigana>
@@ -83,10 +83,10 @@ function ToParticle() {
               </Furigana>
               がいます。
             </p>
-            <p class="mt-1 text-white/50">I have a cat and dog.</p>
+            <p class="mt-1 text-muted-foreground dark:text-white/50">I have a cat and dog.</p>
           </div>
 
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             You can connect more than 2 nouns with{" "}
             <span class="font-japanese text-xl">と</span> as well. Just keep
             adding <span class="font-japanese text-xl">と</span> after each
@@ -94,22 +94,22 @@ function ToParticle() {
           </p>
 
           <div class="space-y-3">
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="font-japanese text-lg text-white/80">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="font-japanese text-lg text-foreground/80 dark:text-white/80">
                 パン<span class="text-purple-500">と</span>バター
                 <span class="text-purple-500">と</span>ジャムを買いました。
               </p>
-              <p class="mt-1 text-sm text-white/40">
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">
                 I bought bread, butter, and jam.
               </p>
             </div>
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="font-japanese text-lg text-white/80">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="font-japanese text-lg text-foreground/80 dark:text-white/80">
                 ケーキ<span class="text-purple-500">と</span>クッキー
                 <span class="text-purple-500">と</span>
                 チョコレートは高いです。
               </p>
-              <p class="mt-1 text-sm text-white/40">
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">
                 Cake, cookies, and chocolate are expensive.
               </p>
             </div>
@@ -122,15 +122,15 @@ function ToParticle() {
             2. Doing things together with{" "}
             <span class="font-japanese text-purple-500">と</span>
           </SectionLabel>
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             When <span class="font-japanese text-xl">と</span> means "
-            <span class="font-semibold text-white/90">with</span>," it
+            <span class="font-semibold text-foreground dark:text-white/90">with</span>," it
             indicates that both parties are equally involved in the action:
           </p>
 
           <div class="space-y-3">
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="font-japanese text-lg text-white/80">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="font-japanese text-lg text-foreground/80 dark:text-white/80">
                 <Furigana furigana={<span class="text-xs">じょうし</span>}>
                   上司
                 </Furigana>
@@ -140,15 +140,15 @@ function ToParticle() {
                 </Furigana>
                 みます。
               </p>
-              <p class="mt-1 text-sm text-white/40">
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">
                 I drink beer with my boss.
               </p>
-              <p class="mt-1 text-sm italic text-white/30">
+              <p class="mt-1 text-sm italic text-muted-foreground/70 dark:text-white/30">
                 (Both people willingly participate... hopefully)
               </p>
             </div>
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="font-japanese text-lg text-white/80">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="font-japanese text-lg text-foreground/80 dark:text-white/80">
                 <Furigana furigana={<span class="text-xs">かのじょ</span>}>
                   彼女
                 </Furigana>
@@ -158,15 +158,15 @@ function ToParticle() {
                 </Furigana>
                 しました。
               </p>
-              <p class="mt-1 text-sm text-white/40">
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">
                 I had a fight with my girlfriend.
               </p>
-              <p class="mt-1 text-sm italic text-white/30">
+              <p class="mt-1 text-sm italic text-muted-foreground/70 dark:text-white/30">
                 (Both actively participated in the argument)
               </p>
             </div>
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="font-japanese text-lg text-white/80">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="font-japanese text-lg text-foreground/80 dark:text-white/80">
                 <Furigana furigana={<span class="text-xs">ともだち</span>}>
                   友達
                 </Furigana>
@@ -180,10 +180,10 @@ function ToParticle() {
                 </Furigana>
                 をしました。
               </p>
-              <p class="mt-1 text-sm text-white/40">
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">
                 I did homework together with my friend.
               </p>
-              <p class="mt-1 text-sm italic text-white/30">
+              <p class="mt-1 text-sm italic text-muted-foreground/70 dark:text-white/30">
                 (reality: copied each other's answers while panicking about the
                 deadline on the following day)
               </p>
@@ -196,40 +196,40 @@ function ToParticle() {
           <SectionLabel>
             Using <span class="font-japanese">と一緒に</span> (together with)
           </SectionLabel>
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             While と by itself can mean doing something with someone, adding
             一緒に (いっしょに) emphasizes that you're doing it together. Think
             of it as the difference between "with" and "together with":
           </p>
 
           <div class="space-y-3">
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="font-japanese text-lg text-white/80">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="font-japanese text-lg text-foreground/80 dark:text-white/80">
                 田中さんと勉強します。
               </p>
-              <p class="mt-1 text-sm text-white/40">
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">
                 I'll study with Tanaka.
               </p>
             </div>
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="font-japanese text-lg text-white/80">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="font-japanese text-lg text-foreground/80 dark:text-white/80">
                 田中さんと
                 <Furigana furigana={<span class="text-xs">いっしょ</span>}>
                   一緒
                 </Furigana>
                 に勉強します。
               </p>
-              <p class="mt-1 text-sm text-white/40">
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">
                 I'll study together with Tanaka.
               </p>
-              <p class="mt-1 text-sm italic text-white/30">
+              <p class="mt-1 text-sm italic text-muted-foreground/70 dark:text-white/30">
                 (Emphasizes you're studying as a group/pair rather than just
                 happening to study at the same time/place)
               </p>
             </div>
           </div>
 
-          <p class="text-sm italic text-white/40">
+          <p class="text-sm italic text-muted-foreground dark:text-white/40">
             *Note: Both versions are correct and commonly used. Adding 一緒に
             just puts more emphasis on the "togetherness" of the action.
           </p>
@@ -244,8 +244,8 @@ function ToParticle() {
           </SectionLabel>
 
           <div class="space-y-3">
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="font-japanese text-lg text-white/80">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="font-japanese text-lg text-foreground/80 dark:text-white/80">
                 <Furigana furigana={<span class="text-xs">せんぱい</span>}>
                   先輩
                 </Furigana>
@@ -255,12 +255,12 @@ function ToParticle() {
                 </Furigana>
                 します。
               </p>
-              <p class="mt-1 text-sm text-white/40">
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">
                 I'll talk <u>with</u> my senior (mutual conversation)
               </p>
             </div>
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="font-japanese text-lg text-white/80">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="font-japanese text-lg text-foreground/80 dark:text-white/80">
                 <Furigana furigana={<span class="text-xs">せんぱい</span>}>
                   先輩
                 </Furigana>
@@ -270,7 +270,7 @@ function ToParticle() {
                 </Furigana>
                 します。
               </p>
-              <p class="mt-1 text-sm text-white/40">
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">
                 I'll talk <u>to</u> my senior (one-sided, like reporting
                 something)
               </p>
@@ -281,13 +281,13 @@ function ToParticle() {
         {/* Practice */}
         <div class="space-y-5">
           <h3 class="text-center text-2xl font-bold">Practice</h3>
-          <p class="text-center text-sm italic text-white/40">
+          <p class="text-center text-sm italic text-muted-foreground dark:text-white/40">
             *Choose the most natural particle for each situation*
           </p>
 
           <div class="space-y-6">
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 You're ordering at a café. How would you say "Coffee and milk
                 please"?
               </p>
@@ -301,7 +301,7 @@ function ToParticle() {
             </div>
 
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 Your friend asks who you're going to the concert with. How would
                 you say "I'm going with Tanaka"?
               </p>
@@ -315,7 +315,7 @@ function ToParticle() {
             </div>
 
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 You're planning a study session. How would you say "I'll study
                 with Yuki and Mari"?
               </p>
@@ -329,7 +329,7 @@ function ToParticle() {
             </div>
 
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 You're telling a friend about your weekend plans. How would you
                 say "I'll watch a movie with my sister"?
               </p>
@@ -343,7 +343,7 @@ function ToParticle() {
             </div>
 
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 You want to say that you talked with both Tanaka and Yamada.
                 Which is correct?
               </p>
@@ -357,7 +357,7 @@ function ToParticle() {
             </div>
 
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 How would you say "I watched a movie with my friend and my
                 younger brother"?
               </p>

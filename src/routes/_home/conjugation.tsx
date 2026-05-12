@@ -139,7 +139,7 @@ function ConjugationPage() {
   }
 
   return (
-    <div class="relative mx-auto min-h-screen max-w-3xl! px-4 pt-16 pb-32 text-white">
+    <div class="relative mx-auto min-h-screen max-w-3xl! px-4 pt-16 pb-32 text-foreground dark:text-white">
       <Switch>
         <Match when={currentPage() === "settings"}>
           <SettingsPage

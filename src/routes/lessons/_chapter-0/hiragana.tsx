@@ -19,7 +19,7 @@ export const Route = createFileRoute("/lessons/_chapter-0/hiragana")({
 function Hiragana() {
   return (
     <div class="relative pb-32">
-      <span class="pointer-events-none absolute top-8 left-24 sm:top-11 sm:left-auto sm:right-8 select-none font-japanese text-[10rem] sm:text-[11rem] leading-none text-white/[0.03]">
+      <span class="pointer-events-none absolute top-8 left-24 sm:top-11 sm:left-auto sm:right-8 select-none font-japanese text-[10rem] sm:text-[11rem] leading-none text-foreground/[0.04] dark:text-white/[0.03]">
         あ
       </span>
       <LessonHeader
@@ -40,7 +40,7 @@ function Hiragana() {
 
       <div class="space-y-14 px-8">
         {/* Why this is easier than English */}
-        <div class="leading-relaxed text-white/70">
+        <div class="leading-relaxed text-foreground/75 dark:text-white/70">
           <SectionLabel>Why this is easier than English</SectionLabel>
           <p class="mt-4">
             If English spelling has ever thrown you off (read vs. read [past
@@ -53,7 +53,7 @@ function Hiragana() {
         {/* The five vowels */}
         <div class="space-y-4">
           <SectionLabel>The five vowels</SectionLabel>
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             Everything starts here. Five short, steady vowels. Keep them crisp:
           </p>
           <GlowBox>
@@ -65,7 +65,7 @@ function Hiragana() {
               <VowelCard kana="お" romaji="o" hint={`"oh" as in oh`} />
             </div>
           </GlowBox>
-          <p class="text-sm text-white/40">
+          <p class="text-sm text-muted-foreground dark:text-white/40">
             Every other hiragana character is just a consonant placed in front of
             one of these.
           </p>
@@ -74,7 +74,7 @@ function Hiragana() {
         {/* Building rows */}
         <div class="space-y-4">
           <SectionLabel>Building rows</SectionLabel>
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             Put a consonant in front of each vowel, and you get a whole row of
             new characters:
           </p>
@@ -85,7 +85,7 @@ function Hiragana() {
             <KanaCard kana="け" romaji="ke" hint="kept" />
             <KanaCard kana="こ" romaji="ko" hint="corner" />
           </div>
-          <p class="text-sm text-white/40">
+          <p class="text-sm text-muted-foreground dark:text-white/40">
             That's the whole system. One consonant × five vowels = one row. Do
             this for each consonant and you get all 46 characters.
           </p>
@@ -101,10 +101,10 @@ function Hiragana() {
 
         {/* Pronunciation quirks */}
         <AsideBlock label="Pronunciation quirks">
-          <p class="mt-2 leading-relaxed text-white/70">
+          <p class="mt-2 leading-relaxed text-foreground/75 dark:text-white/70">
             Most characters are exactly what you'd expect. A few aren't:
           </p>
-          <div class="mt-3 space-y-1.5 text-sm leading-relaxed text-white/60">
+          <div class="mt-3 space-y-1.5 text-sm leading-relaxed text-muted-foreground dark:text-white/60">
             <p>
               <span class="font-japanese font-semibold text-dynamic-accent">
                 し
@@ -150,9 +150,9 @@ function Hiragana() {
             <WordCard kana="すし" romaji="su + shi" gloss="sushi" />
             <WordCard kana="はな" romaji="ha + na" gloss="flower" />
           </div>
-          <p class="text-sm text-white/40">
+          <p class="text-sm text-muted-foreground dark:text-white/40">
             Try these too:{" "}
-            <span class="font-japanese text-white/60">
+            <span class="font-japanese text-muted-foreground dark:text-white/60">
               たこ, うみ, みせ, またね, こころ
             </span>
           </p>
@@ -161,7 +161,7 @@ function Hiragana() {
         {/* How to learn them */}
         <div class="space-y-4">
           <SectionLabel>How to learn them</SectionLabel>
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             You don't need to memorize the chart right now. When you're ready,
             use{" "}
             <a
@@ -177,7 +177,7 @@ function Hiragana() {
         </div>
 
         {/* Additional Resources */}
-        <div class="rounded-lg bg-white/[0.03] p-6 ring-1 ring-white/[0.06]">
+        <div class="rounded-lg bg-card/50 dark:bg-white/[0.03] p-6 ring-1 ring-border/60 dark:ring-white/[0.06]">
           <SectionLabel>Additional resources</SectionLabel>
           <div class="mt-4 space-y-3 text-sm">
             <div>
@@ -188,7 +188,7 @@ function Hiragana() {
               >
                 Hiragana & Katakana Chart
               </a>
-              <p class="mt-0.5 text-white/40">Quick visual reference.</p>
+              <p class="mt-0.5 text-muted-foreground dark:text-white/40">Quick visual reference.</p>
             </div>
             <div>
               <a
@@ -198,7 +198,7 @@ function Hiragana() {
               >
                 Learn Hiragana + Katakana in 2 Hours
               </a>
-              <p class="mt-0.5 text-white/40">JapanesePod101 on YouTube.</p>
+              <p class="mt-0.5 text-muted-foreground dark:text-white/40">JapanesePod101 on YouTube.</p>
             </div>
           </div>
         </div>
@@ -208,7 +208,7 @@ function Hiragana() {
           <SummaryItem>Every hiragana = one sound, always</SummaryItem>
           <SummaryItem>
             Five vowels (
-            <span class="font-japanese font-semibold text-white/80">
+            <span class="font-japanese font-semibold text-foreground/80 dark:text-white/80">
               あいうえお
             </span>
             ) are the foundation
@@ -219,7 +219,7 @@ function Hiragana() {
           <SummaryItem>46 characters total</SummaryItem>
           <SummaryItem>
             A few quirks (
-            <span class="font-japanese text-white/80">
+            <span class="font-japanese text-foreground/80 dark:text-white/80">
               し, ち, つ, ふ, ん, を
             </span>
             ) but the system is consistent
@@ -232,14 +232,14 @@ function Hiragana() {
             <img
               src="/img/guru.png"
               alt="sensei"
-              class="size-12 rounded-full ring-1 ring-white/10"
+              class="size-12 rounded-full ring-1 ring-border dark:ring-white/10"
             />
             <SectionLabel>A note from Sensei</SectionLabel>
           </div>
-          <p class="text-sm leading-relaxed text-white/50 italic">
+          <p class="text-sm leading-relaxed text-muted-foreground dark:text-white/50 italic">
             Hiragana feels huge at first, but think of it like collecting tea
             cups —{" "}
-            <span class="text-white/30">
+            <span class="text-muted-foreground/70 dark:text-white/30">
               *pulls out absolutely massive tea cup set from nowhere*
             </span>{" "}
             — learn a few every day, and before long, you'll have the full set.
@@ -261,19 +261,19 @@ function VowelCard(props: { kana: string; romaji: string; hint: string }) {
     <div class="text-center">
       <p class="font-japanese text-2xl font-bold text-dynamic-accent">
         {props.kana}{" "}
-        <span class="text-base font-normal text-white/50">({props.romaji})</span>
+        <span class="text-base font-normal text-muted-foreground dark:text-white/50">({props.romaji})</span>
       </p>
-      <p class="mt-1 text-xs text-white/40">{props.hint}</p>
+      <p class="mt-1 text-xs text-muted-foreground dark:text-white/40">{props.hint}</p>
     </div>
   )
 }
 
 function KanaCard(props: { kana: string; romaji: string; hint: string }) {
   return (
-    <div class="rounded-lg bg-white/[0.04] p-4 text-center">
-      <p class="font-japanese text-2xl font-bold text-white/90">{props.kana}</p>
-      <p class="text-sm font-medium text-white/60">{props.romaji}</p>
-      <p class="text-xs text-white/30 italic">{props.hint}</p>
+    <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4 text-center">
+      <p class="font-japanese text-2xl font-bold text-foreground dark:text-white/90">{props.kana}</p>
+      <p class="text-sm font-medium text-muted-foreground dark:text-white/60">{props.romaji}</p>
+      <p class="text-xs text-muted-foreground/70 dark:text-white/30 italic">{props.hint}</p>
     </div>
   )
 }
@@ -287,12 +287,12 @@ function WordCard(props: { kana: string; romaji: string; gloss: string }) {
           background: `linear-gradient(135deg, var(--dynamic-accent), transparent 50%)`,
         }}
       />
-      <div class="relative rounded-xl bg-white/[0.04] p-4 text-center backdrop-blur-sm">
-        <p class="font-japanese mb-1 text-2xl font-semibold text-white/90">
+      <div class="relative rounded-xl bg-card/60 dark:bg-white/[0.04] p-4 text-center backdrop-blur-sm">
+        <p class="font-japanese mb-1 text-2xl font-semibold text-foreground dark:text-white/90">
           {props.kana}
         </p>
-        <p class="text-sm text-white/50">{props.romaji}</p>
-        <p class="text-sm text-white/70">{props.gloss}</p>
+        <p class="text-sm text-muted-foreground dark:text-white/50">{props.romaji}</p>
+        <p class="text-sm text-foreground/75 dark:text-white/70">{props.gloss}</p>
       </div>
     </div>
   )

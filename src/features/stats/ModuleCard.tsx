@@ -35,7 +35,7 @@ export function ModuleCard(props: ModuleCardProps) {
         style={{ background: `rgb(${config().color})`, opacity: "0.4" }}
       />
       <div class="flex-1 min-w-0">
-        <p class="text-[15px] text-white/80 truncate">
+        <p class="text-[15px] text-foreground/80 truncate dark:text-white/80">
           {formatModuleName(props.modulePath)}
         </p>
         <div class="flex items-center gap-2.5 mt-1">
@@ -45,23 +45,23 @@ export function ModuleCard(props: ModuleCardProps) {
           >
             {config().label}
           </span>
-          <span class="text-xs text-white/20">
+          <span class="text-xs text-muted-foreground/70 dark:text-white/20">
             {formatTime(props.lastUpdatedAt)}
           </span>
         </div>
       </div>
       <div class="flex items-center gap-6 shrink-0">
         <div class="text-right">
-          <span class="text-lg font-semibold tabular-nums text-white/75">
+          <span class="text-lg font-semibold tabular-nums text-foreground/75 dark:text-white/75">
             {props.progressUnits}
           </span>
-          <span class="text-xs text-white/25 ml-1">XP</span>
+          <span class="text-xs text-muted-foreground ml-1 dark:text-white/25">XP</span>
         </div>
         <div class="text-right">
-          <span class="text-lg font-semibold tabular-nums text-white/75">
+          <span class="text-lg font-semibold tabular-nums text-foreground/75 dark:text-white/75">
             {props.questionsAnswered}
           </span>
-          <span class="text-xs text-white/25 ml-1">qs</span>
+          <span class="text-xs text-muted-foreground ml-1 dark:text-white/25">qs</span>
         </div>
       </div>
     </div>

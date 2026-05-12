@@ -58,7 +58,7 @@ export function TimelineItem(props: TimelineItemProps) {
         <div
           class={cn(
             "absolute left-[-7px] top-1/2 -translate-y-1/2 size-3 rounded-full border-2 bg-background transition-colors",
-            "border-card-foreground/20 group-hover:border-white/50 group-hover:bg-white/50",
+            "border-card-foreground/20 group-hover:border-dynamic-accent/50 group-hover:bg-dynamic-accent/50 dark:group-hover:border-white/50 dark:group-hover:bg-white/50",
             props.dotClass,
           )}
         />
@@ -89,8 +89,8 @@ export function TimelineItem(props: TimelineItemProps) {
 
   const baseClasses = cn(
     "group flex items-center gap-3 rounded-lg py-2.5 pr-3 pl-6 transition-all duration-150",
-    "text-white/70 hover:text-white hover:bg-white/5",
-    "focus-visible:outline-none focus-visible:bg-white/10",
+    "text-foreground/75 hover:bg-accent hover:text-foreground dark:text-white/70 dark:hover:bg-white/5 dark:hover:text-white",
+    "focus-visible:outline-none focus-visible:bg-accent dark:focus-visible:bg-white/10",
     props.disabled && "cursor-not-allowed opacity-50",
     props.class,
   )

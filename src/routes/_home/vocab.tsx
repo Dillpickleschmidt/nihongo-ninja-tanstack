@@ -43,7 +43,7 @@ function VocabLayoutComponent() {
 
       {/* Right: Panel with user's decks */}
       <Show when={showPanel()}>
-        <div class="fixed top-0 right-0 w-80! hidden border-border/50 bg-card/30 border-l py-4 pl-4 md:block md:h-[calc(100vh-4rem)]">
+        <div class="fixed top-0 right-0 w-80! hidden border-border/50 bg-card/70 border-l py-4 pl-4 backdrop-blur-sm md:block md:h-[calc(100vh-4rem)] dark:bg-card/30">
           <VocabRightPanel />
         </div>
       </Show>

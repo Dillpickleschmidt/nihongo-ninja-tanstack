@@ -30,7 +30,7 @@ export default function AlternativeAnswers(props: AlternativeAnswersProps) {
           }
         `}
         </style>
-        <h3 class="font-medium text-white/40">
+        <h3 class="font-medium text-muted-foreground dark:text-white/40">
           Alternative Answers ({bestMatchPoliteForm() ? "Polite" : "Casual"}{" "}
           Form):
         </h3>
@@ -43,8 +43,8 @@ export default function AlternativeAnswers(props: AlternativeAnswersProps) {
                 })
 
               return (
-                <div class="rounded-xl border border-white/10 bg-white/5 p-2">
-                  <div class="mb-1 text-sm text-white/30">
+                <div class="rounded-xl border border-border/70 dark:border-white/10 bg-card/60 dark:bg-white/5 p-2">
+                  <div class="mb-1 text-sm text-muted-foreground/70 dark:text-white/30">
                     Similarity: {(match.similarity * 100).toFixed(1)}%
                   </div>
                   <FuriganaText
@@ -54,7 +54,7 @@ export default function AlternativeAnswers(props: AlternativeAnswersProps) {
                     highlightClass="rounded-md border-2 border-black bg-amber-500 text-black font-medium highlight"
                   />
                   <Show when={match.answer.notes}>
-                    <div class="mt-1 text-sm text-white/30">
+                    <div class="mt-1 text-sm text-muted-foreground/70 dark:text-white/30">
                       Note: {match.answer.notes}
                     </div>
                   </Show>
@@ -63,7 +63,7 @@ export default function AlternativeAnswers(props: AlternativeAnswersProps) {
             }}
           </For>
         </div>
-        <p class="text-right text-xs text-white/20">
+        <p class="text-right text-xs text-muted-foreground/50 dark:text-white/20">
           Other forms are hidden for brevity.*
         </p>
       </div>

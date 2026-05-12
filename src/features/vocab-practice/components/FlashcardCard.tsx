@@ -111,7 +111,7 @@ export function FlashcardCard(props: Props) {
     <div class={PRACTICE_LAYOUT}>
       {/* Question area */}
       <div class="flex flex-col items-center gap-4">
-        <span class="text-sm text-white/40">
+        <span class="text-sm text-muted-foreground dark:text-white/40">
           How well do you know this?
         </span>
 
@@ -153,7 +153,7 @@ export function FlashcardCard(props: Props) {
       <Show when={isRevealed()}>
         <div class="w-full max-w-lg space-y-4">
           {/* Divider */}
-          <div class="h-px bg-white/10" />
+          <div class="h-px bg-muted dark:bg-white/10" />
 
           {/* Meanings */}
           <Show
@@ -179,7 +179,7 @@ export function FlashcardCard(props: Props) {
 
           {/* Particles */}
           <Show when={props.card.vocab.particles?.length}>
-            <div class="text-center text-sm text-white/40">
+            <div class="text-center text-sm text-muted-foreground dark:text-white/40">
               <For each={props.card.vocab.particles}>
                 {(p) => (
                   <span class="font-japanese">

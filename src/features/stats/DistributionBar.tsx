@@ -30,9 +30,9 @@ export function DistributionBar(props: DistributionBarProps) {
   return (
     <Show
       when={(props.data?.length ?? 0) > 0}
-      fallback={<p class="text-sm text-white/30">No activity this week</p>}
+      fallback={<p class="text-sm text-muted-foreground dark:text-white/30">No activity this week</p>}
     >
-      <div class="flex h-2.5 w-full overflow-hidden rounded-full bg-white/[0.04]">
+      <div class="flex h-2.5 w-full overflow-hidden rounded-full bg-muted/70 dark:bg-white/[0.04]">
         <For each={props.data}>
           {(item) => {
             const pct = () =>
@@ -70,9 +70,9 @@ export function DistributionBar(props: DistributionBarProps) {
                     class="h-3 w-3 rounded"
                     style={{ background: `rgb(${color})`, opacity: "0.6" }}
                   />
-                  <span class="text-sm text-white/50">
+                  <span class="text-sm text-muted-foreground dark:text-white/50">
                     {label}{" "}
-                    <span class="text-white/70 font-medium tabular-nums">
+                    <span class="text-foreground/70 font-medium dark:text-white/70 tabular-nums">
                       {pct()}%
                     </span>
                   </span>
@@ -83,7 +83,7 @@ export function DistributionBar(props: DistributionBarProps) {
         </div>
 
         <Show when={props.rangeLabel}>
-          <span class="text-sm text-white/20 tabular-nums whitespace-nowrap">
+          <span class="text-sm text-muted-foreground/70 tabular-nums whitespace-nowrap dark:text-white/20">
             {props.rangeLabel}
           </span>
         </Show>

@@ -84,14 +84,14 @@ export function ChapterAccordion(props: {
                       class={`flex size-6 items-center justify-center rounded-md text-xs font-bold ${
                         isActive()
                           ? "bg-gradient-to-br from-orange-500/30 to-amber-500/30 text-orange-400"
-                          : "bg-gradient-to-br from-white/10 to-white/5 text-white/50"
+                          : "bg-muted text-muted-foreground dark:bg-gradient-to-br dark:from-white/10 dark:to-white/5 dark:text-white/50"
                       }`}
                     >
                       {displayNum}
                     </div>
                     <span
                       class={`text-sm font-semibold ${
-                        isActive() ? "text-orange-400" : "text-white/70"
+                        isActive() ? "text-orange-400" : "text-foreground/70 dark:text-white/70"
                       }`}
                     >
                       {chapter.folderName}

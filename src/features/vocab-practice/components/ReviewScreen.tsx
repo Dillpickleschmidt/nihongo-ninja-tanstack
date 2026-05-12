@@ -29,26 +29,26 @@ export function ReviewScreen(props: Props) {
       <div class="w-full max-w-3xl">
         {/* Header */}
         <div class="mb-8 text-center">
-          <h1 class="mb-2 text-2xl font-bold text-white/90">
+          <h1 class="mb-2 text-2xl font-bold text-foreground dark:text-white/90">
             Review
           </h1>
-          <div class="flex items-center justify-center gap-4 text-sm text-white/40">
+          <div class="flex items-center justify-center gap-4 text-sm text-muted-foreground dark:text-white/40">
             <span>
               <span class="font-semibold text-emerald-400">
                 {correctCount()}
               </span>{" "}
               correct
             </span>
-            <span class="text-white/20">·</span>
+            <span class="text-muted-foreground/50 dark:text-white/20">·</span>
             <span>
               <span class="font-semibold text-rose-400">
                 {totalCount() - correctCount()}
               </span>{" "}
               incorrect
             </span>
-            <span class="text-white/20">·</span>
+            <span class="text-muted-foreground/50 dark:text-white/20">·</span>
             <span>
-              <span class="font-semibold text-white/70">{accuracy()}%</span>
+              <span class="font-semibold text-foreground/70 dark:text-white/70">{accuracy()}%</span>
             </span>
           </div>
         </div>
@@ -59,27 +59,27 @@ export function ReviewScreen(props: Props) {
             {(result) => {
               const promptDisplay = getCardPrompt(result.card)
               return (
-                <div class="flex flex-col items-center gap-2 rounded-xl bg-white/5 p-4 text-center">
+                <div class="flex flex-col items-center gap-2 rounded-xl bg-card/60 dark:bg-white/5 p-4 text-center">
                   <Show
                     when={promptDisplay.isHtml}
                     fallback={
-                      <div class="font-japanese text-3xl font-bold text-white/80">
+                      <div class="font-japanese text-3xl font-bold text-foreground/80 dark:text-white/80">
                         {promptDisplay.text}
                       </div>
                     }
                   >
                     <div
-                      class="font-japanese text-3xl font-bold text-white/80"
+                      class="font-japanese text-3xl font-bold text-foreground/80 dark:text-white/80"
                       innerHTML={promptDisplay.html}
                     />
                   </Show>
 
-                  <div class="line-clamp-2 text-sm text-white/40">
+                  <div class="line-clamp-2 text-sm text-muted-foreground dark:text-white/40">
                     {result.card.validAnswers.join(", ")}
                   </div>
 
                   <Show when={result.card.vocab.particles?.length}>
-                    <div class="text-xs text-white/30">
+                    <div class="text-xs text-muted-foreground/70 dark:text-white/30">
                       <For each={result.card.vocab.particles}>
                         {(p) => (
                           <span class="font-japanese">

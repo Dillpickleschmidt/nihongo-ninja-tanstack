@@ -137,24 +137,18 @@ export function FolderBrowser(props: FolderBrowserProps) {
               )}
               sectionComponent={(sectionProps) => (
                 <SelectSection>
-                  <div class="px-2 py-1.5 text-xs text-white/40">
+                  <div class="px-2 py-1.5 text-xs text-muted-foreground dark:text-white/40">
                     {sectionProps.section.rawValue.label}
                   </div>
                 </SelectSection>
               )}
             >
-              <SelectTrigger class="w-auto min-w-48 border-0 bg-white/[0.04] font-excalifont text-white/70 hover:bg-white/[0.06]">
+              <SelectTrigger class="w-auto min-w-48 border border-border/60 bg-card/70 font-excalifont text-foreground hover:bg-card dark:border-0 dark:bg-white/[0.04] dark:text-white/70 dark:hover:bg-white/[0.06]">
                 <SelectValue<MenuItem>>
                   {(state) => state.selectedOption()?.label}
                 </SelectValue>
               </SelectTrigger>
-              <SelectContent
-                class="border border-dynamic-accent/20 backdrop-blur-2xl"
-                style={{
-                  "background-color":
-                    "color-mix(in srgb, var(--dynamic-accent) 15%, rgb(10 10 10 / 0.7))",
-                }}
-              />
+              <SelectContent class="border border-border/70 bg-popover text-popover-foreground backdrop-blur-2xl dark:border-dynamic-accent/20 dark:bg-[color-mix(in_srgb,var(--dynamic-accent)_15%,rgb(10_10_10_/_0.7))]" />
             </Select>
 
             <TextField class="w-48 sm:w-56">
@@ -165,7 +159,7 @@ export function FolderBrowser(props: FolderBrowserProps) {
                   value={search()}
                   onInput={(e) => setSearch(e.currentTarget.value)}
                   onFocus={() => setSearchFocused(true)}
-                  class="bg-card/40 border-card-foreground/20 pl-9 backdrop-blur-sm"
+                  class="bg-card/70 border-border/60 pl-9 backdrop-blur-sm dark:bg-card/40 dark:border-card-foreground/20"
                 />
               </div>
             </TextField>

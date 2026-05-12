@@ -49,10 +49,10 @@ function WritingSystems() {
               <span class="text-red-400/80">見</span>
               <span class="text-sky-400/80">ます</span>
             </p>
-            <p class="mb-4 text-sm text-white/40">
+            <p class="mb-4 text-sm text-muted-foreground dark:text-white/40">
               (terebi o mimasu) - I watch television
             </p>
-            <div class="flex justify-center gap-6 text-xs text-white/50">
+            <div class="flex justify-center gap-6 text-xs text-muted-foreground dark:text-white/50">
               <span class="flex items-center gap-1.5">
                 <div class="size-2 rounded-full bg-emerald-400/80" /> Katakana
               </span>
@@ -79,12 +79,12 @@ function WritingSystems() {
             Each one does a different job. You'll see why once we get into it.
           </SenseiBubble>
 
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             Hiragana is where you start. These curved characters can represent
             every sound in Japanese:
           </p>
 
-          <div class="font-japanese space-y-1 rounded-lg bg-white/[0.04] p-4 text-center text-2xl font-medium text-white/90">
+          <div class="font-japanese space-y-1 rounded-lg bg-card/60 dark:bg-white/[0.04] p-4 text-center text-2xl font-medium text-foreground dark:text-white/90">
             <p>あ a</p>
             <p>い i</p>
             <p>う u</p>
@@ -100,10 +100,10 @@ function WritingSystems() {
                 class="size-10 shrink-0 opacity-60"
               />
               <div class="flex items-end gap-3 justify-end">
-                <div class="rounded-2xl rounded-br-sm bg-dynamic-accent/10 px-4 py-2.5 text-sm leading-relaxed text-white/70">
+                <div class="rounded-2xl rounded-br-sm bg-dynamic-accent/10 px-4 py-2.5 text-sm leading-relaxed text-foreground/75 dark:text-white/70">
                   Smooth, rounded shapes. Like stones polished by a river.
                 </div>
-                <Avatar class="size-7 shrink-0 ring-1 ring-white/10">
+                <Avatar class="size-7 shrink-0 ring-1 ring-border dark:ring-white/10">
                   <AvatarImage src="/img/guru.png" alt="sensei" />
                   <AvatarFallback>T</AvatarFallback>
                 </Avatar>
@@ -111,7 +111,7 @@ function WritingSystems() {
             </div>
           </div>
 
-          <p class="text-sm text-white/50">
+          <p class="text-sm text-muted-foreground dark:text-white/50">
             There are 46 of them. Unlike English, they're actually consistent —
             each one always makes the same sound.
           </p>
@@ -132,11 +132,11 @@ function WritingSystems() {
                 class="size-10 shrink-0 opacity-60"
               />
               <div class="flex items-end gap-3 justify-end">
-                <div class="rounded-2xl rounded-br-sm bg-dynamic-accent/10 px-4 py-2.5 text-sm leading-relaxed text-white/70">
+                <div class="rounded-2xl rounded-br-sm bg-dynamic-accent/10 px-4 py-2.5 text-sm leading-relaxed text-foreground/75 dark:text-white/70">
                   Same sounds, sharper strokes. Where hiragana looks like river
                   stones, katakana looks like a katana.
                 </div>
-                <Avatar class="size-7 shrink-0 ring-1 ring-white/10">
+                <Avatar class="size-7 shrink-0 ring-1 ring-border dark:ring-white/10">
                   <AvatarImage src="/img/guru.png" alt="sensei" />
                   <AvatarFallback>T</AvatarFallback>
                 </Avatar>
@@ -144,7 +144,7 @@ function WritingSystems() {
             </div>
           </div>
 
-          <div class="font-japanese space-y-1 rounded-lg bg-white/[0.04] p-4 text-center text-2xl font-medium text-white/90">
+          <div class="font-japanese space-y-1 rounded-lg bg-card/60 dark:bg-white/[0.04] p-4 text-center text-2xl font-medium text-foreground dark:text-white/90">
             <p>ア a</p>
             <p>イ i</p>
             <p>ウ u</p>
@@ -152,13 +152,13 @@ function WritingSystems() {
             <p>オ o</p>
           </div>
 
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             Katakana is for borrowed words, sound effects, and emphasis. English
             borrowed "sushi" from Japanese; Japanese borrowed テレビ (terebi)
             from "television." Katakana is how they write those.
           </p>
 
-          <p class="text-sm leading-relaxed text-white/40 italic">
+          <p class="text-sm leading-relaxed text-muted-foreground dark:text-white/40 italic">
             Loanwords from English? Katakana. Onomatopoeia and sound effects?
             Katakana. Emphasis, like italics or ALL CAPS? Also katakana. You'll
             also see it a lot in sci-fi and tech names.
@@ -174,29 +174,29 @@ function WritingSystems() {
           <StudentBubble>And the last one?</StudentBubble>
           <SenseiBubble>Behold, minion...</SenseiBubble>
 
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             These characters, borrowed from Chinese, are like little pictures
             with meaning. Look closely:
           </p>
 
-          <div class="rounded-lg bg-white/[0.04] p-6 text-center">
-            <p class="font-japanese mb-2 text-5xl text-white/90">日</p>
-            <p class="text-lg text-white/60">(hi/nichi) - the sun!</p>
+          <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-6 text-center">
+            <p class="font-japanese mb-2 text-5xl text-foreground dark:text-white/90">日</p>
+            <p class="text-lg text-muted-foreground dark:text-white/60">(hi/nichi) - the sun!</p>
           </div>
 
-          <div class="space-y-3 leading-relaxed text-white/50">
+          <div class="space-y-3 leading-relaxed text-muted-foreground dark:text-white/50">
             <p>
               One kanji can replace several hiragana characters, making writing
               more compact. These characters are inherited from the neighbors in
               China. The word kanji itself is actually written as{" "}
-              <span class="font-japanese text-xl text-white/80">漢字</span>{" "}
+              <span class="font-japanese text-xl text-foreground/80 dark:text-white/80">漢字</span>{" "}
               which literally means:
             </p>
 
-            <div class="rounded-lg bg-white/[0.04] p-4 text-center">
-              <span class="font-japanese mr-1 text-xl text-white/80">漢</span>{" "}
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4 text-center">
+              <span class="font-japanese mr-1 text-xl text-foreground/80 dark:text-white/80">漢</span>{" "}
               (Han Chinese){" "}
-              <span class="font-japanese mx-1 text-xl text-white/80">字</span>{" "}
+              <span class="font-japanese mx-1 text-xl text-foreground/80 dark:text-white/80">字</span>{" "}
               (Characters)
             </div>
 

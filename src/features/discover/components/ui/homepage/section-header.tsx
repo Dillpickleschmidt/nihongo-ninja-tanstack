@@ -31,11 +31,11 @@ export function SectionHeader(props: SectionHeaderProps) {
       </div>
 
       <Popover>
-        <PopoverTrigger class="ml-2 cursor-pointer rounded p-1 text-white/20 transition-colors hover:bg-white/5 hover:text-white/40">
+        <PopoverTrigger class="ml-2 cursor-pointer rounded p-1 text-muted-foreground/60 transition-colors hover:bg-accent hover:text-foreground dark:text-white/20 dark:hover:bg-white/5 dark:hover:text-white/40">
           <Settings2 class="size-3.5" />
         </PopoverTrigger>
-        <PopoverContent class="w-60 border-white/10 bg-neutral-900/95 backdrop-blur-xl">
-          <div class="mb-3 text-[0.65rem] font-semibold uppercase tracking-wider text-white/25">
+        <PopoverContent class="w-60 border-border/70 bg-popover text-popover-foreground backdrop-blur-xl dark:border-white/10 dark:bg-neutral-900/95">
+          <div class="mb-3 text-[0.65rem] font-semibold uppercase tracking-wider text-muted-foreground dark:text-white/25">
             {props.section.title} Weights
           </div>
           <WeightSliders
@@ -44,20 +44,20 @@ export function SectionHeader(props: SectionHeaderProps) {
             disabled={!overridesEnabled()}
           />
           {!overridesEnabled() && (
-            <div class="mt-2 text-[0.6rem] text-white/20">
+            <div class="mt-2 text-[0.6rem] text-muted-foreground/70 dark:text-white/20">
               Enable per-category overrides in global settings
             </div>
           )}
-          <label class="mt-3 flex cursor-pointer items-center gap-2 border-t border-white/6 pt-3">
+          <label class="mt-3 flex cursor-pointer items-center gap-2 border-t border-border/60 pt-3 dark:border-white/6">
             <input
               type="checkbox"
               checked={isLargeCards(sectionKey(), props.defaultLarge ?? false)}
               onChange={(e) =>
                 setLargeCards(sectionKey(), e.currentTarget.checked)
               }
-              class="size-3.5 cursor-pointer rounded border-white/20 bg-white/5 accent-dynamic-accent"
+              class="size-3.5 cursor-pointer rounded border-border bg-background accent-dynamic-accent dark:border-white/20 dark:bg-white/5"
             />
-            <span class="text-xs text-white/40">Large cards</span>
+            <span class="text-xs text-muted-foreground dark:text-white/40">Large cards</span>
           </label>
         </PopoverContent>
       </Popover>
@@ -65,7 +65,7 @@ export function SectionHeader(props: SectionHeaderProps) {
       <button
         type="button"
         onClick={() => props.onToggleExpand?.()}
-        class="text-muted-foreground ml-auto cursor-pointer text-xs transition-colors hover:text-white/50"
+        class="text-muted-foreground ml-auto cursor-pointer text-xs transition-colors hover:text-foreground dark:hover:text-white/50"
       >
         {props.expanded ? "View Less" : "View More"}
       </button>

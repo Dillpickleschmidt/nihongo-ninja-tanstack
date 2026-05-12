@@ -33,7 +33,7 @@ export function DeckPreviewModal(props: DeckPreviewModalProps) {
 
   return (
     <Dialog open={isOpen()} onOpenChange={(open) => !open && props.onClose()}>
-      <DialogContent class="border-card-foreground max-h-[80vh] sm:max-w-2xl [&]:animate-none [&]:duration-0">
+      <DialogContent class="border-border dark:border-card-foreground max-h-[80vh] sm:max-w-2xl [&]:animate-none [&]:duration-0">
         <DialogHeader>
           <DialogTitle>Deck Preview</DialogTitle>
         </DialogHeader>
@@ -65,7 +65,7 @@ export function DeckPreviewModal(props: DeckPreviewModalProps) {
               <For each={vocab()}>
                 {(item, index) => (
                   <div
-                    class={`rounded-lg border border-card-foreground/50 p-3 ${
+                    class={`rounded-lg border border-border/60 dark:border-card-foreground/50 p-3 ${
                       (index() + 1) % 2 === 0 ? "bg-card/60" : "bg-card/50"
                     }`}
                   >

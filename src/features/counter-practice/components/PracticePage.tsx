@@ -125,11 +125,11 @@ export function PracticePage(props: PracticePageProps) {
         <button
           type="button"
           onClick={props.onReturnToSettings}
-          class="text-white/30 transition-transform duration-200 hover:scale-125 hover:text-white/60"
+          class="text-muted-foreground/70 transition-transform duration-200 hover:scale-125 hover:text-muted-foreground dark:text-white/30 dark:hover:text-white/60"
         >
           <X size={24} />
         </button>
-        <div class="h-3.5 flex-1 overflow-hidden rounded-full bg-white/10">
+        <div class="h-3.5 flex-1 overflow-hidden rounded-full bg-muted dark:bg-white/10">
           <div
             class="h-full rounded-full transition-all duration-500"
             style={{
@@ -139,7 +139,7 @@ export function PracticePage(props: PracticePageProps) {
             }}
           />
         </div>
-        <span class="text-sm text-white/30">
+        <span class="text-sm text-muted-foreground/70 dark:text-white/30">
           {completed() + 1}/{props.amount}
         </span>
       </div>
@@ -150,14 +150,14 @@ export function PracticePage(props: PracticePageProps) {
           <div class="space-y-6 px-2">
             {/* Question display */}
             <div class="flex flex-col items-center">
-              <span class="text-sm text-white/40">
+              <span class="text-sm text-muted-foreground dark:text-white/40">
                 How do you count this?
               </span>
               <div class="mt-4 text-center">
-                <span class="text-4xl font-bold text-violet-300 sm:text-6xl">
+                <span class="text-4xl font-bold text-violet-600 sm:text-6xl dark:text-violet-300">
                   {question().number}
                 </span>
-                <span class="ml-2 text-3xl font-semibold text-white/70 sm:ml-3 sm:text-4xl">
+                <span class="ml-2 text-3xl font-semibold text-foreground/70 sm:ml-3 sm:text-4xl dark:text-white/70">
                   {question().number === 1
                     ? question().vocab.word
                     : question().vocab.pluralWord}
@@ -167,7 +167,7 @@ export function PracticePage(props: PracticePageProps) {
 
             {/* Input area */}
             <div class="mx-auto w-full max-w-sm space-y-4">
-              <p class="text-center text-xs italic text-white/30">
+              <p class="text-center text-xs italic text-muted-foreground/70 dark:text-white/30">
                 *use caps for katakana
               </p>
               <WanakanaWrapper enabled={true} watch={answer()}>
@@ -185,10 +185,10 @@ export function PracticePage(props: PracticePageProps) {
                     autocomplete="off"
                     autocapitalize="none"
                     class={cn(
-                      "font-japanese h-12 rounded-2xl border bg-white/5 py-4 text-center text-lg font-medium outline-none transition-colors placeholder:text-white/30",
+                      "font-japanese h-12 rounded-2xl border bg-card/70 py-4 text-center text-lg font-medium outline-none transition-colors placeholder:text-muted-foreground/60 dark:bg-white/5 dark:placeholder:text-white/30",
                       !isAnswered() &&
                         !showHint() &&
-                        "border-white/10 focus:border-violet-500",
+                        "border-border/70 focus:border-violet-500 dark:border-white/10",
                       !isAnswered() &&
                         showHint() &&
                         "border-rose-500/50 focus:border-rose-500",
@@ -202,9 +202,9 @@ export function PracticePage(props: PracticePageProps) {
               {/* Hints */}
               <Show when={showHint() && !isAnswered()}>
                 <div class="rounded-lg bg-rose-500/10 p-3 text-center text-sm">
-                  <p class="text-white/50">
+                  <p class="text-muted-foreground dark:text-white/50">
                     Counter:{" "}
-                    <span class="font-japanese font-bold text-white/70">
+                    <span class="font-japanese font-bold text-foreground/70 dark:text-white/70">
                       {question().pattern.id}
                     </span>
                   </p>
@@ -221,7 +221,7 @@ export function PracticePage(props: PracticePageProps) {
 
               {/* Correct feedback */}
               <Show when={isAnswered()}>
-                <div class="rounded-lg bg-violet-500/10 p-3 text-center text-sm font-medium text-violet-300">
+                <div class="rounded-lg bg-violet-500/10 p-3 text-center text-sm font-medium text-violet-600 dark:text-violet-300">
                   Correct!
                 </div>
               </Show>

@@ -34,8 +34,8 @@ export default function RevealBlock(props: {
             opacity: 0.15,
           }}
         />
-        <ChevronDown class="mt-2 size-3 text-white/20 transition-all duration-200 group-hover:text-white/40 group-data-[expanded]:rotate-180" />
-        <span class="mt-1 text-[0.65rem] uppercase tracking-[0.2em] text-white/20 transition-colors group-hover:text-white/40">
+        <ChevronDown class="mt-2 size-3 text-muted-foreground/50 transition-all duration-200 group-hover:text-muted-foreground group-data-[expanded]:rotate-180 dark:text-white/20 dark:group-hover:text-white/40" />
+        <span class="mt-1 text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground/50 transition-colors group-hover:text-muted-foreground dark:text-white/20 dark:group-hover:text-white/40">
           {open() ? (props.openLabel ?? "Show less") : (props.closedLabel ?? "Show more")}
         </span>
       </CollapsiblePrimitive.Trigger>

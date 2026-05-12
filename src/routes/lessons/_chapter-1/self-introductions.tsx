@@ -22,7 +22,7 @@ function SelfIntroductions() {
   return (
     <div class="relative pb-32">
       {/* Background character */}
-      <span class="pointer-events-none absolute top-8 left-24 select-none font-japanese text-[10rem] leading-none text-white/[0.03] sm:top-11 sm:left-auto sm:right-8 sm:text-[11rem]">
+      <span class="pointer-events-none absolute top-8 left-24 select-none font-japanese text-[10rem] leading-none text-foreground/[0.04] dark:text-white/[0.03] sm:top-11 sm:left-auto sm:right-8 sm:text-[11rem]">
         私
       </span>
 
@@ -40,7 +40,7 @@ function SelfIntroductions() {
         {/* First-Person Pronouns */}
         <div class="space-y-4">
           <SectionLabel>First-person pronouns</SectionLabel>
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             In Japanese, there are several pronouns that you can use to refer to
             yourself, each with its own nuance and level of formality. Unlike
             English, which primarily uses "I," Japanese pronouns can reflect
@@ -272,35 +272,35 @@ function SelfIntroductions() {
             ]}
           />
 
-          <p class="leading-relaxed text-white/70">
-            We've learned the <span class="font-semibold text-white/90">X</span>
-            <span class="font-japanese font-semibold text-white/90">は</span>
-            <span class="font-semibold text-white/90">Y</span>
-            <span class="font-japanese font-semibold text-white/90">です</span>{" "}
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
+            We've learned the <span class="font-semibold text-foreground dark:text-white/90">X</span>
+            <span class="font-japanese font-semibold text-foreground dark:text-white/90">は</span>
+            <span class="font-semibold text-foreground dark:text-white/90">Y</span>
+            <span class="font-japanese font-semibold text-foreground dark:text-white/90">です</span>{" "}
             structure. So you can say:
           </p>
 
-          <p class="text-center font-japanese text-xl font-semibold text-white/90">
+          <p class="text-center font-japanese text-xl font-semibold text-foreground dark:text-white/90">
             私は [Your name] です。
           </p>
 
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             But note: Japanese often omits pronouns when obvious from context.
             Overusing 私 can feel redundant. Instead, it's smoother to just say:
           </p>
 
           <GlowBox>
-            <p class="text-center text-2xl font-bold text-white/90">
+            <p class="text-center text-2xl font-bold text-foreground dark:text-white/90">
               [your name] + です。
             </p>
           </GlowBox>
 
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             A richer self-introduction includes greetings and やさしい phrases:
           </p>
 
-          <div class="rounded-xl bg-white/[0.04] p-6">
-            <p class="font-japanese text-lg font-semibold leading-relaxed text-white/90">
+          <div class="rounded-xl bg-card/60 dark:bg-white/[0.04] p-6">
+            <p class="font-japanese text-lg font-semibold leading-relaxed text-foreground dark:text-white/90">
               こんにちは！はじめまして！ [your name] です。 [info]
               です。どうぞよろしくお<Furigana furigana={<span class="text-xs">ねが</span>}>願</Furigana>いします。
             </p>
@@ -308,15 +308,15 @@ function SelfIntroductions() {
 
           <div class="py-2">
             <AsideBlock>
-              <ul class="space-y-2 text-sm leading-relaxed text-white/60">
+              <ul class="space-y-2 text-sm leading-relaxed text-muted-foreground dark:text-white/60">
                 <li>
-                  <span class="font-japanese font-semibold text-white/80">
+                  <span class="font-japanese font-semibold text-foreground/80 dark:text-white/80">
                     こんにちは
                   </span>{" "}
                   – Hello
                 </li>
                 <li>
-                  <span class="font-japanese font-semibold text-white/80">
+                  <span class="font-japanese font-semibold text-foreground/80 dark:text-white/80">
                     はじめまして
                   </span>{" "}
                   – "Nice to meet you"
@@ -325,7 +325,7 @@ function SelfIntroductions() {
                   [Info]です – Add role/info (学生です, 専攻は英語です…)
                 </li>
                 <li>
-                  <span class="font-japanese font-semibold text-white/80">
+                  <span class="font-japanese font-semibold text-foreground/80 dark:text-white/80">
                     どうぞよろしくお<Furigana furigana={<span class="text-[10px]">ねが</span>}>願</Furigana>いします
                   </span>{" "}
                   – Polite closure, wishing goodwill.
@@ -368,21 +368,21 @@ function PronounSection(props: {
   return (
     <div class="space-y-4">
       <div class="flex items-baseline gap-3">
-        <h3 class="font-japanese text-2xl font-bold text-white/90">
+        <h3 class="font-japanese text-2xl font-bold text-foreground dark:text-white/90">
           {props.furigana ? (
             <Furigana furigana={props.furigana}>{props.jp}</Furigana>
           ) : (
             props.jp
           )}
         </h3>
-        <span class="text-lg font-medium text-white/40">{props.roman}</span>
+        <span class="text-lg font-medium text-muted-foreground dark:text-white/40">{props.roman}</span>
       </div>
 
       {props.description && (
-        <ul class="space-y-1.5 text-sm leading-relaxed text-white/60">
+        <ul class="space-y-1.5 text-sm leading-relaxed text-muted-foreground dark:text-white/60">
           {props.description.map((d) => (
             <li>
-              <span class="font-semibold text-white/80">{d.label}:</span>{" "}
+              <span class="font-semibold text-foreground/80 dark:text-white/80">{d.label}:</span>{" "}
               {d.text}
             </li>
           ))}
@@ -390,20 +390,20 @@ function PronounSection(props: {
       )}
 
       {props.story && (
-        <div class="rounded-lg bg-white/[0.04] p-4">
-          <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-white/30">
+        <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+          <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground/70 dark:text-white/30">
             {props.story.title}
           </p>
-          <p class="mb-2 text-xs text-white/30">
+          <p class="mb-2 text-xs text-muted-foreground/70 dark:text-white/30">
             {props.story.characters}
           </p>
-          <div class="space-y-1 text-sm leading-relaxed text-white/60">
+          <div class="space-y-1 text-sm leading-relaxed text-muted-foreground dark:text-white/60">
             {props.story.text.map((line) => (
               <p>{line}</p>
             ))}
           </div>
           {props.footnote && (
-            <p class="mt-3 text-sm italic text-white/40">
+            <p class="mt-3 text-sm italic text-muted-foreground dark:text-white/40">
               {props.footnote}
             </p>
           )}
@@ -415,11 +415,11 @@ function PronounSection(props: {
 
 function PluralItem(props: { kana: string; label: string }) {
   return (
-    <div class="flex items-baseline gap-3 rounded-lg bg-white/[0.04] px-4 py-3">
-      <span class="font-japanese text-lg font-semibold text-white/80">
+    <div class="flex items-baseline gap-3 rounded-lg bg-card/60 dark:bg-white/[0.04] px-4 py-3">
+      <span class="font-japanese text-lg font-semibold text-foreground/80 dark:text-white/80">
         {props.kana}
       </span>
-      <span class="text-sm text-white/40">{props.label}</span>
+      <span class="text-sm text-muted-foreground dark:text-white/40">{props.label}</span>
     </div>
   )
 }

@@ -15,7 +15,7 @@ type KanjiTabProps = {
 
 export function KanjiTab(props: KanjiTabProps) {
   return (
-    <div class="bg-card/40 border-card-foreground/70 rounded-xl border p-4 backdrop-blur-sm">
+    <div class="bg-card/40 border-border/60 dark:border-card-foreground/70 rounded-xl border p-4 backdrop-blur-sm">
       <Show
         when={props.kanjiEntries !== undefined}
         fallback={
@@ -40,7 +40,7 @@ export function KanjiTab(props: KanjiTabProps) {
                 <p class="text-muted-foreground text-sm">
                   No marked kanji found.
                 </p>
-                <div class="border-t border-card-foreground/20 pt-4">
+                <div class="border-t border-border/50 dark:border-card-foreground/20 pt-4">
                   <div class="text-muted-foreground text-xs mb-2">
                     Unmarked (will skip):
                   </div>
@@ -65,7 +65,7 @@ export function KanjiTab(props: KanjiTabProps) {
                   props.kanjiToVocab?.get(kanjiEntry.kanji)?.length || 0
 
                 return (
-                  <div class="border-card-foreground/40 rounded-lg border p-3">
+                  <div class="border-border/50 dark:border-card-foreground/40 rounded-lg border p-3">
                     <div class="flex items-center justify-between gap-2">
                       <button
                         class={`cursor-pointer rounded-md px-2 py-1 text-left text-lg font-bold ${
@@ -121,7 +121,7 @@ export function KanjiTab(props: KanjiTabProps) {
 
           {/* Skipped kanji section */}
           <Show when={props.skippedKanji?.length}>
-            <div class="mt-6 border-t border-card-foreground/20 pt-4">
+            <div class="mt-6 border-t border-border/50 dark:border-card-foreground/20 pt-4">
               <div class="text-muted-foreground text-xs mb-2">
                 Unmarked (will skip):
               </div>

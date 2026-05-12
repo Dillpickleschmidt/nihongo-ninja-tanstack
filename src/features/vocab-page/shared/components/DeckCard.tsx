@@ -156,8 +156,8 @@ export function DeckCard(props: DeckCardProps) {
         as={Link}
         to={deckPath()}
         class={cn(
-          "block bg-card/60 hover:bg-card/70 border-card-foreground/70 relative cursor-pointer space-y-3 rounded-lg border p-4 shadow-sm backdrop-blur-sm hover:shadow-md",
-          props.isSelected && "outline-card-foreground outline-2",
+          "block bg-card/70 hover:bg-card/90 border-border/60 relative cursor-pointer space-y-3 rounded-lg border p-4 shadow-sm backdrop-blur-sm hover:shadow-md dark:bg-card/60 dark:hover:bg-card/70 dark:border-card-foreground/70",
+          props.isSelected && "outline-border outline-2 dark:outline-card-foreground",
           props.class,
         )}
         onMouseEnter={() => setIsHovered(true)}
@@ -207,7 +207,7 @@ export function DeckCard(props: DeckCardProps) {
         </div>
       </ContextMenuTrigger>
 
-      <ContextMenuContent class="bg-card border-card-foreground outline-none">
+      <ContextMenuContent class="bg-card border-border outline-none dark:border-card-foreground">
         {/* Edit contents (user decks only) */}
         <div
           title={
@@ -226,7 +226,7 @@ export function DeckCard(props: DeckCardProps) {
           </ContextMenuItem>
         </div>
 
-        <ContextMenuSeparator class="border-card-foreground" />
+        <ContextMenuSeparator class="border-border dark:border-card-foreground" />
 
         {/* Rename (user decks only) */}
         <ContextMenuItem
@@ -309,7 +309,7 @@ export function DeckCard(props: DeckCardProps) {
           Make a copy
         </ContextMenuItem>
 
-        <ContextMenuSeparator class="border-card-foreground" />
+        <ContextMenuSeparator class="border-border dark:border-card-foreground" />
 
         {/* Delete */}
         <ContextMenuItem

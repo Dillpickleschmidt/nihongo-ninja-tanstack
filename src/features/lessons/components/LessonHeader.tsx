@@ -39,7 +39,7 @@ export default function LessonHeader(props: {
         <AccentDivider />
       </div>
       {/* Overview: beside title on desktop (row 2), below divider on mobile */}
-      <div class="mt-6 flex flex-col gap-3 text-sm text-white/40 sm:order-2 sm:mt-0 sm:gap-1.5 sm:self-center">
+      <div class="mt-6 flex flex-col gap-3 text-sm text-muted-foreground sm:order-2 sm:mt-0 sm:gap-1.5 sm:self-center dark:text-white/40">
         {props.children}
       </div>
     </header>

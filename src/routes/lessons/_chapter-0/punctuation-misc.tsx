@@ -54,22 +54,22 @@ function PunctuationMisc() {
           <StudentBubble>...Sensei?</StudentBubble>
           <SenseiBubble>
             Usually, the particle{" "}
-            <span class="font-japanese font-semibold text-white/90">か</span> at
+            <span class="font-japanese font-semibold text-foreground dark:text-white/90">か</span> at
             the end of a sentence signals a question. The question mark (？)
             shows up more in casual writing.
           </SenseiBubble>
 
           <div class="py-4">
             <AsideBlock>
-              <p class="text-sm leading-relaxed text-white/60">
+              <p class="text-sm leading-relaxed text-muted-foreground dark:text-white/60">
                 Japanese speakers use{" "}
-                <span class="font-japanese font-semibold text-white/80">
+                <span class="font-japanese font-semibold text-foreground/80 dark:text-white/80">
                   か
                 </span>{" "}
                 to indicate questions in polite and formal contexts. You
                 literally say 'ka' at the end of the sentence. In casual
                 settings, they might drop{" "}
-                <span class="font-japanese text-white/80">か</span> and rely on
+                <span class="font-japanese text-foreground/80 dark:text-white/80">か</span> and rely on
                 intonation, which is written with a question mark (？). Or they
                 might use both (also only in informal contexts).
               </p>
@@ -131,16 +131,16 @@ function PunctuationMisc() {
 
           <div class="py-4">
             <AsideBlock>
-              <p class="text-sm leading-relaxed text-white/60">
+              <p class="text-sm leading-relaxed text-muted-foreground dark:text-white/60">
                 Japanese doesn't use spaces between words. However, when typing,
                 you'll notice that punctuation marks like{" "}
-                <span class="font-japanese text-white/80">。</span> and{" "}
-                <span class="font-japanese text-white/80">、</span> have
+                <span class="font-japanese text-foreground/80 dark:text-white/80">。</span> and{" "}
+                <span class="font-japanese text-foreground/80 dark:text-white/80">、</span> have
                 built-in spacing to separate sentences. Japanese characters are
                 also double-width, which means punctuation marks take up more
                 space, appearing as{" "}
-                <span class="font-japanese text-white/80">？</span> and{" "}
-                <span class="font-japanese text-white/80">！</span>.
+                <span class="font-japanese text-foreground/80 dark:text-white/80">？</span> and{" "}
+                <span class="font-japanese text-foreground/80 dark:text-white/80">！</span>.
               </p>
             </AsideBlock>
           </div>
@@ -154,12 +154,12 @@ function PunctuationMisc() {
           <SummaryItem>No uppercase or lowercase in Japanese</SummaryItem>
           <SummaryItem>
             Questions use the particle{" "}
-            <span class="font-japanese font-semibold text-white/80">か</span>{" "}
+            <span class="font-japanese font-semibold text-foreground/80 dark:text-white/80">か</span>{" "}
             (question marks are casual and optional)
           </SummaryItem>
           <SummaryItem>
             Periods are small hollow circles (
-            <span class="font-japanese text-white/80">。</span>)
+            <span class="font-japanese text-foreground/80 dark:text-white/80">。</span>)
           </SummaryItem>
           <SummaryItem>No spaces between words</SummaryItem>
         </LessonSummary>

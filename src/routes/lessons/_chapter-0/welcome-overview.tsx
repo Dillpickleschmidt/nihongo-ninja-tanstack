@@ -109,7 +109,7 @@ function WelcomeOverview() {
   return (
     <div class="relative pb-32">
       {/* Decorative background character */}
-      <span class="pointer-events-none absolute top-8 right-6 select-none font-japanese text-[10rem] leading-none text-white/[0.03] sm:top-11 sm:right-8 sm:text-[11rem]">
+      <span class="pointer-events-none absolute top-8 right-6 select-none font-japanese text-[10rem] leading-none text-foreground/[0.04] sm:top-11 sm:right-8 sm:text-[11rem] dark:text-white/[0.03]">
         忍
       </span>
 
@@ -127,7 +127,7 @@ function WelcomeOverview() {
         {/* How this course works */}
         <div class="space-y-4">
           <SectionLabel>How this course works</SectionLabel>
-          <div class="space-y-4 leading-relaxed text-white/70">
+          <div class="space-y-4 leading-relaxed text-foreground/75 dark:text-white/70">
             <p>
               This course covers listening, reading, writing, and grammar. You
               can choose where to focus, but start with Hiragana and
@@ -144,7 +144,7 @@ function WelcomeOverview() {
         {/* Module types */}
         <div class="space-y-5">
           <SectionLabel>Module types</SectionLabel>
-          <p class="text-sm leading-relaxed text-white/50">
+          <p class="text-sm leading-relaxed text-muted-foreground dark:text-white/50">
             Every lesson is built from a mix of these modules. Different lessons
             combine them in different ways depending on the topic.
           </p>
@@ -171,7 +171,7 @@ function WelcomeOverview() {
         {/* Optional pre-read */}
         <div class="space-y-4">
           <SectionLabel>Optional pre-read</SectionLabel>
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             New to Japanese? This popular community guide covers effective
             learning methods and basics. Worth reading up to{" "}
             <a
@@ -189,13 +189,13 @@ function WelcomeOverview() {
               <a
                 href="https://learnjapanese.moe/guide/"
                 target="_blank"
-                class="group flex items-center gap-3 text-sm text-white/60 transition hover:text-white/80"
+                class="group flex items-center gap-3 text-sm text-muted-foreground transition hover:text-foreground dark:text-white/60 dark:hover:text-white/80"
               >
                 <BookOpen
                   size="16"
                   class="shrink-0 text-dynamic-accent opacity-70"
                 />
-                <span class="underline decoration-white/20 underline-offset-2 transition group-hover:decoration-white/40">
+                <span class="underline decoration-foreground/20 underline-offset-2 transition group-hover:decoration-foreground/40 dark:decoration-foreground/20 dark:decoration-white/20 dark:group-hover:decoration-foreground/40 dark:decoration-white/40">
                   Japanese Guide – The Moe Way
                 </span>
               </a>
@@ -206,10 +206,10 @@ function WelcomeOverview() {
         {/* Next step */}
         <GlowBox>
           <div class="text-center">
-            <p class="mb-1 text-lg font-semibold text-white/90">
+            <p class="mb-1 text-lg font-semibold text-foreground dark:text-white/90">
               Ready to begin?
             </p>
-            <p class="mb-6 text-sm text-white/50">
+            <p class="mb-6 text-sm text-muted-foreground dark:text-white/50">
               Start with the three Japanese writing systems—the foundation of
               everything else.
             </p>
@@ -233,11 +233,11 @@ function ModuleCard(props: {
   desc: string
 }) {
   return (
-    <div class="flex items-start gap-3 rounded-lg bg-white/[0.04] px-4 py-3">
+    <div class="flex items-start gap-3 rounded-lg bg-card/60 px-4 py-3 dark:bg-white/[0.04]">
       <div class="mt-0.5">{props.icon}</div>
       <div>
-        <div class="text-sm font-medium text-white/80">{props.name}</div>
-        <div class="text-xs text-white/40">{props.desc}</div>
+        <div class="text-sm font-medium text-foreground/80 dark:text-white/80">{props.name}</div>
+        <div class="text-xs text-muted-foreground dark:text-white/40">{props.desc}</div>
       </div>
     </div>
   )

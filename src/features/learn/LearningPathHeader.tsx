@@ -163,7 +163,7 @@ export function LearningPathHeader() {
   return (
     <section class="animate-fade-up opacity-0">
       <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
-        <div class="text-xs uppercase tracking-[0.28em] text-white/40">
+        <div class="text-xs uppercase tracking-[0.28em] text-muted-foreground dark:text-white/40">
           Learning Path
         </div>
         <DueCountBadge count={() => dueCounts().vocabTotal} />
@@ -178,15 +178,12 @@ export function LearningPathHeader() {
             >
               <PopoverTrigger class="group relative block w-full overflow-hidden rounded-2xl border border-dynamic-accent/55 text-left shadow-[0_14px_40px_-24px_var(--dynamic-accent)] lg:w-56">
                 <PathPreviewBackground pathId={activePathId()} />
-                <div class="absolute inset-0 bg-gradient-to-t from-background/88 via-background/25 to-transparent" />
+                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/15 to-transparent" />
                 <div class="absolute right-2 top-2 rounded-full bg-black/35 p-1.5 text-white/80 backdrop-blur-md transition-colors group-hover:bg-white/15 group-hover:text-white">
                   <ChevronDown class="size-3.5" />
                 </div>
                 <div class="absolute inset-x-0 bottom-0 p-3">
-                  <div class="mb-1 text-[10px] uppercase tracking-[0.18em] text-dynamic-accent">
-                    Active Path
-                  </div>
-                  <div class="truncate text-sm font-semibold text-white">
+                  <div class="truncate text-xs font-semibold uppercase tracking-[0.16em] text-white">
                     {selectedPath()?.shortName}
                   </div>
                   <div class="mt-2 text-xs text-white/60">
@@ -258,7 +255,7 @@ export function LearningPathHeader() {
             </Popover>
           </div>
 
-          <div class="relative min-w-0 flex-1 border-white/10 lg:self-start lg:border-l lg:pl-5">
+          <div class="relative min-w-0 flex-1 border-border/70 lg:self-start lg:border-l lg:pl-5 dark:border-white/10">
             <div
               ref={chapterScrollContainer}
               class={cn(
@@ -317,10 +314,10 @@ export function LearningPathHeader() {
                 class="group absolute inset-x-0 top-full flex w-full cursor-pointer flex-col items-center"
                 aria-expanded={chaptersExpanded()}
               >
-                <div class="h-px w-full bg-white/10 lg:hidden" />
+                <div class="h-px w-full bg-border/70 lg:hidden dark:bg-white/10" />
                 <ChevronDown
                   class={cn(
-                    "mt-2 size-5 text-white/20 transition-all duration-200 group-hover:text-white/40 lg:size-4",
+                    "mt-2 size-5 text-muted-foreground/50 transition-all duration-200 group-hover:text-muted-foreground lg:size-4 dark:text-white/20 dark:group-hover:text-white/40",
                     chaptersExpanded() && "rotate-180",
                   )}
                 />
@@ -370,7 +367,7 @@ function LearningPathHeaderSkeleton() {
   return (
     <div class="flex flex-col gap-5 lg:flex-row lg:items-start">
       <Skeleton class="h-24 rounded-2xl lg:h-40 lg:w-56 lg:shrink-0" />
-      <div class="grid grid-cols-2 gap-3 sm:flex sm:flex-wrap lg:border-l lg:border-white/10 lg:pl-5">
+      <div class="grid grid-cols-2 gap-3 sm:flex sm:flex-wrap lg:border-l lg:border-border/70 lg:pl-5 dark:lg:border-white/10">
         <Skeleton class="h-32 rounded-2xl sm:w-44" />
         <Skeleton class="h-32 rounded-2xl sm:w-44" />
         <Skeleton class="h-32 rounded-2xl sm:w-44" />
@@ -398,7 +395,7 @@ function PathPreviewBackground(props: { pathId: string }) {
   }
 
   return (
-    <div class="relative h-24 bg-black/25 lg:h-40">
+    <div class="relative h-24 lg:h-40">
       <BackgroundPreviewMedia
         background={builtInBackground()}
         upload={upload()}
@@ -445,11 +442,11 @@ function ChapterCard(props: {
         class={cn(
           "block w-full overflow-hidden rounded-2xl border text-left transition-colors",
           props.active
-            ? "border-3 border-dynamic-accent"
-            : "border-white/10 hover:border-white/20",
+            ? "border-2 border-dynamic-accent/80"
+            : "border-border/40 hover:border-dynamic-accent/25 dark:border-white/10 dark:hover:border-white/20",
         )}
       >
-        <div class="relative h-32 bg-black/25">
+        <div class="relative h-32">
           <BackgroundPreviewMedia
             background={builtInBackground()}
             upload={upload()}
@@ -457,17 +454,14 @@ function ChapterCard(props: {
             height={170}
             class="h-full w-full object-cover"
           />
-          <div class="absolute inset-0 bg-gradient-to-t from-background/88 via-background/30 to-transparent" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/15 to-transparent" />
           <Show when={props.active}>
             <div class="absolute left-2 top-2 rounded-full bg-dynamic-accent/90 px-2 py-0.5 text-[10px] font-medium text-black">
               Active
             </div>
           </Show>
           <div class="absolute inset-x-0 bottom-0 p-3">
-            <div class="text-[10px] uppercase tracking-[0.18em] text-white/45">
-              Chapter {getChapterDisplayNumber(props.chapter.slug)}
-            </div>
-            <div class="truncate text-sm font-semibold text-white">
+            <div class="truncate text-xs font-semibold uppercase tracking-[0.16em] text-white">
               {props.chapter.title}
             </div>
             <div class="mt-2 flex items-center gap-2">

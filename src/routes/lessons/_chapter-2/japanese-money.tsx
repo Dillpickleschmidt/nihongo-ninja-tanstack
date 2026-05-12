@@ -19,7 +19,7 @@ function JapaneseMoney() {
   return (
     <div class="relative pb-32">
       {/* Background character */}
-      <span class="pointer-events-none absolute top-8 left-24 select-none font-japanese text-[10rem] leading-none text-white/[0.03] sm:top-11 sm:left-auto sm:right-8 sm:text-[11rem]">
+      <span class="pointer-events-none absolute top-8 left-24 select-none font-japanese text-[10rem] leading-none text-foreground/[0.04] dark:text-white/[0.03] sm:top-11 sm:left-auto sm:right-8 sm:text-[11rem]">
         円
       </span>
 
@@ -49,16 +49,16 @@ function JapaneseMoney() {
             credit="Nihongo-Learning"
           />
 
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             In Japan, the currency used is the Japanese{" "}
-            <span class="font-semibold text-white/90">Yen</span>{" "}
-            <span class="text-sm text-white/40">
+            <span class="font-semibold text-foreground dark:text-white/90">Yen</span>{" "}
+            <span class="text-sm text-muted-foreground dark:text-white/40">
               (pronounced <span class="font-semibold">En</span> in Japanese)
             </span>
-            , abbreviated as <span class="font-semibold text-white/90">¥</span>{" "}
-            or sometimes <span class="font-semibold text-white/90">JPY</span>.
+            , abbreviated as <span class="font-semibold text-foreground dark:text-white/90">¥</span>{" "}
+            or sometimes <span class="font-semibold text-foreground dark:text-white/90">JPY</span>.
             The symbol{" "}
-            <span class="font-japanese font-semibold text-white/90">円</span> (
+            <span class="font-japanese font-semibold text-foreground dark:text-white/90">円</span> (
             <span class="font-japanese">えん</span>) is also commonly used.
           </p>
         </div>
@@ -107,7 +107,7 @@ function JapaneseMoney() {
                     class="aspect-square object-contain"
                   />
                 </div>
-                <p class="mt-3 text-xl font-bold text-white/90">
+                <p class="mt-3 text-xl font-bold text-foreground dark:text-white/90">
                   {coin.label}
                 </p>
               </div>
@@ -122,17 +122,17 @@ function JapaneseMoney() {
             <img
               src="/img/chapter-2/japanese-money/one-thousand-japanese-yen.jpg"
               alt="One-thousand-yen-note"
-              class="overflow-hidden rounded-lg ring-1 ring-white/10"
+              class="overflow-hidden rounded-lg ring-1 ring-border dark:ring-white/10"
             />
             <img
               src="/img/chapter-2/japanese-money/five-thousand-japanese-yen.jpg"
               alt="Five-thousand-yen-note"
-              class="overflow-hidden rounded-lg ring-1 ring-white/10"
+              class="overflow-hidden rounded-lg ring-1 ring-border dark:ring-white/10"
             />
             <img
               src="/img/chapter-2/japanese-money/ten-thousand-japanese-yen.jpg"
               alt="Ten-thousand-yen-note"
-              class="overflow-hidden rounded-lg ring-1 ring-white/10"
+              class="overflow-hidden rounded-lg ring-1 ring-border dark:ring-white/10"
             />
           </div>
         </div>
@@ -140,13 +140,13 @@ function JapaneseMoney() {
         {/* Prices */}
         <div class="space-y-4">
           <SectionLabel>Writing and saying prices</SectionLabel>
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             When writing prices, Japanese people tend to use either the{" "}
-            <span class="font-japanese font-semibold text-white/90">¥</span> in
+            <span class="font-japanese font-semibold text-foreground dark:text-white/90">¥</span> in
             front, or{" "}
-            <span class="font-japanese font-semibold text-white/90">円</span>{" "}
+            <span class="font-japanese font-semibold text-foreground dark:text-white/90">円</span>{" "}
             after. When spoken, however, they always use
-            <span class="font-semibold text-white/90">
+            <span class="font-semibold text-foreground dark:text-white/90">
               {" "}
               <Furigana furigana={<span class="text-sm">えん</span>}>
                 円
@@ -154,21 +154,21 @@ function JapaneseMoney() {
             </span>
             , the same as saying dollars or cents in English.
           </p>
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             While they often use double-width characters in writing, they more
             frequently use single-width digits for prices ([０] vs [0]).
           </p>
 
           <div class="grid gap-2 sm:grid-cols-2">
-            <div class="rounded-lg bg-white/[0.04] px-4 py-3 text-center font-japanese text-xl text-white/90">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] px-4 py-3 text-center font-japanese text-xl text-foreground dark:text-white/90">
               ¥1,000
             </div>
-            <div class="rounded-lg bg-white/[0.04] px-4 py-3 text-center font-japanese text-xl text-white/90">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] px-4 py-3 text-center font-japanese text-xl text-foreground dark:text-white/90">
               1000円
             </div>
           </div>
 
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             Kanji numbers are rarely used on modern price tags. Most shops
             prefer Arabic numerals, though kanji numbers may still appear in
             traditional stores or cultural contexts.
@@ -178,29 +178,29 @@ function JapaneseMoney() {
         {/* Shop Phrases */}
         <div class="space-y-4">
           <SectionLabel>Common phrases in Japanese shops</SectionLabel>
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             The first thing you might hear when you enter a Japanese shop is:
           </p>
 
           <div class="space-y-3">
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="font-japanese text-xl text-white/90">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="font-japanese text-xl text-foreground dark:text-white/90">
                 いらっしゃいませ
               </p>
-              <p class="mt-1 text-sm text-white/50">
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/50">
                 Welcome to our store
               </p>
-              <p class="mt-1 text-xs text-white/40">
+              <p class="mt-1 text-xs text-muted-foreground dark:text-white/40">
                 This is the standard greeting when entering many stores.
               </p>
             </div>
 
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="font-japanese text-xl text-white/90">いくらですか</p>
-              <p class="mt-1 text-sm text-white/50">How much is it?</p>
-              <p class="mt-2 text-xs text-white/40">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="font-japanese text-xl text-foreground dark:text-white/90">いくらですか</p>
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/50">How much is it?</p>
+              <p class="mt-2 text-xs text-muted-foreground dark:text-white/40">
                 Example:{" "}
-                <span class="font-japanese text-sm text-white/60">
+                <span class="font-japanese text-sm text-muted-foreground dark:text-white/60">
                   すみません、この
                   <Furigana furigana={<span class="text-[10px]">とけい</span>}>
                     時計
@@ -210,30 +210,30 @@ function JapaneseMoney() {
               </p>
             </div>
 
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="font-japanese text-xl text-white/90">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="font-japanese text-xl text-foreground dark:text-white/90">
                 これをください
               </p>
-              <p class="mt-1 text-sm text-white/50">
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/50">
                 I'll take this, please.
               </p>
-              <p class="mt-1 text-xs text-white/40">
+              <p class="mt-1 text-xs text-muted-foreground dark:text-white/40">
                 Use this when you've decided to buy an item.
               </p>
             </div>
 
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="font-japanese text-xl text-white/90">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="font-japanese text-xl text-foreground dark:text-white/90">
                 クレジットカードは
                 <Furigana furigana={<span class="text-sm">つか</span>}>
                   使
                 </Furigana>
                 えますか
               </p>
-              <p class="mt-1 text-sm text-white/50">
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/50">
                 Can I use a credit card?
               </p>
-              <p class="mt-1 text-xs text-white/40">
+              <p class="mt-1 text-xs text-muted-foreground dark:text-white/40">
                 Use this to ask if credit cards are accepted.
               </p>
             </div>

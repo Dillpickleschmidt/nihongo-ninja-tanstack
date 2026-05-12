@@ -51,10 +51,10 @@ export function FinishScreen(props: Props) {
         {/* Celebration header */}
         <div class="mb-8 text-center">
           <div class="mb-4 text-6xl">{theme().emoji}</div>
-          <h1 class="mb-2 text-3xl font-bold text-white/90">{theme().title}</h1>
-          <p class="text-lg text-white/40">
+          <h1 class="mb-2 text-3xl font-bold text-foreground dark:text-white/90">{theme().title}</h1>
+          <p class="text-lg text-muted-foreground dark:text-white/40">
             You completed{" "}
-            <span class="font-semibold text-white/70">{props.deckName}</span>
+            <span class="font-semibold text-foreground/70 dark:text-white/70">{props.deckName}</span>
           </p>
         </div>
 
@@ -68,7 +68,7 @@ export function FinishScreen(props: Props) {
         {/* Module Items */}
         <Show when={stats().moduleItems.length > 0}>
           <div class="mb-8">
-            <h2 class="mb-4 flex items-center gap-2 text-lg font-semibold text-white/70">
+            <h2 class="mb-4 flex items-center gap-2 text-lg font-semibold text-foreground/70 dark:text-white/70">
               <span class="rounded-full bg-amber-500/10 px-2 py-1 text-sm text-amber-400">
                 {stats().moduleItems.length}
               </span>
@@ -87,7 +87,7 @@ export function FinishScreen(props: Props) {
         {/* Review Items */}
         <Show when={stats().reviewItems.length > 0}>
           <div class="mb-8">
-            <h2 class="mb-4 flex items-center gap-2 text-lg font-semibold text-white/70">
+            <h2 class="mb-4 flex items-center gap-2 text-lg font-semibold text-foreground/70 dark:text-white/70">
               <span class="rounded-full bg-indigo-500/10 px-2 py-1 text-sm text-indigo-400">
                 {stats().reviewItems.length}
               </span>
@@ -126,9 +126,9 @@ function StatCard(props: {
   }
 
   return (
-    <div class={cn("rounded-xl border bg-white/5 p-4 text-center", colors[props.color])}>
+    <div class={cn("rounded-xl border bg-card/60 dark:bg-white/5 p-4 text-center", colors[props.color])}>
       <div class="text-2xl font-bold">{props.value}</div>
-      <div class="text-xs text-white/40">{props.label}</div>
+      <div class="text-xs text-muted-foreground dark:text-white/40">{props.label}</div>
     </div>
   )
 }
@@ -141,23 +141,23 @@ function ResultCard(props: {
   const promptDisplay = props.getPromptDisplay(card)
 
   return (
-    <div class="flex items-center gap-4 rounded-xl bg-white/5 p-4">
+    <div class="flex items-center gap-4 rounded-xl bg-card/60 dark:bg-white/5 p-4">
       <div class="min-w-0 flex-1">
         <div class="flex items-baseline gap-3">
           <Show
             when={promptDisplay.isHtml}
             fallback={
-              <span class="font-japanese text-lg font-bold text-white/80">
+              <span class="font-japanese text-lg font-bold text-foreground/80 dark:text-white/80">
                 {promptDisplay.text}
               </span>
             }
           >
             <span
-              class="font-japanese text-lg font-bold text-white/80"
+              class="font-japanese text-lg font-bold text-foreground/80 dark:text-white/80"
               innerHTML={promptDisplay.html}
             />
           </Show>
-          <span class="truncate text-sm text-white/40">
+          <span class="truncate text-sm text-muted-foreground dark:text-white/40">
             {card.validAnswers.join(", ")}
           </span>
         </div>

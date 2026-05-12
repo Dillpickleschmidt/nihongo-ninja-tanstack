@@ -24,7 +24,7 @@ function JapaneseNamesHonorifics() {
   return (
     <div class="relative pb-32">
       {/* Background character */}
-      <span class="pointer-events-none absolute top-8 left-24 select-none font-japanese text-[10rem] leading-none text-white/[0.03] sm:top-11 sm:left-auto sm:right-8 sm:text-[11rem]">
+      <span class="pointer-events-none absolute top-8 left-24 select-none font-japanese text-[10rem] leading-none text-foreground/[0.04] dark:text-white/[0.03] sm:top-11 sm:left-auto sm:right-8 sm:text-[11rem]">
         様
       </span>
 
@@ -42,14 +42,14 @@ function JapaneseNamesHonorifics() {
         {/* Structure of Names */}
         <div class="space-y-4">
           <SectionLabel>Structure of Japanese names</SectionLabel>
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             Japanese names typically consist of a family name (surname) followed
             by a given name. This order is the{" "}
-            <span class="font-semibold text-white/90">opposite</span> of
+            <span class="font-semibold text-foreground dark:text-white/90">opposite</span> of
             Western naming conventions where the given name usually comes first.
           </p>
 
-          <div class="rounded-xl bg-white/[0.04] p-6 text-center">
+          <div class="rounded-xl bg-card/60 dark:bg-white/[0.04] p-6 text-center">
             <p class="font-japanese text-2xl">
               <Furigana furigana={<span class="text-sm">たなか</span>}>
                 田中
@@ -57,30 +57,30 @@ function JapaneseNamesHonorifics() {
               <Furigana furigana={<span class="text-sm">たろう</span>}>
                 太郎
               </Furigana>{" "}
-              <span class="text-[1.375rem] text-white/60">(Tanaka Tarou)</span>
+              <span class="text-[1.375rem] text-muted-foreground dark:text-white/60">(Tanaka Tarou)</span>
             </p>
-            <p class="mt-1 text-sm text-white/40">(last—first)</p>
+            <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">(last—first)</p>
           </div>
 
-          <ul class="space-y-2 leading-relaxed text-white/70">
+          <ul class="space-y-2 leading-relaxed text-foreground/75 dark:text-white/70">
             <li>
-              <span class="font-semibold text-white/90">Family Name: </span>
+              <span class="font-semibold text-foreground dark:text-white/90">Family Name: </span>
               <span class="font-japanese">田中</span> (Tanaka) - Means{" "}
               <em>within rice fields</em>.
             </li>
             <li>
-              <span class="font-semibold text-white/90">Given Name: </span>
+              <span class="font-semibold text-foreground dark:text-white/90">Given Name: </span>
               <span class="font-japanese">太郎</span> (Tarou) - Means{" "}
               <em>great son</em>.
             </li>
           </ul>
-          <p class="text-sm italic text-white/40">
+          <p class="text-sm italic text-muted-foreground dark:text-white/40">
             *Family names often refer to geographical features or parts of
             nature.
           </p>
 
-          <div class="rounded-xl bg-white/[0.04] p-6 text-center">
-            <p class="mb-3 leading-relaxed text-white/70">
+          <div class="rounded-xl bg-card/60 dark:bg-white/[0.04] p-6 text-center">
+            <p class="mb-3 leading-relaxed text-foreground/75 dark:text-white/70">
               Foreign names are usually written in katakana and in their native
               order.
             </p>
@@ -92,9 +92,9 @@ function JapaneseNamesHonorifics() {
               <Furigana furigana={<span class="text-sm">くるーず</span>}>
                 クルーズ
               </Furigana>{" "}
-              <span class="text-lg text-white/60">(Tom Cruise)</span>
+              <span class="text-lg text-muted-foreground dark:text-white/60">(Tom Cruise)</span>
             </p>
-            <p class="mt-3 text-sm italic text-white/40">
+            <p class="mt-3 text-sm italic text-muted-foreground dark:text-white/40">
               (more on katakana in the next chapter)
             </p>
           </div>
@@ -106,10 +106,10 @@ function JapaneseNamesHonorifics() {
             Cultural differences in addressing people
           </SectionLabel>
 
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             In Japan, people address each other by family name, not given name.
             Using someone's given name without permission is considered{" "}
-            <span class="font-semibold text-white/90">
+            <span class="font-semibold text-foreground dark:text-white/90">
               very rude and presumptuous
             </span>
             . It implies a level of intimacy that is not appropriate in most
@@ -117,7 +117,7 @@ function JapaneseNamesHonorifics() {
           </p>
 
           <GlowBox>
-            <p class="text-center text-lg font-semibold text-white/90">
+            <p class="text-center text-lg font-semibold text-foreground dark:text-white/90">
               Always use the family name with the appropriate honorific unless
               you have been explicitly invited to use the given name.
             </p>
@@ -134,7 +134,7 @@ function JapaneseNamesHonorifics() {
             credit="That Japanese Man Yuta"
           />
 
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             Honorifics are suffixes added to names to convey respect, formality,
             and the relationship between the speaker and the person being
             addressed.
@@ -300,7 +300,7 @@ function JapaneseNamesHonorifics() {
                   href="https://www.youtube.com/watch?v=uio1J2PKzLI"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="underline underline-offset-2 transition-colors hover:text-white/80"
+                  class="underline underline-offset-2 transition-colors hover:text-foreground/80 dark:text-white/80"
                 >
                   airspeed velocity of an unladen swallow
                 </a>
@@ -318,7 +318,7 @@ function JapaneseNamesHonorifics() {
         {/* Additional Titles */}
         <div class="space-y-4">
           <SectionLabel>Additional titles based on occupation</SectionLabel>
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             In addition to the common honorifics, certain titles are used to
             address people based on their occupation or position. You're not
             expected to memorize these now, but here are some examples:
@@ -361,7 +361,7 @@ function JapaneseNamesHonorifics() {
         {/* Practice Section */}
         <div class="space-y-5">
           <h3 class="text-center text-2xl font-bold">Practice</h3>
-          <p class="text-center text-sm font-medium text-white/40">
+          <p class="text-center text-sm font-medium text-muted-foreground dark:text-white/40">
             Put the descriptions in the correct order [wip]
           </p>
           <div class="flex flex-col gap-4 md:flex-row">
@@ -431,14 +431,14 @@ function HonorificSection(props: {
   return (
     <div class="space-y-4">
       <div class="flex items-baseline gap-3">
-        <h3 class="font-japanese text-2xl font-bold text-white/90">
+        <h3 class="font-japanese text-2xl font-bold text-foreground dark:text-white/90">
           {props.furigana ? (
             <Furigana furigana={props.furigana}>{props.jp}</Furigana>
           ) : (
             props.jp
           )}
         </h3>
-        <span class="text-lg font-medium text-white/40">{props.en}</span>
+        <span class="text-lg font-medium text-muted-foreground dark:text-white/40">{props.en}</span>
       </div>
 
       <Show when={props.video}>
@@ -451,20 +451,20 @@ function HonorificSection(props: {
         )}
       </Show>
 
-      <ul class="space-y-1.5 text-sm leading-relaxed text-white/60">
+      <ul class="space-y-1.5 text-sm leading-relaxed text-muted-foreground dark:text-white/60">
         {props.description.map((d) => (
           <li>
-            <span class="font-semibold text-white/80">{d.label}:</span> {d.text}
+            <span class="font-semibold text-foreground/80 dark:text-white/80">{d.label}:</span> {d.text}
           </li>
         ))}
       </ul>
 
-      <div class="rounded-lg bg-white/[0.04] p-4">
-        <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-white/30">
+      <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+        <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground/70 dark:text-white/30">
           {props.story.title}
         </p>
-        <p class="mb-2 text-xs text-white/30">{props.story.characters}</p>
-        <div class="space-y-1 text-sm leading-relaxed text-white/60">
+        <p class="mb-2 text-xs text-muted-foreground/70 dark:text-white/30">{props.story.characters}</p>
+        <div class="space-y-1 text-sm leading-relaxed text-muted-foreground dark:text-white/60">
           {props.story.text.map((line) => (
             <p>{line}</p>
           ))}
@@ -482,15 +482,15 @@ function TitleCard(props: {
   example: string
 }) {
   return (
-    <div class="rounded-lg bg-white/[0.04] p-4">
+    <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
       <div class="flex items-baseline gap-2">
-        <span class="font-japanese text-xl font-bold text-white/90">
+        <span class="font-japanese text-xl font-bold text-foreground dark:text-white/90">
           {props.jp}
         </span>
-        <span class="text-sm text-white/40">({props.romaji})</span>
+        <span class="text-sm text-muted-foreground dark:text-white/40">({props.romaji})</span>
       </div>
-      <p class="mt-1 text-sm text-white/60">{props.meaning}</p>
-      <p class="mt-1 text-xs text-white/40">
+      <p class="mt-1 text-sm text-muted-foreground dark:text-white/60">{props.meaning}</p>
+      <p class="mt-1 text-xs text-muted-foreground dark:text-white/40">
         Ex: <span class="font-japanese">{props.example}</span>
       </p>
     </div>

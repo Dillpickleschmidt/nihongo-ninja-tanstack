@@ -119,8 +119,8 @@ export function ModuleCategorizedView(props: ModuleCategorizedViewProps) {
                         class={cn(
                           "text-sm",
                           isCompleted
-                            ? "text-green-500"
-                            : "text-white hover:text-neutral-300",
+                            ? "text-green-600 dark:text-green-500"
+                            : "text-foreground hover:text-dynamic-accent dark:text-white dark:hover:text-neutral-300",
                         )}
                       >
                         <div class="flex items-center gap-2">

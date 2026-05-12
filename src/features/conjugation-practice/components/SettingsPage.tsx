@@ -103,8 +103,8 @@ export function SettingsPage(props: SettingsPageProps) {
       {/* Header */}
       <div class="mb-10">
         <div class="mb-2 flex items-center gap-2">
-          <Repeat2 class="size-4 text-teal-400" />
-          <span class="text-xs font-semibold tracking-widest text-teal-400/90 uppercase">
+          <Repeat2 class="size-4 text-teal-600 dark:text-teal-400" />
+          <span class="text-xs font-semibold tracking-widest text-teal-600 uppercase dark:text-teal-400/90">
             Conjugation Practice
           </span>
         </div>
@@ -129,7 +129,7 @@ export function SettingsPage(props: SettingsPageProps) {
                     onChange={(checked) => handleChange(key, checked)}
                     label={label}
                   />
-                  <p class="mt-0.5 font-japanese text-sm text-white/30">
+                  <p class="mt-0.5 font-japanese text-sm text-muted-foreground/70 dark:text-white/30">
                     {FORM_EXAMPLES[key]}
                   </p>
                 </div>
@@ -203,7 +203,7 @@ export function SettingsPage(props: SettingsPageProps) {
           <div class="grid gap-6 sm:grid-cols-2">
             <div class="space-y-5">
               <div class="space-y-2">
-                <label class="text-sm font-medium text-white/40">
+                <label class="text-sm font-medium text-muted-foreground dark:text-white/40">
                   JLPT Level
                 </label>
                 <Select
@@ -218,7 +218,7 @@ export function SettingsPage(props: SettingsPageProps) {
                     </SelectItem>
                   )}
                 >
-                  <SelectTrigger class="bg-white/5 border-white/10">
+                  <SelectTrigger class="bg-card/70 border-border/70 dark:bg-white/5 dark:border-white/10">
                     <SelectValue<string>>
                       {(state) => state.selectedOption().toUpperCase()}
                     </SelectValue>
@@ -228,7 +228,7 @@ export function SettingsPage(props: SettingsPageProps) {
               </div>
 
               <TextField class="space-y-2">
-                <TextFieldLabel class="text-white/40">
+                <TextFieldLabel class="text-muted-foreground dark:text-white/40">
                   Number of questions
                 </TextFieldLabel>
                 <TextFieldInput
@@ -241,7 +241,7 @@ export function SettingsPage(props: SettingsPageProps) {
                   }}
                   min="1"
                   max="100"
-                  class="bg-white/5 border-white/10"
+                  class="bg-card/70 border-border/70 dark:bg-white/5 dark:border-white/10"
                 />
               </TextField>
             </div>
@@ -296,8 +296,8 @@ function Section(props: {
   children: JSX.Element
 }) {
   return (
-    <section class="space-y-4 rounded-xl border border-white/10 bg-white/5 p-5">
-      <h2 class="text-sm font-semibold uppercase tracking-wide text-white/40">
+    <section class="space-y-4 rounded-xl border border-border/70 bg-card/60 p-5 dark:border-white/10 dark:bg-white/5">
+      <h2 class="text-sm font-semibold uppercase tracking-wide text-muted-foreground dark:text-white/40">
         {props.title}
       </h2>
       {props.children}
@@ -316,8 +316,8 @@ function ToggleOption(props: {
       checked={props.checked()}
       onChange={props.onChange}
     >
-      <CheckboxInput class="cursor-pointer border-white/20" />
-      <CheckboxLabel class="cursor-pointer text-sm font-medium text-white/70 transition-colors hover:text-white/90">
+      <CheckboxInput class="cursor-pointer border-border dark:border-white/20" />
+      <CheckboxLabel class="cursor-pointer text-sm font-medium text-foreground/70 transition-colors hover:text-foreground dark:text-white/70 dark:hover:text-white/90">
         {props.label}
       </CheckboxLabel>
     </Checkbox>

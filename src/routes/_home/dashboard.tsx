@@ -94,7 +94,7 @@ function DashboardComponent() {
   }
 
   return (
-    <div class="z-0 relative min-h-screen text-white overflow-x-clip">
+    <div class="z-0 relative min-h-screen overflow-x-clip text-foreground dark:text-white">
       <style>{`
         @keyframes fade-up {
           from { opacity: 0; transform: translateY(20px); }
@@ -107,14 +107,14 @@ function DashboardComponent() {
         {/* Hero */}
         <section class="mx-auto grid max-w-7xl gap-8 px-6 pt-16 lg:pt-24">
           <div class="mx-auto text-center">
-            <h1 class="font-excalifont text-4xl text-white/90 sm:text-5xl lg:whitespace-nowrap">
+            <h1 class="font-excalifont text-4xl text-foreground/90 sm:text-5xl lg:whitespace-nowrap dark:text-white/90">
               The best materials, at the right time
             </h1>
           </div>
 
           <div class="mx-auto grid w-full max-w-3xl items-start gap-8">
             <div class="text-center">
-              <p class="mx-auto max-w-lg text-white/50">
+              <p class="mx-auto max-w-lg text-muted-foreground dark:text-white/50">
                 Build learning paths from your favorite content, practice using
                 unique tools, or continue where you left off.
               </p>
@@ -123,10 +123,10 @@ function DashboardComponent() {
                 {/* Review button */}
                 <Link
                   to="/review"
-                  class="inline-flex items-center gap-2.5 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs font-medium text-white transition-colors hover:bg-white/10 hover:border-white/20"
+                  class="inline-flex items-center gap-2.5 rounded-xl border border-border/70 bg-card/70 px-3 py-2 text-xs font-medium text-foreground shadow-sm backdrop-blur transition-colors hover:border-dynamic-accent/30 hover:bg-accent dark:border-white/10 dark:bg-white/5 dark:text-white dark:shadow-none dark:hover:border-white/20 dark:hover:bg-white/10"
                 >
                   Review
-                  <span class="flex items-center gap-1.5 text-xs text-white/40">
+                  <span class="flex items-center gap-1.5 text-xs text-muted-foreground dark:text-white/40">
                     <span>S: –</span>
                     <span>·</span>
                     <span>
@@ -210,7 +210,7 @@ function DashboardComponent() {
 function SectionHeader(props: { title: string }) {
   return (
     <div class="flex items-center gap-4">
-      <h2 class="text-xl font-semibold font-excalifont text-white">
+      <h2 class="text-xl font-semibold font-excalifont text-foreground dark:text-white">
         {props.title}
       </h2>
       <div class="h-px flex-1 bg-gradient-to-r from-dynamic-accent/20 to-transparent" />

@@ -39,7 +39,7 @@ export default function PracticeContainer(props: PracticeContainerProps) {
   const currentQuestion = () => computed.getCurrentQuestion()
 
   return (
-    <div class="mx-auto flex w-full max-w-3xl flex-col gap-2 pt-4 md:gap-4">
+    <div class="mx-auto flex w-full max-w-3xl flex-col gap-2 pt-4 [--sentence-practice-action:rgb(202,138,4)] md:gap-4 dark:[--sentence-practice-action:rgb(245,158,11)]">
       {/* Header with progress and difficulty */}
       <div class="flex w-full items-center">
         <ProgressDisplay />
@@ -48,7 +48,7 @@ export default function PracticeContainer(props: PracticeContainerProps) {
 
       {/* Loading state */}
       <Show when={store.isLoading}>
-        <div class="py-8 text-center text-white/40">
+        <div class="py-8 text-center text-muted-foreground dark:text-white/40">
           Loading questions...
         </div>
       </Show>
@@ -74,7 +74,7 @@ export default function PracticeContainer(props: PracticeContainerProps) {
                 open={isCollapsibleOpen()}
                 onOpenChange={setIsCollapsibleOpen}
               >
-                <CollapsibleTrigger class="w-fit rounded-full px-4 py-1.5 text-xs text-white/40">
+                <CollapsibleTrigger class="w-fit rounded-full px-4 py-1.5 text-xs text-muted-foreground dark:text-white/40">
                   Show all possible
                 </CollapsibleTrigger>
                 <CollapsibleContent class="w-full">
@@ -95,7 +95,7 @@ export default function PracticeContainer(props: PracticeContainerProps) {
 
       {/* No questions state */}
       <Show when={!store.isLoading && store.questions.length === 0}>
-        <div class="py-8 text-center text-white/40">
+        <div class="py-8 text-center text-muted-foreground dark:text-white/40">
           No questions available for this set.
         </div>
       </Show>

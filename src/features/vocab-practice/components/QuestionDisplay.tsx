@@ -20,7 +20,7 @@ export function QuestionDisplay(props: QuestionDisplayProps) {
     <div class="flex flex-col items-center mb-4">
       {/* Label + badge grouped tight */}
       <div class="flex flex-col items-center gap-1">
-        <span class="text-sm text-white/40">
+        <span class="text-sm text-muted-foreground dark:text-white/40">
           {props.label ?? defaultLabel()}
         </span>
 

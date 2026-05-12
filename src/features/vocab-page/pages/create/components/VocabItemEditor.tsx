@@ -192,7 +192,7 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
   }
 
   return (
-    <div class="bg-card/50 border-card-foreground/70 rounded-lg border p-4 shadow-sm backdrop-blur-sm">
+    <div class="bg-card/50 border-border/60 dark:border-card-foreground/70 rounded-lg border p-4 shadow-sm backdrop-blur-sm">
       <div class="mb-3 flex items-center justify-between">
         <div class="text-muted-foreground text-xs">Item {props.index + 1}</div>
         <Button
@@ -214,7 +214,7 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
           class="relative"
         >
           <TextFieldLabel>Word</TextFieldLabel>
-          <TextFieldInput class="border-card-foreground" placeholder="食べ物" />
+          <TextFieldInput class="border-border dark:border-card-foreground" placeholder="食べ物" />
           <div class="text-muted-foreground/70 pointer-events-none absolute top-7.5 right-4 text-xs font-medium italic">
             {getRequiredIndicator(validation.wordValidation())}
           </div>
@@ -227,7 +227,7 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
         >
           <TextFieldLabel>Furigana</TextFieldLabel>
           <TextFieldInput
-            class="border-card-foreground"
+            class="border-border dark:border-card-foreground"
             placeholder="食[た]べ  物[もの]"
           />
           <TextFieldDescription class="text-xs font-normal leading-none">
@@ -254,7 +254,7 @@ export function VocabItemEditor(props: VocabItemEditorProps) {
                     onChange={(value) => updateEnglishMeaning(i, value)}
                   >
                     <TextFieldInput
-                      class="border-card-foreground"
+                      class="border-border dark:border-card-foreground"
                       placeholder="food"
                     />
                     <Show when={i === 0}>

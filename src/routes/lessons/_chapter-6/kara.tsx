@@ -19,7 +19,7 @@ function Kara() {
   return (
     <div class="relative pb-32">
       {/* Background character */}
-      <span class="pointer-events-none absolute top-8 left-24 select-none font-japanese text-[10rem] leading-none text-white/[0.03] sm:top-11 sm:left-auto sm:right-8 sm:text-[11rem]">
+      <span class="pointer-events-none absolute top-8 left-24 select-none font-japanese text-[10rem] leading-none text-foreground/[0.04] dark:text-white/[0.03] sm:top-11 sm:left-auto sm:right-8 sm:text-[11rem]">
         因
       </span>
 
@@ -44,7 +44,7 @@ function Kara() {
 
       <div class="space-y-14 px-8">
         {/* Intro */}
-        <div class="leading-relaxed text-white/70">
+        <div class="leading-relaxed text-foreground/75 dark:text-white/70">
           <p>
             Remember だから from Chapter 1? The{" "}
             <span class="font-japanese font-medium text-orange-500">から</span>{" "}
@@ -64,10 +64,10 @@ function Kara() {
               <p class="font-japanese">
                 X <span class="font-medium text-orange-500">から</span> Y
               </p>
-              <span class="font-bold text-white/40">=</span>
-              <p class="text-white/50">X, so Y</p>
+              <span class="font-bold text-muted-foreground dark:text-white/40">=</span>
+              <p class="text-muted-foreground dark:text-white/50">X, so Y</p>
             </div>
-            <p class="mt-2 text-center text-sm text-white/40">
+            <p class="mt-2 text-center text-sm text-muted-foreground dark:text-white/40">
               When you see から joining two parts of a sentence, think of it as
               "so" - it's connecting a reason to what happens because of it.
             </p>
@@ -77,53 +77,53 @@ function Kara() {
         {/* だから vs から */}
         <div class="space-y-4">
           <div class="grid gap-3 sm:grid-cols-2">
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="mb-2 text-sm font-semibold text-white/50">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="mb-2 text-sm font-semibold text-muted-foreground dark:text-white/50">
                 Before (with だから)
               </p>
-              <p class="font-japanese text-lg text-white/80">
+              <p class="font-japanese text-lg text-foreground/80 dark:text-white/80">
                 タクシーは高いです。
                 <span class="font-medium text-orange-500">だから</span>
                 、バスに乗りましょう。
               </p>
-              <p class="mt-1 text-sm text-white/40">
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">
                 Taxis are expensive. Therefore, let's take the bus.
               </p>
             </div>
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="mb-2 text-sm font-semibold text-white/50">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="mb-2 text-sm font-semibold text-muted-foreground dark:text-white/50">
                 After (with から, smooth!)
               </p>
-              <p class="font-japanese text-lg text-white/80">
+              <p class="font-japanese text-lg text-foreground/80 dark:text-white/80">
                 タクシーは高いです
                 <span class="font-medium text-orange-500">から</span>
                 、バスに乗りましょう。
               </p>
-              <p class="mt-1 text-sm text-white/40">
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">
                 Taxis are expensive, so let's take the bus.
               </p>
             </div>
           </div>
 
           <div class="space-y-2">
-            <p class="text-sm font-medium text-white/40">More examples</p>
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="font-japanese text-lg text-white/80">
+            <p class="text-sm font-medium text-muted-foreground dark:text-white/40">More examples</p>
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="font-japanese text-lg text-foreground/80 dark:text-white/80">
                 あしたテストがあります
                 <span class="font-medium text-orange-500">から</span>
                 、今晩勉強します。
               </p>
-              <p class="mt-1 text-sm text-white/40">
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">
                 We have a test tomorrow, so I will study tonight.
               </p>
             </div>
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="font-japanese text-lg text-white/80">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="font-japanese text-lg text-foreground/80 dark:text-white/80">
                 頭が痛いです
                 <span class="font-medium text-orange-500">から</span>
                 、早く寝ます。
               </p>
-              <p class="mt-1 text-sm text-white/40">
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">
                 I have a headache, so I'll go to bed early.
               </p>
             </div>
@@ -133,40 +133,40 @@ function Kara() {
         {/* Alternative Pattern */}
         <div class="space-y-4">
           <SectionLabel>Alternative pattern</SectionLabel>
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             You can also split it into two sentences, with から at the end of
             your reason:
           </p>
 
           <div class="space-y-2">
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="font-japanese text-lg text-white/80">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="font-japanese text-lg text-foreground/80 dark:text-white/80">
                 バスに乗りましょう。タクシーは高いです
                 <span class="font-medium text-orange-500">から</span>。
               </p>
-              <p class="mt-1 text-sm text-white/40">
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">
                 Let's take the bus. (Because taxis are expensive)
               </p>
-              <p class="mt-1 text-sm italic text-white/30">
+              <p class="mt-1 text-sm italic text-muted-foreground/70 dark:text-white/30">
                 This pattern is more conversational, like adding the reason as
                 an afterthought.
               </p>
             </div>
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="font-japanese text-lg text-white/80">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="font-japanese text-lg text-foreground/80 dark:text-white/80">
                 今晩勉強します。あしたテストがあります
                 <span class="font-medium text-orange-500">から</span>。
               </p>
-              <p class="mt-1 text-sm text-white/40">
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">
                 I will study tonight. (Because we have a test tomorrow)
               </p>
             </div>
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="font-japanese text-lg text-white/80">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="font-japanese text-lg text-foreground/80 dark:text-white/80">
                 早く寝ます。頭が痛いです
                 <span class="font-medium text-orange-500">から</span>。
               </p>
-              <p class="mt-1 text-sm text-white/40">
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">
                 I'll go to bed early. (Because I have a headache)
               </p>
             </div>
@@ -175,12 +175,12 @@ function Kara() {
 
         {/* Key Rule */}
         <AsideBlock>
-          <p class="text-sm leading-relaxed text-white/60">
+          <p class="text-sm leading-relaxed text-muted-foreground dark:text-white/60">
             <span class="font-medium text-orange-500">から</span> is always
             attached to the <u>end</u> of the <u>reason clause</u>, just like
             particles are attached to the end of their respective words.
           </p>
-          <p class="mt-2 text-sm text-white/40">
+          <p class="mt-2 text-sm text-muted-foreground dark:text-white/40">
             Ex. You wouldn't say 水飲みますを. を must be paired with 水.
           </p>
         </AsideBlock>
@@ -188,7 +188,7 @@ function Kara() {
         {/* Easy Mistakes */}
         <div class="space-y-4">
           <SectionLabel>Easy mistakes</SectionLabel>
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             Don't switch the cause and effect - keep them in logical order:
           </p>
 
@@ -198,41 +198,41 @@ function Kara() {
                 <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-red-400/60">
                   Incorrect
                 </p>
-                <p class="font-japanese text-base text-white/50">
+                <p class="font-japanese text-base text-muted-foreground dark:text-white/50">
                   ❌ 勉強します
                   <span class="font-medium text-orange-500">から</span>
                   、テストがあります。
                 </p>
-                <p class="mt-1 text-sm text-white/30">
+                <p class="mt-1 text-sm text-muted-foreground/70 dark:text-white/30">
                   This says "I study, so there's a test."
                 </p>
               </div>
-              <div class="rounded-lg bg-white/[0.04] p-4">
-                <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-white/30">
+              <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+                <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground/70 dark:text-white/30">
                   Correct
                 </p>
-                <p class="font-japanese text-base text-white/80">
+                <p class="font-japanese text-base text-foreground/80 dark:text-white/80">
                   テストがあります
                   <span class="font-medium text-orange-500">から</span>
                   、勉強します。
                 </p>
-                <p class="mt-1 text-sm text-white/40">
+                <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">
                   This says "I have a test, so I study."
                 </p>
               </div>
-              <div class="rounded-lg bg-white/[0.04] p-4">
-                <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-white/30">
+              <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+                <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground/70 dark:text-white/30">
                   Also correct
                 </p>
-                <p class="font-japanese text-base text-white/80">
+                <p class="font-japanese text-base text-foreground/80 dark:text-white/80">
                   勉強します。テストがあります
                   <span class="font-medium text-orange-500">から</span>。
                 </p>
-                <p class="mt-1 text-sm text-white/40">
+                <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">
                   This says "I study. (Because there's a test)"
                 </p>
               </div>
-              <p class="text-sm text-white/40">
+              <p class="text-sm text-muted-foreground dark:text-white/40">
                 *The test is the reason why you study, not the other way around!
               </p>
             </div>
@@ -242,38 +242,38 @@ function Kara() {
                 <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-red-400/60">
                   Incorrect
                 </p>
-                <p class="font-japanese text-base text-white/50">
+                <p class="font-japanese text-base text-muted-foreground dark:text-white/50">
                   ❌ 病院に行きます
                   <span class="font-medium text-orange-500">から</span>
                   、頭が痛いです。
                 </p>
               </div>
-              <div class="rounded-lg bg-white/[0.04] p-4">
-                <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-white/30">
+              <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+                <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground/70 dark:text-white/30">
                   Correct
                 </p>
-                <p class="font-japanese text-base text-white/80">
+                <p class="font-japanese text-base text-foreground/80 dark:text-white/80">
                   頭が痛いです
                   <span class="font-medium text-orange-500">から</span>
                   、病院に行きます。
                 </p>
               </div>
-              <div class="rounded-lg bg-white/[0.04] p-4">
-                <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-white/30">
+              <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+                <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground/70 dark:text-white/30">
                   Also correct
                 </p>
-                <p class="font-japanese text-base text-white/80">
+                <p class="font-japanese text-base text-foreground/80 dark:text-white/80">
                   病院に行きます。頭が痛いです
                   <span class="font-medium text-orange-500">から</span>。
                 </p>
               </div>
-              <p class="text-sm text-white/40">
+              <p class="text-sm text-muted-foreground dark:text-white/40">
                 *The headache is the reason for going to the hospital, not vice
                 versa!
               </p>
             </div>
 
-            <p class="text-sm italic text-white/40">
+            <p class="text-sm italic text-muted-foreground dark:text-white/40">
               Remember: The first part (before から) should explain WHY you're
               doing the second part.
             </p>
@@ -283,13 +283,13 @@ function Kara() {
         {/* Practice */}
         <div class="space-y-5">
           <h3 class="text-center text-2xl font-bold">Practice</h3>
-          <p class="text-center text-sm italic text-white/40">
+          <p class="text-center text-sm italic text-muted-foreground dark:text-white/40">
             *Choose the correct answers*
           </p>
 
           <div class="space-y-6">
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 Which is correct for "It's hot, so I opened the window"?
               </p>
               <SelectText

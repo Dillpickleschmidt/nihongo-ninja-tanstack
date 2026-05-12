@@ -18,16 +18,16 @@ export function RegionBadge(props: RegionBadgeProps) {
         <span class="text-[0.65rem] text-red-400/50">({props.service})</span>
         <Info class="size-3.5 shrink-0 text-red-400/60" />
       </PopoverTrigger>
-      <PopoverContent class="w-64 border-white/10 bg-neutral-900/95 backdrop-blur-xl">
-        <div class="mb-2 text-xs font-semibold text-white/60">Available in</div>
+      <PopoverContent class="w-64 border-border/70 bg-popover text-popover-foreground backdrop-blur-xl dark:border-white/10 dark:bg-neutral-900/95">
+        <div class="mb-2 text-xs font-semibold text-foreground/70 dark:text-white/60">Available in</div>
         <div class="flex flex-wrap gap-1.5">
           {props.countries.map((country) => (
-            <span class="rounded-md border border-white/8 bg-white/4 px-2 py-0.5 text-[0.65rem] font-medium text-white/50">
+            <span class="rounded-md border border-border/70 bg-muted/50 px-2 py-0.5 text-[0.65rem] font-medium text-muted-foreground dark:border-white/8 dark:bg-white/4 dark:text-white/50">
               {country}
             </span>
           ))}
         </div>
-        <div class="mt-3 border-t border-white/6 pt-2.5 text-[0.65rem] leading-relaxed text-white/30">
+        <div class="mt-3 border-t border-border/60 pt-2.5 text-[0.65rem] leading-relaxed text-muted-foreground dark:border-white/6 dark:text-white/30">
           Consider using a VPN to access content from supported regions.
         </div>
       </PopoverContent>

@@ -45,13 +45,13 @@ export function RecentlyStudiedSection(props: RecentlyStudiedSectionProps) {
                 as={Link}
                 to={`/vocab/${buildDeckUrlPath(item.deck, ctx.folders())}`}
                 variant="ghost"
-                class="flex w-full items-center gap-3 py-2 px-2 h-auto justify-start rounded-md transition-colors hover:bg-white/[0.03]"
+                class="flex w-full items-center gap-3 py-2 px-2 h-auto justify-start rounded-md transition-colors hover:bg-accent dark:hover:bg-white/[0.03]"
               >
-                <div class="h-1.5 w-1.5 rounded-full bg-white/20 shrink-0" />
-                <span class="text-sm text-white/50 truncate flex-1 text-left">
+                <div class="h-1.5 w-1.5 rounded-full bg-muted-foreground/30 shrink-0 dark:bg-white/20" />
+                <span class="text-sm text-muted-foreground truncate flex-1 text-left dark:text-white/50">
                   {item.deck.deckName}
                 </span>
-                <span class="text-xs text-white/25 tabular-nums shrink-0">
+                <span class="text-xs text-muted-foreground/70 tabular-nums shrink-0 dark:text-white/25">
                   {formatRelativeTime(item.completedAt)}
                 </span>
               </Button>

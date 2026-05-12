@@ -53,7 +53,7 @@ export function DeckView(props: DeckViewProps) {
           value={view.activeTab()}
           onChange={(v) => view.setActiveTab(v as TabValue)}
         >
-          <TabsList class="bg-background/40 border-card-foreground/70 border backdrop-blur-sm">
+          <TabsList class="bg-background/60 border-border/60 border backdrop-blur-sm dark:bg-background/40 dark:border-card-foreground/70">
             <TabsTrigger value="vocabulary">
               Vocabulary
               <Show when={view.selectedKanji() && view.filteredVocab()}>

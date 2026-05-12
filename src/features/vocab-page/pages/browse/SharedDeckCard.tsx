@@ -49,7 +49,7 @@ export function SharedDeckCard(props: SharedDeckCardProps) {
       class={`relative rounded-xl border shadow-md backdrop-blur-sm transition-all duration-200 hover:shadow-lg ${
         props.isOwnDeck
           ? `border-amber-400/50 ring-1 ring-amber-400/20 ${(props.index + 1) % 2 === 0 ? "bg-card/60" : "bg-card/50"}`
-          : `border-card-foreground/70 ${(props.index + 1) % 2 === 0 ? "bg-card/60" : "bg-card/50"}`
+          : `border-border/60 dark:border-card-foreground/70 ${(props.index + 1) % 2 === 0 ? "bg-card/60" : "bg-card/50"}`
       }`}
     >
       <div class="p-4">
@@ -78,7 +78,7 @@ export function SharedDeckCard(props: SharedDeckCardProps) {
                 class={`flex items-center gap-1.5 rounded-md border px-2 py-1 backdrop-blur-sm ${
                   props.isOwnDeck
                     ? "border-amber-400/30 bg-amber-100/20"
-                    : "border-card-foreground/50 bg-background/40"
+                    : "border-border/60 dark:border-card-foreground/50 bg-background/40"
                 }`}
               >
                 <Users
@@ -90,7 +90,7 @@ export function SharedDeckCard(props: SharedDeckCardProps) {
               </div>
 
               <Show when={props.deck.importCount > 0}>
-                <div class="flex items-center gap-1.5 rounded-md border border-card-foreground/50 bg-background/40 px-2 py-1 backdrop-blur-sm">
+                <div class="flex items-center gap-1.5 rounded-md border border-border/60 dark:border-card-foreground/50 bg-background/40 px-2 py-1 backdrop-blur-sm">
                   <Download class="h-3 w-3 text-green-400" />
                   <span class="text-xs font-medium">
                     {props.deck.importCount}
@@ -146,7 +146,7 @@ export function SharedDeckCard(props: SharedDeckCardProps) {
                 >
                   Manage
                 </PopoverTrigger>
-                <PopoverContent class="border-card-foreground bg-card w-48 p-2">
+                <PopoverContent class="border-border dark:border-card-foreground bg-card w-48 p-2">
                   <div class="space-y-1">
                     <Button
                       variant="ghost"

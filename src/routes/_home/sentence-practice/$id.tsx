@@ -40,7 +40,7 @@ function RouteComponent() {
     <div>
       <Suspense
         fallback={
-          <div class="py-12 text-center text-white/40">Loading...</div>
+          <div class="py-12 text-center text-muted-foreground dark:text-white/40">Loading...</div>
         }
       >
         <PracticeProvider modulePath={loaderData().modulePath}>

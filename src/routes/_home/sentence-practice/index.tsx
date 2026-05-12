@@ -143,7 +143,7 @@ function SentencePracticeList() {
                 </SelectItem>
               )}
             >
-              <SelectTrigger class="bg-background/40 w-[180px]">
+              <SelectTrigger class="bg-background/60 w-[180px] border-border/60 backdrop-blur-sm dark:border-0 dark:bg-background/40">
                 <SelectValue<string>>
                   {(state) => {
                     const tb = availableTextbooks().find(
@@ -153,7 +153,7 @@ function SentencePracticeList() {
                   }}
                 </SelectValue>
               </SelectTrigger>
-              <SelectContent class="bg-background border-card-foreground/70" />
+              <SelectContent class="bg-popover border-border/70 text-popover-foreground dark:bg-background dark:border-card-foreground/70" />
             </Select>
         </div>
 
@@ -161,8 +161,8 @@ function SentencePracticeList() {
         <div class="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <div class="mb-2 flex items-center gap-2">
-              <PencilLine class="size-4 text-amber-400" />
-              <span class="text-xs font-semibold tracking-widest text-amber-400/90 uppercase">
+              <PencilLine class="size-4 text-yellow-500 dark:text-amber-400" />
+              <span class="text-xs font-semibold tracking-widest text-yellow-500 uppercase dark:text-amber-400/90">
                 Sentence Practice
               </span>
             </div>
@@ -184,7 +184,7 @@ function SentencePracticeList() {
                   placeholder="Search patterns..."
                   value={search()}
                   onInput={(e) => setSearch(e.currentTarget.value)}
-                  class="bg-card/40 border-card-foreground/20 pl-9 backdrop-blur-sm focus-visible:ring-amber-500/50"
+                  class="bg-card/70 border-border/60 pl-9 backdrop-blur-sm focus-visible:ring-yellow-500/40 dark:bg-card/40 dark:border-card-foreground/20 dark:focus-visible:ring-amber-500/50"
                 />
               </div>
             </TextField>
@@ -244,7 +244,7 @@ function ChapterGroupItem(props: { group: ChapterGroup }) {
     <div ref={ref} style={getInitialAnimationStyles("down")}>
       {/* Chapter header */}
       <div class="mb-1.5 flex items-center gap-2">
-        <div class="flex size-6 items-center justify-center rounded-md bg-gradient-to-br from-amber-500/20 to-orange-500/20 text-xs font-bold text-amber-400">
+        <div class="flex size-6 items-center justify-center rounded-md bg-yellow-500/15 text-xs font-bold text-yellow-600 ring-1 ring-yellow-500/20 dark:bg-transparent dark:bg-gradient-to-br dark:from-amber-500/20 dark:to-orange-500/20 dark:text-amber-400 dark:ring-0">
           {getChapterDisplayNumber(props.group.chapter.slug)}
         </div>
         <span class="text-muted-foreground/60 text-xs">
@@ -260,8 +260,8 @@ function ChapterGroupItem(props: { group: ChapterGroup }) {
             title={m.title}
             description={m.description}
             linkTo={m.linkTo}
-            class="hover:text-amber-400 hover:bg-amber-500/5 focus-visible:bg-amber-500/10"
-            dotClass="group-hover:border-amber-500 group-hover:bg-amber-500"
+            class="hover:bg-yellow-500/5 hover:text-yellow-500 focus-visible:bg-yellow-500/10 dark:hover:bg-amber-500/5 dark:hover:text-amber-400 dark:focus-visible:bg-amber-500/10"
+            dotClass="group-hover:border-yellow-500 group-hover:bg-yellow-500 dark:group-hover:border-amber-500 dark:group-hover:bg-amber-500"
           />
         )}
       </TimelineList>

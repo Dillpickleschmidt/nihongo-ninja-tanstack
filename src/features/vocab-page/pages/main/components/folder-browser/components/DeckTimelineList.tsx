@@ -44,9 +44,9 @@ function DeckTimelineEntry(props: {
       onOpenChange={setExpanded}
     >
       <CollapsiblePrimitive.Trigger
-        class="group relative flex w-full cursor-pointer items-center gap-3 rounded-lg py-2.5 pr-3 pl-6 text-left text-white/70 transition-all duration-150 hover:bg-white/5 hover:text-white focus-visible:bg-white/10 focus-visible:outline-none"
+        class="group relative flex w-full cursor-pointer items-center gap-3 rounded-lg py-2.5 pr-3 pl-6 text-left text-foreground/75 transition-all duration-150 hover:bg-accent hover:text-foreground focus-visible:bg-accent focus-visible:outline-none dark:text-white/70 dark:hover:bg-white/5 dark:hover:text-white dark:focus-visible:bg-white/10"
       >
-        <div class="absolute left-[-7px] top-1/2 size-3 -translate-y-1/2 rounded-full border-2 border-card-foreground/20 bg-background transition-colors group-hover:border-white/50 group-hover:bg-white/50" />
+        <div class="absolute left-[-7px] top-1/2 size-3 -translate-y-1/2 rounded-full border-2 border-card-foreground/20 bg-background transition-colors group-hover:border-dynamic-accent/50 group-hover:bg-dynamic-accent/50 dark:group-hover:border-white/50 dark:group-hover:bg-white/50" />
 
         <div class="min-w-0 flex-1">
           <h3 class="flex items-center gap-1.5 text-sm font-medium leading-tight">

@@ -65,7 +65,7 @@ export function IntroductionCard(props: Props) {
     <div class={PRACTICE_LAYOUT}>
       {/* Header */}
       <div class="flex flex-col items-center gap-4">
-        <span class="text-sm text-white/40">New word</span>
+        <span class="text-sm text-muted-foreground dark:text-white/40">New word</span>
 
         <span
           class={cn(
@@ -100,7 +100,7 @@ export function IntroductionCard(props: Props) {
 
         {/* Particles */}
         <Show when={props.card.vocab.particles?.length}>
-          <div class="text-center text-sm text-white/40">
+          <div class="text-center text-sm text-muted-foreground dark:text-white/40">
             <For each={props.card.vocab.particles}>
               {(p) => (
                 <span class="font-japanese">
@@ -117,19 +117,19 @@ export function IntroductionCard(props: Props) {
         <Show when={mnemonic()}>
           {(m) => (
             <Show when={m().meaning || m().reading}>
-              <div class="rounded-lg bg-white/5 p-4 text-left">
-                <h4 class="mb-2 text-sm font-medium uppercase tracking-wide text-white/40">
+              <div class="rounded-lg bg-card/60 dark:bg-white/5 p-4 text-left">
+                <h4 class="mb-2 text-sm font-medium uppercase tracking-wide text-muted-foreground dark:text-white/40">
                   Mnemonic
                 </h4>
                 <Show when={m().reading}>
                   <p
-                    class="text-sm leading-relaxed text-white/70"
+                    class="text-sm leading-relaxed text-foreground/70 dark:text-white/70"
                     innerHTML={formatMnemonic(m().reading!)}
                   />
                 </Show>
                 <Show when={m().meaning && !m().reading}>
                   <p
-                    class="text-sm leading-relaxed text-white/70"
+                    class="text-sm leading-relaxed text-foreground/70 dark:text-white/70"
                     innerHTML={formatMnemonic(m().meaning!)}
                   />
                 </Show>

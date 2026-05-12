@@ -160,14 +160,14 @@ export function BrowsePage() {
 
       {/* Sort Buttons */}
       <div class="mb-6 flex justify-center">
-        <div class="bg-background/40 border-card-foreground/70 flex rounded-lg border p-1 backdrop-blur-sm">
+        <div class="bg-background/60 border-border/60 flex rounded-lg border p-1 backdrop-blur-sm dark:bg-background/40 dark:border-card-foreground/70">
           <Button
             variant="ghost"
             size="sm"
             onClick={() => handleSortChange("recent")}
             class={`flex items-center gap-2 rounded-md px-3 py-2 text-xs transition-all ${
               sortBy() === "recent"
-                ? "bg-background/70 text-foreground font-medium shadow backdrop-blur-sm"
+                ? "bg-card text-foreground font-medium shadow backdrop-blur-sm dark:bg-background/70"
                 : "text-muted-foreground hover:text-foreground hover:bg-background/50"
             }`}
           >
@@ -180,7 +180,7 @@ export function BrowsePage() {
             onClick={() => handleSortChange("popular")}
             class={`flex items-center gap-2 rounded-md px-3 py-2 text-xs transition-all ${
               sortBy() === "popular"
-                ? "bg-background/70 text-foreground font-medium shadow backdrop-blur-sm"
+                ? "bg-card text-foreground font-medium shadow backdrop-blur-sm dark:bg-background/70"
                 : "text-muted-foreground hover:text-foreground hover:bg-background/50"
             }`}
           >

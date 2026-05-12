@@ -26,7 +26,7 @@ function Minutes() {
   return (
     <div class="relative pb-32">
       {/* Background character */}
-      <span class="pointer-events-none absolute top-8 left-24 select-none font-japanese text-[10rem] leading-none text-white/[0.03] sm:top-11 sm:left-auto sm:right-8 sm:text-[11rem]">
+      <span class="pointer-events-none absolute top-8 left-24 select-none font-japanese text-[10rem] leading-none text-foreground/[0.04] dark:text-white/[0.03] sm:top-11 sm:left-auto sm:right-8 sm:text-[11rem]">
         分
       </span>
 
@@ -43,8 +43,8 @@ function Minutes() {
         <OverviewItem>Minutes 1–30 readings</OverviewItem>
         <OverviewItem>
           When to use{" "}
-          <span class="font-japanese font-semibold text-white/60">ぷん</span> vs{" "}
-          <span class="font-japanese font-semibold text-white/60">ふん</span>
+          <span class="font-japanese font-semibold text-muted-foreground dark:text-white/60">ぷん</span> vs{" "}
+          <span class="font-japanese font-semibold text-muted-foreground dark:text-white/60">ふん</span>
         </OverviewItem>
         <OverviewItem>Putting hours and minutes together</OverviewItem>
       </LessonHeader>
@@ -55,9 +55,9 @@ function Minutes() {
         <div class="max-w-md">
           <Collapsible
             defaultOpen={bp.lg()}
-            class="rounded-xl bg-white/[0.04] ring-1 ring-white/10"
+            class="rounded-xl bg-card/60 dark:bg-white/[0.04] ring-1 ring-border dark:ring-white/10"
           >
-            <CollapsibleTrigger class="p-4 text-lg font-semibold text-white/80">
+            <CollapsibleTrigger class="p-4 text-lg font-semibold text-foreground/80 dark:text-white/80">
               Minutes 1–10
             </CollapsibleTrigger>
             <CollapsibleContent class="p-4">
@@ -70,9 +70,9 @@ function Minutes() {
         <div class="max-w-md">
           <Collapsible
             defaultOpen={bp.lg()}
-            class="rounded-xl bg-white/[0.04] ring-1 ring-white/10"
+            class="rounded-xl bg-card/60 dark:bg-white/[0.04] ring-1 ring-border dark:ring-white/10"
           >
-            <CollapsibleTrigger class="p-4 text-lg font-semibold text-white/80">
+            <CollapsibleTrigger class="p-4 text-lg font-semibold text-foreground/80 dark:text-white/80">
               Minutes 11–30
             </CollapsibleTrigger>
             <CollapsibleContent class="p-4">
@@ -86,46 +86,46 @@ function Minutes() {
       <div class="mx-auto mt-14 max-w-3xl space-y-14 px-8">
         <div class="space-y-4">
           <SectionLabel>Putting it together</SectionLabel>
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             Japanese uses{" "}
-            <span class="font-japanese font-semibold text-white/90">
+            <span class="font-japanese font-semibold text-foreground dark:text-white/90">
               ぷん・ふん
             </span>{" "}
             for counting minutes.
           </p>
 
           <div class="space-y-2">
-            <div class="flex items-baseline justify-between gap-4 rounded-lg bg-white/[0.04] px-4 py-3">
-              <span class="text-sm text-white/40">Five past twelve</span>
-              <span class="font-japanese text-lg text-white/90">
+            <div class="flex items-baseline justify-between gap-4 rounded-lg bg-card/60 dark:bg-white/[0.04] px-4 py-3">
+              <span class="text-sm text-muted-foreground dark:text-white/40">Five past twelve</span>
+              <span class="font-japanese text-lg text-foreground dark:text-white/90">
                 じゅうにじごふん
               </span>
             </div>
-            <div class="flex items-baseline justify-between gap-4 rounded-lg bg-white/[0.04] px-4 py-3">
-              <span class="text-sm text-white/40">4:20</span>
-              <span class="font-japanese text-lg text-white/90">
+            <div class="flex items-baseline justify-between gap-4 rounded-lg bg-card/60 dark:bg-white/[0.04] px-4 py-3">
+              <span class="text-sm text-muted-foreground dark:text-white/40">4:20</span>
+              <span class="font-japanese text-lg text-foreground dark:text-white/90">
                 よじにじっぷん
               </span>
             </div>
-            <div class="flex items-baseline justify-between gap-4 rounded-lg bg-white/[0.04] px-4 py-3">
-              <span class="text-sm text-white/40">7:37</span>
-              <span class="font-japanese text-lg text-white/90">
+            <div class="flex items-baseline justify-between gap-4 rounded-lg bg-card/60 dark:bg-white/[0.04] px-4 py-3">
+              <span class="text-sm text-muted-foreground dark:text-white/40">7:37</span>
+              <span class="font-japanese text-lg text-foreground dark:text-white/90">
                 しちじさんじゅうななふん
               </span>
             </div>
-            <div class="flex items-baseline justify-between gap-4 rounded-lg bg-white/[0.04] px-4 py-3">
-              <span class="text-sm text-white/40">10:15</span>
-              <span class="font-japanese text-lg text-white/90">
+            <div class="flex items-baseline justify-between gap-4 rounded-lg bg-card/60 dark:bg-white/[0.04] px-4 py-3">
+              <span class="text-sm text-muted-foreground dark:text-white/40">10:15</span>
+              <span class="font-japanese text-lg text-foreground dark:text-white/90">
                 じゅうじじゅうごふん
               </span>
             </div>
           </div>
 
-          <p class="text-center font-semibold text-white/70">
+          <p class="text-center font-semibold text-foreground/75 dark:text-white/70">
             You'll just have to memorize which minutes from 1–10 use ぷん and
             which use ふん.
           </p>
-          <p class="text-center text-sm italic text-white/40">
+          <p class="text-center text-sm italic text-muted-foreground dark:text-white/40">
             You'll get better with practice!
           </p>
         </div>

@@ -40,7 +40,7 @@ function CommonExpressions() {
   return (
     <div class="relative pb-32">
       {/* Background character */}
-      <span class="pointer-events-none absolute top-8 right-6 select-none font-japanese text-[10rem] leading-none text-white/[0.03] sm:top-11 sm:right-8 sm:text-[11rem]">
+      <span class="pointer-events-none absolute top-8 right-6 select-none font-japanese text-[10rem] leading-none text-foreground/[0.04] dark:text-white/[0.03] sm:top-11 sm:right-8 sm:text-[11rem]">
         済
       </span>
 
@@ -58,7 +58,7 @@ function CommonExpressions() {
 
       <div class="space-y-14">
         <div class="mx-auto max-w-3xl px-8">
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             Greetings get you through the door. These expressions get you
             through the rest of the day: meals, apologies, meeting someone
             new, coming and going.
@@ -67,7 +67,7 @@ function CommonExpressions() {
 
         {/* First vocab card */}
         <div class="space-y-4 px-8">
-          <p class="text-center text-sm italic text-white/40">
+          <p class="text-center text-sm italic text-muted-foreground dark:text-white/40">
             Click on the examples to hear the words actually being used!
           </p>
           <Show when={vocabItems() !== undefined}>
@@ -80,9 +80,9 @@ function CommonExpressions() {
         </div>
 
         {/* すみません explanation */}
-        <div class="mx-auto max-w-3xl space-y-6 px-8 leading-relaxed text-white/70">
+        <div class="mx-auto max-w-3xl space-y-6 px-8 leading-relaxed text-foreground/75 dark:text-white/70">
           <p>
-            <strong class="text-white/90">As an Apology:</strong>{" "}
+            <strong class="text-foreground dark:text-white/90">As an Apology:</strong>{" "}
             <span class="font-japanese">すみません</span> is a light, polite
             apology—for example, if you bump into someone. Alternatively,{" "}
             <span class="font-japanese text-nowrap">ごめんなさい</span> is a
@@ -93,21 +93,21 @@ function CommonExpressions() {
             more comfortable with the language.
           </p>
           <p>
-            <strong class="text-white/90">Getting Attention:</strong> It's also
+            <strong class="text-foreground dark:text-white/90">Getting Attention:</strong> It's also
             used to politely call someone, like a waiter or when asking
             directions. Starting with{" "}
             <span class="font-japanese">あのう、すみません</span> ("Umm,
             excuse me…") is common in public spaces.
           </p>
           <p>
-            <strong class="text-white/90">Expressing Gratitude:</strong>{" "}
+            <strong class="text-foreground dark:text-white/90">Expressing Gratitude:</strong>{" "}
             <span class="font-japanese">すみません</span> can mean both "thank
             you" and "sorry," especially when someone helps you. It carries
             gratitude along with a light apology, showing awareness of the
             other person's trouble.
           </p>
           <p>
-            <strong class="text-white/90">
+            <strong class="text-foreground dark:text-white/90">
               Indirectness & Frequency:
             </strong>{" "}
             Japanese culture values humility and indirect communication.{" "}
@@ -140,7 +140,7 @@ function CommonExpressions() {
           <h3 class="text-center text-2xl font-bold">Practice</h3>
           <div class="space-y-6">
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 You're leaving for school and say goodbye to your family. What
                 do you say?
               </p>
@@ -154,7 +154,7 @@ function CommonExpressions() {
             </div>
 
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 You just got back home from work. You open the door and say,
                 '__________.'
               </p>
@@ -168,7 +168,7 @@ function CommonExpressions() {
             </div>
 
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 It's late at night and you're about to go to bed. How do you
                 wish your roommate a good night?
               </p>
@@ -182,7 +182,7 @@ function CommonExpressions() {
             </div>
 
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 You say 'ごちそうさまでした' after finishing a meal to express
                 gratitude.
               </p>
@@ -190,7 +190,7 @@ function CommonExpressions() {
             </div>
 
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 You meet someone for the first time and say 'はじめまして'. Is
                 this correct?
               </p>
@@ -198,7 +198,7 @@ function CommonExpressions() {
             </div>
 
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 Your friend is leaving for a trip. You say:
               </p>
               <MultipleChoiceText
@@ -211,7 +211,7 @@ function CommonExpressions() {
             </div>
 
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 You accidentally step on someone's foot in a crowded train. You
                 quickly say:
               </p>
@@ -225,7 +225,7 @@ function CommonExpressions() {
             </div>
 
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 You're at a Japanese pet cafe, and a mischievous cat decides to
                 jump onto your table. The cafe staff rushes over and asks if the
                 cat is yours. You laugh and respond:
@@ -237,7 +237,7 @@ function CommonExpressions() {
                 c="いいえ"
                 d="いただきます"
               />
-              <p class="text-sm text-white/40">
+              <p class="text-sm text-muted-foreground dark:text-white/40">
                 Explanation: In this situation,{" "}
                 <span class="font-japanese">いいえ</span> ("no") is the correct
                 and polite way to clarify that the cat is not yours. The other

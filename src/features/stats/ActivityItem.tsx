@@ -34,13 +34,13 @@ export function ActivityItem(props: ActivityItemProps) {
         class="h-2 w-2 rounded-full shrink-0"
         style={{ background: `rgb(${color()})`, opacity: "0.5" }}
       />
-      <span class="text-sm text-white/60 truncate flex-1">
+      <span class="text-sm text-foreground/70 truncate flex-1 dark:text-white/60">
         {formatModuleName(props.modulePath)}
       </span>
-      <span class="text-sm text-white/40 tabular-nums shrink-0">
+      <span class="text-sm text-muted-foreground tabular-nums shrink-0 dark:text-white/40">
         {props.progressUnits} XP
       </span>
-      <span class="text-xs text-white/25 tabular-nums shrink-0 w-16 text-right">
+      <span class="text-xs text-muted-foreground/70 tabular-nums shrink-0 w-16 text-right dark:text-white/25">
         {formatRelativeTime(props.lastUpdatedAt)}
       </span>
     </div>

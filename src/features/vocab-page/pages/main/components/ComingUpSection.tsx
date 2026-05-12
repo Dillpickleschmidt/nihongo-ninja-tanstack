@@ -70,13 +70,13 @@ export function ComingUpSection(props: ComingUpSectionProps) {
                 as={Link}
                 to={`/vocab/${buildDeckUrlPath(deck, ctx.folders())}`}
                 variant="ghost"
-                class="flex w-full items-center gap-3 py-2 px-2 h-auto justify-start rounded-md transition-colors hover:bg-white/[0.03]"
+                class="flex w-full items-center gap-3 py-2 px-2 h-auto justify-start rounded-md transition-colors hover:bg-accent dark:hover:bg-white/[0.03]"
               >
-                <div class={`h-1.5 w-1.5 rounded-full shrink-0 ${index() === 0 ? "bg-orange-400" : "bg-white/20"}`} />
-                <span class="text-sm text-white/50 truncate flex-1 text-left">
+                <div class={`h-1.5 w-1.5 rounded-full shrink-0 ${index() === 0 ? "bg-orange-400" : "bg-muted-foreground/30 dark:bg-white/20"}`} />
+                <span class="text-sm text-muted-foreground truncate flex-1 text-left dark:text-white/50">
                   {deck.deckName}
                 </span>
-                <span class="text-xs text-white/25 shrink-0">
+                <span class="text-xs text-muted-foreground/70 shrink-0 dark:text-white/25">
                   {chapterLabel()}
                 </span>
               </Button>

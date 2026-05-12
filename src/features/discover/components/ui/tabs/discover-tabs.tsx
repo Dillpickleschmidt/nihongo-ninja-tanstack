@@ -33,26 +33,26 @@ export function DiscoverTabs(props: DiscoverTabsProps) {
         </div>
 
         <div class="pointer-events-auto">
-          <TabsList class="relative flex w-fit gap-0.5 rounded-lg border border-white/10 bg-black/30 p-0.5 backdrop-blur-sm">
+          <TabsList class="relative flex w-fit gap-0.5 rounded-lg border border-border/70 bg-background/70 p-0.5 shadow-sm backdrop-blur-sm dark:border-white/10 dark:bg-black/30 dark:shadow-none">
             <TabsTrigger
               value="youtube"
-              class="relative z-10 rounded-md px-4 py-1.5 text-[0.7rem] font-medium tracking-wide text-white/30 transition-colors duration-200 data-selected:text-white/90"
+              class="relative z-10 rounded-md px-4 py-1.5 text-[0.7rem] font-medium tracking-wide text-muted-foreground transition-colors duration-200 data-selected:text-foreground dark:text-white/30 dark:data-selected:text-white/90"
             >
               YouTube
             </TabsTrigger>
             <TabsTrigger
               value="anime"
-              class="relative z-10 rounded-md px-4 py-1.5 text-[0.7rem] font-medium tracking-wide text-white/30 transition-colors duration-200 data-selected:text-white/90"
+              class="relative z-10 rounded-md px-4 py-1.5 text-[0.7rem] font-medium tracking-wide text-muted-foreground transition-colors duration-200 data-selected:text-foreground dark:text-white/30 dark:data-selected:text-white/90"
             >
               Anime
             </TabsTrigger>
             <TabsTrigger
               value="dramas"
-              class="relative z-10 rounded-md px-4 py-1.5 text-[0.7rem] font-medium tracking-wide text-white/30 transition-colors duration-200 data-selected:text-white/90"
+              class="relative z-10 rounded-md px-4 py-1.5 text-[0.7rem] font-medium tracking-wide text-muted-foreground transition-colors duration-200 data-selected:text-foreground dark:text-white/30 dark:data-selected:text-white/90"
             >
               Dramas
             </TabsTrigger>
-            <TabsIndicator class="rounded-md bg-white/10 transition-all duration-250" />
+            <TabsIndicator class="rounded-md bg-muted transition-all duration-250 dark:bg-white/10" />
           </TabsList>
         </div>
 

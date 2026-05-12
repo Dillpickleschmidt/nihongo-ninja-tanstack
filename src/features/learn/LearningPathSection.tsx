@@ -45,8 +45,8 @@ export function LearningPathSection(props: LearningPathSectionProps) {
       <Suspense
         fallback={
           <div class="space-y-4">
-            <Skeleton class="h-24 bg-white/5 rounded" />
-            <Skeleton class="h-24 bg-white/5 rounded" />
+            <Skeleton class="h-24 rounded bg-muted/70 dark:bg-white/5" />
+            <Skeleton class="h-24 rounded bg-muted/70 dark:bg-white/5" />
           </div>
         }
       >
@@ -55,10 +55,10 @@ export function LearningPathSection(props: LearningPathSectionProps) {
             <>
               <div class="mb-5 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
                 <div>
-                  <p class="text-xs uppercase tracking-[0.28em] text-white/35">
+                  <p class="text-xs uppercase tracking-[0.28em] text-muted-foreground dark:text-white/35">
                     Selected Chapter
                   </p>
-                  <h2 class="mt-3 font-excalifont text-2xl font-bold text-white md:text-3xl">
+                  <h2 class="mt-3 font-excalifont text-2xl font-bold text-foreground md:text-3xl dark:text-white">
                     {chapter().title}
                   </h2>
                 </div>

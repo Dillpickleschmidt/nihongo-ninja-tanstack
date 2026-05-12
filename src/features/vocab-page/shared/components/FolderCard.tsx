@@ -33,7 +33,7 @@ export function FolderCardContent(props: {
 }) {
   return (
     <div class="flex items-start gap-3">
-      <div class="bg-muted/40 border-card-foreground/70 rounded-md border p-2 backdrop-blur-xs">
+      <div class="bg-muted/50 border-border/60 rounded-md border p-2 backdrop-blur-xs dark:bg-muted/40 dark:border-card-foreground/70">
         <FolderIcon class="text-muted-foreground h-5 w-5" />
       </div>
 

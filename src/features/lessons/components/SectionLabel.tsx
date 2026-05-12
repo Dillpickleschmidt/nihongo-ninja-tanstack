@@ -8,7 +8,7 @@ export default function SectionLabel(props: {
   return (
     <div
       class={cn(
-        "text-[0.6rem] font-bold uppercase tracking-[0.25em] text-white/30",
+        "text-[0.6rem] font-bold uppercase tracking-[0.25em] text-muted-foreground/70 dark:text-white/30",
         props.class,
       )}
     >

@@ -18,7 +18,7 @@ type Props = {
 export function AnkiSyncDialog(props: Props) {
   return (
     <div class="flex min-h-[50vh] items-center justify-center p-4">
-      <div class="w-full max-w-md rounded-2xl border border-card-foreground/20 bg-card/60 p-8 shadow-xl backdrop-blur-md">
+      <div class="w-full max-w-md rounded-2xl border border-border/70 bg-card/70 p-8 shadow-xl backdrop-blur-md dark:border-card-foreground/20 dark:bg-card/60">
         <Switch>
           <Match when={props.state.phase === "checking"}>
             <div class="flex flex-col items-center gap-4">

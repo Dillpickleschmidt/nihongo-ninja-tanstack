@@ -33,7 +33,7 @@ function ContractedSounds() {
         {/* How they work — with vertical text */}
         <div class="flex gap-6">
           <div class="hidden select-none items-center sm:flex">
-            <div class="flex flex-col items-center text-center text-lg font-bold italic leading-snug text-white/15">
+            <div class="flex flex-col items-center text-center text-lg font-bold italic leading-snug text-muted-foreground/40 dark:text-white/15">
               {"Contracted".split("").map((c) => (
                 <span>{c}</span>
               ))}
@@ -45,7 +45,7 @@ function ContractedSounds() {
           </div>
           <div class="space-y-6">
             <SectionLabel>How they work</SectionLabel>
-            <div class="space-y-4 leading-relaxed text-white/70">
+            <div class="space-y-4 leading-relaxed text-foreground/75 dark:text-white/70">
               <p>
                 Some hiragana pair with smaller kana to produce a new single,
                 shorter sound.
@@ -56,26 +56,26 @@ function ContractedSounds() {
                   きょ
                 </span>{" "}
                 (kyo) for example.{" "}
-                <span class="font-japanese font-semibold text-white/90">
+                <span class="font-japanese font-semibold text-foreground dark:text-white/90">
                   き
                 </span>{" "}
                 (ki) pairs with a small{" "}
-                <span class="font-japanese font-semibold text-white/90">
+                <span class="font-japanese font-semibold text-foreground dark:text-white/90">
                   ょ
                 </span>{" "}
                 (yo). Instead of pronouncing{" "}
-                <span class="font-japanese text-white/90">きよ</span> (kiyo) as
+                <span class="font-japanese text-foreground dark:text-white/90">きよ</span> (kiyo) as
                 two separate sounds, speakers shorten it to{" "}
                 <span class="font-japanese font-semibold text-dynamic-accent">
                   きょ
                 </span>{" "}
                 (kyo). You'll hear this in words like{" "}
-                <span class="font-japanese text-white/90">きょねん</span>{" "}
+                <span class="font-japanese text-foreground dark:text-white/90">きょねん</span>{" "}
                 (kyonen, "last year").
               </p>
               <p>
                 Notice the romaji:{" "}
-                <span class="font-japanese font-semibold text-white/90">き</span>{" "}
+                <span class="font-japanese font-semibold text-foreground dark:text-white/90">き</span>{" "}
                 is "ki," but when it contracts, the "i" drops and you get "kyo"
                 instead of "kiyo." That pattern holds for all contracted sounds.
                 Check the last letter of the base kana's romaji, drop it, and
@@ -84,35 +84,35 @@ function ContractedSounds() {
               <p>
                 The small size is what tells you it's a contraction. When you see
                 a full-sized{" "}
-                <span class="font-japanese text-white/90">や</span>,{" "}
-                <span class="font-japanese text-white/90">ゆ</span>, or{" "}
-                <span class="font-japanese text-white/90">よ</span>, it's a
+                <span class="font-japanese text-foreground dark:text-white/90">や</span>,{" "}
+                <span class="font-japanese text-foreground dark:text-white/90">ゆ</span>, or{" "}
+                <span class="font-japanese text-foreground dark:text-white/90">よ</span>, it's a
                 separate sound. When it's small (
-                <span class="font-japanese text-white/90">ゃ</span>,{" "}
-                <span class="font-japanese text-white/90">ゅ</span>,{" "}
-                <span class="font-japanese text-white/90">ょ</span>), it merges
+                <span class="font-japanese text-foreground dark:text-white/90">ゃ</span>,{" "}
+                <span class="font-japanese text-foreground dark:text-white/90">ゅ</span>,{" "}
+                <span class="font-japanese text-foreground dark:text-white/90">ょ</span>), it merges
                 with the character before it.
               </p>
               <p>
                 The most common small kana are{" "}
-                <span class="font-japanese font-semibold text-white/90">
+                <span class="font-japanese font-semibold text-foreground dark:text-white/90">
                   ゃ
                 </span>
                 ,{" "}
-                <span class="font-japanese font-semibold text-white/90">
+                <span class="font-japanese font-semibold text-foreground dark:text-white/90">
                   ゅ
                 </span>
                 , and{" "}
-                <span class="font-japanese font-semibold text-white/90">
+                <span class="font-japanese font-semibold text-foreground dark:text-white/90">
                   ょ
                 </span>
                 , though any other small kana you see will work the same way.
               </p>
-              <p class="text-sm text-white/40">
+              <p class="text-sm text-muted-foreground dark:text-white/40">
                 Note: you might see "ja" romanized as "jya" in some places. Both
                 refer to the same sound.
               </p>
-              <p class="text-sm text-white/50 italic">
+              <p class="text-sm text-muted-foreground dark:text-white/50 italic">
                 They feel a little weird at first, but the more Japanese you
                 hear, the more natural they'll sound.
               </p>
@@ -144,15 +144,15 @@ function ContractedSounds() {
 
         {/* What's a mora? */}
         <AsideBlock label="What's a mora?">
-          <div class="mt-2 space-y-3 leading-relaxed text-white/70">
+          <div class="mt-2 space-y-3 leading-relaxed text-foreground/75 dark:text-white/70">
             <p>
               Each full-sized kana takes up one mora, and every mora gets the
               same amount of time when spoken.{" "}
-              <span class="font-japanese font-semibold text-white/90">
+              <span class="font-japanese font-semibold text-foreground dark:text-white/90">
                 びよういん
               </span>{" "}
               (bi・yo・u・i・n, beauty salon) is five mora.{" "}
-              <span class="font-japanese font-semibold text-white/90">
+              <span class="font-japanese font-semibold text-foreground dark:text-white/90">
                 びょういん
               </span>{" "}
               (byo・u・i・n, hospital) is four, because{" "}
@@ -168,7 +168,7 @@ function ContractedSounds() {
         <LessonSummary>
           <SummaryItem>
             Small{" "}
-            <span class="font-japanese font-semibold text-white/80">
+            <span class="font-japanese font-semibold text-foreground/80 dark:text-white/80">
               ゃ, ゅ, ょ
             </span>{" "}
             merge with the preceding kana into one mora
@@ -188,12 +188,12 @@ function ExampleCard(props: {
   gloss: string
 }) {
   return (
-    <div class="rounded-lg bg-white/[0.04] p-4 text-center">
-      <p class="text-xs text-white/40">{props.formula}</p>
-      <p class="font-japanese mt-2 text-2xl font-bold text-white/90">
+    <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4 text-center">
+      <p class="text-xs text-muted-foreground dark:text-white/40">{props.formula}</p>
+      <p class="font-japanese mt-2 text-2xl font-bold text-foreground dark:text-white/90">
         {props.word}
       </p>
-      <p class="mt-1 text-sm text-white/50">{props.gloss}</p>
+      <p class="mt-1 text-sm text-muted-foreground dark:text-white/50">{props.gloss}</p>
     </div>
   )
 }

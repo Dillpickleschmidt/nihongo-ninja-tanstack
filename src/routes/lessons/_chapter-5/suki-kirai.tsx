@@ -19,7 +19,7 @@ function SukiKirai() {
   return (
     <div class="relative pb-32">
       {/* Background character */}
-      <span class="pointer-events-none absolute top-8 left-24 select-none font-japanese text-[10rem] leading-none text-white/[0.03] sm:top-11 sm:left-auto sm:right-8 sm:text-[11rem]">
+      <span class="pointer-events-none absolute top-8 left-24 select-none font-japanese text-[10rem] leading-none text-foreground/[0.04] dark:text-white/[0.03] sm:top-11 sm:left-auto sm:right-8 sm:text-[11rem]">
         好
       </span>
 
@@ -46,7 +46,7 @@ function SukiKirai() {
       <div class="space-y-14 px-8">
         {/* Intro */}
         <div class="space-y-4">
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             In Japanese, most adjectives simply describe things (like{" "}
             <span class="font-japanese text-xl">静か</span>/quiet). However,{" "}
             <span class="font-japanese text-xl">好き</span> (like) and{" "}
@@ -58,21 +58,21 @@ function SukiKirai() {
           <GlowBox>
             <div class="space-y-3 text-center">
               <p class="text-xl">
-                <span class="text-base font-light text-white/50">
+                <span class="text-base font-light text-muted-foreground dark:text-white/50">
                   (person)
                 </span>{" "}
                 は{" "}
-                <span class="text-base font-light text-white/50">(thing)</span>{" "}
+                <span class="text-base font-light text-muted-foreground dark:text-white/50">(thing)</span>{" "}
                 が{" "}
                 <span class="font-medium text-green-400">好き</span>・
                 <span class="font-medium text-red-400">嫌い</span>
                 です
               </p>
-              <p class="text-white/50">
+              <p class="text-muted-foreground dark:text-white/50">
                 <span class="text-sm font-light">(person)</span> likes/dislikes{" "}
                 <span class="text-sm font-light">(thing)</span>
               </p>
-              <p class="text-sm text-white/30">
+              <p class="text-sm text-muted-foreground/70 dark:text-white/30">
                 Literally: "As for (person), (thing) is likeable/unlikeable"
               </p>
             </div>
@@ -83,19 +83,19 @@ function SukiKirai() {
         <div class="space-y-4">
           <SectionLabel>Basic usage</SectionLabel>
           <div class="space-y-3">
-            <div class="rounded-lg bg-white/[0.04] p-4 text-center">
-              <p class="font-japanese text-xl text-white/90">
-                <span class="text-white/40">(私は)</span>音楽が
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4 text-center">
+              <p class="font-japanese text-xl text-foreground dark:text-white/90">
+                <span class="text-muted-foreground dark:text-white/40">(私は)</span>音楽が
                 <span class="font-bold text-green-400">好き</span>です。
               </p>
-              <p class="mt-1 text-white/50">I like music.</p>
+              <p class="mt-1 text-muted-foreground dark:text-white/50">I like music.</p>
             </div>
-            <div class="rounded-lg bg-white/[0.04] p-4 text-center">
-              <p class="font-japanese text-xl text-white/90">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4 text-center">
+              <p class="font-japanese text-xl text-foreground dark:text-white/90">
                 弟は野菜が
                 <span class="font-bold text-red-400">嫌い</span>です。
               </p>
-              <p class="mt-1 text-white/50">
+              <p class="mt-1 text-muted-foreground dark:text-white/50">
                 My little brother dislikes vegetables.
               </p>
             </div>
@@ -105,29 +105,29 @@ function SukiKirai() {
         {/* Particle Usage */}
         <div class="space-y-4">
           <SectionLabel>Particle usage</SectionLabel>
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             Normal statements use が:
           </p>
-          <div class="rounded-lg bg-white/[0.04] p-4">
-            <p class="font-japanese text-lg text-white/80">
-              <span class="text-white/40">(私は)</span>音楽が好きです。
+          <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+            <p class="font-japanese text-lg text-foreground/80 dark:text-white/80">
+              <span class="text-muted-foreground dark:text-white/40">(私は)</span>音楽が好きです。
             </p>
-            <p class="mt-1 text-sm text-white/40">I like music</p>
+            <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">I like music</p>
           </div>
 
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             When contrasting likes/dislikes (for the same person), use は:
           </p>
-          <div class="rounded-lg bg-white/[0.04] p-4">
-            <p class="font-japanese text-lg text-white/80">
-              <span class="text-white/40">(私は)</span>
+          <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+            <p class="font-japanese text-lg text-foreground/80 dark:text-white/80">
+              <span class="text-muted-foreground dark:text-white/40">(私は)</span>
               スポーツは好きですが、勉強はきらいです。
             </p>
-            <p class="mt-1 text-sm text-white/40">
+            <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">
               I like sports, but I hate studying
             </p>
           </div>
-          <p class="text-sm italic text-white/40">
+          <p class="text-sm italic text-muted-foreground dark:text-white/40">
             *We'll cover more about using は for comparisons in the next lesson
           </p>
         </div>
@@ -137,48 +137,48 @@ function SukiKirai() {
           <SectionLabel>
             <span class="font-japanese text-xs">な</span> noun modification
           </SectionLabel>
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             When describing nouns directly, 好き and 嫌い act like any other
             な-adjective. And like always, don't forget to use な to connect them
             to nouns:
           </p>
 
           <div class="space-y-3">
-            <div class="rounded-lg bg-white/[0.04] p-4">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
               <div class="space-y-1">
                 <p class="flex items-baseline justify-between">
-                  <span class="font-japanese text-lg text-white/80">
+                  <span class="font-japanese text-lg text-foreground/80 dark:text-white/80">
                     A: 今何聴いてるの？
                   </span>
-                  <span class="text-sm text-white/40">
+                  <span class="text-sm text-muted-foreground dark:text-white/40">
                     What are you listening to now?
                   </span>
                 </p>
                 <p class="flex items-baseline justify-between">
-                  <span class="font-japanese text-lg text-white/80">
+                  <span class="font-japanese text-lg text-foreground/80 dark:text-white/80">
                     B: 私の好きな音楽、クラシック。
                   </span>
-                  <span class="text-sm text-white/40">
+                  <span class="text-sm text-muted-foreground dark:text-white/40">
                     My favorite music, classical.
                   </span>
                 </p>
               </div>
             </div>
-            <div class="rounded-lg bg-white/[0.04] p-4">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
               <div class="space-y-1">
                 <p class="flex items-baseline justify-between">
-                  <span class="font-japanese text-lg text-white/80">
+                  <span class="font-japanese text-lg text-foreground/80 dark:text-white/80">
                     A: 妹さん、何が嫌い？
                   </span>
-                  <span class="text-sm text-white/40">
+                  <span class="text-sm text-muted-foreground dark:text-white/40">
                     What does your sister dislike?
                   </span>
                 </p>
                 <p class="flex items-baseline justify-between">
-                  <span class="font-japanese text-lg text-white/80">
+                  <span class="font-japanese text-lg text-foreground/80 dark:text-white/80">
                     B: 妹の嫌いな食べ物はトマト。
                   </span>
-                  <span class="text-sm text-white/40">
+                  <span class="text-sm text-muted-foreground dark:text-white/40">
                     My sister's least favorite food is tomato.
                   </span>
                 </p>
@@ -190,11 +190,11 @@ function SukiKirai() {
         {/* Adding Intensity */}
         <div class="space-y-4">
           <SectionLabel>Adding intensity</SectionLabel>
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             Add 大 (だい) to express stronger feelings:
           </p>
-          <div class="rounded-lg bg-white/[0.04] p-4">
-            <p class="font-japanese text-lg text-white/80">
+          <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+            <p class="font-japanese text-lg text-foreground/80 dark:text-white/80">
               <Furigana furigana={<span class="text-xs">じょうし</span>}>
                 上司
               </Furigana>
@@ -205,11 +205,11 @@ function SukiKirai() {
               が<span class="text-green-400">大好き</span>ですが、 私はお金が
               <span class="text-green-400">大好き</span>です。
             </p>
-            <p class="mt-1 text-white/50">
+            <p class="mt-1 text-muted-foreground dark:text-white/50">
               My boss loves overtime, but I love money.
             </p>
           </div>
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             嫌い already has a pretty strong sense of dislike, and can sometimes
             be translated as "hate" without 大. Therefore, adding 大 would be
             reserved for things that you absolutely detest.
@@ -219,12 +219,12 @@ function SukiKirai() {
         {/* Being Neutral */}
         <div class="space-y-4">
           <SectionLabel>Being neutral</SectionLabel>
-          <div class="rounded-lg bg-white/[0.04] p-4 text-center">
-            <p class="font-japanese text-xl text-white/90">
+          <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4 text-center">
+            <p class="font-japanese text-xl text-foreground dark:text-white/90">
               好き<span class="underline underline-offset-2">でも</span>きらい
               <span class="underline underline-offset-2">でもない</span>です。
             </p>
-            <p class="mt-1 text-white/50">
+            <p class="mt-1 text-muted-foreground dark:text-white/50">
               I neither like nor dislike it.
             </p>
           </div>
@@ -234,12 +234,12 @@ function SukiKirai() {
         <div class="space-y-4">
           <SectionLabel>Cultural note</SectionLabel>
 
-          <div class="space-y-6 rounded-xl bg-white/[0.04] p-6">
+          <div class="space-y-6 rounded-xl bg-card/60 dark:bg-white/[0.04] p-6">
             <div>
-              <p class="text-lg font-bold text-white/90">
+              <p class="text-lg font-bold text-foreground dark:text-white/90">
                 好き can be powerful.
               </p>
-              <p class="mt-2 leading-relaxed text-white/70">
+              <p class="mt-2 leading-relaxed text-foreground/75 dark:text-white/70">
                 When using <span class="font-japanese">好き</span> towards{" "}
                 <u>people</u>, it carries stronger feelings than the English
                 "like" and almost always implies romantic interest. The 大 isn't
@@ -253,40 +253,40 @@ function SukiKirai() {
             </div>
 
             <div>
-              <p class="text-lg font-bold text-white/90">
+              <p class="text-lg font-bold text-foreground dark:text-white/90">
                 嫌い is kinda harsh.
               </p>
               <div class="mt-2 space-y-3">
-                <div class="rounded-lg bg-white/[0.04] p-4">
+                <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
                   <div class="space-y-1 text-sm leading-relaxed">
                     <p>
-                      <span class="font-japanese text-base text-white/80">
+                      <span class="font-japanese text-base text-foreground/80 dark:text-white/80">
                         A：おすしを食べませんか。
                       </span>
-                      <span class="ml-2 text-white/40">
+                      <span class="ml-2 text-muted-foreground dark:text-white/40">
                         Do you want to go out and eat sushi?
                       </span>
                     </p>
                     <p>
-                      <span class="font-japanese text-base text-white/80">
+                      <span class="font-japanese text-base text-foreground/80 dark:text-white/80">
                         B：いいえ、おすしは好きじゃありません。嫌いです。
                       </span>
-                      <span class="ml-2 text-white/40">
+                      <span class="ml-2 text-muted-foreground dark:text-white/40">
                         No I don't like sushi, I hate sushi.
                       </span>
                     </p>
-                    <p class="text-white/40">A：... (Silence)</p>
+                    <p class="text-muted-foreground dark:text-white/40">A：... (Silence)</p>
                     <p>
-                      <span class="font-japanese text-base text-white/80">
+                      <span class="font-japanese text-base text-foreground/80 dark:text-white/80">
                         B：あ、ごめんね。おすしはちょっと…
                       </span>
-                      <span class="ml-2 text-white/40">
+                      <span class="ml-2 text-muted-foreground dark:text-white/40">
                         Oh, sorry. Sushi is just not my thing...
                       </span>
                     </p>
                   </div>
                 </div>
-                <p class="leading-relaxed text-white/70">
+                <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                   Saying such a thing is pretty blunt/rude, and most people
                   would think you don't want to talk anymore after that. It's so
                   blunt that there's really nowhere left for the conversation to
@@ -294,7 +294,7 @@ function SukiKirai() {
                   <span class="font-japanese">おすしはちょっと…</span> is a
                   better, more socially acceptable answer.
                 </p>
-                <p class="text-sm text-white/40">
+                <p class="text-sm text-muted-foreground dark:text-white/40">
                   You might want to explain why though... I mean, who doesn't
                   like sushi?
                 </p>
@@ -306,13 +306,13 @@ function SukiKirai() {
         {/* Practice */}
         <div class="space-y-5">
           <h3 class="text-center text-2xl font-bold">Practice</h3>
-          <p class="text-center text-sm italic text-white/40">
+          <p class="text-center text-sm italic text-muted-foreground dark:text-white/40">
             *Choose the correct form for each situation*
           </p>
 
           <div class="space-y-6">
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 How would you say "I like sushi"?
               </p>
               <SelectText
@@ -325,7 +325,7 @@ function SukiKirai() {
             </div>
 
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 You want to say "I like sports but hate studying." Which
                 particle pattern is correct?
               </p>
@@ -339,7 +339,7 @@ function SukiKirai() {
             </div>
 
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 Your teacher asks what kind of books you like. How would you
                 describe "books I like"? (ex: the books I like/my favorite books
                 are ...)
@@ -354,7 +354,7 @@ function SukiKirai() {
             </div>
 
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 Your friend really loves cats. They've turned their entire house
                 into a cat jungle gym. How would they state their affection for
                 cats?
@@ -369,7 +369,7 @@ function SukiKirai() {
             </div>
 
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 How would you describe "the movies I like"?
               </p>
               <SelectText
@@ -382,7 +382,7 @@ function SukiKirai() {
             </div>
 
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 Someone asks about horror movies, but you feel neutral about
                 them. How would you respond?
               </p>

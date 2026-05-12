@@ -23,7 +23,7 @@ function SayingYouInJapanese() {
   return (
     <div class="relative pb-32">
       {/* Background character */}
-      <span class="pointer-events-none absolute top-8 left-24 select-none font-japanese text-[10rem] leading-none text-white/[0.03] sm:top-11 sm:left-auto sm:right-8 sm:text-[11rem]">
+      <span class="pointer-events-none absolute top-8 left-24 select-none font-japanese text-[10rem] leading-none text-foreground/[0.04] dark:text-white/[0.03] sm:top-11 sm:left-auto sm:right-8 sm:text-[11rem]">
         君
       </span>
 
@@ -39,12 +39,12 @@ function SayingYouInJapanese() {
 
       <div class="space-y-14 px-8">
         {/* Opening */}
-        <div class="leading-relaxed text-white/70">
+        <div class="leading-relaxed text-foreground/75 dark:text-white/70">
           <p>
             In Japanese, saying "you" directly is{" "}
-            <span class="font-semibold text-white/90">often avoided</span>.
+            <span class="font-semibold text-foreground dark:text-white/90">often avoided</span>.
             Unlike English, using direct pronouns can come across as{" "}
-            <span class="font-semibold text-white/90">
+            <span class="font-semibold text-foreground dark:text-white/90">
               rude or overly direct
             </span>
             . Instead, Japanese speakers use names and titles, as you learned in
@@ -66,7 +66,7 @@ function SayingYouInJapanese() {
           <SectionLabel>
             Second-person pronouns you might've heard
           </SectionLabel>
-          <p class="leading-relaxed italic text-white/50">
+          <p class="leading-relaxed italic text-muted-foreground dark:text-white/50">
             The following second-person pronouns should not be used unless
             you've reached a near-native level of Japanese speaking ability and
             can fully grasp the situations in which they would be appropriate.
@@ -171,7 +171,7 @@ function SayingYouInJapanese() {
           />
 
           <GlowBox>
-            <p class="text-center font-japanese text-2xl font-medium text-white/90">
+            <p class="text-center font-japanese text-2xl font-medium text-foreground dark:text-white/90">
               <Furigana furigana={<span class="text-sm">しつれい</span>}>
                 失礼
               </Furigana>
@@ -183,34 +183,34 @@ function SayingYouInJapanese() {
             </p>
           </GlowBox>
 
-          <ul class="space-y-2 leading-relaxed text-white/70">
+          <ul class="space-y-2 leading-relaxed text-foreground/75 dark:text-white/70">
             <li>
-              <span class="font-japanese font-semibold text-white/90">
+              <span class="font-japanese font-semibold text-foreground dark:text-white/90">
                 失礼です
               </span>{" "}
               - "Excuse me / pardon me" (literally "rude")
             </li>
             <li>
-              <span class="font-japanese font-semibold text-white/90">
+              <span class="font-japanese font-semibold text-foreground dark:text-white/90">
                 が
               </span>{" "}
               - "but"{" "}
-              <span class="text-sm text-white/40">(we'll revisit later)</span>
+              <span class="text-sm text-muted-foreground dark:text-white/40">(we'll revisit later)</span>
             </li>
             <li>
-              <span class="font-japanese font-semibold text-white/90">
+              <span class="font-japanese font-semibold text-foreground dark:text-white/90">
                 お
               </span>{" "}
               - Polite prefix
             </li>
             <li>
-              <span class="font-japanese font-semibold text-white/90">
+              <span class="font-japanese font-semibold text-foreground dark:text-white/90">
                 名前
               </span>{" "}
               - "Name"
             </li>
             <li>
-              <span class="font-japanese font-semibold text-white/90">
+              <span class="font-japanese font-semibold text-foreground dark:text-white/90">
                 は？
               </span>{" "}
               - Topic particle
@@ -250,25 +250,25 @@ function PronounBlock(props: {
   return (
     <div class="space-y-4">
       <div class="flex items-baseline gap-3">
-        <h3 class="font-japanese text-2xl font-bold text-white/90">
+        <h3 class="font-japanese text-2xl font-bold text-foreground dark:text-white/90">
           {props.jp}
         </h3>
-        <span class="text-lg font-medium text-white/40">{props.romaji}</span>
+        <span class="text-lg font-medium text-muted-foreground dark:text-white/40">{props.romaji}</span>
       </div>
 
-      <ul class="space-y-1.5 text-sm leading-relaxed text-white/60">
+      <ul class="space-y-1.5 text-sm leading-relaxed text-muted-foreground dark:text-white/60">
         <li>
-          <span class="font-semibold text-white/80">Usage:</span> {props.usage}
+          <span class="font-semibold text-foreground/80 dark:text-white/80">Usage:</span> {props.usage}
         </li>
         <li>
-          <span class="font-semibold text-white/80">Context:</span>{" "}
+          <span class="font-semibold text-foreground/80 dark:text-white/80">Context:</span>{" "}
           {props.context}
         </li>
       </ul>
 
-      <div class="rounded-lg bg-white/[0.04] p-4">
-        <p class="font-japanese text-lg text-white/80">{props.example}</p>
-        <p class="mt-1 text-sm text-white/40">{props.translation}</p>
+      <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+        <p class="font-japanese text-lg text-foreground/80 dark:text-white/80">{props.example}</p>
+        <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">{props.translation}</p>
       </div>
     </div>
   )

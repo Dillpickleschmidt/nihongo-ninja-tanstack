@@ -12,13 +12,13 @@ export function DueCountBadge(props: DueCountBadgeProps) {
     <div class="flex items-center gap-2 font-excalifont">
       <Show
         when={count() !== undefined}
-        fallback={<LoaderCircle class="h-4 w-4 animate-spin text-white/50" />}
+        fallback={<LoaderCircle class="h-4 w-4 animate-spin text-muted-foreground dark:text-white/50" />}
       >
         <span class="text-2xl font-bold text-dynamic-accent brightness-150">
           {count()}
         </span>
       </Show>
-      <span class="text-sm text-white/40">due cards</span>
+      <span class="text-sm text-muted-foreground dark:text-white/40">due cards</span>
     </div>
   )
 }

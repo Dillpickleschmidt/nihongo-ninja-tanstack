@@ -134,10 +134,10 @@ export function WriteCard(props: Props) {
       disabled={isAnswered()}
       placeholder="Type your answer..."
       class={cn(
-        "w-full rounded-2xl border bg-white/5 px-5 py-4 text-center text-lg font-medium outline-none transition-colors",
-        "placeholder:text-white/30",
+        "w-full rounded-2xl border bg-card/60 dark:bg-white/5 px-5 py-4 text-center text-lg font-medium outline-none transition-colors",
+        "placeholder:text-muted-foreground/70 dark:text-white/30",
         !isAnswered() &&
-          "border-white/10 focus:border-cyan-500",
+          "border-border/70 dark:border-white/10 focus:border-cyan-500",
         isAnswered() &&
           isMainCorrect() &&
           "border-emerald-500 bg-emerald-500/10 text-emerald-400",
@@ -166,7 +166,7 @@ export function WriteCard(props: Props) {
             <For each={particles()}>
               {(p, i) => (
                 <div class="flex items-center gap-2">
-                  <span class="text-sm font-medium text-white/40">
+                  <span class="text-sm font-medium text-muted-foreground dark:text-white/40">
                     {p.label ? `${p.label}:` : "Particle:"}
                   </span>
                   <WanakanaWrapper enabled={true} watch={props.card.key}>
@@ -179,9 +179,9 @@ export function WriteCard(props: Props) {
                       onKeyDown={handleKeyDown}
                       disabled={isAnswered()}
                       class={cn(
-                        "w-20 rounded-lg border bg-white/5 px-2 py-2 text-center font-japanese font-medium outline-none transition-colors",
+                        "w-20 rounded-lg border bg-card/60 dark:bg-white/5 px-2 py-2 text-center font-japanese font-medium outline-none transition-colors",
                         !isAnswered() &&
-                          "border-white/10 focus:border-cyan-500",
+                          "border-border/70 dark:border-white/10 focus:border-cyan-500",
                         isAnswered() &&
                           particleCorrectness()?.[i()] &&
                           "border-emerald-500 bg-emerald-500/10 text-emerald-400",

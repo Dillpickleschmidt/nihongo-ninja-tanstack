@@ -19,7 +19,7 @@ function KanjiLesson() {
   return (
     <div class="relative pb-32">
       {/* Background character */}
-      <span class="pointer-events-none absolute top-8 left-24 select-none font-japanese text-[10rem] leading-none text-white/[0.03] sm:top-11 sm:left-auto sm:right-8 sm:text-[11rem]">
+      <span class="pointer-events-none absolute top-8 left-24 select-none font-japanese text-[10rem] leading-none text-foreground/[0.04] dark:text-white/[0.03] sm:top-11 sm:left-auto sm:right-8 sm:text-[11rem]">
         漢
       </span>
 
@@ -35,11 +35,11 @@ function KanjiLesson() {
 
       <div class="space-y-14 px-8">
         {/* Note */}
-        <p class="text-sm italic text-white/40">
-          *Note for <span class="font-semibold text-white/60">Nihongo Ninja</span>{" "}
+        <p class="text-sm italic text-muted-foreground dark:text-white/40">
+          *Note for <span class="font-semibold text-muted-foreground dark:text-white/60">Nihongo Ninja</span>{" "}
           learners: If you've been following along step-by-step, you should have
           already started practicing kanji on{" "}
-          <span class="font-semibold text-white/60">jpdb.io</span>. Even if
+          <span class="font-semibold text-muted-foreground dark:text-white/60">jpdb.io</span>. Even if
           you've been practicing, we'd still recommend reading through this
           lesson to understand how kanji work.
         </p>
@@ -65,24 +65,24 @@ function KanjiLesson() {
             credit="ToKini Andy"
           />
 
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             Kanji are characters that originated in China and were brought to
             Japan over 1,500 years ago. Each kanji represents a meaning, not a
             sound.
           </p>
 
           <div class="grid grid-cols-3 gap-3">
-            <div class="rounded-lg bg-white/[0.04] p-4 text-center">
-              <p class="font-japanese text-3xl text-white/90">日</p>
-              <p class="mt-1 text-sm text-white/40">sun</p>
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4 text-center">
+              <p class="font-japanese text-3xl text-foreground dark:text-white/90">日</p>
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">sun</p>
             </div>
-            <div class="rounded-lg bg-white/[0.04] p-4 text-center">
-              <p class="font-japanese text-3xl text-white/90">木</p>
-              <p class="mt-1 text-sm text-white/40">tree</p>
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4 text-center">
+              <p class="font-japanese text-3xl text-foreground dark:text-white/90">木</p>
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">tree</p>
             </div>
-            <div class="rounded-lg bg-white/[0.04] p-4 text-center">
-              <p class="font-japanese text-3xl text-white/90">犬</p>
-              <p class="mt-1 text-sm text-white/40">dog</p>
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4 text-center">
+              <p class="font-japanese text-3xl text-foreground dark:text-white/90">犬</p>
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">dog</p>
             </div>
           </div>
         </div>
@@ -103,25 +103,25 @@ function KanjiLesson() {
         {/* Breakdown */}
         <AsideBlock label="From Sensei">
           <div class="mt-2">
-            <p class="text-sm font-semibold text-white/70">
+            <p class="text-sm font-semibold text-foreground/75 dark:text-white/70">
               Here's a breakdown of what Japanese students are expected to know:
             </p>
-            <ul class="mt-2 space-y-1.5 text-sm leading-relaxed text-white/60">
+            <ul class="mt-2 space-y-1.5 text-sm leading-relaxed text-muted-foreground dark:text-white/60">
               <li>
-                <span class="font-semibold text-white/80">
+                <span class="font-semibold text-foreground/80 dark:text-white/80">
                   Elementary school:
                 </span>{" "}
                 1,026 kanji (
                 <span class="font-japanese">学年別漢字配当表</span>)
               </li>
               <li>
-                <span class="font-semibold text-white/80">
+                <span class="font-semibold text-foreground/80 dark:text-white/80">
                   Secondary school:
                 </span>{" "}
                 Additional kanji to reach 2,136 jōyō kanji
               </li>
               <li>
-                <span class="font-semibold text-white/80">
+                <span class="font-semibold text-foreground/80 dark:text-white/80">
                   University entrance exams:
                 </span>{" "}
                 About 2,500 kanji
@@ -138,33 +138,33 @@ function KanjiLesson() {
           </SenseiBubble>
 
           <div class="grid gap-3 sm:grid-cols-2">
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="text-sm font-semibold text-white/80">Pictograms</p>
-              <p class="mt-1 font-japanese text-lg text-white/60">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="text-sm font-semibold text-foreground/80 dark:text-white/80">Pictograms</p>
+              <p class="mt-1 font-japanese text-lg text-muted-foreground dark:text-white/60">
                 木 (tree), 日 (sun), 山 (mountain)
               </p>
             </div>
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="text-sm font-semibold text-white/80">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="text-sm font-semibold text-foreground/80 dark:text-white/80">
                 Simple ideograms
               </p>
-              <p class="mt-1 font-japanese text-lg text-white/60">
+              <p class="mt-1 font-japanese text-lg text-muted-foreground dark:text-white/60">
                 上 (up), 下 (down), 中 (middle)
               </p>
             </div>
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="text-sm font-semibold text-white/80">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="text-sm font-semibold text-foreground/80 dark:text-white/80">
                 Compound ideograms
               </p>
-              <p class="mt-1 font-japanese text-lg text-white/60">
+              <p class="mt-1 font-japanese text-lg text-muted-foreground dark:text-white/60">
                 林 (forest) = two 木 (tree)
               </p>
             </div>
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="text-sm font-semibold text-white/80">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="text-sm font-semibold text-foreground/80 dark:text-white/80">
                 Phonetic-ideographic
               </p>
-              <p class="mt-1 text-sm text-white/60">
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/60">
                 One element for meaning, one hinting at sound
               </p>
             </div>
@@ -182,54 +182,54 @@ function KanjiLesson() {
           </SenseiBubble>
 
           <div class="space-y-3">
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="font-semibold text-white/90">On-yomi (音読み)</p>
-              <p class="mt-1 text-sm text-white/60">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="font-semibold text-foreground dark:text-white/90">On-yomi (音読み)</p>
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/60">
                 Chinese-derived readings
               </p>
             </div>
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="font-semibold text-white/90">Kun-yomi (訓読み)</p>
-              <p class="mt-1 text-sm text-white/60">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="font-semibold text-foreground dark:text-white/90">Kun-yomi (訓読み)</p>
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/60">
                 Native Japanese readings
               </p>
             </div>
           </div>
 
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             For example, the kanji <span class="font-japanese">山</span>{" "}
             (mountain) can be read as:
           </p>
 
           <div class="grid gap-3 sm:grid-cols-2">
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="text-xs font-semibold uppercase tracking-wider text-white/30">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground/70 dark:text-white/30">
                 On-yomi
               </p>
-              <p class="mt-1 font-japanese text-xl text-white/80">
+              <p class="mt-1 font-japanese text-xl text-foreground/80 dark:text-white/80">
                 サン (san)
               </p>
             </div>
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="text-xs font-semibold uppercase tracking-wider text-white/30">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground/70 dark:text-white/30">
                 Kun-yomi
               </p>
-              <p class="mt-1 font-japanese text-xl text-white/80">
+              <p class="mt-1 font-japanese text-xl text-foreground/80 dark:text-white/80">
                 やま (yama)
               </p>
             </div>
           </div>
 
-          <p class="text-sm italic text-white/40">
+          <p class="text-sm italic text-muted-foreground dark:text-white/40">
             *There are also <span class="font-semibold">name</span> readings
             which are unique readings for people's names.
           </p>
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             In many cases, a single kanji will have{" "}
-            <span class="font-semibold text-white/90">multiple</span> on-yomi
+            <span class="font-semibold text-foreground dark:text-white/90">multiple</span> on-yomi
             and kun-yomi readings.
           </p>
-          <p class="text-sm italic text-white/50">
+          <p class="text-sm italic text-muted-foreground dark:text-white/50">
             You will see these whenever you look up a kanji in a dictionary.
           </p>
         </div>
@@ -244,48 +244,48 @@ function KanjiLesson() {
         </div>
 
         <div class="space-y-4">
-          <p class="text-center text-3xl font-bold italic text-white/90">
+          <p class="text-center text-3xl font-bold italic text-foreground dark:text-white/90">
             No!
           </p>
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             In fact, we recommend you{" "}
             <span class="italic underline">
               forget about the on-yomi/kun-yomi readings
             </span>
             . Instead, focus on learning{" "}
-            <span class="font-semibold text-white/90">vocabulary</span> and the
+            <span class="font-semibold text-foreground dark:text-white/90">vocabulary</span> and the
             English{" "}
-            <span class="font-semibold text-white/90">meanings</span> of the
+            <span class="font-semibold text-foreground dark:text-white/90">meanings</span> of the
             kanji you come across, exactly as you've been doing on{" "}
-            <span class="font-semibold text-white/90">jpdb</span>.
+            <span class="font-semibold text-foreground dark:text-white/90">jpdb</span>.
           </p>
 
-          <div class="space-y-4 leading-relaxed text-white/70">
+          <div class="space-y-4 leading-relaxed text-foreground/75 dark:text-white/70">
             <p>
-              <span class="font-semibold text-white/90">
+              <span class="font-semibold text-foreground dark:text-white/90">
                 Think about it like this:{" "}
               </span>
               In English, there are at least a dozen (maybe more) ways to
               pronounce the letter{" "}
-              <span class="font-black text-white/90">a</span>:
+              <span class="font-black text-foreground dark:text-white/90">a</span>:
             </p>
-            <ul class="space-y-2 text-sm text-white/60">
+            <ul class="space-y-2 text-sm text-muted-foreground dark:text-white/60">
               <li>A = /æ/ - Apple, Fantastic, Back, Track, Exactly</li>
               <li>A = /e/ - Any, Many, Said, Says, Thames</li>
               <li>A = /ɒ/ - What, Watch, Want, Was, Wash, Yacht</li>
               <li>A = /eɪ/ - Able, Age, Page, Paper, Day, Date, Stay</li>
               <li>A = /eə/ - Air, Share, Care, Spare, Stare, Rare</li>
             </ul>
-            <p class="text-center text-sm italic text-white/40">
+            <p class="text-center text-sm italic text-muted-foreground dark:text-white/40">
               The list goes on...
             </p>
             <p>
               But do you memorize each pronunciation of{" "}
-              <span class="font-black text-white/90">a</span> in isolation?{" "}
-              <span class="font-semibold text-white/90">Absolutely not.</span>{" "}
+              <span class="font-black text-foreground dark:text-white/90">a</span> in isolation?{" "}
+              <span class="font-semibold text-foreground dark:text-white/90">Absolutely not.</span>{" "}
               You learn the <em>vocabulary</em> and pick up the different
               pronunciations of{" "}
-              <span class="font-black text-white/90">a</span> as you go along.
+              <span class="font-black text-foreground dark:text-white/90">a</span> as you go along.
               The same goes for kanji readings.
             </p>
           </div>
@@ -314,7 +314,7 @@ function KanjiLesson() {
 function StudentBubble(props: { children: JSX.Element }) {
   return (
     <div class="flex items-end gap-3">
-      <Avatar class="size-7 shrink-0 ring-1 ring-white/10">
+      <Avatar class="size-7 shrink-0 ring-1 ring-border dark:ring-white/10">
         <AvatarImage src="/img/student.png" alt="student" />
         <AvatarFallback>S</AvatarFallback>
       </Avatar>
@@ -331,7 +331,7 @@ function SenseiBubble(props: { children: JSX.Element }) {
       <div class="max-w-[80%] rounded-2xl rounded-br-sm bg-indigo-500 px-4 py-2.5 text-sm leading-relaxed text-indigo-50 saturate-75">
         {props.children}
       </div>
-      <Avatar class="size-7 shrink-0 ring-1 ring-white/10">
+      <Avatar class="size-7 shrink-0 ring-1 ring-border dark:ring-white/10">
         <AvatarImage src="/img/guru.png" alt="sensei" />
         <AvatarFallback>T</AvatarFallback>
       </Avatar>

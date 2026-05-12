@@ -45,7 +45,7 @@ export function SmallAnimeCard(props: SmallAnimeCardProps) {
       <button
         type="button"
         onClick={() => props.onCardClick?.(props.media)}
-        class="animate-fade-up relative shrink-0 cursor-pointer text-left text-white ease-instant-hover-300 hover:scale-102 hover:brightness-115 [content-visibility:auto]"
+        class="animate-fade-up relative shrink-0 cursor-pointer text-left text-foreground ease-instant-hover-300 hover:scale-102 hover:brightness-105 dark:text-white dark:hover:brightness-115 [content-visibility:auto]"
         classList={{
           "w-38": !isLarge(),
           "w-56": isLarge(),

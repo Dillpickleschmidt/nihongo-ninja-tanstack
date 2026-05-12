@@ -33,7 +33,7 @@ function VerbConjMasu() {
   return (
     <div class="relative pb-32">
       {/* Background character */}
-      <span class="pointer-events-none absolute top-8 left-24 select-none font-japanese text-[10rem] leading-none text-white/[0.03] sm:top-11 sm:left-auto sm:right-8 sm:text-[11rem]">
+      <span class="pointer-events-none absolute top-8 left-24 select-none font-japanese text-[10rem] leading-none text-foreground/[0.04] dark:text-white/[0.03] sm:top-11 sm:left-auto sm:right-8 sm:text-[11rem]">
         動
       </span>
 
@@ -59,13 +59,13 @@ function VerbConjMasu() {
       <div class="space-y-14 px-8">
         {/* Intro */}
         <div class="space-y-4">
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             Today, you will learn the differences between godan (
-            <span class="font-japanese text-xl font-medium text-white/90">
+            <span class="font-japanese text-xl font-medium text-foreground dark:text-white/90">
               る
             </span>
             ) and ichidan (
-            <span class="font-japanese text-xl font-medium text-white/90">
+            <span class="font-japanese text-xl font-medium text-foreground dark:text-white/90">
               う
             </span>
             ) verbs and will learn how to conjugate them to describe habitual
@@ -85,17 +85,17 @@ function VerbConjMasu() {
         {/* The Two Types */}
         <div class="space-y-6">
           <SectionLabel>The two types of verbs</SectionLabel>
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             In Japanese, verbs are divided into two main categories.
           </p>
           <div class="grid grid-cols-2 gap-3">
-            <div class="rounded-lg bg-white/[0.04] p-4 text-center">
-              <p class="text-2xl font-semibold text-white/90">Godan</p>
-              <p class="mt-1 text-sm text-white/40">U-verbs</p>
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4 text-center">
+              <p class="text-2xl font-semibold text-foreground dark:text-white/90">Godan</p>
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">U-verbs</p>
             </div>
-            <div class="rounded-lg bg-white/[0.04] p-4 text-center">
-              <p class="text-2xl font-semibold text-white/90">Ichidan</p>
-              <p class="mt-1 text-sm text-white/40">Ru-verbs</p>
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4 text-center">
+              <p class="text-2xl font-semibold text-foreground dark:text-white/90">Ichidan</p>
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">Ru-verbs</p>
             </div>
           </div>
         </div>
@@ -103,61 +103,61 @@ function VerbConjMasu() {
         {/* Godan Verbs */}
         <div class="space-y-4">
           <SectionLabel>Godan verbs</SectionLabel>
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             Godan verbs are also known as{" "}
-            <span class="font-semibold text-white/90">U-verbs</span> because
+            <span class="font-semibold text-foreground dark:text-white/90">U-verbs</span> because
             they always end with an{" "}
-            <span class="font-black text-white/90">u</span> sound in their
+            <span class="font-black text-foreground dark:text-white/90">u</span> sound in their
             dictionary form.
           </p>
           <div class="space-y-2">
-            <div class="flex items-baseline justify-between gap-4 rounded-lg bg-white/[0.04] px-4 py-3">
-              <span class="font-japanese text-lg text-white/90">聞く</span>
-              <span class="text-sm text-white/40">
+            <div class="flex items-baseline justify-between gap-4 rounded-lg bg-card/60 dark:bg-white/[0.04] px-4 py-3">
+              <span class="font-japanese text-lg text-foreground dark:text-white/90">聞く</span>
+              <span class="text-sm text-muted-foreground dark:text-white/40">
                 (kik<u>u</u>) – to listen/ask
               </span>
             </div>
-            <div class="flex items-baseline justify-between gap-4 rounded-lg bg-white/[0.04] px-4 py-3">
-              <span class="font-japanese text-lg text-white/90">読む</span>
-              <span class="text-sm text-white/40">
+            <div class="flex items-baseline justify-between gap-4 rounded-lg bg-card/60 dark:bg-white/[0.04] px-4 py-3">
+              <span class="font-japanese text-lg text-foreground dark:text-white/90">読む</span>
+              <span class="text-sm text-muted-foreground dark:text-white/40">
                 (yom<u>u</u>) – to read
               </span>
             </div>
-            <div class="flex items-baseline justify-between gap-4 rounded-lg bg-white/[0.04] px-4 py-3">
-              <span class="font-japanese text-lg text-white/90">話す</span>
-              <span class="text-sm text-white/40">
+            <div class="flex items-baseline justify-between gap-4 rounded-lg bg-card/60 dark:bg-white/[0.04] px-4 py-3">
+              <span class="font-japanese text-lg text-foreground dark:text-white/90">話す</span>
+              <span class="text-sm text-muted-foreground dark:text-white/40">
                 (hanas<u>u</u>) – to speak
               </span>
             </div>
           </div>
 
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             Here are{" "}
-            <span class="font-semibold text-white/90">
+            <span class="font-semibold text-foreground dark:text-white/90">
               all possible endings
             </span>{" "}
             a godan verb might have (just for reference):
           </p>
           <div class="flex justify-center">
-            <div class="font-japanese flex max-w-lg flex-wrap items-center justify-center text-center text-3xl font-semibold text-white/80 *:mx-1">
+            <div class="font-japanese flex max-w-lg flex-wrap items-center justify-center text-center text-3xl font-semibold text-foreground/80 dark:text-white/80 *:mx-1">
               <span>う</span>
-              <span class="text-white/20">・</span>
+              <span class="text-muted-foreground/50 dark:text-white/20">・</span>
               <span>く</span>
-              <span class="text-white/20">・</span>
+              <span class="text-muted-foreground/50 dark:text-white/20">・</span>
               <span>ぐ</span>
-              <span class="text-white/20">・</span>
+              <span class="text-muted-foreground/50 dark:text-white/20">・</span>
               <span>す</span>
-              <span class="text-white/20">・</span>
+              <span class="text-muted-foreground/50 dark:text-white/20">・</span>
               <span>つ</span>
-              <span class="text-white/20">・</span>
+              <span class="text-muted-foreground/50 dark:text-white/20">・</span>
               <span>ぬ</span>
-              <span class="text-white/20">・</span>
+              <span class="text-muted-foreground/50 dark:text-white/20">・</span>
               <span>ぶ</span>
-              <span class="text-white/20">・</span>
+              <span class="text-muted-foreground/50 dark:text-white/20">・</span>
               <span>む</span>
-              <span class="text-white/20">・</span>
+              <span class="text-muted-foreground/50 dark:text-white/20">・</span>
               <span>
-                る<span class="text-lg text-white/40">**</span>
+                る<span class="text-lg text-muted-foreground dark:text-white/40">**</span>
               </span>
             </div>
           </div>
@@ -166,35 +166,35 @@ function VerbConjMasu() {
         {/* Ichidan Verbs */}
         <div class="space-y-4">
           <SectionLabel>Ichidan verbs</SectionLabel>
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             Ichidan verbs are also called{" "}
-            <span class="font-semibold text-white/90">Ru‑verbs</span> because
+            <span class="font-semibold text-foreground dark:text-white/90">Ru‑verbs</span> because
             they end with either -iru or -eru.
           </p>
           <div class="space-y-2">
-            <div class="flex items-baseline justify-between gap-4 rounded-lg bg-white/[0.04] px-4 py-3">
-              <span class="font-japanese text-lg text-white/90">食べる</span>
-              <span class="text-sm text-white/40">
+            <div class="flex items-baseline justify-between gap-4 rounded-lg bg-card/60 dark:bg-white/[0.04] px-4 py-3">
+              <span class="font-japanese text-lg text-foreground dark:text-white/90">食べる</span>
+              <span class="text-sm text-muted-foreground dark:text-white/40">
                 (tab<u>eru</u>) – to eat
               </span>
             </div>
-            <div class="flex items-baseline justify-between gap-4 rounded-lg bg-white/[0.04] px-4 py-3">
-              <span class="font-japanese text-lg text-white/90">見る</span>
-              <span class="text-sm text-white/40">
+            <div class="flex items-baseline justify-between gap-4 rounded-lg bg-card/60 dark:bg-white/[0.04] px-4 py-3">
+              <span class="font-japanese text-lg text-foreground dark:text-white/90">見る</span>
+              <span class="text-sm text-muted-foreground dark:text-white/40">
                 (m<u>iru</u>) – to see/look/watch
               </span>
             </div>
-            <div class="flex items-baseline justify-between gap-4 rounded-lg bg-white/[0.04] px-4 py-3">
-              <span class="font-japanese text-lg text-white/90">起きる</span>
-              <span class="text-sm text-white/40">
+            <div class="flex items-baseline justify-between gap-4 rounded-lg bg-card/60 dark:bg-white/[0.04] px-4 py-3">
+              <span class="font-japanese text-lg text-foreground dark:text-white/90">起きる</span>
+              <span class="text-sm text-muted-foreground dark:text-white/40">
                 (ok<u>iru</u>) – to wake up
               </span>
             </div>
           </div>
-          <p class="text-sm text-white/50">
+          <p class="text-sm text-muted-foreground dark:text-white/50">
             Calling them just "ru‑verbs" is confusing, since some godan verbs
             also end in る (例: 乗る noru). It's better to call them{" "}
-            <span class="font-semibold text-white/70">ichidan</span>.
+            <span class="font-semibold text-foreground/75 dark:text-white/70">ichidan</span>.
           </p>
         </div>
 
@@ -212,7 +212,7 @@ function VerbConjMasu() {
             credit="KANJI - Link"
           />
 
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             The{" "}
             <span class="font-japanese text-xl font-semibold text-emerald-500">
               ます
@@ -222,28 +222,28 @@ function VerbConjMasu() {
           </p>
 
           <div class="space-y-3">
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-white/30">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground/70 dark:text-white/30">
                 Habitual actions
               </p>
-              <p class="font-japanese text-lg text-white/80">
+              <p class="font-japanese text-lg text-foreground/80 dark:text-white/80">
                 <Furigana furigana={<span class="text-sm">まいにち</span>}>
                   毎日
                 </Furigana>
                 日本語を勉強します。
               </p>
-              <p class="mt-1 text-sm text-white/40">
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">
                 I study Japanese every day.
               </p>
-              <p class="mt-1 text-xs italic text-white/30">
+              <p class="mt-1 text-xs italic text-muted-foreground/70 dark:text-white/30">
                 *This uses the を particle, which you'll learn shortly.
               </p>
             </div>
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-white/30">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground/70 dark:text-white/30">
                 Future tense
               </p>
-              <p class="font-japanese text-lg text-white/80">
+              <p class="font-japanese text-lg text-foreground/80 dark:text-white/80">
                 <Furigana furigana={<span class="text-sm">あした</span>}>
                   明日
                 </Furigana>
@@ -252,10 +252,10 @@ function VerbConjMasu() {
                 </Romaji>
                 に行きます。
               </p>
-              <p class="mt-1 text-sm text-white/40">
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">
                 I will go to Tokyo tomorrow.
               </p>
-              <p class="mt-1 text-xs italic text-white/30">
+              <p class="mt-1 text-xs italic text-muted-foreground/70 dark:text-white/30">
                 *This uses the に particle, which you'll learn shortly.
               </p>
             </div>
@@ -269,35 +269,35 @@ function VerbConjMasu() {
             <span class="font-japanese text-emerald-500">ます</span> form
             (godan)
           </SectionLabel>
-          <ol class="space-y-2 leading-relaxed text-white/70">
+          <ol class="space-y-2 leading-relaxed text-foreground/75 dark:text-white/70">
             <li>
-              <span class="font-semibold text-white/90">1.</span> Identify the
+              <span class="font-semibold text-foreground dark:text-white/90">1.</span> Identify the
               last syllable.
             </li>
             <li>
-              <span class="font-semibold text-white/90">2.</span> Change it to
+              <span class="font-semibold text-foreground dark:text-white/90">2.</span> Change it to
               its "i" counterpart.
             </li>
             <li>
-              <span class="font-semibold text-white/90">3.</span> Add{" "}
+              <span class="font-semibold text-foreground dark:text-white/90">3.</span> Add{" "}
               <span class="font-japanese text-emerald-500">ます</span>.
             </li>
           </ol>
           <GodanEndingChart />
-          <p class="text-sm italic text-white/40">
+          <p class="text-sm italic text-muted-foreground dark:text-white/40">
             *Look at the hiragana chart: shift column「う」→「い」.
           </p>
 
           <div class="space-y-2">
-            <p class="text-sm font-medium text-white/40">Examples</p>
+            <p class="text-sm font-medium text-muted-foreground dark:text-white/40">Examples</p>
             <div class="grid gap-2 sm:grid-cols-3">
-              <div class="rounded-lg bg-white/[0.04] px-4 py-3 text-center font-japanese text-lg text-white/80">
+              <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] px-4 py-3 text-center font-japanese text-lg text-foreground/80 dark:text-white/80">
                 聞く → 聞きます
               </div>
-              <div class="rounded-lg bg-white/[0.04] px-4 py-3 text-center font-japanese text-lg text-white/80">
+              <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] px-4 py-3 text-center font-japanese text-lg text-foreground/80 dark:text-white/80">
                 読む → 読みます
               </div>
-              <div class="rounded-lg bg-white/[0.04] px-4 py-3 text-center font-japanese text-lg text-white/80">
+              <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] px-4 py-3 text-center font-japanese text-lg text-foreground/80 dark:text-white/80">
                 話す → 話します
               </div>
             </div>
@@ -311,27 +311,27 @@ function VerbConjMasu() {
             <span class="font-japanese text-emerald-500">ます</span> form
             (ichidan)
           </SectionLabel>
-          <ol class="space-y-2 leading-relaxed text-white/70">
+          <ol class="space-y-2 leading-relaxed text-foreground/75 dark:text-white/70">
             <li>
-              <span class="font-semibold text-white/90">1.</span> Remove the
+              <span class="font-semibold text-foreground dark:text-white/90">1.</span> Remove the
               final る.
             </li>
             <li>
-              <span class="font-semibold text-white/90">2.</span> Add{" "}
+              <span class="font-semibold text-foreground dark:text-white/90">2.</span> Add{" "}
               <span class="font-japanese text-emerald-500">ます</span>.
             </li>
           </ol>
 
           <div class="space-y-2">
-            <p class="text-sm font-medium text-white/40">Examples</p>
+            <p class="text-sm font-medium text-muted-foreground dark:text-white/40">Examples</p>
             <div class="grid gap-2 sm:grid-cols-3">
-              <div class="rounded-lg bg-white/[0.04] px-4 py-3 text-center font-japanese text-lg text-white/80">
+              <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] px-4 py-3 text-center font-japanese text-lg text-foreground/80 dark:text-white/80">
                 食べる → 食べます
               </div>
-              <div class="rounded-lg bg-white/[0.04] px-4 py-3 text-center font-japanese text-lg text-white/80">
+              <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] px-4 py-3 text-center font-japanese text-lg text-foreground/80 dark:text-white/80">
                 見る → 見ます
               </div>
-              <div class="rounded-lg bg-white/[0.04] px-4 py-3 text-center font-japanese text-lg text-white/80">
+              <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] px-4 py-3 text-center font-japanese text-lg text-foreground/80 dark:text-white/80">
                 起きる → 起きます
               </div>
             </div>
@@ -341,7 +341,7 @@ function VerbConjMasu() {
         {/* Practice */}
         <div class="space-y-5">
           <h3 class="text-center text-2xl font-bold">Practice</h3>
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             Conjugate the following verbs into{" "}
             <span class="font-japanese text-emerald-500">ます</span> form.
           </p>
@@ -351,27 +351,27 @@ function VerbConjMasu() {
         {/* Irregular Verbs */}
         <div class="space-y-4">
           <SectionLabel>Irregular verbs</SectionLabel>
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             In addition to godan and ichidan verbs, Japanese has a few irregular
             verbs:
           </p>
 
           <div class="grid gap-3 sm:grid-cols-2">
-            <div class="rounded-lg bg-white/[0.04] p-4 text-center">
-              <p class="font-japanese text-2xl text-white/90">する</p>
-              <p class="text-sm text-white/40">to do</p>
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4 text-center">
+              <p class="font-japanese text-2xl text-foreground dark:text-white/90">する</p>
+              <p class="text-sm text-muted-foreground dark:text-white/40">to do</p>
               <p class="mt-2 font-japanese text-lg text-emerald-500">
                 → します
               </p>
             </div>
-            <div class="rounded-lg bg-white/[0.04] p-4 text-center">
-              <p class="font-japanese text-2xl text-white/90">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4 text-center">
+              <p class="font-japanese text-2xl text-foreground dark:text-white/90">
                 <Furigana furigana={<span class="text-base">く</span>}>
                   来
                 </Furigana>
                 る
               </p>
-              <p class="text-sm text-white/40">to come</p>
+              <p class="text-sm text-muted-foreground dark:text-white/40">to come</p>
               <p class="mt-2 font-japanese text-lg text-emerald-500">
                 → 来ます
               </p>
@@ -381,22 +381,22 @@ function VerbConjMasu() {
 
         {/* Special note on する */}
         <AsideBlock label="Special note on する">
-          <p class="mt-2 text-sm leading-relaxed text-white/60">
+          <p class="mt-2 text-sm leading-relaxed text-muted-foreground dark:text-white/60">
             <span class="font-japanese">する</span> is especially useful: it
             combines with nouns to form compound verbs.
           </p>
-          <div class="mt-3 space-y-1.5 text-sm text-white/60">
+          <div class="mt-3 space-y-1.5 text-sm text-muted-foreground dark:text-white/60">
             <p class="font-japanese">
               勉強する → 勉強します{" "}
-              <span class="not-italic text-white/40">(to study)</span>
+              <span class="not-italic text-muted-foreground dark:text-white/40">(to study)</span>
             </p>
             <p class="font-japanese">
               練習する → 練習します{" "}
-              <span class="not-italic text-white/40">(to practice)</span>
+              <span class="not-italic text-muted-foreground dark:text-white/40">(to practice)</span>
             </p>
             <p class="font-japanese">
               掃除する → 掃除します{" "}
-              <span class="not-italic text-white/40">(to clean)</span>
+              <span class="not-italic text-muted-foreground dark:text-white/40">(to clean)</span>
             </p>
           </div>
         </AsideBlock>
@@ -404,12 +404,12 @@ function VerbConjMasu() {
         {/* Non-ichidan iru/eru */}
         <div class="space-y-4">
           <SectionLabel>Non‑ichidan iru/eru verbs</SectionLabel>
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             Some verbs ending in いる or える actually behave as godan instead.
             There are only about ten of these; see chart:
           </p>
           <GodanRuVerbsTable />
-          <p class="text-xs text-white/30">Source: ToKini Andy</p>
+          <p class="text-xs text-muted-foreground/70 dark:text-white/30">Source: ToKini Andy</p>
         </div>
 
         {/* Harder practice */}
@@ -420,7 +420,7 @@ function VerbConjMasu() {
 
         {/* Note on tense */}
         <AsideBlock label='Special note on "present tense"'>
-          <p class="mt-2 text-sm leading-relaxed text-white/60">
+          <p class="mt-2 text-sm leading-relaxed text-muted-foreground dark:text-white/60">
             Some textbooks call{" "}
             <span class="font-japanese text-emerald-500">ます</span> "present
             tense." It's actually habitual/future. For progressive ("I am
@@ -431,7 +431,7 @@ function VerbConjMasu() {
         {/* がんばって */}
         <div class="text-center">
           <Romaji romaji="Do your best!">
-            <span class="font-japanese text-2xl font-semibold text-white/90">
+            <span class="font-japanese text-2xl font-semibold text-foreground dark:text-white/90">
               がんばってください！
             </span>
           </Romaji>
@@ -464,8 +464,8 @@ function GodanEndingChart() {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead class="text-center text-xs font-semibold tracking-wider text-white/30">Ending</TableHead>
-          <TableHead class="text-center text-xs font-semibold tracking-wider text-white/30">Changes to</TableHead>
+          <TableHead class="text-center text-xs font-semibold tracking-wider text-muted-foreground/70 dark:text-white/30">Ending</TableHead>
+          <TableHead class="text-center text-xs font-semibold tracking-wider text-muted-foreground/70 dark:text-white/30">Changes to</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody class="text-center text-lg font-medium">
@@ -551,8 +551,8 @@ export default function GodanRuVerbsTable() {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead class="text-center text-xs font-semibold tracking-wider text-white/30">Dictionary Form</TableHead>
-          <TableHead class="text-center text-xs font-semibold tracking-wider text-white/30">
+          <TableHead class="text-center text-xs font-semibold tracking-wider text-muted-foreground/70 dark:text-white/30">Dictionary Form</TableHead>
+          <TableHead class="text-center text-xs font-semibold tracking-wider text-muted-foreground/70 dark:text-white/30">
             <span class="font-japanese text-sm">ます</span> Form
           </TableHead>
         </TableRow>
@@ -794,10 +794,10 @@ function IruEruPractice() {
         {(verb) => (
           <div class="mb-4 flex items-center">
             <div class="font-japanese w-20">{verb}</div>
-            <div class="mr-4 text-white/40">→</div>
+            <div class="mr-4 text-muted-foreground dark:text-white/40">→</div>
             <TextField class="w-48">
               <WanaKanaWrapper enabled={true} watch={verb}>
-                <TextFieldInput class="font-japanese text-lg bg-white/4" />
+                <TextFieldInput class="font-japanese text-lg bg-card/70 dark:bg-white/4" />
               </WanaKanaWrapper>
             </TextField>
           </div>
@@ -818,10 +818,10 @@ function IrregularPractice() {
         {(verb) => (
           <div class="mb-4 flex items-center">
             <div class="font-japanese w-28">{verb}</div>
-            <div class="mr-4 text-white/40">→</div>
+            <div class="mr-4 text-muted-foreground dark:text-white/40">→</div>
             <TextField class="w-48">
               <WanaKanaWrapper enabled={true} watch={verb}>
-                <TextFieldInput class="font-japanese text-lg bg-white/4" />
+                <TextFieldInput class="font-japanese text-lg bg-card/70 dark:bg-white/4" />
               </WanaKanaWrapper>
             </TextField>
           </div>

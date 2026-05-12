@@ -34,7 +34,7 @@ export function ChapterSection(props: ChapterSectionProps) {
       >
         <div class={cn(hasExternalResources() && "min-w-0 flex-1")}>
           <Show when={props.chapter.description}>
-            <p class="text-neutral-300">{props.chapter.description}</p>
+            <p class="text-muted-foreground dark:text-neutral-300">{props.chapter.description}</p>
           </Show>
 
           <Show
@@ -43,7 +43,7 @@ export function ChapterSection(props: ChapterSectionProps) {
             <ul class="space-y-1">
               <For each={props.chapter.features}>
                 {(feature) => (
-                  <li class="flex items-center gap-2 text-sm text-neutral-400">
+                  <li class="flex items-center gap-2 text-sm text-muted-foreground dark:text-neutral-400">
                     <span class="h-1.5 w-1.5 rounded-full bg-primary" />
                     {feature}
                   </li>

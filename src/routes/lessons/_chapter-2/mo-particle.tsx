@@ -22,7 +22,7 @@ function MoParticle() {
   return (
     <div class="relative pb-32">
       {/* Background character */}
-      <span class="pointer-events-none absolute top-8 left-24 select-none font-japanese text-[10rem] leading-none text-white/[0.03] sm:top-11 sm:left-auto sm:right-8 sm:text-[11rem]">
+      <span class="pointer-events-none absolute top-8 left-24 select-none font-japanese text-[10rem] leading-none text-foreground/[0.04] dark:text-white/[0.03] sm:top-11 sm:left-auto sm:right-8 sm:text-[11rem]">
         も
       </span>
 
@@ -47,7 +47,7 @@ function MoParticle() {
 
       <div class="space-y-14 px-8">
         {/* Intro */}
-        <div class="space-y-4 leading-relaxed text-white/70">
+        <div class="space-y-4 leading-relaxed text-foreground/75 dark:text-white/70">
           <p>
             The{" "}
             <span class="font-japanese text-xl font-semibold text-purple-400">
@@ -55,9 +55,9 @@ function MoParticle() {
             </span>{" "}
             (mo) particle in Japanese is used to indicate that something is
             similar or in addition to something else. It translates to{" "}
-            <span class="font-bold italic text-white/90">also</span>,{" "}
-            <span class="font-bold italic text-white/90">too</span>, or{" "}
-            <span class="font-bold italic text-white/90">as well</span> in
+            <span class="font-bold italic text-foreground dark:text-white/90">also</span>,{" "}
+            <span class="font-bold italic text-foreground dark:text-white/90">too</span>, or{" "}
+            <span class="font-bold italic text-foreground dark:text-white/90">as well</span> in
             English. Understanding where to place{" "}
             <span class="font-japanese text-xl font-semibold text-purple-400">
               も
@@ -74,13 +74,13 @@ function MoParticle() {
                 opacity: 0.2,
               }}
             />
-            <div class="relative rounded-xl border-2 border-orange-400 bg-white/[0.04] p-6 backdrop-blur-sm">
+            <div class="relative rounded-xl border-2 border-orange-400 bg-card/60 dark:bg-white/[0.04] p-6 backdrop-blur-sm">
               <div class="space-y-2 text-center">
                 <p class="text-2xl">
                   A{" "}
                   <span class="font-japanese font-bold text-sky-400">は</span> X
                   <span class="font-japanese">です。</span>
-                  <span class="ml-4 text-xl text-white/50">→ A is X.</span>
+                  <span class="ml-4 text-xl text-muted-foreground dark:text-white/50">→ A is X.</span>
                 </p>
                 <p class="text-2xl">
                   B{" "}
@@ -88,7 +88,7 @@ function MoParticle() {
                     も
                   </span>{" "}
                   X<span class="font-japanese">です。</span>
-                  <span class="ml-4 text-xl text-white/50">
+                  <span class="ml-4 text-xl text-muted-foreground dark:text-white/50">
                     → B is <span class="text-purple-400">also</span> X.
                   </span>
                 </p>
@@ -111,14 +111,14 @@ function MoParticle() {
           <SectionLabel>Basic usage</SectionLabel>
 
           <div class="space-y-3">
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-white/30">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground/70 dark:text-white/30">
                 Adding similar information
               </p>
-              <div class="space-y-2 text-sm leading-relaxed text-white/60">
+              <div class="space-y-2 text-sm leading-relaxed text-muted-foreground dark:text-white/60">
                 <p>
                   A:{" "}
-                  <span class="font-japanese text-base text-white/80">
+                  <span class="font-japanese text-base text-foreground/80 dark:text-white/80">
                     <Furigana furigana={<span class="text-xs">わたし</span>}>
                       私
                     </Furigana>
@@ -132,7 +132,7 @@ function MoParticle() {
                 </p>
                 <p>
                   B:{" "}
-                  <span class="font-japanese text-base text-white/80">
+                  <span class="font-japanese text-base text-foreground/80 dark:text-white/80">
                     <Furigana furigana={<span class="text-xs">わたし</span>}>
                       私
                     </Furigana>
@@ -147,13 +147,13 @@ function MoParticle() {
               </div>
             </div>
 
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-white/30">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground/70 dark:text-white/30">
                 Listing multiple similar items
               </p>
-              <div class="text-sm leading-relaxed text-white/60">
+              <div class="text-sm leading-relaxed text-muted-foreground dark:text-white/60">
                 <p>
-                  <span class="font-japanese text-base text-white/80">
+                  <span class="font-japanese text-base text-foreground/80 dark:text-white/80">
                     <Furigana furigana={<span class="text-xs">ねこ</span>}>
                       猫
                     </Furigana>
@@ -167,14 +167,14 @@ function MoParticle() {
                     </Furigana>
                     きです。
                   </span>{" "}
-                  → <span class="text-white/40">(I)</span> like <em>both</em>{" "}
+                  → <span class="text-muted-foreground dark:text-white/40">(I)</span> like <em>both</em>{" "}
                   cats <em>and</em> dogs.
                 </p>
               </div>
             </div>
           </div>
 
-          <p class="text-center text-sm italic text-white/50">
+          <p class="text-center text-sm italic text-muted-foreground dark:text-white/50">
             **The particle <span class="font-japanese not-italic">も</span> must
             be placed directly after the noun it is modifying.**
           </p>
@@ -184,10 +184,10 @@ function MoParticle() {
         <div class="space-y-4">
           <SectionLabel>Example sentences</SectionLabel>
           <div class="space-y-3">
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <div class="space-y-1 text-sm leading-relaxed text-white/60">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <div class="space-y-1 text-sm leading-relaxed text-muted-foreground dark:text-white/60">
                 <p>
-                  <span class="font-japanese text-base text-white/80">
+                  <span class="font-japanese text-base text-foreground/80 dark:text-white/80">
                     <Furigana furigana={<span class="text-xs">たなか</span>}>
                       田中
                     </Furigana>
@@ -202,7 +202,7 @@ function MoParticle() {
                   → Tanaka is Japanese.
                 </p>
                 <p>
-                  <span class="font-japanese text-base text-white/80">
+                  <span class="font-japanese text-base text-foreground/80 dark:text-white/80">
                     <Furigana furigana={<span class="text-xs">いしだ</span>}>
                       石田
                     </Furigana>
@@ -220,10 +220,10 @@ function MoParticle() {
               </div>
             </div>
 
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <div class="space-y-1 text-sm leading-relaxed text-white/60">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <div class="space-y-1 text-sm leading-relaxed text-muted-foreground dark:text-white/60">
                 <p>
-                  <span class="font-japanese text-base text-white/80">
+                  <span class="font-japanese text-base text-foreground/80 dark:text-white/80">
                     これは
                     <Furigana furigana={<span class="text-xs">わたし</span>}>
                       私
@@ -237,7 +237,7 @@ function MoParticle() {
                   → This is my bag.
                 </p>
                 <p>
-                  <span class="font-japanese text-base text-white/80">
+                  <span class="font-japanese text-base text-foreground/80 dark:text-white/80">
                     これ
                     <span class="text-purple-400">も</span>
                     <Furigana furigana={<span class="text-xs">わたし</span>}>
@@ -254,10 +254,10 @@ function MoParticle() {
               </div>
             </div>
 
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <div class="space-y-1 text-sm leading-relaxed text-white/60">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <div class="space-y-1 text-sm leading-relaxed text-muted-foreground dark:text-white/60">
                 <p>
-                  <span class="font-japanese text-base text-white/80">
+                  <span class="font-japanese text-base text-foreground/80 dark:text-white/80">
                     この
                     <Furigana furigana={<span class="text-xs">かばん</span>}>
                       鞄
@@ -275,7 +275,7 @@ function MoParticle() {
                   → This bag is Tanaka's bag.
                 </p>
                 <p>
-                  <span class="font-japanese text-base text-white/80">
+                  <span class="font-japanese text-base text-foreground/80 dark:text-white/80">
                     あの
                     <Furigana furigana={<span class="text-xs">かばん</span>}>
                       鞄
@@ -304,7 +304,7 @@ function MoParticle() {
             Positioning{" "}
             <span class="font-japanese text-purple-400">も</span> in sentences
           </SectionLabel>
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             The position of{" "}
             <span class="font-japanese text-xl font-semibold text-purple-400">
               も
@@ -313,8 +313,8 @@ function MoParticle() {
           </p>
 
           <div class="space-y-3">
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="font-japanese text-lg text-white/90">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="font-japanese text-lg text-foreground dark:text-white/90">
                 <Furigana furigana={<span class="text-xs">わたし</span>}>
                   私
                 </Furigana>
@@ -328,13 +328,13 @@ function MoParticle() {
                 </Furigana>
                 です。
               </p>
-              <p class="mt-1 text-sm text-white/50">
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/50">
                 → I'm <span class="text-purple-400">also</span> a Japanese
                 major.
               </p>
             </div>
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="font-japanese text-lg text-white/90">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="font-japanese text-lg text-foreground dark:text-white/90">
                 <Furigana furigana={<span class="text-xs">わたし</span>}>
                   私
                 </Furigana>
@@ -348,7 +348,7 @@ function MoParticle() {
                 </Furigana>
                 です。
               </p>
-              <p class="mt-1 text-sm text-white/50">
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/50">
                 → As for me, I{" "}
                 <span class="text-purple-400">also</span> have a Japanese
                 major.
@@ -356,7 +356,7 @@ function MoParticle() {
             </div>
           </div>
 
-          <p class="text-sm italic text-white/40">
+          <p class="text-sm italic text-muted-foreground dark:text-white/40">
             *Place <span class="font-japanese not-italic">も</span> after the
             noun there are more than one of.
           </p>
@@ -368,7 +368,7 @@ function MoParticle() {
             When not to use{" "}
             <span class="font-japanese text-purple-400">も</span>
           </SectionLabel>
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             For questions using words like{" "}
             <Furigana furigana={<span class="text-sm">だれ</span>}>誰</Furigana>
             ,{" "}
@@ -385,7 +385,7 @@ function MoParticle() {
               <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-red-400/60">
                 Incorrect
               </p>
-              <p class="font-japanese text-xl text-white/50 line-through">
+              <p class="font-japanese text-xl text-muted-foreground dark:text-white/50 line-through">
                 <Furigana furigana={<span class="text-base">だれ</span>}>
                   誰
                 </Furigana>
@@ -396,11 +396,11 @@ function MoParticle() {
                 ますか。
               </p>
             </div>
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-white/30">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground/70 dark:text-white/30">
                 Correct
               </p>
-              <p class="font-japanese text-xl text-white/90">
+              <p class="font-japanese text-xl text-foreground dark:text-white/90">
                 <Furigana furigana={<span class="text-base">だれ</span>}>
                   誰
                 </Furigana>
@@ -410,16 +410,16 @@ function MoParticle() {
                 </Furigana>
                 ますか。
               </p>
-              <p class="mt-1 text-sm text-white/40">→ Who is coming?</p>
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">→ Who is coming?</p>
             </div>
           </div>
 
           <AsideBlock>
-            <p class="text-sm leading-relaxed text-white/60">
+            <p class="text-sm leading-relaxed text-muted-foreground dark:text-white/60">
               If you want to specifically say "who else", you'd use ほかに.
             </p>
-            <p class="mt-2 text-sm text-white/60">
-              <span class="font-japanese text-base text-white/80">
+            <p class="mt-2 text-sm text-muted-foreground dark:text-white/60">
+              <span class="font-japanese text-base text-foreground/80 dark:text-white/80">
                 ほかに誰が来ますか。
               </span>{" "}
               → Who else is coming?
@@ -433,11 +433,11 @@ function MoParticle() {
 
           <div class="space-y-6">
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 Someone asks if Tanaka likes dogs. You want to say "yes, and he
                 also likes cats."
               </p>
-              <p class="text-sm text-white/40">
+              <p class="text-sm text-muted-foreground dark:text-white/40">
                 *<span class="font-japanese">猫</span> (ねこ) → cat
               </p>
               <SelectText
@@ -451,7 +451,7 @@ function MoParticle() {
             </div>
 
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 Someone asks who is coming to the party.
               </p>
               <SelectText
@@ -463,7 +463,7 @@ function MoParticle() {
             </div>
 
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 Which sentence correctly states that both your brother and
                 sister like shoes?
               </p>
@@ -482,13 +482,13 @@ function MoParticle() {
         {/* Fill in Blanks */}
         <div class="space-y-4">
           <SectionLabel>Fill in the blanks</SectionLabel>
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             Where can <span class="font-japanese">も</span> appear in a
             sentence? Fill in the blanks. If{" "}
             <span class="font-japanese">も</span> cannot be used, then write an
             X.
           </p>
-          <div class="font-japanese space-y-6 text-xl text-white/90">
+          <div class="font-japanese space-y-6 text-xl text-foreground dark:text-white/90">
             <div>
               <div class="flex flex-wrap items-center gap-2">
                 あれ
@@ -508,7 +508,7 @@ function MoParticle() {
                 </TextField>
                 です。
               </div>
-              <p class="mt-1 text-sm text-white/40">
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">
                 *<span class="font-japanese">高い</span> → expensive
               </p>
             </div>
@@ -544,7 +544,7 @@ function MoParticle() {
                 </TextField>
                 コンビニです。
               </div>
-              <p class="mt-1 text-sm text-white/40">
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">
                 *<span class="font-japanese">コンビニ</span> → convenience
                 store
               </p>

@@ -120,8 +120,8 @@ export function SettingsPage(props: SettingsPageProps) {
       {/* Header */}
       <div class="mb-10">
         <div class="mb-2 flex items-center gap-2">
-          <Hash class="size-4 text-violet-400" />
-          <span class="text-xs font-semibold tracking-widest text-violet-400/90 uppercase">
+          <Hash class="size-4 text-violet-600 dark:text-violet-400" />
+          <span class="text-xs font-semibold tracking-widest text-violet-600 uppercase dark:text-violet-400/90">
             Counter Practice
           </span>
         </div>
@@ -131,7 +131,7 @@ export function SettingsPage(props: SettingsPageProps) {
         <p class="text-muted-foreground mt-2 max-w-lg text-sm leading-relaxed md:text-base">
           Practice Japanese counters and their sound change rules.
         </p>
-        <div class="mt-3 flex items-center gap-2 text-xs text-white/35">
+        <div class="mt-3 flex items-center gap-2 text-xs text-muted-foreground/80 dark:text-white/35">
           <span>{selectedCount()} selected</span>
           <span>•</span>
           <span>{props.settings().amount} questions</span>
@@ -141,26 +141,26 @@ export function SettingsPage(props: SettingsPageProps) {
       <div class="space-y-6 pb-32">
         {/* Counter selection */}
         <section class="space-y-4">
-          <h2 class="text-sm font-semibold uppercase tracking-wide text-white/40">
+          <h2 class="text-sm font-semibold uppercase tracking-wide text-muted-foreground dark:text-white/40">
             Select Counters
           </h2>
-          <div class="mb-4 flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-4">
+          <div class="mb-4 flex flex-wrap items-center justify-between gap-3 border-b border-border/70 dark:border-white/10 pb-4">
             <div class="flex items-center gap-3">
               <span
                 class={cn(
                   "flex size-4 shrink-0 items-center justify-center rounded-full border text-[10px] transition-colors",
                   allSelected()
-                    ? "border-violet-400 bg-violet-500 text-white"
-                    : "border-white/30 bg-white/10 text-transparent",
+                    ? "border-violet-500 bg-violet-500 text-white"
+                    : "border-border bg-muted text-transparent dark:border-white/30 dark:bg-white/10",
                 )}
               >
                 ✓
               </span>
               <div class="leading-tight">
-                <p class="text-sm text-white/75">
+                <p class="text-sm text-foreground/75 dark:text-white/75">
                   {allSelected() ? "All counters selected" : "Custom selection"}
                 </p>
-                <p class="text-xs text-white/35">
+                <p class="text-xs text-muted-foreground/80 dark:text-white/35">
                   {selectedCount()} of {props.allPatterns.length} selected
                 </p>
               </div>
@@ -173,8 +173,8 @@ export function SettingsPage(props: SettingsPageProps) {
                 class={cn(
                   "rounded-full px-3 py-1 text-xs font-medium transition-colors",
                   allSelected()
-                    ? "cursor-default text-white/20"
-                    : "text-white/40 hover:bg-white/10 hover:text-white/60",
+                    ? "cursor-default text-muted-foreground/50 dark:text-white/20"
+                    : "text-muted-foreground hover:bg-accent hover:text-foreground dark:text-white/40 dark:hover:bg-white/10 dark:hover:text-white/60",
                 )}
               >
                 Select All
@@ -186,8 +186,8 @@ export function SettingsPage(props: SettingsPageProps) {
                 class={cn(
                   "rounded-full px-3 py-1 text-xs font-medium transition-colors",
                   selectedCount() === 1
-                    ? "cursor-default text-white/20"
-                    : "text-white/40 hover:bg-white/10 hover:text-white/60",
+                    ? "cursor-default text-muted-foreground/50 dark:text-white/20"
+                    : "text-muted-foreground hover:bg-accent hover:text-foreground dark:text-white/40 dark:hover:bg-white/10 dark:hover:text-white/60",
                 )}
               >
                 Unselect All
@@ -208,10 +208,10 @@ export function SettingsPage(props: SettingsPageProps) {
                   <div>
                     <div class="mb-3 flex items-center justify-between">
                       <div>
-                        <h3 class="text-sm font-medium text-white/85">
+                        <h3 class="text-sm font-medium text-foreground/85 dark:text-white/85">
                           {group.title}
                         </h3>
-                        <p class="mt-1 text-xs text-white/35">
+                        <p class="mt-1 text-xs text-muted-foreground/80 dark:text-white/35">
                           Chapter {group.chapter} · {groupSelectedCount()}/{group.patterns.length} selected
                         </p>
                       </div>
@@ -220,7 +220,7 @@ export function SettingsPage(props: SettingsPageProps) {
                         onClick={() =>
                           toggleGroup(groupIds(), !groupAllSelected())
                         }
-                        class="rounded-full px-3 py-1 text-xs font-medium text-white/40 transition-colors hover:bg-white/10 hover:text-white/60"
+                        class="rounded-full px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground dark:text-white/40 dark:hover:bg-white/10 dark:hover:text-white/60"
                       >
                         {groupAllSelected() ? "Clear group" : "Select group"}
                       </button>
@@ -278,7 +278,7 @@ export function SettingsPage(props: SettingsPageProps) {
 
         {/* Options */}
         <section class="space-y-4">
-          <h2 class="text-sm font-semibold uppercase tracking-wide text-white/40">
+          <h2 class="text-sm font-semibold uppercase tracking-wide text-muted-foreground dark:text-white/40">
             Options
           </h2>
           <div class="mb-4 flex flex-wrap gap-2">
@@ -289,8 +289,8 @@ export function SettingsPage(props: SettingsPageProps) {
                   onClick={() => setAmount(amount)}
                   class="rounded-full px-3 py-1 text-xs font-medium transition-colors"
                   classList={{
-                    "bg-violet-500/12 text-violet-300": props.settings().amount === amount,
-                    "text-white/40 hover:bg-white/10 hover:text-white/60": props.settings().amount !== amount,
+                    "bg-violet-500/12 text-violet-600 dark:text-violet-300": props.settings().amount === amount,
+                    "text-muted-foreground hover:bg-accent hover:text-foreground dark:text-white/40 dark:hover:bg-white/10 dark:hover:text-white/60": props.settings().amount !== amount,
                   }}
                 >
                   {amount}
@@ -300,7 +300,7 @@ export function SettingsPage(props: SettingsPageProps) {
           </div>
           <div class="max-w-xs">
             <TextField class="space-y-2">
-              <TextFieldLabel class="text-white/40">
+              <TextFieldLabel class="text-muted-foreground dark:text-white/40">
                 Number of questions
               </TextFieldLabel>
               <TextFieldInput
@@ -312,7 +312,7 @@ export function SettingsPage(props: SettingsPageProps) {
                 }}
                 min="1"
                 max="100"
-                class="bg-white/5 border-white/10"
+                class="bg-card/70 border-border/70 dark:bg-white/5 dark:border-white/10"
               />
             </TextField>
           </div>

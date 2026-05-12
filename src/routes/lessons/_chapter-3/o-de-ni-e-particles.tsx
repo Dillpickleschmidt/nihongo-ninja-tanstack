@@ -23,7 +23,7 @@ function ODeNiEParticles() {
   return (
     <div class="relative pb-32">
       {/* Background character */}
-      <span class="pointer-events-none absolute top-8 left-24 select-none font-japanese text-[10rem] leading-none text-white/[0.03] sm:top-11 sm:left-auto sm:right-8 sm:text-[11rem]">
+      <span class="pointer-events-none absolute top-8 left-24 select-none font-japanese text-[10rem] leading-none text-foreground/[0.04] dark:text-white/[0.03] sm:top-11 sm:left-auto sm:right-8 sm:text-[11rem]">
         助
       </span>
 
@@ -56,15 +56,15 @@ function ODeNiEParticles() {
 
       <div class="space-y-14 px-8">
         {/* Intro: Why particles matter */}
-        <div class="space-y-4 leading-relaxed text-white/70">
+        <div class="space-y-4 leading-relaxed text-foreground/75 dark:text-white/70">
           <p>
             Many language learners find Japanese sentence structure confusing and
             difficult to grasp. This is understandable, as:
           </p>
-          <p class="text-center text-xl text-white/80">
+          <p class="text-center text-xl text-foreground/80 dark:text-white/80">
             "The main thing that differentiates Japanese from most other
             languages is its use of particles"{" "}
-            <span class="text-sm text-white/40">(80/20 Japanese)</span>.
+            <span class="text-sm text-muted-foreground dark:text-white/40">(80/20 Japanese)</span>.
           </p>
           <p>
             Let's start by looking at how English sentences work. In English,
@@ -72,21 +72,21 @@ function ODeNiEParticles() {
             (SVO) structure:
           </p>
 
-          <p class="text-center text-lg font-semibold text-white/90">
+          <p class="text-center text-lg font-semibold text-foreground dark:text-white/90">
             I eat sushi.
           </p>
 
-          <ul class="space-y-1 text-white/60">
+          <ul class="space-y-1 text-muted-foreground dark:text-white/60">
             <li>
-              <span class="font-semibold text-white/80">I</span> - the subject
+              <span class="font-semibold text-foreground/80 dark:text-white/80">I</span> - the subject
               (who's doing the action)
             </li>
             <li>
-              <span class="font-semibold text-white/80">eat</span> - the verb
+              <span class="font-semibold text-foreground/80 dark:text-white/80">eat</span> - the verb
               (the action itself)
             </li>
             <li>
-              <span class="font-semibold text-white/80">sushi</span> - the
+              <span class="font-semibold text-foreground/80 dark:text-white/80">sushi</span> - the
               object (what's being acted upon)
             </li>
           </ul>
@@ -113,8 +113,8 @@ function ODeNiEParticles() {
           </p>
           <p>Let's look at the same sentence in Japanese:</p>
 
-          <div class="rounded-lg bg-white/[0.04] p-4">
-            <p class="font-japanese text-center text-xl text-white/90">
+          <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+            <p class="font-japanese text-center text-xl text-foreground dark:text-white/90">
               <Furigana furigana={<span class="text-xs">わたし</span>}>
                 私
               </Furigana>
@@ -126,33 +126,33 @@ function ODeNiEParticles() {
               <Furigana furigana={<span class="text-xs">た</span>}>食</Furigana>
               べます。
             </p>
-            <ul class="mt-3 space-y-1 text-sm text-white/60">
+            <ul class="mt-3 space-y-1 text-sm text-muted-foreground dark:text-white/60">
               <li>
-                <span class="font-japanese font-semibold text-white/80">
+                <span class="font-japanese font-semibold text-foreground/80 dark:text-white/80">
                   私
                 </span>{" "}
                 - I
               </li>
               <li>
-                <span class="font-japanese font-semibold text-white/80">
+                <span class="font-japanese font-semibold text-foreground/80 dark:text-white/80">
                   は
                 </span>{" "}
                 - topic marker particle
               </li>
               <li>
-                <span class="font-japanese font-semibold text-white/80">
+                <span class="font-japanese font-semibold text-foreground/80 dark:text-white/80">
                   寿司
                 </span>{" "}
                 - sushi
               </li>
               <li>
-                <span class="font-japanese font-semibold text-white/80">
+                <span class="font-japanese font-semibold text-foreground/80 dark:text-white/80">
                   を
                 </span>{" "}
                 - object marker particle
               </li>
               <li>
-                <span class="font-japanese font-semibold text-white/80">
+                <span class="font-japanese font-semibold text-foreground/80 dark:text-white/80">
                   食べます
                 </span>{" "}
                 - eat
@@ -162,12 +162,12 @@ function ODeNiEParticles() {
 
           <p>
             This sentence has two particles:{" "}
-            <span class="font-japanese text-xl font-semibold text-white/90">
+            <span class="font-japanese text-xl font-semibold text-foreground dark:text-white/90">
               は
             </span>{" "}
             <span class="text-sm">(which we've seen)</span> and our first new
             particle in this lesson,{" "}
-            <span class="font-japanese text-xl font-semibold text-white/90">
+            <span class="font-japanese text-xl font-semibold text-foreground dark:text-white/90">
               を
             </span>
             .
@@ -181,52 +181,52 @@ function ODeNiEParticles() {
             <span class="font-japanese text-[#ef4444]">を</span> - The direct
             object particle
           </SectionLabel>
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             The <span class="font-japanese text-xl">を</span> particle marks the
             direct object of an action verb. It indicates what or who is
             receiving the action.
           </p>
-          <p class="leading-relaxed text-white/70">
-            <span class="font-semibold text-white/90">Usage:</span> Place{" "}
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
+            <span class="font-semibold text-foreground dark:text-white/90">Usage:</span> Place{" "}
             <span class="font-japanese text-xl">を</span> directly after the
             noun that is the object of the action.
           </p>
 
           <div class="space-y-2">
-            <div class="rounded-lg bg-white/[0.04] px-4 py-3">
-              <span class="font-japanese text-lg text-white/90">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] px-4 py-3">
+              <span class="font-japanese text-lg text-foreground dark:text-white/90">
                 <span class="underline underline-offset-4">
                   本<span class="font-bold text-[#ef4444]">を</span>
                 </span>
                 読みます。
               </span>
-              <span class="ml-3 text-sm text-white/40">I read a book.</span>
+              <span class="ml-3 text-sm text-muted-foreground dark:text-white/40">I read a book.</span>
             </div>
-            <div class="rounded-lg bg-white/[0.04] px-4 py-3">
-              <span class="font-japanese text-lg text-white/90">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] px-4 py-3">
+              <span class="font-japanese text-lg text-foreground dark:text-white/90">
                 <span class="underline underline-offset-4">
                   水<span class="font-bold text-[#ef4444]">を</span>
                 </span>
                 飲みます。
               </span>
-              <span class="ml-3 text-sm text-white/40">I drink water.</span>
+              <span class="ml-3 text-sm text-muted-foreground dark:text-white/40">I drink water.</span>
             </div>
-            <div class="rounded-lg bg-white/[0.04] px-4 py-3">
-              <span class="font-japanese text-lg text-white/90">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] px-4 py-3">
+              <span class="font-japanese text-lg text-foreground dark:text-white/90">
                 <span class="underline underline-offset-4">
                   日本語<span class="font-bold text-[#ef4444]">を</span>
                 </span>
                 勉強します。
               </span>
-              <span class="ml-3 text-sm text-white/40">I study Japanese.</span>
+              <span class="ml-3 text-sm text-muted-foreground dark:text-white/40">I study Japanese.</span>
             </div>
           </div>
 
-          <p class="text-center text-sm font-semibold text-white/70">
+          <p class="text-center text-sm font-semibold text-foreground/75 dark:text-white/70">
             While written as を, this particle is pronounced as "o" in modern
             Japanese.
           </p>
-          <p class="text-xs italic text-white/40">
+          <p class="text-xs italic text-muted-foreground dark:text-white/40">
             Also, the particle <span class="font-japanese">を</span> is written
             as "wo" in romaji even though it's pronounced "o". Kind of
             confusing, but you hopefully won't be reading romaji anyway.
@@ -238,7 +238,7 @@ function ODeNiEParticles() {
             credit="ToKini Andy"
           />
 
-          <p class="text-sm italic text-white/50">
+          <p class="text-sm italic text-muted-foreground dark:text-white/50">
             While the{" "}
             <span class="font-japanese text-base not-italic">を</span> particle
             is fairly straightforward, it's important to note that{" "}
@@ -262,13 +262,13 @@ function ODeNiEParticles() {
         </div>
 
         {/* Word order explanation */}
-        <div class="space-y-4 leading-relaxed text-white/70">
+        <div class="space-y-4 leading-relaxed text-foreground/75 dark:text-white/70">
           <p>
             Now, let's return to word order. In English, saying "sushi eat I" or
             "sushi eat me" sounds like sushi has the capability to swallow you
             for breakfast, rediculous!
           </p>
-          <p class="text-center text-lg text-white/80">
+          <p class="text-center text-lg text-foreground/80 dark:text-white/80">
             Changing word order in English changes the object being acted upon by
             the verb.
           </p>
@@ -284,8 +284,8 @@ function ODeNiEParticles() {
           </p>
 
           <div class="space-y-2">
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="font-japanese text-center text-xl text-white/90">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="font-japanese text-center text-xl text-foreground dark:text-white/90">
                 <Furigana furigana={<span class="text-xs">わたし</span>}>
                   私
                 </Furigana>
@@ -300,8 +300,8 @@ function ODeNiEParticles() {
                 べます。
               </p>
             </div>
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="font-japanese text-center text-xl text-white/90">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="font-japanese text-center text-xl text-foreground dark:text-white/90">
                 <Furigana furigana={<span class="text-xs">すし</span>}>
                   寿司
                 </Furigana>
@@ -318,23 +318,23 @@ function ODeNiEParticles() {
             </div>
           </div>
 
-          <ul class="space-y-1.5 text-sm text-white/60">
+          <ul class="space-y-1.5 text-sm text-muted-foreground dark:text-white/60">
             <li>
               Because{" "}
-              <span class="font-japanese text-base text-white/80">寿司</span> is
+              <span class="font-japanese text-base text-foreground/80 dark:text-white/80">寿司</span> is
               paired with{" "}
-              <span class="font-japanese text-base text-white/80">を</span>, we
+              <span class="font-japanese text-base text-foreground/80 dark:text-white/80">を</span>, we
               know it's the object being acted upon.
             </li>
             <li>
               Because{" "}
-              <span class="font-japanese text-base text-white/80">私</span> is
+              <span class="font-japanese text-base text-foreground/80 dark:text-white/80">私</span> is
               paired with{" "}
-              <span class="font-japanese text-base text-white/80">は</span>, we
+              <span class="font-japanese text-base text-foreground/80 dark:text-white/80">は</span>, we
               know it's the topic of the sentence.
             </li>
           </ul>
-          <p class="text-xs italic text-white/40">
+          <p class="text-xs italic text-muted-foreground dark:text-white/40">
             Note: While both are grammatically correct, the first one is more
             common for reasons described in the next lesson.
           </p>
@@ -342,14 +342,14 @@ function ODeNiEParticles() {
 
         {/* Particle placement note */}
         <AsideBlock label="A note on particle placement">
-          <p class="mt-2 text-sm leading-relaxed text-white/60">
-            <span class="font-semibold text-white/80">
+          <p class="mt-2 text-sm leading-relaxed text-muted-foreground dark:text-white/60">
+            <span class="font-semibold text-foreground/80 dark:text-white/80">
               Particles are always attached to the end of words.
             </span>{" "}
             Always ensure the correct particle is paired to the end of the
             correct word. Often, particles are attached to the end of nouns.
           </p>
-          <p class="mt-2 text-xs text-white/40">
+          <p class="mt-2 text-xs text-muted-foreground dark:text-white/40">
             <span class="font-japanese not-italic">ゆっくり</span> → slowly
           </p>
           <div class="mt-3 space-y-2">
@@ -357,28 +357,28 @@ function ODeNiEParticles() {
               <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-red-400/60">
                 Incorrect
               </p>
-              <p class="font-japanese text-base text-white/50 line-through">
+              <p class="font-japanese text-base text-muted-foreground dark:text-white/50 line-through">
                 私は本ゆっくり
                 <span class="font-bold text-[#ef4444]">を</span>読みます。
               </p>
             </div>
-            <div class="rounded-lg bg-white/[0.04] p-3">
-              <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-white/30">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-3">
+              <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground/70 dark:text-white/30">
                 Correct
               </p>
-              <p class="font-japanese text-base text-white/80">
+              <p class="font-japanese text-base text-foreground/80 dark:text-white/80">
                 私は本<span class="font-bold text-[#ef4444]">を</span>
                 ゆっくり読みます。
               </p>
-              <p class="mt-1 text-xs text-white/40">
+              <p class="mt-1 text-xs text-muted-foreground dark:text-white/40">
                 I read books slowly.
               </p>
             </div>
           </div>
-          <p class="mt-2 text-sm leading-relaxed text-white/60">
+          <p class="mt-2 text-sm leading-relaxed text-muted-foreground dark:text-white/60">
             Notice how <span class="font-japanese">を</span> is incorrectly
             attached to <span class="font-japanese">ゆっくり</span>{" "}
-            <span class="text-xs text-white/40">(slowly)</span> instead of{" "}
+            <span class="text-xs text-muted-foreground dark:text-white/40">(slowly)</span> instead of{" "}
             <span class="font-japanese">本</span> in the first example. That's
             like saying "I read{" "}
             <span class="font-semibold underline">slowlys</span>" as opposed to
@@ -390,7 +390,7 @@ function ODeNiEParticles() {
           </p>
         </AsideBlock>
 
-        <p class="font-semibold text-white/70">
+        <p class="font-semibold text-foreground/75 dark:text-white/70">
           Now that you have a general idea of how particles function, let's
           learn a few more.
         </p>
@@ -402,52 +402,52 @@ function ODeNiEParticles() {
             <span class="font-japanese text-orange-400">で</span> - The
             utilization particle
           </SectionLabel>
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             The <span class="font-japanese text-xl">で</span> particle has
             multiple uses, primarily indicating the means by which an action is
             performed or the location where an action takes place.
           </p>
 
           <div class="space-y-3">
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-white/30">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground/70 dark:text-white/30">
                 Means or method
               </p>
-              <p class="text-sm text-white/60">
+              <p class="text-sm text-muted-foreground dark:text-white/60">
                 Place <span class="font-japanese">で</span> after the noun that
                 describes how the action is done.
               </p>
-              <p class="mt-2 font-japanese text-lg text-white/80">
+              <p class="mt-2 font-japanese text-lg text-foreground/80 dark:text-white/80">
                 ペン<span class="font-bold text-orange-400">で</span>
                 書きます。
               </p>
-              <p class="mt-1 text-sm text-white/40">I write with a pen.</p>
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">I write with a pen.</p>
             </div>
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-white/30">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground/70 dark:text-white/30">
                 Location of action
               </p>
-              <p class="text-sm text-white/60">
+              <p class="text-sm text-muted-foreground dark:text-white/60">
                 Place <span class="font-japanese">で</span> after the noun that
                 indicates where the action occurs.
               </p>
-              <p class="mt-2 font-japanese text-lg text-white/80">
+              <p class="mt-2 font-japanese text-lg text-foreground/80 dark:text-white/80">
                 図書館<span class="font-bold text-orange-400">で</span>
                 勉強します。
               </p>
-              <p class="mt-1 text-sm text-white/40">
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">
                 I study at the library.
               </p>
             </div>
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-white/30">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground/70 dark:text-white/30">
                 Reason or cause
               </p>
-              <p class="text-sm text-white/60">
+              <p class="text-sm text-muted-foreground dark:text-white/60">
                 <span class="font-japanese">で</span> can also indicate the
                 reason for something.
               </p>
-              <p class="mt-2 font-japanese text-lg text-white/80">
+              <p class="mt-2 font-japanese text-lg text-foreground/80 dark:text-white/80">
                 <Romaji romaji="work" class="text-xs">
                   <Furigana furigana={<span class="text-xs">しごと</span>}>
                     仕事
@@ -461,7 +461,7 @@ function ODeNiEParticles() {
                   れます。
                 </Romaji>
               </p>
-              <p class="mt-1 text-sm text-white/40">
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">
                 I'll be late due to work.
               </p>
             </div>
@@ -483,11 +483,11 @@ function ODeNiEParticles() {
           </SectionLabel>
 
           <div class="space-y-3">
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-white/30">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground/70 dark:text-white/30">
                 Direction
               </p>
-              <p class="text-sm leading-relaxed text-white/60">
+              <p class="text-sm leading-relaxed text-muted-foreground dark:text-white/60">
                 The <span class="font-japanese">に</span> and{" "}
                 <span class="font-japanese">へ</span> particles are often used
                 interchangeably to indicate direction or destination. Place{" "}
@@ -495,34 +495,34 @@ function ODeNiEParticles() {
                 <span class="font-japanese">へ</span> after the noun that
                 represents the destination.
               </p>
-              <div class="mt-3 space-y-2 text-sm text-white/60">
+              <div class="mt-3 space-y-2 text-sm text-muted-foreground dark:text-white/60">
                 <p>
-                  <span class="font-japanese text-base text-white/80">
+                  <span class="font-japanese text-base text-foreground/80 dark:text-white/80">
                     学校<span class="font-bold text-green-500">に</span>
                     行きます。
                   </span>{" "}
                   /{" "}
-                  <span class="font-japanese text-base text-white/80">
+                  <span class="font-japanese text-base text-foreground/80 dark:text-white/80">
                     学校<span class="font-bold text-sky-400">へ</span>
                     行きます。
                   </span>{" "}
                   - I go to school.
                 </p>
                 <p>
-                  <span class="font-japanese text-base text-white/80">
+                  <span class="font-japanese text-base text-foreground/80 dark:text-white/80">
                     毎日、ここ
                     <span class="font-bold text-green-500">に</span>
                     来ます。
                   </span>{" "}
                   /{" "}
-                  <span class="font-japanese text-base text-white/80">
+                  <span class="font-japanese text-base text-foreground/80 dark:text-white/80">
                     毎日、ここ<span class="font-bold text-sky-400">へ</span>
                     来ます。
                   </span>{" "}
                   - I come here every day.
                 </p>
               </div>
-              <p class="mt-2 text-xs italic text-white/30">
+              <p class="mt-2 text-xs italic text-muted-foreground/70 dark:text-white/30">
                 Note: While often interchangeable, に tends to emphasize the
                 final point of arrival, while へ focuses more on the direction
                 of movement. But in most cases, the choice between に and へ is
@@ -530,35 +530,35 @@ function ODeNiEParticles() {
               </p>
             </div>
 
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-white/30">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground/70 dark:text-white/30">
                 Specific point in time
               </p>
-              <p class="text-sm text-white/60">
+              <p class="text-sm text-muted-foreground dark:text-white/60">
                 Place <span class="font-japanese">に</span> after the noun that
                 represents the specific time.
               </p>
               <div class="mt-3 space-y-2">
                 <p>
-                  <span class="font-japanese text-base text-white/80">
+                  <span class="font-japanese text-base text-foreground/80 dark:text-white/80">
                     七時<span class="font-bold text-green-500">に</span>
                     起きます。
                   </span>
-                  <span class="ml-2 text-sm text-white/40">
+                  <span class="ml-2 text-sm text-muted-foreground dark:text-white/40">
                     I wake up at 7 o'clock.
                   </span>
                 </p>
                 <p>
-                  <span class="font-japanese text-base text-white/80">
+                  <span class="font-japanese text-base text-foreground/80 dark:text-white/80">
                     一時半<span class="font-bold text-green-500">に</span>
                     昼ご飯を食べます。
                   </span>
-                  <span class="ml-2 text-sm text-white/40">
+                  <span class="ml-2 text-sm text-muted-foreground dark:text-white/40">
                     I'll eat lunch at 1:30.
                   </span>
                 </p>
               </div>
-              <p class="mt-2 text-xs italic text-white/30">
+              <p class="mt-2 text-xs italic text-muted-foreground/70 dark:text-white/30">
                 Note: Unlike direction, へ cannot be used for time. Only に.
               </p>
             </div>
@@ -566,16 +566,16 @@ function ODeNiEParticles() {
         </div>
 
         {/* Time complication */}
-        <div class="space-y-4 leading-relaxed text-white/70">
+        <div class="space-y-4 leading-relaxed text-foreground/75 dark:text-white/70">
           <p>
             There's one complication that trips up beginners when describing
             time, and that's that{" "}
             <span class="font-japanese text-xl">に</span> is only needed when
-            describing a <span class="font-semibold text-white/90">specific</span>{" "}
+            describing a <span class="font-semibold text-foreground dark:text-white/90">specific</span>{" "}
             time, whereas times relavent to the present don't use{" "}
             <span class="font-japanese text-xl">に</span>. Take this example:
           </p>
-          <p class="text-xs text-white/40">
+          <p class="text-xs text-muted-foreground dark:text-white/40">
             <span class="font-japanese text-sm">明日</span> → tomorrow
           </p>
 
@@ -584,30 +584,30 @@ function ODeNiEParticles() {
               <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-red-400/60">
                 Incorrect
               </p>
-              <p class="font-japanese text-base text-white/50 line-through">
+              <p class="font-japanese text-base text-muted-foreground dark:text-white/50 line-through">
                 明日<span class="font-bold text-green-500">に</span>
                 お父さんはヘリで仕事に行きます。
               </p>
             </div>
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-white/30">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground/70 dark:text-white/30">
                 Correct
               </p>
-              <p class="font-japanese text-base text-white/80">
+              <p class="font-japanese text-base text-foreground/80 dark:text-white/80">
                 明日、お父さんはヘリで仕事に行きます。
               </p>
-              <p class="mt-1 text-sm text-white/40">
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">
                 Tomorrow, dad will go to work by hellicopter.
               </p>
             </div>
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-white/30">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground/70 dark:text-white/30">
                 Also correct
               </p>
-              <p class="font-japanese text-base text-white/80">
+              <p class="font-japanese text-base text-foreground/80 dark:text-white/80">
                 お父さんは明日ヘリで仕事に行きます。
               </p>
-              <p class="mt-1 text-sm text-white/40">
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">
                 Dad will go to work by hellicopter tomorrow.
               </p>
             </div>
@@ -620,11 +620,11 @@ function ODeNiEParticles() {
           <p>
             Here's a hack. In English, when describing specific times, we always
             use prepositions - words like{" "}
-            <span class="font-semibold italic text-white/90">on</span>{" "}
+            <span class="font-semibold italic text-foreground dark:text-white/90">on</span>{" "}
             <span class="text-sm">(on the 25th of April)</span>,{" "}
-            <span class="font-semibold italic text-white/90">at</span>{" "}
+            <span class="font-semibold italic text-foreground dark:text-white/90">at</span>{" "}
             <span class="text-sm">(at 12:00)</span>,{" "}
-            <span class="font-semibold italic text-white/90">in</span>{" "}
+            <span class="font-semibold italic text-foreground dark:text-white/90">in</span>{" "}
             <span class="text-sm">(bad things happened in 2020)</span>. It's the
             same for Japanese with{" "}
             <span class="font-japanese text-xl font-semibold">に</span>.
@@ -640,8 +640,8 @@ function ODeNiEParticles() {
           </p>
 
           <div class="space-y-2">
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="font-japanese text-base text-white/80">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="font-japanese text-base text-foreground/80 dark:text-white/80">
                 <Romaji romaji="next week" class="text-xs">
                   <Furigana furigana={<span class="text-xs">らいしゅう</span>}>
                     来週
@@ -661,15 +661,15 @@ function ODeNiEParticles() {
                 </Romaji>
                 に行きます。
               </p>
-              <p class="mt-1 text-sm text-white/40">
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">
                 I'll go to the pool next Saturday.
               </p>
-              <p class="mt-1 text-xs italic text-white/30">
+              <p class="mt-1 text-xs italic text-muted-foreground/70 dark:text-white/30">
                 *Literally: "On the Saturday of next week, I'll go to the pool."
               </p>
             </div>
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="font-japanese text-base text-white/80">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="font-japanese text-base text-foreground/80 dark:text-white/80">
                 <span class="ml-2">
                   <Romaji romaji="saturday" class="mr-4 text-xs">
                     <Furigana furigana={<span class="text-xs">どようび</span>}>
@@ -683,10 +683,10 @@ function ODeNiEParticles() {
                 </Romaji>
                 に行きます。
               </p>
-              <p class="mt-1 text-sm text-white/40">
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">
                 I'll go to the pool Saturday.
               </p>
-              <p class="mt-1 text-xs italic text-white/30">
+              <p class="mt-1 text-xs italic text-muted-foreground/70 dark:text-white/30">
                 *Like in English, we understand they're specifically talking
                 about the upcoming Saturday unless we know otherwise from
                 context.
@@ -714,7 +714,7 @@ function ODeNiEParticles() {
             explaining when <span class="font-japanese text-xl">に</span> is
             (and isn't) needed.
           </p>
-          <p class="text-sm italic text-white/40">
+          <p class="text-sm italic text-muted-foreground dark:text-white/40">
             *There are even more uses of{" "}
             <span class="font-japanese text-base not-italic">に</span> but we'll
             cover them in later chapters.
@@ -732,7 +732,7 @@ function ODeNiEParticles() {
         {/* Key Differences */}
         <div class="space-y-4">
           <SectionLabel>Key differences</SectionLabel>
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             But wait, you said{" "}
             <span class="font-japanese text-orange-400">で</span> can be the
             location of action, and{" "}
@@ -741,12 +741,12 @@ function ODeNiEParticles() {
             direction or destination, what's the difference?
           </p>
 
-          <p class="text-sm font-semibold text-white/70">
+          <p class="text-sm font-semibold text-foreground/75 dark:text-white/70">
             Understanding{" "}
             <span class="font-japanese text-orange-400">で</span> as
             "utilization":
           </p>
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             A helpful way to distinguish between{" "}
             <span class="font-japanese text-xl font-semibold text-green-500">
               に
@@ -760,9 +760,9 @@ function ODeNiEParticles() {
               で
             </span>{" "}
             for locations is to think about whether you're{" "}
-            <span class="font-semibold text-white/90">"utilizing"</span> the
+            <span class="font-semibold text-foreground dark:text-white/90">"utilizing"</span> the
             place to perform an action. If you can rephrase the sentence as{" "}
-            <span class="font-semibold text-white/90">
+            <span class="font-semibold text-foreground dark:text-white/90">
               "I utilize A to do B,"
             </span>{" "}
             then{" "}
@@ -773,33 +773,33 @@ function ODeNiEParticles() {
           </p>
 
           <div class="space-y-2">
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="font-japanese text-lg text-white/80">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="font-japanese text-lg text-foreground/80 dark:text-white/80">
                 図書館<span class="font-bold text-orange-400">で</span>
                 勉強します。
               </p>
-              <p class="mt-1 text-sm text-white/40">
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">
                 I study at the library.
               </p>
-              <p class="mt-1 text-xs italic text-white/30">
+              <p class="mt-1 text-xs italic text-muted-foreground/70 dark:text-white/30">
                 Think: "I utilize the library for studying."
               </p>
             </div>
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="font-japanese text-lg text-white/80">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="font-japanese text-lg text-foreground/80 dark:text-white/80">
                 レストラン<span class="font-bold text-orange-400">で</span>
                 食べます。
               </p>
-              <p class="mt-1 text-sm text-white/40">
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">
                 I eat at the restaurant.
               </p>
-              <p class="mt-1 text-xs italic text-white/30">
+              <p class="mt-1 text-xs italic text-muted-foreground/70 dark:text-white/30">
                 Think: "I utilize the restaurant for eating."
               </p>
             </div>
           </div>
 
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             In contrast, when using{" "}
             <span class="font-japanese text-xl font-semibold text-green-500">
               に
@@ -813,34 +813,34 @@ function ODeNiEParticles() {
           </p>
 
           <div class="space-y-2">
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="font-japanese text-lg text-white/80">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="font-japanese text-lg text-foreground/80 dark:text-white/80">
                 図書館<span class="font-bold text-green-500">に</span>
                 行きます。
               </p>
-              <p class="mt-1 text-sm text-white/40">I go to the library.</p>
-              <p class="mt-1 text-xs italic text-white/30">
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">I go to the library.</p>
+              <p class="mt-1 text-xs italic text-muted-foreground/70 dark:text-white/30">
                 (You can't say "I utilize the library for going.")
               </p>
             </div>
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="font-japanese text-lg text-white/80">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="font-japanese text-lg text-foreground/80 dark:text-white/80">
                 レストラン<span class="font-bold text-sky-400">へ</span>
                 <Furigana furigana={<span class="text-xs">む</span>}>
                   向
                 </Furigana>
                 かいます。
               </p>
-              <p class="mt-1 text-sm text-white/40">
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">
                 I head towards the restaurant.
               </p>
-              <p class="mt-1 text-xs italic text-white/30">
+              <p class="mt-1 text-xs italic text-muted-foreground/70 dark:text-white/30">
                 (You can't say "I utilize the restaurant for heading.")
               </p>
             </div>
           </div>
 
-          <p class="text-xs italic text-white/40">
+          <p class="text-xs italic text-muted-foreground dark:text-white/40">
             *You can use{" "}
             <span class="font-japanese font-semibold not-italic">に・へ</span>{" "}
             interchangably in these two sentences.
@@ -850,13 +850,13 @@ function ODeNiEParticles() {
         {/* Practice: Multiple Choice */}
         <div class="space-y-5">
           <h3 class="text-center text-2xl font-bold">Practice</h3>
-          <p class="text-center text-sm font-semibold text-white/50">
+          <p class="text-center text-sm font-semibold text-muted-foreground dark:text-white/50">
             Choose the sentences with the correct particles.
           </p>
 
           <div class="space-y-6">
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 I drink coffee every day.
               </p>
               <SelectText
@@ -870,7 +870,7 @@ function ODeNiEParticles() {
             </div>
 
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">I study at school</p>
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">I study at school</p>
               <SelectText
                 answer="学校で勉強します。"
                 a="学校を勉強します。"
@@ -882,7 +882,7 @@ function ODeNiEParticles() {
             </div>
 
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 I wake up at 7:00 every morning.
               </p>
               <SelectText
@@ -896,7 +896,7 @@ function ODeNiEParticles() {
             </div>
 
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 I will not study today.
               </p>
               <SelectText
@@ -914,21 +914,21 @@ function ODeNiEParticles() {
         {/* Practice: Sentence Writing */}
         <div class="space-y-5">
           <SectionLabel>Sentence writing</SectionLabel>
-          <p class="text-center text-sm font-semibold text-white/50">
+          <p class="text-center text-sm font-semibold text-muted-foreground dark:text-white/50">
             Try creating sentences using 1 or more of these particles.
           </p>
 
           <div class="space-y-6">
             <div class="space-y-2">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 1. Describe eating sushi at a restaurant.
               </p>
               <div class="space-y-0.5">
-                <p class="text-xs text-white/40">
+                <p class="text-xs text-muted-foreground dark:text-white/40">
                   <span class="font-japanese text-sm">レストラン</span> →
                   restaurant
                 </p>
-                <p class="text-xs text-white/40">
+                <p class="text-xs text-muted-foreground dark:text-white/40">
                   <span class="font-japanese text-sm">すし</span> → sushi
                 </p>
               </div>
@@ -939,7 +939,7 @@ function ODeNiEParticles() {
             </div>
 
             <div class="space-y-2">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 2. Talk about going to school at 8 AM.
               </p>
               <CustomTextArea
@@ -949,7 +949,7 @@ function ODeNiEParticles() {
             </div>
 
             <div class="space-y-2">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 3. Tell your friend that you watch movies at home.
               </p>
               <CustomTextArea
@@ -959,10 +959,10 @@ function ODeNiEParticles() {
             </div>
 
             <div class="space-y-2">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 4. Describe traveling towards the mountains.
               </p>
-              <p class="text-xs text-white/40">
+              <p class="text-xs text-muted-foreground dark:text-white/40">
                 <span class="font-japanese text-sm">
                   <Furigana furigana={<span class="text-[10px]">やま</span>}>
                     山

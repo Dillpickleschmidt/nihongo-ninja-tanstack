@@ -19,7 +19,7 @@ function IruAru() {
   return (
     <div class="relative pb-32">
       {/* Background character */}
-      <span class="pointer-events-none absolute top-8 left-24 select-none font-japanese text-[10rem] leading-none text-white/[0.03] sm:top-11 sm:left-auto sm:right-8 sm:text-[11rem]">
+      <span class="pointer-events-none absolute top-8 left-24 select-none font-japanese text-[10rem] leading-none text-foreground/[0.04] dark:text-white/[0.03] sm:top-11 sm:left-auto sm:right-8 sm:text-[11rem]">
         在
       </span>
 
@@ -48,7 +48,7 @@ function IruAru() {
       <div class="space-y-14 px-8">
         {/* Intro */}
         <div class="space-y-4">
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             In this lesson, we'll explore how to use{" "}
             <span class="font-japanese text-xl">います</span> and{" "}
             <span class="font-japanese text-xl">あります</span> to express that
@@ -60,16 +60,16 @@ function IruAru() {
           <GlowBox>
             <div class="space-y-3 text-center">
               <p class="text-xl">
-                <span class="text-base font-light text-white/50">
+                <span class="text-base font-light text-muted-foreground dark:text-white/50">
                   (location)
                 </span>{" "}
                 に{" "}
-                <span class="text-base font-light text-white/50">(thing)</span>{" "}
+                <span class="text-base font-light text-muted-foreground dark:text-white/50">(thing)</span>{" "}
                 が{" "}
                 <span class="font-medium text-sky-400">います</span>・
                 <span class="font-medium text-orange-400">あります</span>
               </p>
-              <p class="text-base text-white/50">
+              <p class="text-base text-muted-foreground dark:text-white/50">
                 There is/are{" "}
                 <span class="text-sm font-light">(thing)</span> at{" "}
                 <span class="text-sm font-light">(location)</span>
@@ -83,23 +83,23 @@ function IruAru() {
           <SectionLabel>Basic usage</SectionLabel>
 
           <div class="grid gap-3 sm:grid-cols-2">
-            <div class="rounded-lg bg-white/[0.04] p-4">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
               <p class="font-japanese text-xl font-bold text-sky-400">います</p>
-              <p class="mt-2 text-sm text-white/60">
+              <p class="mt-2 text-sm text-muted-foreground dark:text-white/60">
                 Animate objects (things that can move on their own):
               </p>
-              <ul class="mt-2 space-y-1 text-sm text-white/40">
+              <ul class="mt-2 space-y-1 text-sm text-muted-foreground dark:text-white/40">
                 <li>People</li>
                 <li>Animals</li>
                 <li>Ghosts 👻</li>
               </ul>
             </div>
-            <div class="rounded-lg bg-white/[0.04] p-4">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
               <p class="font-japanese text-xl font-bold text-orange-400">
                 あります
               </p>
-              <p class="mt-2 text-sm text-white/60">Inanimate objects:</p>
-              <ul class="mt-2 space-y-1 text-sm text-white/40">
+              <p class="mt-2 text-sm text-muted-foreground dark:text-white/60">Inanimate objects:</p>
+              <ul class="mt-2 space-y-1 text-sm text-muted-foreground dark:text-white/40">
                 <li>Objects</li>
                 <li>Places</li>
                 <li>Buildings</li>
@@ -108,22 +108,22 @@ function IruAru() {
           </div>
 
           <div class="space-y-3">
-            <div class="rounded-lg bg-white/[0.04] p-4 text-center">
-              <p class="font-japanese text-xl text-white/90">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4 text-center">
+              <p class="font-japanese text-xl text-foreground dark:text-white/90">
                 公園に犬が<span class="font-bold text-sky-400">います</span>。
               </p>
-              <p class="mt-1 text-sm text-white/40">
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">
                 There's a dog in the park.
               </p>
             </div>
-            <div class="rounded-lg bg-white/[0.04] p-4 text-center">
-              <p class="font-japanese text-xl text-white/90">
-                <span class="text-white/40">(ここに)</span>コンビニが
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4 text-center">
+              <p class="font-japanese text-xl text-foreground dark:text-white/90">
+                <span class="text-muted-foreground dark:text-white/40">(ここに)</span>コンビニが
                 <span class="font-bold text-orange-400">あります</span>。
               </p>
-              <p class="mt-1 text-sm text-white/40">
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">
                 There's a convenience store{" "}
-                <span class="text-white/30">(here)</span>.
+                <span class="text-muted-foreground/70 dark:text-white/30">(here)</span>.
               </p>
             </div>
           </div>
@@ -132,7 +132,7 @@ function IruAru() {
         {/* Having Things */}
         <div class="space-y-4">
           <SectionLabel>Having things in Japanese</SectionLabel>
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             In Japanese, instead of saying we "have" things, we express that
             things "exist in relation to us":
           </p>
@@ -140,16 +140,16 @@ function IruAru() {
           <GlowBox>
             <div class="space-y-3 text-center">
               <p class="text-xl">
-                <span class="text-base font-light text-white/50">
+                <span class="text-base font-light text-muted-foreground dark:text-white/50">
                   (person)
                 </span>{" "}
                 は{" "}
-                <span class="text-base font-light text-white/50">(thing)</span>{" "}
+                <span class="text-base font-light text-muted-foreground dark:text-white/50">(thing)</span>{" "}
                 が{" "}
                 <span class="font-medium text-sky-400">います</span>・
                 <span class="font-medium text-orange-400">あります</span>
               </p>
-              <p class="text-base text-white/50">
+              <p class="text-base text-muted-foreground dark:text-white/50">
                 <span class="text-sm font-light">(person)</span> has{" "}
                 <span class="text-sm font-light">(thing)</span>
               </p>
@@ -160,37 +160,37 @@ function IruAru() {
         {/* に vs は */}
         <div class="space-y-4">
           <SectionLabel>に vs は</SectionLabel>
-          <ul class="space-y-2 leading-relaxed text-white/70">
+          <ul class="space-y-2 leading-relaxed text-foreground/75 dark:text-white/70">
             <li>
-              <span class="font-japanese text-xl text-white/90">に</span> -
+              <span class="font-japanese text-xl text-foreground dark:text-white/90">に</span> -
               Emphasizes the location where something exists
             </li>
             <li>
-              <span class="font-japanese text-xl text-white/90">は</span> -
+              <span class="font-japanese text-xl text-foreground dark:text-white/90">は</span> -
               Simple statement about what someone has
             </li>
           </ul>
 
           <div class="space-y-3">
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="font-japanese text-lg text-white/80">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="font-japanese text-lg text-foreground/80 dark:text-white/80">
                 田中さんは猫がいます。
               </p>
-              <p class="mt-1 text-sm text-white/40">
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">
                 Tanaka-san has cats/a cat
               </p>
-              <p class="mt-1 text-xs italic text-white/30">
+              <p class="mt-1 text-xs italic text-muted-foreground/70 dark:text-white/30">
                 Lit. As for Tanaka-san, cat exist.
               </p>
             </div>
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="font-japanese text-lg text-white/80">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="font-japanese text-lg text-foreground/80 dark:text-white/80">
                 田中さんの家に猫がいます。
               </p>
-              <p class="mt-1 text-sm text-white/40">
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">
                 There is/are cat(s) at Tanaka-san's house
               </p>
-              <p class="mt-1 text-xs italic text-white/30">
+              <p class="mt-1 text-xs italic text-muted-foreground/70 dark:text-white/30">
                 Lit. At Tanaka-san's house, cat exist.
               </p>
             </div>
@@ -203,29 +203,29 @@ function IruAru() {
 
           {/* Plants */}
           <div class="space-y-2">
-            <p class="text-center text-sm font-semibold text-white/50">
+            <p class="text-center text-sm font-semibold text-muted-foreground dark:text-white/50">
               Plants
             </p>
             <div class="rounded-lg bg-red-500/5 p-4 ring-1 ring-red-500/20">
               <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-red-400/60">
                 Incorrect
               </p>
-              <p class="font-japanese text-base text-white/50 line-through">
+              <p class="font-japanese text-base text-muted-foreground dark:text-white/50 line-through">
                 庭に木がいます。
               </p>
             </div>
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-white/30">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground/70 dark:text-white/30">
                 Correct
               </p>
-              <p class="font-japanese text-base text-white/80">
+              <p class="font-japanese text-base text-foreground/80 dark:text-white/80">
                 庭に木があります。
               </p>
-              <p class="mt-1 text-sm text-white/40">
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">
                 There's a tree in the garden.
               </p>
             </div>
-            <p class="text-sm text-white/40">
+            <p class="text-sm text-muted-foreground dark:text-white/40">
               *Even though they're living, plants are considered inanimate since
               they don't move freely
             </p>
@@ -233,10 +233,10 @@ function IruAru() {
 
           {/* Robots */}
           <div class="space-y-2">
-            <p class="text-center text-sm font-semibold text-white/50">
+            <p class="text-center text-sm font-semibold text-muted-foreground dark:text-white/50">
               Robots
             </p>
-            <p class="text-sm text-white/40">
+            <p class="text-sm text-muted-foreground dark:text-white/40">
               *While they can move, robots are usually treated as inanimate
               objects → あります (However, in stories or when treated as
               characters, or possibly AI robots, います might be used)
@@ -245,29 +245,29 @@ function IruAru() {
 
           {/* Animals as Food */}
           <div class="space-y-2">
-            <p class="text-center text-sm font-semibold text-white/50">
+            <p class="text-center text-sm font-semibold text-muted-foreground dark:text-white/50">
               Animals as Food
             </p>
             <div class="rounded-lg bg-red-500/5 p-4 ring-1 ring-red-500/20">
               <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-red-400/60">
                 Incorrect
               </p>
-              <p class="font-japanese text-base text-white/50 line-through">
+              <p class="font-japanese text-base text-muted-foreground dark:text-white/50 line-through">
                 テーブルに魚がいます。
               </p>
             </div>
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-white/30">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground/70 dark:text-white/30">
                 Correct
               </p>
-              <p class="font-japanese text-base text-white/80">
+              <p class="font-japanese text-base text-foreground/80 dark:text-white/80">
                 テーブルに魚があります。
               </p>
-              <p class="mt-1 text-sm text-white/40">
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">
                 There's fish on the table.
               </p>
             </div>
-            <p class="text-sm text-white/40">
+            <p class="text-sm text-muted-foreground dark:text-white/40">
               *When talking about animals as food (fish, meat, etc.), they're
               treated as inanimate objects (since they're no longer alive)
             </p>
@@ -283,11 +283,11 @@ function IruAru() {
               <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-red-400/60">
                 Incorrect
               </p>
-              <p class="font-japanese text-base text-white/50 line-through">
+              <p class="font-japanese text-base text-muted-foreground dark:text-white/50 line-through">
                 あそこにモスバーガーです。
               </p>
             </div>
-            <p class="text-sm text-white/40">
+            <p class="text-sm text-muted-foreground dark:text-white/40">
               You can't use に with です directly - に needs a verb like あります
               to show existence
             </p>
@@ -298,33 +298,33 @@ function IruAru() {
               <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-red-400/60">
                 Incorrect
               </p>
-              <p class="font-japanese text-base text-white/50 line-through">
+              <p class="font-japanese text-base text-muted-foreground dark:text-white/50 line-through">
                 モスバーガーはあそこにです。
               </p>
             </div>
-            <p class="text-sm text-white/40">
+            <p class="text-sm text-muted-foreground dark:text-white/40">
               Similar to above - です cannot be used with に. Also, you can't end
               a sentence with に
             </p>
           </div>
 
           <div class="space-y-2">
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-white/30">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground/70 dark:text-white/30">
                 Correct
               </p>
-              <p class="font-japanese text-base text-white/80">
+              <p class="font-japanese text-base text-foreground/80 dark:text-white/80">
                 モスバーガー
                 <span class="underline underline-offset-2">はあそこです</span>
                 。
               </p>
-              <p class="mt-1 text-sm text-white/40">X は Y です pattern</p>
+              <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">X は Y です pattern</p>
             </div>
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-white/30">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground/70 dark:text-white/30">
                 Correct
               </p>
-              <p class="font-japanese text-base text-white/80">
+              <p class="font-japanese text-base text-foreground/80 dark:text-white/80">
                 モスバーガーは
                 <span class="underline underline-offset-2">
                   あそこにあります
@@ -332,11 +332,11 @@ function IruAru() {
                 。
               </p>
             </div>
-            <div class="rounded-lg bg-white/[0.04] p-4">
-              <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-white/30">
+            <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
+              <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground/70 dark:text-white/30">
                 Correct
               </p>
-              <p class="font-japanese text-base text-white/80">
+              <p class="font-japanese text-base text-foreground/80 dark:text-white/80">
                 <span class="underline underline-offset-2">あそこに</span>
                 モスバーガーが
                 <span class="underline underline-offset-2">あります</span>。
@@ -347,17 +347,17 @@ function IruAru() {
 
         {/* Functions of に */}
         <AsideBlock label="Functions of に learned so far">
-          <ol class="mt-2 space-y-1.5 text-sm leading-relaxed text-white/60">
+          <ol class="mt-2 space-y-1.5 text-sm leading-relaxed text-muted-foreground dark:text-white/60">
             <li>
-              <span class="font-semibold text-white/80">1.</span> Direction of
+              <span class="font-semibold text-foreground/80 dark:text-white/80">1.</span> Direction of
               movement (家に帰ります)
             </li>
             <li>
-              <span class="font-semibold text-white/80">2.</span> Specific time
+              <span class="font-semibold text-foreground/80 dark:text-white/80">2.</span> Specific time
               (七時に帰ります)
             </li>
             <li>
-              <span class="font-semibold text-white/80">3.</span> Place where
+              <span class="font-semibold text-foreground/80 dark:text-white/80">3.</span> Place where
               thing is/exists (公園にお母さんがいます)
             </li>
           </ol>
@@ -366,13 +366,13 @@ function IruAru() {
         {/* Practice */}
         <div class="space-y-5">
           <h3 class="text-center text-2xl font-bold">Practice</h3>
-          <p class="text-center text-sm italic text-white/40">
+          <p class="text-center text-sm italic text-muted-foreground dark:text-white/40">
             *Choose the correct verb for each situation*
           </p>
 
           <div class="space-y-6">
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 How would you say "There's a cat in the room"?
               </p>
               <SelectText
@@ -384,7 +384,7 @@ function IruAru() {
             </div>
 
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 How would you say "There's a computer on the desk"?
               </p>
               <SelectText
@@ -396,7 +396,7 @@ function IruAru() {
             </div>
 
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 How would you say "I have an older sister"?
               </p>
               <SelectText
@@ -409,7 +409,7 @@ function IruAru() {
             </div>
 
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 How would you say "There's a test tomorrow"?
               </p>
               <SelectText
@@ -423,7 +423,7 @@ function IruAru() {
             </div>
 
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 How would you say "There are flowers in the park"?
               </p>
               <SelectText

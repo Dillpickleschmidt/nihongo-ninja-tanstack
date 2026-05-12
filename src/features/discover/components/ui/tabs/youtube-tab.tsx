@@ -33,8 +33,8 @@ export function YouTubeTab() {
     <div class="mx-auto w-full max-w-6xl px-4 pb-16 pt-14">
       {/* Header */}
       <div class="mb-8">
-        <h1 class="text-3xl font-bold text-white/90">YouTube</h1>
-        <p class="mt-1 text-sm text-white/40">
+        <h1 class="text-3xl font-bold text-foreground dark:text-white/90">YouTube</h1>
+        <p class="mt-1 text-sm text-muted-foreground dark:text-white/40">
           Browse curated videos or create a learning path from any video
         </p>
       </div>
@@ -50,7 +50,7 @@ export function YouTubeTab() {
               setYoutubeUrl(e.currentTarget.value)
               setUrlComingSoon(false)
             }}
-            class="flex-1 rounded-lg border border-white/10 bg-white/3 px-4 py-2.5 text-sm text-white placeholder-white/30 outline-none transition-colors focus:border-white/20 focus:bg-white/5"
+            class="flex-1 rounded-lg border border-border/70 bg-card/50 px-4 py-2.5 text-sm text-foreground placeholder-muted-foreground/60 outline-none transition-colors focus:border-dynamic-accent/40 focus:bg-card dark:border-white/10 dark:bg-white/3 dark:text-white dark:placeholder-white/30 dark:focus:border-white/20 dark:focus:bg-white/5"
           />
           <button
             onClick={() => setUrlComingSoon(true)}
@@ -60,7 +60,7 @@ export function YouTubeTab() {
           </button>
         </div>
         <Show when={urlComingSoon()}>
-          <p class="mt-2 text-xs text-white/40">
+          <p class="mt-2 text-xs text-muted-foreground dark:text-white/40">
             Coming soon — transcript extraction is not yet available.
           </p>
         </Show>
@@ -71,8 +71,8 @@ export function YouTubeTab() {
         <button
           class={`rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${
             activeLevel() === null
-              ? "bg-white/15 text-white"
-              : "text-white/40 hover:bg-white/5 hover:text-white/70"
+              ? "bg-foreground/10 text-foreground dark:bg-white/15 dark:text-white"
+              : "text-muted-foreground hover:bg-accent hover:text-foreground dark:text-white/40 dark:hover:bg-white/5 dark:hover:text-white/70"
           }`}
           onClick={() => setActiveLevel(null)}
         >
@@ -83,8 +83,8 @@ export function YouTubeTab() {
             <button
               class={`rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${
                 activeLevel() === level
-                  ? "bg-white/15 text-white"
-                  : "text-white/40 hover:bg-white/5 hover:text-white/70"
+                  ? "bg-foreground/10 text-foreground dark:bg-white/15 dark:text-white"
+                  : "text-muted-foreground hover:bg-accent hover:text-foreground dark:text-white/40 dark:hover:bg-white/5 dark:hover:text-white/70"
               }`}
               onClick={() => setActiveLevel(level)}
             >
@@ -97,7 +97,7 @@ export function YouTubeTab() {
       {/* Featured */}
       <Show when={filteredFeatured().length > 0}>
         <div class="mb-10">
-          <h2 class="mb-3 text-sm font-semibold text-white/50">Featured</h2>
+          <h2 class="mb-3 text-sm font-semibold text-foreground/70 dark:text-white/50">Featured</h2>
           <div class="scrollbar-none -mx-4 flex gap-4 overflow-x-auto px-4">
             <For each={filteredFeatured()}>
               {(video) => (
@@ -114,7 +114,7 @@ export function YouTubeTab() {
       </Show>
 
       {/* All Videos */}
-      <h2 class="mb-3 text-sm font-semibold text-white/50">All Videos</h2>
+      <h2 class="mb-3 text-sm font-semibold text-foreground/70 dark:text-white/50">All Videos</h2>
       <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <For each={filteredVideos()}>
           {(video) => (
@@ -138,7 +138,7 @@ export function YouTubeTab() {
 function VideoCard(props: { video: CuratedVideo; onClick: () => void }) {
   return (
     <button
-      class="group cursor-pointer overflow-hidden rounded-xl border border-white/5 bg-white/2 text-left transition-colors duration-200 hover:border-white/10 hover:bg-white/5"
+      class="group cursor-pointer overflow-hidden rounded-xl border border-border/50 bg-card/40 text-left shadow-sm transition-colors duration-200 hover:border-border hover:bg-card/70 dark:border-white/5 dark:bg-white/2 dark:shadow-none dark:hover:border-white/10 dark:hover:bg-white/5"
       onClick={props.onClick}
     >
       <div class="relative aspect-video overflow-hidden">
@@ -159,7 +159,7 @@ function VideoCard(props: { video: CuratedVideo; onClick: () => void }) {
       </div>
 
       <div class="p-3">
-        <h3 class="line-clamp-2 min-h-[2lh] text-sm font-medium leading-snug text-white/80 group-hover:text-white/95">
+        <h3 class="line-clamp-2 min-h-[2lh] text-sm font-medium leading-snug text-foreground/80 group-hover:text-foreground dark:text-white/80 dark:group-hover:text-white/95">
           {props.video.title}
         </h3>
         <div class="mt-2">
@@ -196,7 +196,7 @@ function VideoActionDialog(props: {
         <DialogPrimitive.Overlay class="fixed inset-0 z-50 bg-black/80 data-[expanded]:animate-in data-[closed]:animate-out data-[closed]:fade-out-0 data-[expanded]:fade-in-0" />
 
         <DialogPrimitive.Content
-          class={`fixed top-1/2 left-1/2 z-50 w-full -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-2xl border border-white/10 bg-neutral-950 data-[expanded]:animate-in data-[closed]:animate-out data-[closed]:fade-out-0 data-[expanded]:fade-in-0 ${
+          class={`fixed top-1/2 left-1/2 z-50 w-full -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-2xl border border-border/70 bg-card data-[expanded]:animate-in data-[closed]:animate-out data-[closed]:fade-out-0 data-[expanded]:fade-in-0 dark:border-white/10 dark:bg-neutral-950 ${
             mode() === "player" ? "max-w-4xl" : "max-w-lg"
           }`}
           onCloseAutoFocus={(e) => e.preventDefault()}
@@ -248,7 +248,7 @@ function VideoActionDialog(props: {
                   </DialogPrimitive.CloseButton>
                 </div>
                 <div class="p-5">
-                  <h3 class="text-lg font-semibold text-white">
+                  <h3 class="text-lg font-semibold text-foreground dark:text-white">
                     {video().title}
                   </h3>
                   <div class="mt-2 flex items-center gap-2">
@@ -257,16 +257,16 @@ function VideoActionDialog(props: {
                     >
                       {video().jlptLevel}
                     </span>
-                    <span class="text-xs text-white/30">
+                    <span class="text-xs text-muted-foreground dark:text-white/30">
                       {formatDuration(video().duration)}
                     </span>
                   </div>
                   <div class="mt-5 flex gap-3">
                     <button
                       onClick={() => setMode("player")}
-                      class="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-medium text-white/80 transition-colors hover:bg-white/10"
+                      class="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg border border-border/70 bg-card/40 px-4 py-2.5 text-sm font-medium text-foreground/80 transition-colors hover:bg-accent dark:border-white/10 dark:bg-white/5 dark:text-white/80 dark:hover:bg-white/10"
                     >
-                      <Play class="size-4 fill-white/80" />
+                      <Play class="size-4 fill-current" />
                       Watch
                     </button>
                     <button
@@ -278,7 +278,7 @@ function VideoActionDialog(props: {
                     </button>
                   </div>
                   <Show when={pathComingSoon()}>
-                    <p class="mt-3 text-center text-xs text-white/40">
+                    <p class="mt-3 text-center text-xs text-muted-foreground dark:text-white/40">
                       Coming soon — transcript extraction is not yet available.
                     </p>
                   </Show>

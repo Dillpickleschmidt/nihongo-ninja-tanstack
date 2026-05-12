@@ -139,8 +139,8 @@ function RouteComponent() {
         {/* Left: title + progress stats */}
         <div>
           <div class="animate-fade-up opacity-0">
-            <h1 class="text-3xl font-bold text-white/90">Today</h1>
-            <p class="text-sm text-white/25 mt-1">{todayLabel}</p>
+            <h1 class="text-3xl font-bold text-foreground dark:text-white/90">Today</h1>
+            <p class="text-sm text-muted-foreground mt-1 dark:text-white/25">{todayLabel}</p>
           </div>
 
           <div
@@ -157,26 +157,26 @@ function RouteComponent() {
                 >
                   {derived().progressUnits.toLocaleString()}
                 </div>
-                <div class="text-sm text-white/30 mt-1">
+                <div class="text-sm text-muted-foreground mt-1 dark:text-white/30">
                   of {DAILY_PROGRESS_TARGET_UNITS.toLocaleString()} XP
                 </div>
-                <div class="text-xs text-white/20 mt-1">
+                <div class="text-xs text-muted-foreground/70 mt-1 dark:text-white/20">
                   60 XP ≈ 1 minute of practice
                 </div>
               </div>
 
               <div>
-                <div class="text-4xl font-bold tabular-nums text-white/85">
+                <div class="text-4xl font-bold tabular-nums text-foreground/85 dark:text-white/85">
                   {derived().questionsAnswered}
                 </div>
-                <div class="text-sm text-white/30 mt-1">questions</div>
+                <div class="text-sm text-muted-foreground mt-1 dark:text-white/30">questions</div>
               </div>
 
               <div>
-                <div class="text-4xl font-bold tabular-nums text-white/85">
+                <div class="text-4xl font-bold tabular-nums text-foreground/85 dark:text-white/85">
                   {dailyStatsQuery.data()?.length ?? 0}
                 </div>
-                <div class="text-sm text-white/30 mt-1">modules</div>
+                <div class="text-sm text-muted-foreground mt-1 dark:text-white/30">modules</div>
               </div>
             </div>
           </div>
@@ -184,27 +184,27 @@ function RouteComponent() {
 
         {/* Right: due counts + continue button */}
         <div
-          class="rounded-2xl border border-white/5 bg-white/[0.02] p-6 animate-fade-up opacity-0"
+          class="rounded-2xl border border-border/50 bg-card/40 p-6 shadow-sm animate-fade-up opacity-0 dark:border-white/5 dark:bg-white/[0.02] dark:shadow-none"
           style={{ "animation-delay": "100ms" }}
         >
-          <h2 class="text-sm font-medium text-white/40 mb-4">Due for Review</h2>
+          <h2 class="text-sm font-medium text-muted-foreground mb-4 dark:text-white/40">Due for Review</h2>
 
           <div class="space-y-3">
             <div class="flex items-center justify-between gap-8">
-              <span class="text-sm text-white/60">Sentences</span>
-              <span class="text-lg font-bold tabular-nums text-white/30">–</span>
+              <span class="text-sm text-muted-foreground dark:text-white/60">Sentences</span>
+              <span class="text-lg font-bold tabular-nums text-muted-foreground/70 dark:text-white/30">–</span>
             </div>
             <div class="flex items-center justify-between gap-8">
-              <span class="text-sm text-white/60">Meanings</span>
-              <span class="text-lg font-bold tabular-nums text-white/85">
+              <span class="text-sm text-muted-foreground dark:text-white/60">Meanings</span>
+              <span class="text-lg font-bold tabular-nums text-foreground/85 dark:text-white/85">
                 <Show when={dueCounts().vocabMeanings !== undefined} fallback="–">
                   {dueCounts().vocabMeanings}
                 </Show>
               </span>
             </div>
             <div class="flex items-center justify-between gap-8">
-              <span class="text-sm text-white/60">Spellings</span>
-              <span class="text-lg font-bold tabular-nums text-white/85">
+              <span class="text-sm text-muted-foreground dark:text-white/60">Spellings</span>
+              <span class="text-lg font-bold tabular-nums text-foreground/85 dark:text-white/85">
                 <Show when={dueCounts().vocabSpellings !== undefined} fallback="–">
                   {dueCounts().vocabSpellings}
                 </Show>
@@ -212,8 +212,8 @@ function RouteComponent() {
             </div>
           </div>
 
-          <div class="mt-2 pt-3 border-t border-white/5 flex items-center justify-between">
-            <span class="text-sm text-white/40">Total</span>
+          <div class="mt-2 pt-3 border-t border-border/50 flex items-center justify-between dark:border-white/5">
+            <span class="text-sm text-muted-foreground dark:text-white/40">Total</span>
             <span class="text-lg font-bold tabular-nums text-dynamic-accent">
               <Show when={dueCounts().vocabTotal !== undefined} fallback="–">
                 {dueCounts().vocabTotal}
@@ -240,7 +240,7 @@ function RouteComponent() {
 
       {/* Progress bar */}
       <div
-        class="mt-8 h-1 w-full overflow-hidden rounded-full bg-white/6 animate-fade-up opacity-0"
+        class="mt-8 h-1 w-full overflow-hidden rounded-full bg-muted/70 animate-fade-up opacity-0 dark:bg-white/6"
         style={{ "animation-delay": "100ms" }}
       >
         <div
@@ -256,7 +256,7 @@ function RouteComponent() {
       {/* Today's Modules */}
       <section class="mt-12">
         <h2
-          class="text-lg font-semibold text-white/70 animate-fade-up opacity-0"
+          class="text-lg font-semibold text-foreground/80 animate-fade-up opacity-0 dark:text-white/70"
           style={{ "animation-delay": "125ms" }}
         >
           Today's Modules
@@ -269,14 +269,14 @@ function RouteComponent() {
             when={dailyStatsQuery.data()!.length > 0}
             fallback={
               <p
-                class="text-sm text-white/25 mt-4 animate-fade-up opacity-0"
+                class="text-sm text-muted-foreground mt-4 animate-fade-up opacity-0 dark:text-white/25"
                 style={{ "animation-delay": "175ms" }}
               >
                 No modules practiced yet today
               </p>
             }
           >
-            <div class="mt-4 divide-y divide-white/5">
+            <div class="mt-4 divide-y divide-border/50 dark:divide-white/5">
               <For each={reversedModules()}>
                 {(row, i) => (
                   <div
@@ -305,9 +305,9 @@ function RouteComponent() {
           style={{ "animation-delay": "250ms" }}
         >
           <div class="mb-4 flex items-center justify-between">
-            <h2 class="text-lg font-semibold text-white/70">This Week</h2>
+            <h2 class="text-lg font-semibold text-foreground/80 dark:text-white/70">This Week</h2>
             <div class="text-right">
-              <div class="text-sm text-white/55 tabular-nums">
+              <div class="text-sm text-muted-foreground tabular-nums dark:text-white/55">
                 {weeklyTotalXP().toLocaleString()} XP
               </div>
             </div>
@@ -322,7 +322,7 @@ function RouteComponent() {
           class="animate-fade-up opacity-0"
           style={{ "animation-delay": "300ms" }}
         >
-          <h2 class="text-lg font-semibold text-white/70 mb-4">
+          <h2 class="text-lg font-semibold text-foreground/80 mb-4 dark:text-white/70">
             Recent Activity
           </h2>
           <Show
@@ -331,9 +331,9 @@ function RouteComponent() {
           >
             <Show
               when={recentActivityQuery.data()!.length > 0}
-              fallback={<p class="text-sm text-white/25">No recent activity</p>}
+              fallback={<p class="text-sm text-muted-foreground dark:text-white/25">No recent activity</p>}
             >
-              <div class="divide-y divide-white/4">
+              <div class="divide-y divide-border/40 dark:divide-white/4">
                 <For each={recentActivityQuery.data()}>
                   {(row) => (
                     <ActivityItem
@@ -369,10 +369,10 @@ function ReviewModeDialog(props: {
 }) {
   return (
     <Dialog open={props.open} onOpenChange={props.onOpenChange}>
-      <DialogContent class="border-white/10 bg-[#121212] sm:max-w-md">
+      <DialogContent class="border-border/70 bg-card sm:max-w-md dark:border-white/10 dark:bg-[#121212]">
         <DialogHeader>
-          <DialogTitle class="text-white/90">Choose Review Mode</DialogTitle>
-          <DialogDescription class="text-white/45">
+          <DialogTitle class="text-foreground dark:text-white/90">Choose Review Mode</DialogTitle>
+          <DialogDescription class="text-muted-foreground dark:text-white/45">
             Pick the type of review you want to practice right now.
           </DialogDescription>
         </DialogHeader>
@@ -415,27 +415,27 @@ function ReviewModeOption(props: {
           type="button"
           variant="outline"
           disabled
-          class="h-auto min-h-28 flex-col gap-2 border-white/10 bg-white/[0.02] p-4"
+          class="h-auto min-h-28 flex-col gap-2 border-border/70 bg-card/40 p-4 dark:border-white/10 dark:bg-white/[0.02]"
         >
           <span class={`text-lg font-bold ${props.symbolClass}`}>
             {props.symbol}
           </span>
           <span class="text-sm font-medium">{props.label}</span>
-          <span class="text-xs text-white/35">{props.count ?? "–"} due</span>
+          <span class="text-xs text-muted-foreground dark:text-white/35">{props.count ?? "–"} due</span>
         </Button>
       }
     >
       <Link
         to="/review/session"
         search={{ mode: props.mode }}
-        class="inline-flex h-auto min-h-28 items-center justify-center rounded-md border border-white/10 bg-white/[0.02] p-4 text-white transition-colors hover:bg-white/[0.05]"
+        class="inline-flex h-auto min-h-28 items-center justify-center rounded-md border border-border/70 bg-card/40 p-4 text-foreground transition-colors hover:bg-accent dark:border-white/10 dark:bg-white/[0.02] dark:text-white dark:hover:bg-white/[0.05]"
       >
         <div class="flex flex-col items-center gap-2">
           <span class={`text-lg font-bold ${props.symbolClass}`}>
             {props.symbol}
           </span>
           <span class="text-sm font-medium">{props.label}</span>
-          <span class="text-xs text-white/45">{props.count} due</span>
+          <span class="text-xs text-muted-foreground dark:text-white/45">{props.count} due</span>
         </div>
       </Link>
     </Show>
@@ -445,12 +445,12 @@ function ReviewModeOption(props: {
 function SkeletonRows(props: { count: number }) {
   const items = () => Array.from({ length: props.count }, (_, i) => i)
   return (
-    <div class="mt-4 divide-y divide-white/5">
+    <div class="mt-4 divide-y divide-border/50 dark:divide-white/5">
       <Index each={items()}>
         {(i) => (
           <div class="py-4 flex items-center gap-4">
             <Skeleton
-              class="h-4 rounded bg-white/4"
+              class="h-4 rounded bg-muted/70 dark:bg-white/4"
               style={{
                 "animation-delay": `${i() * 100}ms`,
                 width: `${40 - i() * 5}%`,
@@ -466,13 +466,13 @@ function SkeletonRows(props: { count: number }) {
 function SkeletonDots(props: { count: number }) {
   const items = () => Array.from({ length: props.count }, (_, i) => i)
   return (
-    <div class="divide-y divide-white/4">
+    <div class="divide-y divide-border/40 dark:divide-white/4">
       <Index each={items()}>
         {(i) => (
           <div class="flex items-center gap-3 py-3">
-            <Skeleton class="h-2 w-2 rounded-full bg-white/6" />
+            <Skeleton class="h-2 w-2 rounded-full bg-muted/70 dark:bg-white/6" />
             <Skeleton
-              class="h-4 rounded bg-white/3"
+              class="h-4 rounded bg-muted/60 dark:bg-white/3"
               style={{
                 "animation-delay": `${i() * 60}ms`,
                 width: `${70 - i() * 8}%`,

@@ -74,7 +74,7 @@ export default function FillInBlankInput() {
                           handleMainButton()
                         }
                       }}
-                      class="placeholder:text-white/20 mx-1 text-center text-2xl"
+                      class="placeholder:text-muted-foreground/50 dark:text-white/20 mx-1 text-center text-2xl"
                       autofocus={index() === 0}
                       placeholder="..."
                     />
@@ -91,9 +91,9 @@ export default function FillInBlankInput() {
             ✓
           </span>
         </Show>
-        <p class="pt-1 text-sm text-white/30">*use caps for katakana</p>
+        <p class="pt-1 text-sm text-muted-foreground/70 dark:text-white/30">*use caps for katakana</p>
         <Show when={store.checkResult?.strippedParticle}>
-          <div class="inline-flex items-center gap-1 pt-0.5 text-sm text-white/30">
+          <div class="inline-flex items-center gap-1 pt-0.5 text-sm text-muted-foreground/70 dark:text-white/30">
             <span>
               {store.checkResult?.strippedParticle} may or may not be correct
             </span>
@@ -104,7 +104,7 @@ export default function FillInBlankInput() {
         </Show>
       </div>
       <Button3D
-        color={isAnswerCorrect() ? "rgb(34,197,94)" : "rgb(245,158,11)"}
+        color={isAnswerCorrect() ? "rgb(34,197,94)" : "var(--sentence-practice-action)"}
         onClick={handleMainButton}
       >
         {isAnswerCorrect()

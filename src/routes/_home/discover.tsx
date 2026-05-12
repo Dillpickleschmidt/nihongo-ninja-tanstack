@@ -172,7 +172,7 @@ function DiscoverPage() {
   return (
     <div
       ref={scrollRef}
-      class={`relative h-screen overflow-y-auto -ml-(--sidebar-width) 2xl:-mr-(--sidebar-width) ${search().tab !== "youtube" && "bg-[#121212]"}`}
+      class={`relative h-screen overflow-y-auto -ml-(--sidebar-width) 2xl:-mr-(--sidebar-width) ${search().tab !== "youtube" && "bg-background dark:bg-[#121212]"}`}
       style={{
         "margin-left": "calc(-1 * var(--sidebar-width, 0px))",
       }}

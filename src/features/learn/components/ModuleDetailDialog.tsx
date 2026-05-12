@@ -32,7 +32,7 @@ export function ModuleDetailDialog(props: ModuleDetailDialogProps) {
 
   return (
     <Dialog open={props.isOpen} onOpenChange={props.onOpenChange}>
-      <DialogContent class="h-full w-full border-card-foreground/70 bg-card bg-gradient-to-br backdrop-blur-sm dark:from-neutral-600/15 dark:to-gray-600/10 sm:h-auto sm:max-h-[85vh] sm:max-w-2xl sm:rounded-2xl">
+      <DialogContent class="h-full w-full border-border/70 bg-card bg-gradient-to-br from-white/95 to-muted/40 backdrop-blur-sm dark:border-card-foreground/70 dark:from-neutral-600/15 dark:to-gray-600/10 sm:h-auto sm:max-h-[85vh] sm:max-w-2xl sm:rounded-2xl">
         <DialogHeader>
           <div class="flex items-center gap-2.5">
             <div
@@ -42,7 +42,7 @@ export function ModuleDetailDialog(props: ModuleDetailDialogProps) {
                   : "bg-orange-400"
               }`}
             />
-            <DialogTitle class="text-lg font-semibold tracking-tight text-white/90">
+            <DialogTitle class="text-lg font-semibold tracking-tight text-foreground dark:text-white/90">
               {props.moduleName}
             </DialogTitle>
           </div>
@@ -89,15 +89,15 @@ export function ModuleDetailDialog(props: ModuleDetailDialogProps) {
 function LoadingSkeleton() {
   return (
     <div class="space-y-4 py-2">
-      <Skeleton class="h-20 rounded-xl bg-white/5" />
+      <Skeleton class="h-20 rounded-xl bg-muted/70 dark:bg-white/5" />
       <div class="space-y-2">
-        <Skeleton class="h-4 w-3/4 rounded bg-white/5" />
-        <Skeleton class="h-4 w-1/2 rounded bg-white/5" />
+        <Skeleton class="h-4 w-3/4 rounded bg-muted/70 dark:bg-white/5" />
+        <Skeleton class="h-4 w-1/2 rounded bg-muted/70 dark:bg-white/5" />
       </div>
-      <div class="h-px bg-white/10" />
+      <div class="h-px bg-border/70 dark:bg-white/10" />
       <div class="space-y-2">
-        <Skeleton class="h-4 w-2/3 rounded bg-white/5" />
-        <Skeleton class="h-3 w-1/3 rounded bg-white/5" />
+        <Skeleton class="h-4 w-2/3 rounded bg-muted/70 dark:bg-white/5" />
+        <Skeleton class="h-3 w-1/3 rounded bg-muted/70 dark:bg-white/5" />
       </div>
     </div>
   )

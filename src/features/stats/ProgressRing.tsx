@@ -51,7 +51,7 @@ export function ProgressRing(props: ProgressRingProps) {
           fill="none"
           stroke-width={strokeWidth()}
           stroke="currentColor"
-          class="text-white/[0.06]"
+          class="text-muted/80 dark:text-white/[0.06]"
         />
         <circle
           cx={center()}

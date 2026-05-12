@@ -39,7 +39,7 @@ export function ShowDetailDialog(props: ShowDetailDialogProps) {
     <>
       <Dialog open={props.open} onOpenChange={props.onOpenChange}>
         <DialogContent
-          class="h-screen w-screen max-w-none gap-0 overflow-y-auto rounded-none border-0 bg-neutral-950 p-0 sm:h-auto sm:max-h-[85vh] sm:w-full sm:max-w-2xl sm:rounded-xl sm:border sm:border-white/10"
+          class="h-screen w-screen max-w-none gap-0 overflow-y-auto rounded-none border-0 bg-card p-0 sm:h-auto sm:max-h-[85vh] sm:w-full sm:max-w-2xl sm:rounded-xl sm:border sm:border-border/70 dark:bg-neutral-950 dark:sm:border-white/10"
           overlayClass="bg-black/80"
         >
           <Show when={props.media}>
@@ -54,7 +54,7 @@ export function ShowDetailDialog(props: ShowDetailDialogProps) {
                     color={media().coverImage?.color}
                   />
                   {/* Gradient overlay */}
-                  <div class="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/30 to-transparent" />
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent" />
 
                   {/* Title overlay */}
                   <div class="absolute bottom-0 left-0 right-0 p-5">
@@ -81,7 +81,7 @@ export function ShowDetailDialog(props: ShowDetailDialogProps) {
                     </Show>
 
                     <Show when={formatEpisodeCount(media())}>
-                      <div class="flex items-center gap-1 text-white/40">
+                      <div class="flex items-center gap-1 text-muted-foreground dark:text-white/40">
                         <Film class="size-3.5" />
                         <span class="text-xs">
                           {formatEpisodeCount(media())}
@@ -90,7 +90,7 @@ export function ShowDetailDialog(props: ShowDetailDialogProps) {
                     </Show>
 
                     <Show when={media().seasonYear}>
-                      <div class="flex items-center gap-1 text-white/40">
+                      <div class="flex items-center gap-1 text-muted-foreground dark:text-white/40">
                         <Calendar class="size-3.5" />
                         <span class="text-xs">
                           {formatSeason(media().season ?? undefined)}{" "}
@@ -100,7 +100,7 @@ export function ShowDetailDialog(props: ShowDetailDialogProps) {
                     </Show>
 
                     <Show when={media().format}>
-                      <span class="rounded border border-white/10 bg-white/4 px-1.5 py-0.5 text-[0.65rem] text-white/40">
+                      <span class="rounded border border-border/70 bg-muted/50 px-1.5 py-0.5 text-[0.65rem] text-muted-foreground dark:border-white/10 dark:bg-white/4 dark:text-white/40">
                         {formatFormat(media().format ?? undefined)}
                       </span>
                     </Show>
@@ -127,7 +127,7 @@ export function ShowDetailDialog(props: ShowDetailDialogProps) {
 
                   {/* Description */}
                   <Show when={description()}>
-                    <p class="text-sm leading-relaxed text-white/40">
+                    <p class="text-sm leading-relaxed text-muted-foreground dark:text-white/40">
                       {description()}
                     </p>
                   </Show>
@@ -148,7 +148,7 @@ export function ShowDetailDialog(props: ShowDetailDialogProps) {
                     </button>
                     <button
                       type="button"
-                      class="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/4 px-4 py-3 text-sm font-semibold text-white/70 transition-all hover:border-white/20 hover:bg-white/7 hover:text-white/90"
+                      class="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-xl border border-border/70 bg-card/40 px-4 py-3 text-sm font-semibold text-foreground/70 transition-all hover:border-border hover:bg-accent hover:text-foreground dark:border-white/10 dark:bg-white/4 dark:text-white/70 dark:hover:border-white/20 dark:hover:bg-white/7 dark:hover:text-white/90"
                     >
                       <Play class="size-4" />
                       Play

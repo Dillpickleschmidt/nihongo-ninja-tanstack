@@ -21,7 +21,7 @@ function WordsThatPoint() {
   return (
     <div class="relative pb-32">
       {/* Background character */}
-      <span class="pointer-events-none absolute top-8 left-24 select-none font-japanese text-[10rem] leading-none text-white/[0.03] sm:top-11 sm:left-auto sm:right-8 sm:text-[11rem]">
+      <span class="pointer-events-none absolute top-8 left-24 select-none font-japanese text-[10rem] leading-none text-foreground/[0.04] dark:text-white/[0.03] sm:top-11 sm:left-auto sm:right-8 sm:text-[11rem]">
         指
       </span>
 
@@ -39,7 +39,7 @@ function WordsThatPoint() {
       <div class="space-y-14 px-8">
         {/* Intro */}
         <div class="space-y-4">
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             In Japanese, there are specific words used to point to objects.
             These words help to clarify what you are referring to and are
             essential for everyday conversations. Let's explore these
@@ -57,7 +57,7 @@ function WordsThatPoint() {
         {/* Objects */}
         <div class="space-y-4">
           <SectionLabel>Demonstratives for objects</SectionLabel>
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             These group of words can stand on their own — acting as full
             sentences.
           </p>
@@ -109,7 +109,7 @@ function WordsThatPoint() {
           />
 
           <AsideBlock>
-            <p class="text-sm leading-relaxed text-white/60">
+            <p class="text-sm leading-relaxed text-muted-foreground dark:text-white/60">
               Question words like{" "}
               <span class="font-japanese">どれ</span>,{" "}
               <span class="font-japanese">どの</span>, and{" "}
@@ -124,10 +124,10 @@ function WordsThatPoint() {
         {/* Adjectives */}
         <div class="space-y-4">
           <SectionLabel>Demonstrative adjectives</SectionLabel>
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             These group of words{" "}
-            <span class="font-semibold text-white/90">modify nouns</span> and
-            can <span class="font-semibold italic text-white/90">NOT</span>{" "}
+            <span class="font-semibold text-foreground dark:text-white/90">modify nouns</span> and
+            can <span class="font-semibold italic text-foreground dark:text-white/90">NOT</span>{" "}
             stand on their own.
           </p>
 
@@ -202,7 +202,7 @@ function WordsThatPoint() {
             />
           </div>
 
-          <p class="text-center text-sm italic text-white/40">
+          <p class="text-center text-sm italic text-muted-foreground dark:text-white/40">
             **Just a reminder that Japanese doesn't distinguish singular from
             plural!**
           </p>
@@ -211,37 +211,37 @@ function WordsThatPoint() {
         {/* Recap */}
         <div class="space-y-4">
           <SectionLabel>Recap</SectionLabel>
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             Use{" "}
-            <span class="font-japanese text-lg font-medium text-white/90">
+            <span class="font-japanese text-lg font-medium text-foreground dark:text-white/90">
               これ
             </span>
             ,{" "}
-            <span class="font-japanese text-lg font-medium text-white/90">
+            <span class="font-japanese text-lg font-medium text-foreground dark:text-white/90">
               それ
             </span>
             ,{" "}
-            <span class="font-japanese text-lg font-medium text-white/90">
+            <span class="font-japanese text-lg font-medium text-foreground dark:text-white/90">
               あれ
             </span>
             , and{" "}
-            <span class="font-japanese text-lg font-medium text-white/90">
+            <span class="font-japanese text-lg font-medium text-foreground dark:text-white/90">
               どれ
             </span>{" "}
             for standalone topics/subjects and{" "}
-            <span class="font-japanese text-lg font-medium text-white/90">
+            <span class="font-japanese text-lg font-medium text-foreground dark:text-white/90">
               この
             </span>
             ,{" "}
-            <span class="font-japanese text-lg font-medium text-white/90">
+            <span class="font-japanese text-lg font-medium text-foreground dark:text-white/90">
               その
             </span>
             ,{" "}
-            <span class="font-japanese text-lg font-medium text-white/90">
+            <span class="font-japanese text-lg font-medium text-foreground dark:text-white/90">
               あの
             </span>
             , and{" "}
-            <span class="font-japanese text-lg font-medium text-white/90">
+            <span class="font-japanese text-lg font-medium text-foreground dark:text-white/90">
               どの
             </span>{" "}
             for modifying nouns.
@@ -253,10 +253,10 @@ function WordsThatPoint() {
               <p>this pen</p>
             </div>
             <div class="space-y-1 font-japanese text-xl font-medium">
-              <p class="text-white/50 line-through">
+              <p class="text-muted-foreground dark:text-white/50 line-through">
                 こ<span class="text-red-500">の</span>
               </p>
-              <p class="text-white/50 line-through">
+              <p class="text-muted-foreground dark:text-white/50 line-through">
                 こ<span class="text-red-500">れ</span>ぺん
               </p>
             </div>
@@ -383,16 +383,16 @@ function WordsThatPoint() {
 
           <AsideBlock>
             <ul class="-ml-1 mt-4 list-inside" style={'list-style-type: "- ";'}>
-              <li class="text-sm leading-relaxed text-white/60">
+              <li class="text-sm leading-relaxed text-muted-foreground dark:text-white/60">
                 These should generally be used in place of{" "}
                 <span class="font-japanese">これ</span>,{" "}
                 <span class="font-japanese">この</span>,{" "}
                 <span class="font-japanese">ここ</span>, and{" "}
                 <span class="font-japanese">それ</span>, etc., whenever referring to people, as it's more polite. People aren't things and as such generally deserve different treatment.
               </li>
-              <li class="text-sm leading-relaxed text-white/60">If you're not about to describe their name specifically, you don't have to use these unless you want to show high regard for the person. 
+              <li class="text-sm leading-relaxed text-muted-foreground dark:text-white/60">If you're not about to describe their name specifically, you don't have to use these unless you want to show high regard for the person. 
               </li>
-              <li class="text-sm leading-relaxed text-white/60">For example: 
+              <li class="text-sm leading-relaxed text-muted-foreground dark:text-white/60">For example: 
                 <span class="font-japanese">この子</span> - "this child" (still polite), 
                 <span class="font-japanese">このバカ</span> - "this idiot".
               </li>
@@ -401,8 +401,8 @@ function WordsThatPoint() {
           </div>
         </div>
 
-        <p class="leading-relaxed text-white/70">
-          <span class="font-semibold italic text-white/90">Don't worry</span>{" "}
+        <p class="leading-relaxed text-foreground/75 dark:text-white/70">
+          <span class="font-semibold italic text-foreground dark:text-white/90">Don't worry</span>{" "}
           if you think you'll struggle differentiating these words. You'll naturally 
           get plenty of practice as you continue learning new material.
         </p>
@@ -441,25 +441,25 @@ function DemoCard(props: {
   note?: string
 }) {
   return (
-    <div class="rounded-lg bg-white/[0.04] p-4">
+    <div class="rounded-lg bg-card/60 dark:bg-white/[0.04] p-4">
       <div class="flex items-baseline gap-2">
         <span class={`font-japanese text-2xl font-semibold ${props.color}`}>
           {props.jp}
         </span>
         <span class={`font-semibold ${props.color}`}>{props.en}</span>
-        <span class="text-xs italic text-white/30">({props.proximity})</span>
+        <span class="text-xs italic text-muted-foreground/70 dark:text-white/30">({props.proximity})</span>
       </div>
-      <div class="mt-3 space-y-1.5 text-white/60">
+      <div class="mt-3 space-y-1.5 text-muted-foreground dark:text-white/60">
         <p>
-          <span class="font-japanese text-lg text-white/80">
+          <span class="font-japanese text-lg text-foreground/80 dark:text-white/80">
             {props.example}
           </span>
           {props.note && (
-            <span class="ml-1 text-xs text-white/30">{props.note}</span>
+            <span class="ml-1 text-xs text-muted-foreground/70 dark:text-white/30">{props.note}</span>
           )}
-          <span class="ml-2 text-sm text-white/40">{props.translation}</span>
+          <span class="ml-2 text-sm text-muted-foreground dark:text-white/40">{props.translation}</span>
         </p>
-        <p class="text-sm text-white/40">{props.situation}</p>
+        <p class="text-sm text-muted-foreground dark:text-white/40">{props.situation}</p>
       </div>
     </div>
   )

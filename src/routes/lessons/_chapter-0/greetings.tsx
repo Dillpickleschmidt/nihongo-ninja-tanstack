@@ -39,7 +39,7 @@ function Greetings() {
   return (
     <div class="relative pb-32">
       {/* Background character */}
-      <span class="pointer-events-none absolute top-8 right-6 select-none font-japanese text-[10rem] leading-none text-white/[0.03] sm:top-11 sm:right-8 sm:text-[11rem]">
+      <span class="pointer-events-none absolute top-8 right-6 select-none font-japanese text-[10rem] leading-none text-foreground/[0.04] dark:text-white/[0.03] sm:top-11 sm:right-8 sm:text-[11rem]">
         挨
       </span>
 
@@ -57,7 +57,7 @@ function Greetings() {
 
       <div class="space-y-14">
         <div class="mx-auto max-w-3xl px-8">
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             Before grammar, before sentence structure, before any of
             that, you need greetings. These ten phrases cover every
             "hello" and "goodbye" situation you'll run into.
@@ -66,7 +66,7 @@ function Greetings() {
 
         {/* Vocabulary cards */}
         <div class="space-y-4 px-8">
-          <p class="text-center text-sm italic text-white/40">
+          <p class="text-center text-sm italic text-muted-foreground dark:text-white/40">
             Click on the examples to hear the words actually being used!
           </p>
           <Show when={vocabItems() !== undefined}>
@@ -79,7 +79,7 @@ function Greetings() {
         </div>
 
         <div class="mx-auto max-w-3xl px-8">
-          <p class="leading-relaxed text-white/70">
+          <p class="leading-relaxed text-foreground/75 dark:text-white/70">
             As with any language, the context and your relationship with the
             person you're speaking to will guide which phrase is most
             appropriate.
@@ -91,7 +91,7 @@ function Greetings() {
           <h3 class="text-center text-2xl font-bold">Practice</h3>
           <div class="space-y-6">
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 You run into a friend in the morning on your way to the store.
                 How do you greet them?
               </p>
@@ -105,7 +105,7 @@ function Greetings() {
             </div>
 
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 Which greeting would you use when leaving a casual meet-up with
                 friends in the afternoon?
               </p>
@@ -119,9 +119,9 @@ function Greetings() {
             </div>
 
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 You say{" "}
-                <span class="font-japanese text-lg font-semibold text-white/90">
+                <span class="font-japanese text-lg font-semibold text-foreground dark:text-white/90">
                   こんばんは
                 </span>{" "}
                 to your teacher at 9 AM. Is this correct?
@@ -130,7 +130,7 @@ function Greetings() {
             </div>
 
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 You've just finished a group project and want to thank everyone
                 for their hard work. You say:
               </p>
@@ -144,7 +144,7 @@ function Greetings() {
             </div>
 
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
                 It's 8 PM and you're entering a restaurant. The staff greets
                 you. You reply with:
               </p>
@@ -158,8 +158,8 @@ function Greetings() {
             </div>
 
             <div class="space-y-3">
-              <p class="leading-relaxed text-white/70">
-                <span class="font-japanese text-lg font-semibold text-white/90">
+              <p class="leading-relaxed text-foreground/75 dark:text-white/70">
+                <span class="font-japanese text-lg font-semibold text-foreground dark:text-white/90">
                   おはよう
                 </span>{" "}
                 is a formal way to say good morning.

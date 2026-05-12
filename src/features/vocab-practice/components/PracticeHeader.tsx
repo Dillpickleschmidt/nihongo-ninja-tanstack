@@ -21,11 +21,11 @@ export function PracticeHeader(props: PracticeHeaderProps) {
         <button
           type="button"
           onClick={props.onQuit}
-          class="text-white/30 transition-transform duration-200 hover:scale-125 hover:text-white/60"
+          class="text-muted-foreground/70 transition-transform duration-200 hover:scale-125 hover:text-muted-foreground dark:text-white/30 dark:hover:text-white/60"
         >
           <X size={24} />
         </button>
-        <div class="relative h-3.5 w-full overflow-hidden rounded-full bg-white/10">
+        <div class="relative h-3.5 w-full overflow-hidden rounded-full bg-muted dark:bg-white/10">
           <div
             class="h-full rounded-full transition-all duration-500"
             style={{
@@ -38,15 +38,15 @@ export function PracticeHeader(props: PracticeHeaderProps) {
 
       {/* Stats row */}
       <div class="flex w-full items-center justify-end gap-3 py-2 text-sm">
-        <span class="flex items-center gap-1 text-white/50">
+        <span class="flex items-center gap-1 text-muted-foreground dark:text-white/50">
           <SquareCheck class="size-4 text-emerald-400" />
           <span>{props.correctCount ?? 0}</span>
         </span>
-        <span class="flex items-center gap-1 text-white/50">
+        <span class="flex items-center gap-1 text-muted-foreground dark:text-white/50">
           <SquareX class="size-4 text-rose-400" />
           <span>{props.wrongCount ?? 0}</span>
         </span>
-        <span class="text-white/30">
+        <span class="text-muted-foreground/70 dark:text-white/30">
           {props.currentIndex + 1}/{props.totalItems}
         </span>
       </div>

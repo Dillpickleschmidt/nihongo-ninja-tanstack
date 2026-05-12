@@ -40,12 +40,12 @@ export function StreamingPrefsModal() {
         if (!open) dismissModal()
       }}
     >
-      <DialogContent class="max-h-[85vh] w-[92vw] max-w-sm overflow-y-auto border-white/10 bg-neutral-950/95 backdrop-blur-xl sm:w-full">
+      <DialogContent class="max-h-[85vh] w-[92vw] max-w-sm overflow-y-auto border-border/70 bg-card backdrop-blur-xl dark:border-white/10 dark:bg-neutral-950/95 sm:w-full">
         <DialogHeader>
-          <DialogTitle class="text-white/80">Where do you watch?</DialogTitle>
+          <DialogTitle class="text-foreground dark:text-foreground dark:text-white/80">Where do you watch?</DialogTitle>
         </DialogHeader>
 
-        <p class="text-[0.75rem] leading-relaxed text-white/30">
+        <p class="text-[0.75rem] leading-relaxed text-muted-foreground dark:text-white/30">
           Tap services in your preferred order. We'll prioritize links to your
           top picks.
         </p>
@@ -63,7 +63,7 @@ export function StreamingPrefsModal() {
                   class="group flex cursor-pointer items-center gap-3 rounded-xl border px-4 py-3 text-left transition-all"
                   classList={{
                     "border-dynamic-accent/25 bg-dynamic-accent/8": isSelected(),
-                    "border-white/8 bg-white/2 hover:border-white/15 hover:bg-white/4":
+                    "border-border/70 bg-card/40 hover:border-border hover:bg-accent dark:border-white/8 dark:bg-white/2 dark:hover:border-white/15 dark:hover:bg-white/4":
                       !isSelected(),
                   }}
                 >
@@ -72,7 +72,7 @@ export function StreamingPrefsModal() {
                     class="flex size-7 shrink-0 items-center justify-center rounded-lg text-xs font-bold transition-all"
                     classList={{
                       "bg-dynamic-accent/20 text-dynamic-accent": isSelected(),
-                      "bg-white/6 text-white/25": !isSelected(),
+                      "bg-muted text-muted-foreground dark:bg-white/6 dark:text-white/25": !isSelected(),
                     }}
                   >
                     <Show when={isSelected()} fallback="·">
@@ -84,8 +84,8 @@ export function StreamingPrefsModal() {
                   <span
                     class="text-sm font-medium transition-colors"
                     classList={{
-                      "text-white/80": isSelected(),
-                      "text-white/45": !isSelected(),
+                      "text-foreground dark:text-white/80": isSelected(),
+                      "text-muted-foreground dark:text-white/45": !isSelected(),
                     }}
                   >
                     {service().name}
@@ -111,7 +111,7 @@ export function StreamingPrefsModal() {
           <button
             type="button"
             onClick={() => dismissModal()}
-            class="flex-1 cursor-pointer rounded-xl border border-white/8 bg-white/3 px-4 py-2.5 text-sm font-medium text-white/40 transition-colors hover:bg-white/6 hover:text-white/60"
+            class="flex-1 cursor-pointer rounded-xl border border-border/70 bg-card/40 px-4 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground dark:border-white/8 dark:bg-white/3 dark:text-white/40 dark:hover:bg-white/6 dark:hover:text-white/60"
           >
             Skip
           </button>
