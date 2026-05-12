@@ -4,15 +4,15 @@ import {
   removeFurigana,
   SEGMENT_SEPARATOR,
 } from "../textProcessor"
+import {
+  FIRST_PERSON_PRONOUNS,
+  PLURAL_FIRST_PERSON_PRONOUNS,
+} from "./pronouns"
 
-const PRONOUNS = [
-  "私[わたし]",
-  "私[わたくし]",
-  "僕[ぼく]",
-  "俺[おれ]",
-  "あたし",
-]
-const PLURAL_PRONOUNS = ["私[わたし]たち", "僕[ぼく]たち", "俺[おれ]たち"]
+const PRONOUNS = FIRST_PERSON_PRONOUNS.map((pronoun) => pronoun.value)
+const PLURAL_PRONOUNS = PLURAL_FIRST_PERSON_PRONOUNS.map(
+  (pronoun) => pronoun.value,
+)
 const HONORIFIC_VARIATIONS: Record<string, string[]> = {
   さん: ["くん", "ちゃん", "先生[せんせい]"],
   くん: ["さん", "ちゃん"],
