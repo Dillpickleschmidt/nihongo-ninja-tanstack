@@ -1003,6 +1003,25 @@ export const questions: Question[] = [
       {
         segments: [
           {
+            text: "母[はは]は 昨日[きのう]の 七時[しちじ]に 駅[えき]の 前[まえ]で ",
+          },
+          { text: "待[ま]って", blank: true },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "母は with 昨日の七時に"
+      },
+      {
+        segments: [
+          {
             text: "母[はは]は 七時[しちじ]に 昨日[きのう]、駅[えき]の 前[まえ]で ",
           },
           { text: "待[ま]って", blank: true },

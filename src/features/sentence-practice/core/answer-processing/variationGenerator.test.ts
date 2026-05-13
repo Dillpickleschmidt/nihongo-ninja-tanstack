@@ -263,6 +263,20 @@ describe("plural pronouns", () => {
   })
 })
 
+describe("kinship variations", () => {
+  it("generates bare family-name forms alongside お-prefixed forms", () => {
+    const segments: RichSegment[] = [
+      createRichSegment("お 父[とう]さんはシャワーを浴[あ]びている", false),
+    ]
+    const result = generateAcceptedAnswers(
+      generateCanonicalAnswers(segments, 0, true),
+    )
+    const originals = result.map((answer) => stripSeparators(answer.original))
+
+    expect(originals).toContain("父[とう]さんはシャワーを浴[あ]びている")
+  })
+})
+
 describe("kana input alias preservation", () => {
   it("keeps the canonical answer alongside the kana input alias", () => {
     const segments: RichSegment[] = [
