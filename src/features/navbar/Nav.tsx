@@ -30,7 +30,7 @@ interface NavProps {
 const navItems: NavItem[] = [
   { id: "home", label: "Home", href: "/dashboard", icon: House },
   { id: "learn", label: "Learn", href: "/learn", icon: BookOpen },
-  { id: "review", label: "", href: "/review", icon: null },
+  { id: "review", label: "", href: "/dashboard", icon: null },
   { id: "search", label: "Search", href: "/search", icon: Search },
   { id: "more", label: "More", icon: Menu, action: "open-more" },
 ]

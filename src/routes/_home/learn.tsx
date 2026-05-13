@@ -76,7 +76,7 @@ function LearnComponent() {
 
       <FloatingKanji char="忍" class="top-52 left-10" delay={0} />
 
-      <main class="pt-20 md:pt-20 2xl:pt-28 pb-32 px-4 md:px-6">
+      <main class="mx-auto max-w-7xl px-4 pt-20 pb-32 md:px-6 md:pt-20 2xl:pt-28">
         <LearningPathProvider>
           <LearningPathHeader />
 

@@ -36,6 +36,15 @@ export const getRecentModuleActivity = query({
   handler: (ctx, { limit }) => Progress.getRecentModuleActivity(ctx, limit),
 })
 
+export const getDailyProgressRange = query({
+  args: {
+    fromDateKey: v.string(),
+    toDateKey: v.string(),
+  },
+  handler: (ctx, { fromDateKey, toDateKey }) =>
+    Progress.getDailyProgressRange(ctx, fromDateKey, toDateKey),
+})
+
 export const getDistribution = query({
   args: {
     fromDateKey: v.string(),

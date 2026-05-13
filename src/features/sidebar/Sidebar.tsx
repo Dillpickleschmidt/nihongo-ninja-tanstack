@@ -134,13 +134,6 @@ const navigation: NavigationSection[] = [
         class: "text-primary",
       },
       {
-        id: "stats",
-        title: "Your Stats",
-        href: "/review",
-        icon: ChartNoAxesColumn,
-        class: "text-primary",
-      },
-      {
         id: "discover",
         title: "Real Content",
         href: "/discover",

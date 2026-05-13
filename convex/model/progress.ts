@@ -102,6 +102,45 @@ export async function getRecentModuleActivity(
   return unique
 }
 
+export async function getDailyProgressRange(
+  ctx: QueryCtx,
+  fromDateKey: string,
+  toDateKey: string,
+): Promise<DailySummary[]> {
+  const identity = await ctx.auth.getUserIdentity()
+  if (!identity) return []
+
+  const rows = await ctx.db
+    .query("userDailyModuleStats")
+    .withIndex("by_user_date", (q) =>
+      q
+        .eq("userId", identity.subject)
+        .gte("dateKey", fromDateKey)
+        .lte("dateKey", toDateKey),
+    )
+    .collect()
+
+  const grouped = new Map<string, DailySummary>()
+
+  for (const row of rows) {
+    const existing = grouped.get(row.dateKey)
+    if (existing) {
+      existing.progressUnits += row.progressUnits
+      existing.questionsAnswered += row.questionsAnswered
+    } else {
+      grouped.set(row.dateKey, {
+        dateKey: row.dateKey,
+        progressUnits: row.progressUnits,
+        questionsAnswered: row.questionsAnswered,
+      })
+    }
+  }
+
+  return Array.from(grouped.values()).sort((a, b) =>
+    a.dateKey.localeCompare(b.dateKey),
+  )
+}
+
 export async function getDistribution(
   ctx: QueryCtx,
   fromDateKey: string,
@@ -110,14 +149,15 @@ export async function getDistribution(
   const identity = await ctx.auth.getUserIdentity()
   if (!identity) return []
 
-  const rows = await ctx.db
+  const filtered = await ctx.db
     .query("userDailyModuleStats")
-    .withIndex("by_user_date", (q) => q.eq("userId", identity.subject))
+    .withIndex("by_user_date", (q) =>
+      q
+        .eq("userId", identity.subject)
+        .gte("dateKey", fromDateKey)
+        .lte("dateKey", toDateKey),
+    )
     .collect()
-
-  const filtered = rows.filter(
-    (row) => row.dateKey >= fromDateKey && row.dateKey <= toDateKey,
-  )
 
   const grouped = new Map<
     string,

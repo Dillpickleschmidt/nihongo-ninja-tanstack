@@ -106,7 +106,7 @@ function FsrsReviewPractice(props: {
 
     if (!data || data.reviewData.fsrsCards.length === 0) {
       setRedirecting(true)
-      navigate({ to: "/review", replace: true })
+      navigate({ to: "/dashboard", replace: true })
       return
     }
 
@@ -129,7 +129,7 @@ function FsrsReviewPractice(props: {
         onAnswer={(rating: Grade) => practiceManager.answerCard(rating)}
         onIntroductionComplete={() => practiceManager.processIntroduction()}
         onProgressEvent={recordProgress}
-        onReturn={() => navigate({ to: "/review" })}
+        onReturn={() => navigate({ to: "/dashboard" })}
         returnLabel="Return to Review"
       />
     </Show>
@@ -166,7 +166,7 @@ function AnkiReviewPractice(props: { mode: PracticeMode }) {
     try {
       const reviewCards = await fetchDueReviewCardsByMode(props.mode)
       if (reviewCards.length === 0) {
-        navigate({ to: "/review", replace: true })
+        navigate({ to: "/dashboard", replace: true })
         return
       }
 
@@ -200,7 +200,7 @@ function AnkiReviewPractice(props: { mode: PracticeMode }) {
           {(message) => (
             <div class="mx-auto mt-24 flex max-w-md flex-col items-center gap-4 px-4 text-center">
               <p class="text-sm text-rose-300">{message()}</p>
-              <Button as={Link} to="/review" variant="outline">
+              <Button as={Link} to="/dashboard" variant="outline">
                 Return to Review
               </Button>
             </div>
@@ -216,7 +216,7 @@ function AnkiReviewPractice(props: { mode: PracticeMode }) {
         onAnswer={(rating: Grade) => practiceManager.answerCard(rating)}
         onIntroductionComplete={() => practiceManager.processIntroduction()}
         onProgressEvent={recordProgress}
-        onReturn={() => navigate({ to: "/review" })}
+        onReturn={() => navigate({ to: "/dashboard" })}
         returnLabel="Return to Review"
       />
     </Show>

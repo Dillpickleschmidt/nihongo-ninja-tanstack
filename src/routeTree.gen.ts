@@ -31,7 +31,6 @@ import { Route as HomeConjugationRouteImport } from './routes/_home/conjugation'
 import { Route as HomeCheatsheetsRouteImport } from './routes/_home/cheatsheets'
 import { Route as HomeVocabIndexRouteImport } from './routes/_home/vocab/index'
 import { Route as HomeSentencePracticeIndexRouteImport } from './routes/_home/sentence-practice/index'
-import { Route as HomeReviewIndexRouteImport } from './routes/_home/review/index'
 import { Route as HomeMiscIndexRouteImport } from './routes/_home/misc/index'
 import { Route as HomeImportIndexRouteImport } from './routes/_home/import/index'
 import { Route as HomeGuidesIndexRouteImport } from './routes/_home/guides/index'
@@ -234,11 +233,6 @@ const HomeSentencePracticeIndexRoute =
     path: '/sentence-practice/',
     getParentRoute: () => HomeRoute,
   } as any)
-const HomeReviewIndexRoute = HomeReviewIndexRouteImport.update({
-  id: '/review/',
-  path: '/review/',
-  getParentRoute: () => HomeRoute,
-} as any)
 const HomeMiscIndexRoute = HomeMiscIndexRouteImport.update({
   id: '/misc/',
   path: '/misc/',
@@ -843,7 +837,6 @@ export interface FileRoutesByFullPath {
   '/guides/': typeof HomeGuidesIndexRoute
   '/import/': typeof HomeImportIndexRoute
   '/misc/': typeof HomeMiscIndexRoute
-  '/review/': typeof HomeReviewIndexRoute
   '/sentence-practice/': typeof HomeSentencePracticeIndexRoute
   '/vocab/': typeof HomeVocabIndexRoute
   '/import/builtin/manual': typeof HomeImportBuiltinManualRoute
@@ -956,7 +949,6 @@ export interface FileRoutesByTo {
   '/guides': typeof HomeGuidesIndexRoute
   '/import': typeof HomeImportIndexRoute
   '/misc': typeof HomeMiscIndexRoute
-  '/review': typeof HomeReviewIndexRoute
   '/sentence-practice': typeof HomeSentencePracticeIndexRoute
   '/vocab': typeof HomeVocabIndexRoute
   '/import/builtin/manual': typeof HomeImportBuiltinManualRoute
@@ -1073,7 +1065,6 @@ export interface FileRoutesById {
   '/_home/guides/': typeof HomeGuidesIndexRoute
   '/_home/import/': typeof HomeImportIndexRoute
   '/_home/misc/': typeof HomeMiscIndexRoute
-  '/_home/review/': typeof HomeReviewIndexRoute
   '/_home/sentence-practice/': typeof HomeSentencePracticeIndexRoute
   '/_home/vocab/': typeof HomeVocabIndexRoute
   '/_home/import/builtin/manual': typeof HomeImportBuiltinManualRoute
@@ -1190,7 +1181,6 @@ export interface FileRouteTypes {
     | '/guides/'
     | '/import/'
     | '/misc/'
-    | '/review/'
     | '/sentence-practice/'
     | '/vocab/'
     | '/import/builtin/manual'
@@ -1303,7 +1293,6 @@ export interface FileRouteTypes {
     | '/guides'
     | '/import'
     | '/misc'
-    | '/review'
     | '/sentence-practice'
     | '/vocab'
     | '/import/builtin/manual'
@@ -1419,7 +1408,6 @@ export interface FileRouteTypes {
     | '/_home/guides/'
     | '/_home/import/'
     | '/_home/misc/'
-    | '/_home/review/'
     | '/_home/sentence-practice/'
     | '/_home/vocab/'
     | '/_home/import/builtin/manual'
@@ -1605,13 +1593,6 @@ declare module '@tanstack/solid-router' {
       path: '/sentence-practice'
       fullPath: '/sentence-practice/'
       preLoaderRoute: typeof HomeSentencePracticeIndexRouteImport
-      parentRoute: typeof HomeRoute
-    }
-    '/_home/review/': {
-      id: '/_home/review/'
-      path: '/review'
-      fullPath: '/review/'
-      preLoaderRoute: typeof HomeReviewIndexRouteImport
       parentRoute: typeof HomeRoute
     }
     '/_home/misc/': {
@@ -2352,7 +2333,6 @@ interface HomeRouteChildren {
   HomeSentencePracticeIdRoute: typeof HomeSentencePracticeIdRoute
   HomeImportIndexRoute: typeof HomeImportIndexRoute
   HomeMiscIndexRoute: typeof HomeMiscIndexRoute
-  HomeReviewIndexRoute: typeof HomeReviewIndexRoute
   HomeSentencePracticeIndexRoute: typeof HomeSentencePracticeIndexRoute
   HomeImportBuiltinManualRoute: typeof HomeImportBuiltinManualRoute
   HomeImportBuiltinUploadRoute: typeof HomeImportBuiltinUploadRoute
@@ -2379,7 +2359,6 @@ const HomeRouteChildren: HomeRouteChildren = {
   HomeSentencePracticeIdRoute: HomeSentencePracticeIdRoute,
   HomeImportIndexRoute: HomeImportIndexRoute,
   HomeMiscIndexRoute: HomeMiscIndexRoute,
-  HomeReviewIndexRoute: HomeReviewIndexRoute,
   HomeSentencePracticeIndexRoute: HomeSentencePracticeIndexRoute,
   HomeImportBuiltinManualRoute: HomeImportBuiltinManualRoute,
   HomeImportBuiltinUploadRoute: HomeImportBuiltinUploadRoute,
