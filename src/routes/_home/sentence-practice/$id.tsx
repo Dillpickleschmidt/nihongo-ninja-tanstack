@@ -1,6 +1,5 @@
 import { createFileRoute } from "@tanstack/solid-router"
-import { createResource, Suspense } from "solid-js"
-import { convexQuery } from "@/lib/convex-query"
+import { convexQuery, useConvexQuery } from "@/lib/convex-query"
 import { api } from "convex/_generated/api"
 import { queryKeys } from "@/query/query-keys"
 import {
@@ -18,13 +17,14 @@ export const Route = createFileRoute("/_home/sentence-practice/$id")({
       })
     }
 
-    const questionsPromise = context.queryClient.fetchQuery(
+    context.queryClient.prefetchQuery(
       convexQuery(api.api.sentencePractice.getQuestionsBySetId, {
         setId: params.id,
       }),
     )
+
     return {
-      questionsPromise,
+      setId: params.id,
       modulePath: `sentence-practice-${params.id}`,
     }
   },
@@ -34,19 +34,16 @@ export const Route = createFileRoute("/_home/sentence-practice/$id")({
 function RouteComponent() {
   const loaderData = Route.useLoaderData()
 
-  const [questions] = createResource(() => loaderData().questionsPromise)
+  const questionsQuery = useConvexQuery(
+    api.api.sentencePractice.getQuestionsBySetId,
+    () => ({ setId: loaderData().setId }),
+  )
 
   return (
     <div>
-      <Suspense
-        fallback={
-          <div class="py-12 text-center text-muted-foreground dark:text-white/40">Loading...</div>
-        }
-      >
-        <PracticeProvider modulePath={loaderData().modulePath}>
-          <PracticeContainer questions={questions()!} />
-        </PracticeProvider>
-      </Suspense>
+      <PracticeProvider modulePath={loaderData().modulePath}>
+        <PracticeContainer questions={questionsQuery.data()} />
+      </PracticeProvider>
     </div>
   )
 }
