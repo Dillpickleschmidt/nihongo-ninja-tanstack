@@ -1,4 +1,7 @@
-import type { SentenceAnswerToken } from "../../../../convex/validators"
+import type {
+  SentenceAnswerToken,
+  SentenceSegment,
+} from "../../../../convex/validators"
 
 // RichSegment: single source of truth - compute once, use everywhere
 export interface RichSegment {
@@ -7,6 +10,11 @@ export interface RichSegment {
   kana: string // "いく" - kana only
   ruby: string // "<ruby>行<rt>い</rt></ruby>く" - HTML
   isBlank: boolean
+}
+
+export interface ProcessedSegment extends RichSegment {
+  sourceIndex: number
+  source: SentenceSegment
 }
 
 // Pre-computed answer forms for matching

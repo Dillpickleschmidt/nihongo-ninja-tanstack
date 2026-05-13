@@ -269,6 +269,97 @@ describe("prepareQuestion", () => {
     expect(plains.some((p) => p.includes("行こう"))).toBe(false)
   })
 
+  it("generates casual explanatory question variants for verbs", () => {
+    const question = createQuestion("Will you go?", [
+      {
+        segments: [
+          segment("行[い]く", false, {
+            pos: "Godan verb - Iku/Yuku special class",
+            form: "normal",
+            polarity: "positive",
+            tense: "non-past",
+          }),
+          segment("か"),
+        ],
+        register: "casual",
+      },
+    ])
+
+    const stripped = prepareQuestion(question).acceptedAnswers.map((a) =>
+      a.plain.replaceAll("\u001f", ""),
+    )
+
+    expect(stripped).toContain("行く？")
+    expect(stripped).toContain("行くの？")
+  })
+
+  it("generates の／なの casual explanatory variants for ですか predicates", () => {
+    const nounQuestion = createQuestion("Is Tanaka a student?", [
+      {
+        segments: [segment("田中さんは学生"), segment("です"), segment("か")],
+        register: "casual",
+      },
+    ])
+    const iAdjectiveQuestion = createQuestion("Is it fun?", [
+      {
+        segments: [
+          segment("楽[たの]しい", false, {
+            pos: "I-adjective",
+            form: "normal",
+            polarity: "positive",
+            tense: "non-past",
+          }),
+          segment("です"),
+          segment("か"),
+        ],
+        register: "casual",
+      },
+    ])
+
+    const nounAnswers = prepareQuestion(nounQuestion).acceptedAnswers.map((a) =>
+      a.plain.replaceAll("\u001f", ""),
+    )
+    const iAdjectiveAnswers = prepareQuestion(
+      iAdjectiveQuestion,
+    ).acceptedAnswers.map((a) => a.plain.replaceAll("\u001f", ""))
+
+    expect(nounAnswers).toContain("田中さんは学生だ？")
+    expect(nounAnswers).toContain("田中さんは学生なの？")
+    expect(iAdjectiveAnswers).toContain("楽しいの？")
+    expect(iAdjectiveAnswers).not.toContain("楽しいなの？")
+  })
+
+  it("does not generate explanatory variants for どうですか", () => {
+    const question = createQuestion("How is it?", [
+      {
+        segments: [segment("どう"), segment("です"), segment("か")],
+        register: "casual",
+      },
+    ])
+
+    const stripped = prepareQuestion(question).acceptedAnswers.map((a) =>
+      a.plain.replaceAll("\u001f", ""),
+    )
+
+    expect(stripped).not.toContain("どうなの？")
+  })
+
+  it("does not double already explanatory question variants", () => {
+    const question = createQuestion("Has Kenji already gone home?", [
+      {
+        segments: [segment("けんじさんはもう 家[いえ]に帰[かえ]ったの"), segment("か")],
+        register: "casual",
+      },
+    ])
+
+    const stripped = prepareQuestion(question).acceptedAnswers.map((a) =>
+      a.plain.replaceAll("\u001f", "").replaceAll(" ", ""),
+    )
+
+    expect(stripped).toContain("けんじさんはもう家に帰ったの？")
+    expect(stripped).not.toContain("けんじさんはもう家に帰ったのの？")
+  })
+
   it("register-locked answer coexists with unlocked canonical answer", () => {
     const question = createQuestion("I'll watch a movie", [
       {

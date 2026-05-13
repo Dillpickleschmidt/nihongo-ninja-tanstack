@@ -10,6 +10,7 @@ import {
   generateCanonicalAnswers,
 } from "./answer-processing/variationGenerator"
 import { SEGMENT_SEPARATOR } from "./textProcessor"
+import { expandGrammarSequences } from "./grammarExpansion"
 
 // Processes segments (polite + casual), canonical answers, and input aliases
 export function prepareQuestion(question: {
@@ -45,13 +46,13 @@ export function prepareQuestion(question: {
     const runCasual = register !== "polite"
 
     if (runPolite) {
-      for (const seq of processSegments(rawAnswer.segments, true)) {
+      for (const seq of processAnswerSegments(rawAnswer.segments, true)) {
         addSequence(seq, sourceIndex, true, rawAnswer.notes)
       }
     }
 
     if (runCasual) {
-      for (const seq of processSegments(rawAnswer.segments, false)) {
+      for (const seq of processAnswerSegments(rawAnswer.segments, false)) {
         addSequence(seq, sourceIndex, false, rawAnswer.notes)
       }
     }
@@ -70,6 +71,16 @@ export function prepareQuestion(question: {
     acceptedAnswers: acceptedAnswerList,
     preparedAnswersForMatching: prepareAnswersForMatching(acceptedAnswerList),
   }
+}
+
+function processAnswerSegments(
+  segments: Parameters<typeof processSegments>[0],
+  isPolite: boolean,
+): RichSegment[][] {
+  return expandGrammarSequences(processSegments(segments, isPolite), {
+    sourceSegments: segments,
+    isPolite,
+  })
 }
 
 function joinSegments(segments: RichSegment[]): string {

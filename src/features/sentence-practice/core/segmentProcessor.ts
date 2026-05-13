@@ -1,5 +1,5 @@
 import type { SentenceSegment } from "convex/validators"
-import type { RichSegment } from "./types"
+import type { ProcessedSegment } from "./types"
 import { ConjugationEngine, type ConjugatedWord } from "./conjugation"
 import { createRichSegment } from "./textProcessor"
 
@@ -37,13 +37,17 @@ export function conjugateSegment(
 export function processSegments(
   segments: SentenceSegment[],
   isPolite: boolean,
-): RichSegment[][] {
-  const perSegmentOptions: RichSegment[][] = segments.map((segment) => {
-    const isBlank = segment.blank ?? false
-    return conjugateSegment(segment, isPolite).map((text) =>
-      createRichSegment(text, isBlank),
-    )
-  })
+): ProcessedSegment[][] {
+  const perSegmentOptions: ProcessedSegment[][] = segments.map(
+    (segment, sourceIndex) => {
+      const isBlank = segment.blank ?? false
+      return conjugateSegment(segment, isPolite).map((text) => ({
+        ...createRichSegment(text, isBlank),
+        sourceIndex,
+        source: segment,
+      }))
+    },
+  )
   return cartesian(perSegmentOptions)
 }
 
