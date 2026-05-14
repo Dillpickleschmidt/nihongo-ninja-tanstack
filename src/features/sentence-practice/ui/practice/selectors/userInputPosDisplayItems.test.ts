@@ -38,6 +38,39 @@ describe("getBestCanonicalAnswerIndex", () => {
     expect(getBestCanonicalAnswerIndex("", createQuestion())).toBe(0)
   })
 
+  it("ignores punctuation when choosing the best canonical answer", () => {
+    const politeAnswer = [
+      createRichSegment("父[とう]さんは 今[いま]、シャワーを ", false),
+      createRichSegment("浴[あ]びています", true),
+      createRichSegment("から、ちょっと 待[ま]ってください", false),
+    ]
+    const casualAnswer = [
+      createRichSegment("父[とう]さんは 今[いま]、シャワーを ", false),
+      createRichSegment("浴[あ]びている", true),
+      createRichSegment("から、ちょっと 待[ま]ってください", false),
+    ]
+    const canonicalAnswers = [
+      toCanonicalAnswer(politeAnswer),
+      toCanonicalAnswer(casualAnswer),
+    ]
+    const question: ProcessedQuestion = {
+      english: "Test",
+      canonicalAnswerTokens: [[], []],
+      displayAnswer: politeAnswer,
+      answers: [politeAnswer, casualAnswer],
+      canonicalAnswers,
+      acceptedAnswers: [],
+      preparedAnswersForMatching: [],
+    }
+
+    expect(
+      getBestCanonicalAnswerIndex(
+        "とうさんはいまシャワーをあびているから、ちょっとまってください",
+        question,
+      ),
+    ).toBe(1)
+  })
+
   it("keeps canonical order when early input matches multiple variants equally", () => {
     const baseAnswer = [
       createRichSegment("藤井[ふじい]さんは", false),

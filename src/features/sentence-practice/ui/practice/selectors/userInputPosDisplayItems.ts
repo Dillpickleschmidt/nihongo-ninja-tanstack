@@ -5,6 +5,7 @@ import { createKanjiFuriganaGroupRegex } from "@/data/utils/text/furigana"
 import {
   isIgnoredForAnswerMatching,
   isNeutralPosText,
+  normalizeWithPositions,
   SEGMENT_SEPARATOR,
 } from "../../../core/textProcessor"
 
@@ -45,17 +46,24 @@ export function getBestCanonicalAnswerIndex(
   question: ProcessedQuestion,
 ): number {
   if (!input.trim()) return 0
-  return findBestAnswerIndex(input, question.canonicalAnswers)
+  return findBestAnswerIndex(input, question)
 }
 
-function findBestAnswerIndex(input: string, answers: RichAnswer[]): number {
+function findBestAnswerIndex(
+  input: string,
+  question: ProcessedQuestion,
+): number {
   let bestIndex = 0
   let bestScore = -1
+  const normalizedInput = normalizeWithPositions(input).text
+  const usesKanji = containsKanji(input)
 
-  for (let index = 0; index < answers.length; index++) {
-    const answer = answers[index]
-    const targetText = getTargetText(input, answer)
-    const score = calculateMatchScore(input, targetText)
+  for (let index = 0; index < question.canonicalAnswers.length; index++) {
+    const targetText = getNormalizedCanonicalAnswerText(
+      question.canonicalAnswers[index],
+      usesKanji,
+    )
+    const score = getNormalizedPrefixScore(normalizedInput, targetText)
     if (score > bestScore) {
       bestScore = score
       bestIndex = index
@@ -119,9 +127,12 @@ function buildDisplayItems(
   return items
 }
 
-function getTargetText(input: string, answer: RichAnswer): string {
-  const field = containsKanji(input) ? "plain" : "kana"
-  return stripSegmentSeparators(answer[field])
+function getNormalizedCanonicalAnswerText(
+  answer: RichAnswer,
+  usesKanji: boolean,
+): string {
+  const field = usesKanji ? "plain" : "kana"
+  return normalizeWithPositions(answer[field]).text
 }
 
 function appendIgnoredInput(
@@ -221,7 +232,7 @@ function hasSharedPrefix(a: string, b: string): boolean {
   return a.length > 0 && b.length > 0 && a[0] === b[0]
 }
 
-function calculateMatchScore(input: string, target: string): number {
+function getNormalizedPrefixScore(input: string, target: string): number {
   return getSharedPrefixLength(input, target)
 }
 

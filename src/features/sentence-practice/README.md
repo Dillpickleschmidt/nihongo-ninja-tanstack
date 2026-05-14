@@ -4,6 +4,7 @@
 
 - `core/questionProcessor.ts` — turns Convex/source questions into `ProcessedQuestion` objects.
 - `core/segmentProcessor.ts` — applies segment conjugations and creates prepared segment variants.
+- `core/grammarExpansion.ts` — adds source-aware grammar variants before answer strings are flattened.
 - `core/answer-processing/variationGenerator.ts` — creates canonical Japanese answers, then accepted input aliases.
 - `core/answer-processing/answerChecker.ts` — checks `answerText` against accepted answers.
 - `session/easyModeAnswerProjection.ts` — projects easy-mode blanks into the same `answerText` used by hard mode.
@@ -14,7 +15,8 @@
 
 ```txt
 source question
-→ prepareQuestion()
+→ processSegments()                     // conjugates source segments
+→ expandGrammarSequences()              // source-aware grammar variants
 → ProcessedQuestion.answers             // segment-based prepared variants
 → ProcessedQuestion.canonicalAnswers    // real Japanese answer forms
 → ProcessedQuestion.acceptedAnswers     // canonical answers + input aliases
@@ -32,6 +34,8 @@ checkAnswer(answerText, question.preparedAnswersForMatching)
 ## Canonical answers vs input aliases
 
 The app primarily works with canonical Japanese answer forms: the actual Japanese strings, preserving kanji/furigana when known. Generated forms such as pronoun swaps, honorific swaps, kinship swaps, and `〜ている → 〜てる` contractions are canonical answers.
+
+Grammar expansions operate on segment sequences while source metadata is still available. Lexical variations and input aliases are generated later from flattened answer strings.
 
 Kana-only strings are input aliases. They exist so users can type plain kana, but they are not the answer forms that POS display, easy-mode variation lists, or grammar tokenization reason about.
 

@@ -63,17 +63,20 @@ function generateKinshipVariations(answers: RichAnswer[]): RichAnswer[] {
   for (const answer of answers) {
     for (const group of KINSHIP_GROUPS) {
       for (const baseForm of group) {
-        const regex = new RegExp(escapeRegex(baseForm), "g")
-        const occurrences = (answer.original.match(regex) || []).length
+        const positions = getStandaloneKinshipFormPositions(
+          answer.original,
+          baseForm,
+          group,
+        )
 
-        for (let i = 0; i < occurrences; i++) {
+        for (const position of positions) {
           for (const altForm of group) {
             if (altForm === baseForm) continue
-            const newOriginal = replaceAtIndex(
+            const newOriginal = replaceAtPosition(
               answer.original,
+              position,
               baseForm,
               altForm,
-              i,
             )
             if (!resultMap.has(newOriginal)) {
               resultMap.set(newOriginal, {
@@ -90,6 +93,43 @@ function generateKinshipVariations(answers: RichAnswer[]): RichAnswer[] {
   }
 
   return Array.from(resultMap.values())
+}
+
+function replaceAtPosition(
+  text: string,
+  position: number,
+  search: string,
+  replace: string,
+): string {
+  return text.slice(0, position) + replace + text.slice(position + search.length)
+}
+
+function getStandaloneKinshipFormPositions(
+  text: string,
+  baseForm: string,
+  group: string[],
+): number[] {
+  return allIndexesOf(text, baseForm).filter(
+    (position) => !isInsideLongerKinshipForm(text, baseForm, position, group),
+  )
+}
+
+function isInsideLongerKinshipForm(
+  text: string,
+  baseForm: string,
+  position: number,
+  group: string[],
+): boolean {
+  for (const form of group) {
+    if (form === baseForm || !form.includes(baseForm)) continue
+
+    const offset = form.indexOf(baseForm)
+    const formStart = position - offset
+    if (formStart < 0) continue
+    if (text.substr(formStart, form.length) === form) return true
+  }
+
+  return false
 }
 
 // Casual 〜ている → 〜てる contractions. Fires only when te-form
