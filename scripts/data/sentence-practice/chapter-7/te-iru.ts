@@ -2259,39 +2259,6 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "部屋[へや]の 電気[でんき]は" },
-          { text: "つけて", blank: true },
-          {
-            text: "いる",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-      },
-      {
-        segments: [
-          { text: "部屋[へや]の 電気[でんき]が" },
-          { text: "つけて", blank: true },
-          {
-            text: "いる",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "が particle",
-      },
-      {
-        segments: [
           { text: "部屋[へや]の 電気[でんき]が" },
           { text: "ついて", blank: true },
           {
@@ -2305,8 +2272,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes:
-          'Intransitive つく (電気がついている) — more natural for "the light is on"',
+        notes: "Intransitive つく for the light being on",
       },
     ],
   },
@@ -3217,7 +3183,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "私[わたし]は いつも 勉強[べんきょう]して 音楽[おんがく]を 聞[き]いて",
+            text: "勉強[べんきょう]している 時[とき]、いつも 音楽[おんがく]を 聞[き]いて",
           },
           {
             text: "いる",
@@ -3230,47 +3196,12 @@ export const questions: Question[] = [
             },
           },
         ],
+        notes: "Uses 勉強している時 for while studying",
       },
       {
         segments: [
           {
-            text: "私[わたし]が いつも 勉強[べんきょう]して 音楽[おんがく]を 聞[き]いて",
-          },
-          {
-            text: "いる",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "が instead of は",
-      },
-      {
-        segments: [
-          {
-            text: "私[わたし]は 勉強[べんきょう]して いつも 音楽[おんがく]を 聞[き]いて",
-          },
-          {
-            text: "いる",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "いつも moved after 勉強して",
-      },
-      {
-        segments: [
-          {
-            text: "私[わたし]は いつも 勉強[べんきょう]して 音楽[おんがく]を 聴[き]いて",
+            text: "勉強[べんきょう]している 時[とき]、いつも 音楽[おんがく]を 聴[き]いて",
           },
           {
             text: "いる",
@@ -3348,6 +3279,25 @@ export const questions: Question[] = [
           },
         ],
         notes: "Time phrase placed at the beginning.",
+      },
+      {
+        segments: [
+          {
+            text: "昨日[きのう]の 夜[よる] 九時[くじ]に、おじいさんは 家[いえ]で テレビを ",
+          },
+          { text: "見[み]て", blank: true },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "Omits 私の with time phrase first.",
       },
       {
         segments: [
@@ -3665,6 +3615,58 @@ export const questions: Question[] = [
       },
       {
         segments: [
+          { text: "いすに 犬[いぬ]が" },
+          {
+            text: "座[すわ]る",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending",
+              form: "te-form",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Chair/location first.",
+      },
+      {
+        segments: [
+          { text: "いすの 上[うえ]に 犬[いぬ]が" },
+          {
+            text: "座[すわ]る",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending",
+              form: "te-form",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Chair/location first with 上に.",
+      },
+      {
+        segments: [
           { text: "今[いま]、犬[いぬ]は いすに" },
           {
             text: "座[すわ]る",
@@ -3767,6 +3769,58 @@ export const questions: Question[] = [
         ],
         notes: "Starts with 今 and uses が + 上に.",
       },
+      {
+        segments: [
+          { text: "今[いま]、いすに 犬[いぬ]が" },
+          {
+            text: "座[すわ]る",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending",
+              form: "te-form",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Starts with 今; chair/location first.",
+      },
+      {
+        segments: [
+          { text: "今[いま]、いすの 上[うえ]に 犬[いぬ]が" },
+          {
+            text: "座[すわ]る",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending",
+              form: "te-form",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Starts with 今; chair/location first with 上に.",
+      }
     ],
   },
   {
