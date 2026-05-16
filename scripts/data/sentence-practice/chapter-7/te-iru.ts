@@ -1017,7 +1017,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "母は with 昨日の七時に"
+        notes: "母は with 昨日の七時に",
       },
       {
         segments: [
@@ -3178,43 +3178,58 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "I'm always listening to music while studying.",
+    english: "I always listen to music when I'm studying.",
     answers: [
       {
         segments: [
+          { text: "勉強[べんきょう]している 時[とき]", blank: true },
+          { text: "は、いつも 音楽[おんがく]を " },
           {
-            text: "勉強[べんきょう]している 時[とき]、いつも 音楽[おんがく]を 聞[き]いて",
-          },
-          {
-            text: "いる",
-            blank: true,
+            text: "聞[き]く",
             conjugation: {
-              pos: "Ichidan verb",
+              pos: "Godan verb with 'ku' ending",
               form: "normal",
               polarity: "positive",
               tense: "non-past",
             },
           },
         ],
-        notes: "Uses 勉強している時 for while studying",
+        notes:
+          "Most natural canonical answer: 〜ている時は marks the recurring condition, and 聞きます expresses the habit. 勉強している is baked in because relative clauses before 時 stay plain, not polite.",
       },
       {
         segments: [
+          { text: "勉強[べんきょう]している 時[とき]", blank: true },
+          { text: "、いつも 音楽[おんがく]を " },
           {
-            text: "勉強[べんきょう]している 時[とき]、いつも 音楽[おんがく]を 聴[き]いて",
-          },
-          {
-            text: "いる",
-            blank: true,
+            text: "聞[き]く",
             conjugation: {
-              pos: "Ichidan verb",
+              pos: "Godan verb with 'ku' ending",
               form: "normal",
               polarity: "positive",
               tense: "non-past",
             },
           },
         ],
-        notes: "Using 聴く (listen attentively) instead of 聞く",
+        notes:
+          "Without は; still natural, though は is a little better for the recurring condition.",
+      },
+      {
+        segments: [
+          { text: "勉強[べんきょう]している 時[とき]", blank: true },
+          { text: "は、いつも 音楽[おんがく]を " },
+          {
+            text: "聴[き]く",
+            conjugation: {
+              pos: "Godan verb with 'ku' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes:
+          "聴く emphasizes listening attentively; valid if that nuance is intended.",
       },
     ],
   },
@@ -3283,6 +3298,25 @@ export const questions: Question[] = [
       {
         segments: [
           {
+            text: "昨日[きのう]の 九時[くじ]に、私[わたし]の おじいさんは 家[いえ]で テレビを ",
+          },
+          { text: "見[み]て", blank: true },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "Omits 夜 when yesterday at nine is acceptable from context.",
+      },
+      {
+        segments: [
+          {
             text: "昨日[きのう]の 夜[よる] 九時[くじ]に、おじいさんは 家[いえ]で テレビを ",
           },
           { text: "見[み]て", blank: true },
@@ -3298,6 +3332,26 @@ export const questions: Question[] = [
           },
         ],
         notes: "Omits 私の with time phrase first.",
+      },
+      {
+        segments: [
+          {
+            text: "昨日[きのう]の 九時[くじ]に、おじいさんは 家[いえ]で テレビを ",
+          },
+          { text: "見[み]て", blank: true },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes:
+          "Omits 私の and 夜 when the context makes yesterday at nine acceptable.",
       },
       {
         segments: [
@@ -3490,7 +3544,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "毎日[まいにち]、 あのころは 私[わたし]は 父[ちち]の 車[くるま]を 使[つか]って",
+            text: "私[わたし]は あのころ、 父[ちち]の 車[くるま]を 毎日[まいにち] 使[つか]って",
           },
           {
             text: "いる",
@@ -3503,7 +3557,115 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "毎日 fronted, あのころは as topic",
+        notes: "私は at start + 毎日 after 車を.",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は その 頃[ころ]、 毎日[まいにち] 父[ちち]の 車[くるま]を 使[つか]って",
+          },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "私は at start, その頃 after は.",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は その 頃[ころ]、 父[ちち]の 車[くるま]を 毎日[まいにち] 使[つか]って",
+          },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "私は at start + その頃 + 毎日 after 車を.",
+      },
+      {
+        segments: [
+          {
+            text: "あのころは、 毎日[まいにち] 父[ちち]の 車[くるま]を 使[つか]って",
+          },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "あのころは as topic with subject omitted.",
+      },
+      {
+        segments: [
+          {
+            text: "その 頃[ころ]は、 毎日[まいにち] 父[ちち]の 車[くるま]を 使[つか]って",
+          },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "その頃は as topic with subject omitted.",
+      },
+      {
+        segments: [
+          {
+            text: "あのころは、 父[ちち]の 車[くるま]を 毎日[まいにち] 使[つか]って",
+          },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "あのころは as topic + 毎日 after 車を.",
+      },
+      {
+        segments: [
+          {
+            text: "その 頃[ころ]は、 父[ちち]の 車[くるま]を 毎日[まいにち] 使[つか]って",
+          },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "その頃は as topic + 毎日 after 車を.",
       },
     ],
   },
@@ -3820,7 +3982,7 @@ export const questions: Question[] = [
           },
         ],
         notes: "Starts with 今; chair/location first with 上に.",
-      }
+      },
     ],
   },
   {
@@ -3896,6 +4058,110 @@ export const questions: Question[] = [
           },
         ],
         notes: "が instead of は",
+      },
+      {
+        segments: [
+          { text: "犬[いぬ]は" },
+          { text: "亡[な]くなって", blank: true },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes:
+          "亡くなっている — euphemistic/natural for a pet or cherished animal.",
+      },
+      {
+        segments: [
+          { text: "犬[いぬ]が" },
+          { text: "亡[な]くなって", blank: true },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "亡くなっている with が.",
+      },
+      {
+        segments: [
+          { text: "犬[いぬ]は" },
+          { text: "死[し]んでしまって", blank: true },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "死んでしまっている — adds an unfortunate/regretful nuance.",
+      },
+      {
+        segments: [
+          { text: "犬[いぬ]が" },
+          { text: "死[し]んでしまって", blank: true },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "死んでしまっている with が.",
+      },
+      {
+        segments: [
+          { text: "犬[いぬ]は" },
+          { text: "亡[な]くなってしまって", blank: true },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes:
+          "亡くなってしまっている — euphemistic plus unfortunate/regretful nuance.",
+      },
+      {
+        segments: [
+          { text: "犬[いぬ]が" },
+          { text: "亡[な]くなってしまって", blank: true },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "亡くなってしまっている with が.",
       },
     ],
   },
