@@ -100,7 +100,7 @@ function HomeLayout() {
   const [moreSheetOpen, setMoreSheetOpen] = createSignal(false)
 
   return (
-    <div class="[--sidebar-width:0px] xl:[--sidebar-width:12rem] min-[1700px]:[--sidebar-width:18rem]">
+    <div class="[--sidebar-width:0px] xl:[--sidebar-width:20rem] min-[1700px]:[--sidebar-width:24rem]">
       <ActiveChapterSync />
 
       <SSRMediaQuery showFrom="xl">
@@ -109,7 +109,7 @@ function HomeLayout() {
         </div>
       </SSRMediaQuery>
 
-      <div class="pl-(--sidebar-width) 2xl:pr-(--sidebar-width)">
+      <div class="pl-(--sidebar-width) 2xl:pr-[calc(var(--sidebar-width)-4rem)]">
         <Outlet />
       </div>
 

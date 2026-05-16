@@ -1,107 +1,54 @@
-import { For, Show } from "solid-js"
+import {
+  For,
+  Show,
+  createEffect,
+  createMemo,
+  createSignal,
+  type JSX,
+} from "solid-js"
 import { Dynamic } from "solid-js/web"
 import { Link, useLocation } from "@tanstack/solid-router"
-import { Button } from "@/components/ui/button"
-import { cn } from "@/utils"
-import { getInitialAnimationStyles } from "@/utils/animations"
 import {
-  House,
   BookOpen,
-  ChartNoAxesColumn,
+  Circle,
+  CircleCheckBig,
   Clapperboard,
-  GraduationCap,
-  PencilLine,
-  Repeat2,
-  Hash,
-  FileText,
-  Package,
   Ellipsis,
+  FileText,
+  GraduationCap,
+  Hash,
+  House,
   Import,
-  ArrowLeft,
+  Package,
+  PencilLine,
+  PlayCircle,
+  Repeat2,
   type LucideIcon,
 } from "lucide-solid"
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
+import { Skeleton } from "@/components/ui/custom/skeleton"
+import { buttonVariants } from "@/components/ui/button"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import {
+  getModuleIcon,
+  getModuleIconClasses,
+} from "@/data/utils/module-helpers"
+import { LearningPathProvider, useLearningPath } from "@/features/learn/context/learning-path"
+import { useLocalCompletions } from "@/lib/completions"
+import { cn } from "@/utils"
+import { getInitialAnimationStyles } from "@/utils/animations"
 import { SidebarAuthFooter } from "./SidebarAuthFooter"
-// --- Guides navigation data ---
-const guidesNavigation = [
-  {
-    category: "Nihongo Ninja",
-    items: [{ id: "home", title: "Home", href: "/guides" }],
-  },
-  {
-    category: "Guides",
-    items: [
-      {
-        id: "japanese-guide",
-        title: "Japanese Guide",
-        href: "/guides/japanese-guide",
-      },
-      {
-        id: "hiragana",
-        title: "Hiragana + Katakana",
-        href: "/guides/hiragana",
-      },
-      { id: "tools", title: "Tools", href: "/guides/tools" },
-      { id: "typing", title: "Typing in Japanese", href: "/guides/typing" },
-      {
-        id: "finding-shows",
-        title: "Finding Shows & Movies",
-        href: "/guides/finding-shows",
-      },
-      {
-        id: "writing-practice",
-        title: "Writing Practice",
-        href: "/guides/writing-practice",
-      },
-      {
-        id: "creator-support",
-        title: "Support the Creators",
-        href: "/guides/creator-support",
-      },
-    ],
-  },
-  {
-    category: "Browser Extension",
-    items: [
-      {
-        id: "nihongo-extension",
-        title: "Nihongo Extension",
-        href: "/guides/nihongo-extension",
-      },
-    ],
-  },
-  {
-    category: "FAQ",
-    items: [
-      { id: "srs", title: "Spaced Repetition System", href: "/guides/srs" },
-      {
-        id: "comparison",
-        title: "Using Anki or Other SRS?",
-        href: "/guides/comparison",
-      },
-    ],
-  },
-]
+import type {
+  LearningPathChapter,
+  LearningPathModule,
+} from "convex/model/learning_paths"
 
-// --- Shared style tokens ---
-const iconSize = "size-3.5! 2xl:size-4!"
-const textSize = "text-[0.78rem] 2xl:text-[0.85rem] font-medium"
-const labelSize =
-  "text-[0.6rem] 2xl:text-[0.68rem] font-semibold tracking-wide uppercase"
-const activeClass = "text-dynamic-accent brightness-150"
-
-// --- Types ---
-interface NavigationItem {
-  id: string
-  title: string
-  href: string
-  icon: LucideIcon | string
-  class: string
-}
-
-interface NavigationSection {
-  label?: string
-  items: NavigationItem[]
-}
+type SidebarTab = "menu" | "course"
 
 interface SidebarProps {
   ref?: (el: HTMLDivElement) => void
@@ -109,32 +56,30 @@ interface SidebarProps {
   onSignOut?: () => void
 }
 
-export interface NavigationContentProps {
+interface NavigationContentProps {
   isActive: (href: string) => boolean
-  onNavigate?: () => void
+  onNavigate: () => void
   onSignOut?: () => void
 }
 
-// --- Navigation data ---
-const navigation: NavigationSection[] = [
+interface NavigationItem {
+  title: string
+  href: string
+  icon: LucideIcon | string
+  class: string
+}
+
+const navigation: Array<{ label?: string; items: NavigationItem[] }> = [
   {
     items: [
+      { title: "Home", href: "/dashboard", icon: House, class: "text-primary" },
       {
-        id: "home",
-        title: "Home",
-        href: "/dashboard",
-        icon: House,
-        class: "text-primary",
-      },
-      {
-        id: "learn",
         title: "Learning Path",
         href: "/learn",
         icon: BookOpen,
         class: "text-primary",
       },
       {
-        id: "discover",
         title: "Real Content",
         href: "/discover",
         icon: Clapperboard,
@@ -146,42 +91,36 @@ const navigation: NavigationSection[] = [
     label: "Tools",
     items: [
       {
-        id: "vocab",
         title: "Vocab",
         href: "/vocab",
         icon: GraduationCap,
         class: "text-orange-600 dark:text-orange-500",
       },
       {
-        id: "sentences",
         title: "Sentences",
         href: "/sentence-practice",
         icon: PencilLine,
-        class: "text-yellow-600 dark:text-yellow-500 saturate-[75%]",
+        class: "text-yellow-600 saturate-[75%] dark:text-yellow-500",
       },
       {
-        id: "conjugation",
         title: "Conjugation",
         href: "/conjugation",
         icon: Repeat2,
         class: "text-teal-500 dark:text-teal-400",
       },
       {
-        id: "counters",
         title: "Counters",
         href: "/counters",
         icon: Hash,
         class: "text-violet-600 dark:text-violet-400",
       },
       {
-        id: "cheatsheets",
         title: "Cheatsheets",
         href: "/cheatsheets",
         icon: FileText,
-        class: "text-green-600 dark:text-green-500 opacity-80",
+        class: "text-green-600 opacity-80 dark:text-green-500",
       },
       {
-        id: "kana",
         title: "Kana",
         href: "/kana",
         icon: "あ",
@@ -192,200 +131,31 @@ const navigation: NavigationSection[] = [
   {
     label: "Extra",
     items: [
+      { title: "Guides", href: "/guides", icon: GraduationCap, class: "text-primary" },
       {
-        id: "guides",
-        title: "Guides",
-        href: "/guides",
-        icon: GraduationCap,
-        class: "text-primary",
-      },
-      {
-        id: "extension",
         title: "Extension",
         href: "/guides/nihongo-extension",
         icon: Package,
         class: "text-primary",
       },
-      {
-        id: "import",
-        title: "Import",
-        href: "/import",
-        icon: Import,
-        class: "text-primary",
-      },
-      {
-        id: "misc",
-        title: "Misc",
-        href: "/misc",
-        icon: Ellipsis,
-        class: "text-primary",
-      },
+      { title: "Import", href: "/import", icon: Import, class: "text-primary" },
+      { title: "Misc", href: "/misc", icon: Ellipsis, class: "text-primary" },
     ],
   },
 ]
 
-// --- Shared nav item renderer ---
-function NavButton(props: {
-  item: {
-    href: string
-    title: string
-    icon?: LucideIcon | string
-    class?: string
-  }
-  isActive: boolean
-  onNavigate?: () => void
-}) {
-  return (
-    <Link to={props.item.href} onClick={props.onNavigate}>
-      <Button
-        variant="ghost"
-        class="w-full justify-start px-2 hover:bg-dynamic-accent/20"
-      >
-        <Show when={props.item.icon}>
-          <Show
-            when={typeof props.item.icon === "string"}
-            fallback={
-              <Dynamic
-                component={props.item.icon as LucideIcon}
-                class={cn(
-                  "mx-1",
-                  iconSize,
-                  props.item.class,
-                  props.isActive && activeClass,
-                )}
-              />
-            }
-          >
-            <span
-              class={cn(
-                "mx-1 flex items-center justify-center text-sm 2xl:text-base font-japanese font-medium",
-                iconSize,
-                props.item.class,
-                props.isActive && activeClass,
-              )}
-            >
-              {props.item.icon as string}
-            </span>
-          </Show>
-        </Show>
-        <span class={cn(textSize, props.isActive && activeClass)}>
-          {props.item.title}
-        </span>
-      </Button>
-    </Link>
-  )
-}
-
-// --- Section renderers ---
-function DefaultNavigation(props: NavigationContentProps) {
-  return (
-    <div class="flex flex-1 flex-col gap-1 xl:gap-3 xl:pt-10 2xl:pt-14">
-      <For each={navigation}>
-        {(section) => (
-          <div class="flex flex-col gap-0.5">
-            <Show when={section.label}>
-              <div
-                class={cn("text-muted-foreground px-3 pt-2 xl:pt-3", labelSize)}
-              >
-                {section.label}
-              </div>
-            </Show>
-            <For each={section.items}>
-              {(item) => (
-                <NavButton
-                  item={item}
-                  isActive={props.isActive(item.href)}
-                  onNavigate={props.onNavigate}
-                />
-              )}
-            </For>
-          </div>
-        )}
-      </For>
-    </div>
-  )
-}
-
-function GuidesNavigation(props: NavigationContentProps) {
-  return (
-    <div class="flex flex-1 flex-col gap-1 xl:gap-2 xl:pt-8 2xl:pt-12 overflow-y-auto">
-      <Link to="/dashboard" onClick={props.onNavigate}>
-        <Button
-          variant="ghost"
-          class="w-full justify-start px-2 gap-1.5 text-muted-foreground hover:text-primary"
-        >
-          <ArrowLeft class={iconSize} />
-          <span class={textSize}>Back to Main</span>
-        </Button>
-      </Link>
-      <For each={guidesNavigation}>
-        {(section) => (
-          <div class="flex flex-col gap-0.5">
-            <div
-              class={cn("text-muted-foreground px-3 pt-2 xl:pt-3", labelSize)}
-            >
-              {section.category}
-            </div>
-            <For each={section.items}>
-              {(item) => (
-                <NavButton
-                  item={item}
-                  isActive={props.isActive(item.href)}
-                  onNavigate={props.onNavigate}
-                />
-              )}
-            </For>
-          </div>
-        )}
-      </For>
-    </div>
-  )
-}
-
-// --- Main content shell ---
-export function NavigationContent(props: NavigationContentProps) {
-  const location = useLocation()
-  const isGuidesSection = () => location().pathname.startsWith("/guides")
-
-  return (
-    <div class="flex h-full flex-col px-6 pt-6 pb-4 gap-4 xl:gap-0">
-      <Link
-        to="/"
-        class="flex items-center gap-2 text-lg tracking-tight font-bold"
-        onClick={props.onNavigate}
-      >
-        <img
-          src="/icons/ninja.png"
-          alt="Ninja"
-          class="size-6 2xl:size-8 -mb-1.25"
-        />
-        <span class="text-muted-foreground text-sm 2xl:text-base">
-          Nihongo Ninja
-        </span>
-      </Link>
-
-      <Show
-        when={isGuidesSection()}
-        fallback={<DefaultNavigation {...props} />}
-      >
-        <GuidesNavigation {...props} />
-      </Show>
-
-      <SidebarAuthFooter onSignOut={props.onSignOut} />
-    </div>
-  )
-}
-
-// --- Exports ---
 export function Sidebar(props: SidebarProps) {
   const location = useLocation()
+  const [tab, setTab] = createSignal<SidebarTab>("menu")
 
-  const isActive = (href: string) => {
+  createEffect(() => {
     const pathname = location().pathname
-    return href === "/"
-      ? pathname === "/"
-      : pathname === href || pathname.startsWith(href + "/")
-  }
+    if (pathname === "/learn" || pathname.startsWith("/learn/")) {
+      setTab("course")
+    } else if (pathname === "/dashboard") {
+      setTab("menu")
+    }
+  })
 
   return (
     <div
@@ -393,7 +163,381 @@ export function Sidebar(props: SidebarProps) {
       class="h-full"
       style={props.animated ? getInitialAnimationStyles("left") : undefined}
     >
-      <NavigationContent isActive={isActive} onSignOut={props.onSignOut} />
+      <LearningPathProvider>
+        <SidebarShell tab={tab()} onTabChange={setTab} onSignOut={props.onSignOut}>
+          <Show
+            when={tab() === "course"}
+            fallback={<MenuContent onNavigate={() => {}} />}
+          >
+            <CourseOutline />
+          </Show>
+        </SidebarShell>
+      </LearningPathProvider>
+    </div>
+  )
+}
+
+function SidebarShell(props: {
+  tab: SidebarTab
+  onTabChange: (tab: SidebarTab) => void
+  onSignOut?: () => void
+  children: JSX.Element
+}) {
+  return (
+    <div class="flex h-full flex-col">
+      <div
+        class={cn(
+          "shrink-0 space-y-3 px-6 pt-6 pb-3",
+          props.tab === "course" && "border-b border-border/70 dark:border-white/10",
+        )}
+      >
+        <SidebarBrand />
+        <SidebarTabs value={props.tab} onChange={props.onTabChange} />
+        <Show when={props.tab === "course"}>
+          <CourseSummary />
+        </Show>
+      </div>
+
+      <div class="scrollbar-none min-h-0 flex-1 overflow-y-auto">
+        {props.children}
+      </div>
+
+      <div class="shrink-0 border-t border-border/70 px-4 py-2 dark:border-white/10">
+        <SidebarAuthFooter onSignOut={props.onSignOut} />
+      </div>
+    </div>
+  )
+}
+
+function SidebarBrand() {
+  return (
+    <Link to="/" class="flex items-center gap-2 text-lg font-bold tracking-tight">
+      <img
+        src="/icons/ninja.png"
+        alt="Ninja"
+        class="size-6 -mb-1.25 2xl:size-8"
+      />
+      <span class="text-sm text-muted-foreground 2xl:text-base">
+        Nihongo Ninja
+      </span>
+    </Link>
+  )
+}
+
+function SidebarTabs(props: {
+  value: SidebarTab
+  onChange: (value: SidebarTab) => void
+}) {
+  return (
+    <Tabs value={props.value} onChange={(value) => props.onChange(value as SidebarTab)}>
+      <TabsList class="grid h-8 w-full grid-cols-2 bg-transparent p-0">
+        <TabsTrigger
+          value="menu"
+          class="h-6 text-xs transition-none data-selected:bg-dynamic-accent/20 data-selected:text-dynamic-accent data-selected:brightness-125 data-selected:dark:bg-dynamic-accent/25"
+        >
+          Menu
+        </TabsTrigger>
+        <TabsTrigger
+          value="course"
+          class="h-6 text-xs transition-none data-selected:bg-dynamic-accent/20 data-selected:text-dynamic-accent data-selected:brightness-125 data-selected:dark:bg-dynamic-accent/25"
+        >
+          Course
+        </TabsTrigger>
+      </TabsList>
+    </Tabs>
+  )
+}
+
+export function NavigationContent(props: NavigationContentProps) {
+  return (
+    <div class="flex h-full flex-col px-6 pt-6 pb-4 gap-4 xl:gap-0">
+      <SidebarBrand />
+      <MenuContent isActive={props.isActive} onNavigate={props.onNavigate} />
+      <SidebarAuthFooter onSignOut={props.onSignOut} />
+    </div>
+  )
+}
+
+function MenuContent(props: {
+  isActive?: (href: string) => boolean
+  onNavigate: () => void
+}) {
+  const location = useLocation()
+  const isActive = (href: string) => {
+    if (props.isActive) return props.isActive(href)
+    const pathname = location().pathname
+    return pathname === href || pathname.startsWith(href + "/")
+  }
+
+  return (
+    <nav class="flex flex-col px-1 pb-4 xl:pt-10 2xl:pt-14">
+      <For each={navigation}>
+        {(section) => (
+          <div class="flex flex-col">
+            <Show when={section.label}>
+              <div class="px-6 pb-1 pt-4 text-[0.6rem] font-semibold uppercase tracking-wide text-muted-foreground first:pt-2 xl:pt-5 xl:first:pt-3 2xl:text-[0.68rem]">
+                {section.label}
+              </div>
+            </Show>
+            <For each={section.items}>
+              {(item) => (
+                <MenuButton
+                  item={item}
+                  active={isActive(item.href)}
+                  onNavigate={props.onNavigate}
+                />
+              )}
+            </For>
+          </div>
+        )}
+      </For>
+    </nav>
+  )
+}
+
+function MenuButton(props: {
+  item: NavigationItem
+  active: boolean
+  onNavigate: () => void
+}) {
+  return (
+    <Link
+      to={props.item.href}
+      onClick={props.onNavigate}
+      class={cn(
+        buttonVariants({ variant: "ghost" }),
+        "ease-instant-hover-75 w-full justify-start rounded-md px-6 py-2.5 hover:bg-dynamic-accent/20",
+      )}
+    >
+        <Show
+          when={typeof props.item.icon === "string"}
+          fallback={
+            <Dynamic
+              component={props.item.icon as LucideIcon}
+              class={cn(
+                "mx-1 size-3.5 2xl:size-4",
+                props.item.class,
+                props.active && "text-dynamic-accent brightness-150",
+              )}
+            />
+          }
+        >
+          <span
+            class={cn(
+              "mx-1 flex size-3.5 items-center justify-center font-japanese text-sm font-medium 2xl:size-4 2xl:text-base",
+              props.item.class,
+              props.active && "text-dynamic-accent brightness-150",
+            )}
+          >
+            {props.item.icon as string}
+          </span>
+        </Show>
+        <span
+          class={cn(
+            "text-[0.78rem] font-medium 2xl:text-[0.85rem]",
+            props.active && "text-dynamic-accent brightness-150",
+          )}
+        >
+          {props.item.title}
+        </span>
+    </Link>
+  )
+}
+
+function CourseSummary() {
+  const { selectedPath } = useLearningPath()
+  const { completedCount, totalCount } = useCourseProgress()
+
+  return (
+    <div class="pt-1">
+      <p class="text-[0.62rem] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+        Active Course
+      </p>
+      <h2 class="mt-1 truncate text-sm font-semibold text-foreground dark:text-white">
+        {selectedPath()?.shortName ?? selectedPath()?.name}
+      </h2>
+      <p class="mt-1 text-xs text-muted-foreground">
+        {completedCount()} / {totalCount()} modules complete
+      </p>
+    </div>
+  )
+}
+
+function CourseOutline() {
+  const location = useLocation()
+  const { query, preferences } = useLearningPath()
+  const { isCompleted } = useCourseProgress()
+  const [openChapters, setOpenChapters] = createSignal<string[]>([
+    preferences().activeChapter,
+  ])
+
+  createEffect(() => {
+    const activeChapter = preferences().activeChapter
+    setOpenChapters((current) =>
+      current.includes(activeChapter) ? current : [...current, activeChapter],
+    )
+  })
+
+  const isActiveModule = (module: LearningPathModule) =>
+    location().pathname === module.linkTo ||
+    location().pathname.startsWith(module.linkTo + "/")
+
+  return (
+    <Show when={query.data()} fallback={<CourseOutlineSkeleton />}>
+      {(data) => (
+        <Show
+          when={data().chapters.length > 0}
+          fallback={
+            <p class="px-6 py-4 text-sm text-muted-foreground">
+              This learning path does not have any chapters yet.
+            </p>
+          }
+        >
+          <Accordion
+            multiple
+            value={openChapters()}
+            onChange={setOpenChapters}
+          >
+            <For each={data().chapters}>
+              {(chapter) => (
+                <CourseChapter
+                  chapter={chapter}
+                  isCompleted={isCompleted}
+                  isActiveModule={isActiveModule}
+                />
+              )}
+            </For>
+          </Accordion>
+        </Show>
+      )}
+    </Show>
+  )
+}
+
+function CourseChapter(props: {
+  chapter: LearningPathChapter
+  isCompleted: (moduleId: string) => boolean
+  isActiveModule: (module: LearningPathModule) => boolean
+}) {
+  const completedCount = () =>
+    props.chapter.modules.filter((module) => props.isCompleted(module.moduleId)).length
+
+  return (
+    <AccordionItem
+      value={props.chapter.slug}
+      class="border-t border-border/50 dark:border-white/8"
+    >
+      <div class="sticky top-0 z-20">
+        <AccordionTrigger class="px-6 py-3 text-left hover:text-dynamic-accent">
+          <div class="min-w-0">
+            <div class="truncate text-xs font-semibold text-foreground dark:text-white">
+              {props.chapter.title}
+            </div>
+            <div class="mt-0.5 text-[0.68rem] text-muted-foreground">
+              {completedCount()} / {props.chapter.modules.length} complete
+            </div>
+          </div>
+        </AccordionTrigger>
+      </div>
+      <AccordionContent class="px-0">
+        <div class="border-t border-border/40 py-1 dark:border-white/5">
+          <For each={props.chapter.modules}>
+            {(module, index) => (
+              <CourseModuleLink
+                module={module}
+                index={index()}
+                completed={props.isCompleted(module.moduleId)}
+                active={props.isActiveModule(module)}
+              />
+            )}
+          </For>
+        </div>
+      </AccordionContent>
+    </AccordionItem>
+  )
+}
+
+function CourseModuleLink(props: {
+  module: LearningPathModule
+  index: number
+  completed: boolean
+  active: boolean
+}) {
+  const ModuleIcon = getModuleIcon(props.module.module.module_type)
+  const statusIcon = () => {
+    if (props.completed) {
+      return <CircleCheckBig class="size-3.5 text-dynamic-accent dark:brightness-125" />
+    }
+    if (props.active) {
+      return <PlayCircle class="size-3.5 text-dynamic-accent dark:brightness-125" />
+    }
+    return <Circle class="size-3 text-muted-foreground/45" />
+  }
+
+  const content = (
+    <div
+      class={cn(
+        "ease-instant-hover-75 flex items-center gap-2 border-b border-border/30 px-6 py-2 text-xs last:border-b-0 dark:border-white/5",
+        props.active
+          ? "text-dynamic-accent dark:brightness-125"
+          : "text-muted-foreground hover:text-foreground dark:hover:text-white",
+        props.completed &&
+          "bg-dynamic-accent/8 text-dynamic-accent dark:brightness-125",
+        props.module.disabled && "cursor-not-allowed opacity-50",
+      )}
+    >
+      <span class="shrink-0">{statusIcon()}</span>
+      <span class="min-w-0 flex-1 truncate">
+        {props.index + 1}. {props.module.module.title}
+      </span>
+      <ModuleIcon
+        class={cn(
+          "size-3.5 shrink-0",
+          getModuleIconClasses(props.module.module.module_type),
+        )}
+      />
+    </div>
+  )
+
+  if (props.module.disabled) return content
+  return <Link to={props.module.linkTo}>{content}</Link>
+}
+
+function useCourseProgress() {
+  const { query } = useLearningPath()
+  const completedSet = createMemo(
+    () => new Set(query.data()?.completedModules ?? []),
+  )
+  const localCompletions = useLocalCompletions()
+  const isCompleted = (moduleId: string) =>
+    completedSet().has(moduleId) || moduleId in localCompletions()
+
+  return {
+    isCompleted,
+    completedCount: () =>
+      query
+        .data()
+        ?.chapters.reduce(
+          (sum, chapter) =>
+            sum +
+            chapter.modules.filter((module) => isCompleted(module.moduleId))
+              .length,
+          0,
+        ),
+    totalCount: () =>
+      query
+        .data()
+        ?.chapters.reduce((sum, chapter) => sum + chapter.modules.length, 0),
+  }
+}
+
+function CourseOutlineSkeleton() {
+  return (
+    <div class="space-y-3">
+      <Skeleton class="h-20" />
+      <Skeleton class="h-28" />
+      <Skeleton class="h-20" />
+      <Skeleton class="h-20" />
     </div>
   )
 }
