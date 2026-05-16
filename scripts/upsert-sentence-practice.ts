@@ -1,50 +1,91 @@
 #!/usr/bin/env bun
 /**
- * Imports sentence practice questions into Convex
- * Generates canonicalAnswerTokens using Kagome + grammar-cli
+ * Imports sentence practice questions into Convex.
+ * Generates canonicalAnswerTokens using Kagome + grammar-cli.
  *
- * Usage: bun run scripts/upsert-sentence-practice.ts
+ * Usage: bun run scripts/upsert-sentence-practice.ts [path-or-set-filter] [--no-import]
  *
  * Prerequisites:
  * - Kagome CLI: go install github.com/ikawaha/kagome/v2@latest
  * - grammar-cli binary at bin/grammar-cli
+ * - Convex functions deployed with `bunx convex dev` after function changes
  */
 
-import { spawn, execSync, type ChildProcess } from "child_process"
+import { spawn, type ChildProcess } from "child_process"
 import {
-  writeFileSync,
-  readFileSync,
-  unlinkSync,
-  readdirSync,
-  statSync,
   existsSync,
+  mkdirSync,
+  readFileSync,
+  readdirSync,
+  rmSync,
+  statSync,
+  writeFileSync,
 } from "fs"
-import { join } from "path"
+import { basename, dirname, join, relative } from "path"
 import { createHash } from "crypto"
+import { ConvexHttpClient } from "convex/browser"
+import { makeFunctionReference } from "convex/server"
+import type { Doc } from "../convex/_generated/dataModel"
 import type { Question } from "./data/sentence-practice/types"
 import { prepareQuestion } from "../src/features/sentence-practice/core/questionProcessor"
 import { SEGMENT_SEPARATOR } from "../src/features/sentence-practice/core/textProcessor"
 
 const DATA_DIR = join(import.meta.dirname, "data/sentence-practice")
-const TEMP_FILE = join(import.meta.dirname, ".tmp-sentence-questions.jsonl")
-const CACHE_FILE = join(import.meta.dirname, ".sentence-practice-cache.json")
+const CACHE_DIR = join(import.meta.dirname, ".sentence-practice-cache")
+const MANIFEST_FILE = join(CACHE_DIR, "manifest.json")
 const KAGOME_PORT = 6060
 const GRAMMAR_CLI = join(process.cwd(), "bin/grammar-cli")
-const CACHE_VERSION = 6
-const GRAMMAR_CONCURRENCY = Math.max(
-  1,
-  Number(process.env.GRAMMAR_CONCURRENCY ?? 8),
+const CACHE_VERSION = 8
+const MAX_CONVEX_BATCH_BYTES = 500_000
+const SENTENCE_BATCH_SEPARATOR = SEGMENT_SEPARATOR
+
+const deleteSentencePracticeQuestionsMutation = makeFunctionReference<"mutation">(
+  "api/sentencePractice:deleteQuestionsBySetId",
+)
+const insertSentencePracticeQuestionsMutation = makeFunctionReference<"mutation">(
+  "api/sentencePractice:insertQuestionsForSet",
 )
 
-// --- Cache ---
+type ProcessedQuestion = Omit<
+  Doc<"sentencePracticeQuestions">,
+  "_id" | "_creationTime"
+>
 
-interface CacheEntry {
-  hash: string
-  questions: any[]
+interface KagomeToken {
+  surface: string
+  start: number
+  end: number
+  pos: string[]
 }
 
-interface Cache {
-  [setId: string]: CacheEntry
+interface SentencePracticeCacheEntry {
+  sourceHash: string
+  setId: string
+  questions: ProcessedQuestion[]
+}
+
+interface ManifestEntry {
+  setId: string
+  cachePath: string
+}
+
+type Manifest = Record<string, ManifestEntry>
+
+interface SentencePracticeDataFile {
+  file: string
+  relativePath: string
+  setId: string
+  cachePath: string
+  sourceHash: string
+}
+
+interface Options {
+  filters: string[]
+  noImport: boolean
+}
+
+interface GrammarAnalysisResult {
+  tokens: KagomeToken[]
 }
 
 function computeFileHash(filePath: string): string {
@@ -52,21 +93,28 @@ function computeFileHash(filePath: string): string {
   return createHash("md5").update(`${CACHE_VERSION}\n${content}`).digest("hex")
 }
 
-function loadCache(): Cache {
-  if (existsSync(CACHE_FILE)) {
-    return JSON.parse(readFileSync(CACHE_FILE, "utf-8"))
-  }
-  return {}
+function loadManifest(): Manifest {
+  if (!existsSync(MANIFEST_FILE)) return {}
+  return JSON.parse(readFileSync(MANIFEST_FILE, "utf-8"))
 }
 
-function saveCache(cache: Cache): void {
-  writeFileSync(CACHE_FILE, JSON.stringify(cache), "utf-8")
+function saveManifest(manifest: Manifest): void {
+  mkdirSync(CACHE_DIR, { recursive: true })
+  writeFileSync(MANIFEST_FILE, JSON.stringify(manifest, null, 2), "utf-8")
 }
 
-// Unit Separator for batching multiple sentences in one Kagome request
-const SEPARATOR = SEGMENT_SEPARATOR
+function loadCacheEntry(source: SentencePracticeDataFile): SentencePracticeCacheEntry | null {
+  if (!existsSync(source.cachePath)) return null
+  return JSON.parse(readFileSync(source.cachePath, "utf-8"))
+}
 
-// --- Kagome Server ---
+function saveCacheEntry(
+  source: SentencePracticeDataFile,
+  entry: SentencePracticeCacheEntry,
+): void {
+  mkdirSync(dirname(source.cachePath), { recursive: true })
+  writeFileSync(source.cachePath, JSON.stringify(entry), "utf-8")
+}
 
 class KagomeServer {
   private process: ChildProcess | null = null
@@ -86,14 +134,14 @@ class KagomeServer {
           return
         }
       } catch {
-        // Server not ready yet
+        // Server not ready yet.
       }
       await new Promise((r) => setTimeout(r, 1000))
     }
     throw new Error("Kagome failed to start within 30 seconds")
   }
 
-  async tokenize(text: string): Promise<any[]> {
+  async tokenize(text: string): Promise<KagomeToken[]> {
     const res = await fetch(`${this.baseUrl}/tokenize`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -112,13 +160,15 @@ class KagomeServer {
   }
 }
 
-// --- Grammar Analysis ---
+async function analyzeGrammarBatch(
+  tokenGroups: KagomeToken[][],
+): Promise<GrammarAnalysisResult[]> {
+  if (tokenGroups.length === 0) return []
 
-async function analyzeGrammar(
-  tokens: any[],
-): Promise<{ tokens: { surface: string; pos: string[] }[] }> {
   return new Promise((resolve) => {
-    const child = spawn(GRAMMAR_CLI, [], { stdio: ["pipe", "pipe", "ignore"] })
+    const child = spawn(GRAMMAR_CLI, ["--batch"], {
+      stdio: ["pipe", "pipe", "ignore"],
+    })
     let stdout = ""
 
     child.stdout.setEncoding("utf-8")
@@ -127,62 +177,41 @@ async function analyzeGrammar(
     })
     child.on("close", (code) => {
       if (code !== 0) {
-        resolve({ tokens: [] })
+        resolve(tokenGroups.map(() => ({ tokens: [] })))
         return
       }
 
       try {
         resolve(JSON.parse(stdout))
       } catch {
-        resolve({ tokens: [] })
+        resolve(tokenGroups.map(() => ({ tokens: [] })))
       }
     })
-    child.stdin.end(JSON.stringify(tokens))
+    child.stdin.end(JSON.stringify(tokenGroups))
   })
 }
 
-async function mapWithConcurrency<T, R>(
-  items: T[],
-  concurrency: number,
-  fn: (item: T, index: number) => Promise<R>,
-): Promise<R[]> {
-  const results = new Array<R>(items.length)
-  let nextIndex = 0
-
-  async function worker() {
-    while (nextIndex < items.length) {
-      const index = nextIndex++
-      results[index] = await fn(items[index], index)
-    }
-  }
-
-  await Promise.all(
-    Array.from({ length: Math.min(concurrency, items.length) }, worker),
-  )
-  return results
-}
-
-// --- Question Text Preparation ---
-
-/**
- * Batch process all questions in a file with a single Kagome request.
- * Returns canonicalAnswerTokens for each question.
- */
-async function processFileQuestions(
+async function generateCanonicalAnswerTokens(
   questions: Question[],
   kagome: KagomeServer,
-): Promise<{ t: string; p: string }[][][]> {
-  const preparedQuestions = questions.map((q) => prepareQuestion({
-    ...q,
-    canonicalAnswerTokens: [],
-  }))
-  const entries: {
+): Promise<ProcessedQuestion["canonicalAnswerTokens"][]> {
+  const preparedQuestions = questions.map((q) =>
+    prepareQuestion({
+      ...q,
+      canonicalAnswerTokens: [],
+    }),
+  )
+  const answerJobs: {
     questionIndex: number
     canonicalAnswerIndex: number
     text: string
   }[] = []
 
-  for (let questionIndex = 0; questionIndex < preparedQuestions.length; questionIndex++) {
+  for (
+    let questionIndex = 0;
+    questionIndex < preparedQuestions.length;
+    questionIndex++
+  ) {
     const prepared = preparedQuestions[questionIndex]
     for (
       let canonicalAnswerIndex = 0;
@@ -190,27 +219,27 @@ async function processFileQuestions(
       canonicalAnswerIndex++
     ) {
       const text = prepared.canonicalAnswers[canonicalAnswerIndex].plain
-        .split(SEPARATOR)
+        .split(SENTENCE_BATCH_SEPARATOR)
         .join("")
         .replace(/\s+/g, "")
-      if (text) entries.push({ questionIndex, canonicalAnswerIndex, text })
+      if (text) answerJobs.push({ questionIndex, canonicalAnswerIndex, text })
     }
   }
 
-  if (entries.length === 0) {
+  if (answerJobs.length === 0) {
     return questions.map(() => [])
   }
 
-  // 2. Batch tokenize with separator
-  const batchedText = entries.map((entry) => entry.text).join(SEPARATOR)
+  const batchedText = answerJobs
+    .map((job) => job.text)
+    .join(SENTENCE_BATCH_SEPARATOR)
   const allTokens = await kagome.tokenize(batchedText)
 
-  // 3. Split tokens by separator
-  const tokenGroups: any[][] = []
-  let currentGroup: any[] = []
+  const tokenGroups: KagomeToken[][] = []
+  let currentGroup: KagomeToken[] = []
 
   for (const token of allTokens) {
-    if (token.surface === SEPARATOR) {
+    if (token.surface === SENTENCE_BATCH_SEPARATOR) {
       tokenGroups.push(normalizeTokenPositions(currentGroup))
       currentGroup = []
     } else {
@@ -219,30 +248,27 @@ async function processFileQuestions(
   }
   tokenGroups.push(normalizeTokenPositions(currentGroup))
 
-  // 4. Run grammar-cli on each group and build results
-  const results: { t: string; p: string }[][][] = preparedQuestions.map(
-    (question) => question.canonicalAnswers.map(() => []),
+  const results: ProcessedQuestion["canonicalAnswerTokens"][] =
+    preparedQuestions.map((question) => question.canonicalAnswers.map(() => []))
+  const analysisResults = await analyzeGrammarBatch(
+    tokenGroups.slice(0, answerJobs.length),
   )
 
-  const analysisResults = await mapWithConcurrency(
-    tokenGroups.slice(0, entries.length),
-    GRAMMAR_CONCURRENCY,
-    analyzeGrammar,
-  )
-
-  for (let i = 0; i < entries.length; i++) {
-    const { questionIndex, canonicalAnswerIndex } = entries[i]
+  for (let i = 0; i < answerJobs.length; i++) {
+    const { questionIndex, canonicalAnswerIndex } = answerJobs[i]
     const analysisResult = analysisResults[i]
-    results[questionIndex][canonicalAnswerIndex] = analysisResult.tokens.map((token) => ({
-      t: token.surface,
-      p: token.pos[0] ?? "",
-    }))
+    results[questionIndex][canonicalAnswerIndex] = analysisResult.tokens.map(
+      (token) => ({
+        t: token.surface,
+        p: token.pos[0] ?? "",
+      }),
+    )
   }
 
   return results
 }
 
-function normalizeTokenPositions(tokens: any[]): any[] {
+function normalizeTokenPositions(tokens: KagomeToken[]): KagomeToken[] {
   const offset = tokens[0]?.start ?? 0
   return tokens.map((token) => ({
     ...token,
@@ -250,8 +276,6 @@ function normalizeTokenPositions(tokens: any[]): any[] {
     end: token.end - offset,
   }))
 }
-
-// --- File Discovery ---
 
 function findDataFiles(dir: string): string[] {
   const results: string[] = []
@@ -267,101 +291,253 @@ function findDataFiles(dir: string): string[] {
 }
 
 function getSetId(filePath: string): string {
-  return filePath.split("/").pop()!.replace(/\.ts$/, "")
+  return basename(filePath, ".ts")
 }
 
-// --- Main ---
+function getCachePath(relativePath: string): string {
+  return join(CACHE_DIR, `${relativePath}.json`)
+}
+
+function parseArgs(args: string[]): Options {
+  return {
+    filters: args.filter((arg) => !arg.startsWith("--")),
+    noImport: args.includes("--no-import"),
+  }
+}
+
+function matchesFilters(source: SentencePracticeDataFile, filters: string[]): boolean {
+  if (filters.length === 0) return true
+  return filters.some((filter) => {
+    const normalized = filter.replace(/\.ts$/, "")
+    return (
+      source.relativePath.includes(normalized) ||
+      source.setId.includes(normalized)
+    )
+  })
+}
+
+function discoverDataFiles(filters: string[]): SentencePracticeDataFile[] {
+  return findDataFiles(DATA_DIR)
+    .map((file) => {
+      const relativePath = relative(DATA_DIR, file)
+      return {
+        file,
+        relativePath,
+        setId: getSetId(file),
+        cachePath: getCachePath(relativePath),
+        sourceHash: computeFileHash(file),
+      }
+    })
+    .filter((source) => matchesFilters(source, filters))
+}
+
+function getConvexUrl(): string {
+  const url = process.env.VITE_CONVEX_URL ?? process.env.CONVEX_URL
+  if (!url) {
+    throw new Error("VITE_CONVEX_URL is not set. Check .env.local.")
+  }
+  return url
+}
+
+function chunkQuestionsBySize<T>(
+  questions: T[],
+  maxBytes = MAX_CONVEX_BATCH_BYTES,
+): T[][] {
+  const chunks: T[][] = []
+  let current: T[] = []
+  let currentBytes = 2
+
+  for (const question of questions) {
+    const questionBytes = Buffer.byteLength(JSON.stringify(question)) + 1
+    if (current.length > 0 && currentBytes + questionBytes > maxBytes) {
+      chunks.push(current)
+      current = []
+      currentBytes = 2
+    }
+    current.push(question)
+    currentBytes += questionBytes
+  }
+
+  if (current.length > 0) chunks.push(current)
+  return chunks
+}
+
+async function syncSentencePracticeToConvex(
+  changedEntries: SentencePracticeCacheEntry[],
+  removedSetIds: string[],
+): Promise<void> {
+  if (changedEntries.length === 0 && removedSetIds.length === 0) {
+    console.log("No changed sets to import.")
+    return
+  }
+
+  const client = new ConvexHttpClient(getConvexUrl())
+
+  if (changedEntries.length > 0) {
+    console.log(`Importing ${changedEntries.length} changed sets to Convex...`)
+    for (const entry of changedEntries) {
+      await client.mutation(deleteSentencePracticeQuestionsMutation, {
+        setId: entry.setId,
+      })
+      for (const chunk of chunkQuestionsBySize(entry.questions)) {
+        await client.mutation(insertSentencePracticeQuestionsMutation, {
+          setId: entry.setId,
+          questions: chunk,
+        })
+      }
+    }
+  }
+
+  if (removedSetIds.length > 0) {
+    console.log(`Deleting ${removedSetIds.length} removed sets from Convex...`)
+    for (const setId of removedSetIds) {
+      await client.mutation(deleteSentencePracticeQuestionsMutation, { setId })
+    }
+  }
+}
 
 async function main() {
   console.log("Sentence Practice Seeder")
   console.log("========================\n")
 
-  const files = findDataFiles(DATA_DIR)
-  const cache = loadCache()
-  const allQuestions: any[] = []
+  const options = parseArgs(process.argv.slice(2))
+  const dataFiles = discoverDataFiles(options.filters)
+  const manifest = loadManifest()
+  const currentRelativePaths = new Set(
+    dataFiles.map((source) => source.relativePath),
+  )
+  const currentSetIds = new Set(dataFiles.map((source) => source.setId))
+  const staleMovedEntries = options.filters.length
+    ? []
+    : Object.entries(manifest).filter(
+        ([relativePath, entry]) =>
+          !currentRelativePaths.has(relativePath) &&
+          currentSetIds.has(entry.setId),
+      )
+  const removedEntries = options.filters.length
+    ? []
+    : Object.entries(manifest).filter(
+        ([relativePath, entry]) =>
+          !currentRelativePaths.has(relativePath) &&
+          !currentSetIds.has(entry.setId),
+      )
+  let totalQuestionCount = 0
+  const entriesToSync: {
+    source: SentencePracticeDataFile
+    entry: SentencePracticeCacheEntry
+  }[] = []
 
-  console.log(`Found ${files.length} data files\n`)
+  console.log(
+    `Found ${dataFiles.length} data files${options.filters.length ? " matching filters" : ""}\n`,
+  )
 
-  // Check which files need processing
-  const changedFiles: { file: string; setId: string; hash: string }[] = []
-  const cachedFiles: { file: string; setId: string }[] = []
+  const changedDataFiles: SentencePracticeDataFile[] = []
+  const cachedDataFiles: SentencePracticeDataFile[] = []
 
-  for (const file of files) {
-    const setId = getSetId(file)
-    const hash = computeFileHash(file)
-
-    if (cache[setId]?.hash === hash) {
-      cachedFiles.push({ file, setId })
+  for (const source of dataFiles) {
+    const cached = loadCacheEntry(source)
+    if (cached?.sourceHash === source.sourceHash) {
+      cachedDataFiles.push(source)
+      totalQuestionCount += cached.questions.length
+      if (!existsSync(source.cachePath) || !manifest[source.relativePath]) {
+        saveCacheEntry(source, cached)
+        manifest[source.relativePath] = {
+          setId: source.setId,
+          cachePath: relative(CACHE_DIR, source.cachePath),
+        }
+      }
     } else {
-      changedFiles.push({ file, setId, hash })
+      changedDataFiles.push(source)
     }
   }
 
-  // Report cached files
-  if (cachedFiles.length > 0) {
-    console.log(`Skipping ${cachedFiles.length} unchanged files:`)
-    for (const { setId } of cachedFiles) {
-      console.log(`  ✓ ${setId} (cached)`)
-      allQuestions.push(...cache[setId].questions)
+  if (cachedDataFiles.length > 0) {
+    console.log(`Skipping ${cachedDataFiles.length} unchanged files:`)
+    for (const source of cachedDataFiles) {
+      console.log(`  ✓ ${source.setId} (cached)`)
     }
     console.log()
   }
 
-  // Process changed files with Kagome
-  if (changedFiles.length > 0) {
-    console.log(`Processing ${changedFiles.length} changed files:\n`)
+  if (changedDataFiles.length > 0) {
+    console.log(`Processing ${changedDataFiles.length} changed files:\n`)
 
     const kagome = new KagomeServer()
     await kagome.start()
 
     try {
-      for (const { file, setId, hash } of changedFiles) {
-        process.stdout.write(`  ${setId}... `)
+      for (const source of changedDataFiles) {
+        process.stdout.write(`  ${source.setId}... `)
 
-        const module = await import(file)
+        const module = await import(source.file)
         const questions: Question[] = module.questions
-        const canonicalAnswerTokens = await processFileQuestions(questions, kagome)
-
-        const processedQuestions = questions.map((q, i) => ({
-          setId,
+        const canonicalAnswerTokens = await generateCanonicalAnswerTokens(
+          questions,
+          kagome,
+        )
+        const processedQuestions: ProcessedQuestion[] = questions.map((q, i) => ({
+          setId: source.setId,
           order: i,
           english: q.english,
           hint: q.hint,
           answers: q.answers,
           canonicalAnswerTokens: canonicalAnswerTokens[i],
         }))
+        const entry: SentencePracticeCacheEntry = {
+          sourceHash: source.sourceHash,
+          setId: source.setId,
+          questions: processedQuestions,
+        }
 
-        cache[setId] = { hash, questions: processedQuestions }
-        allQuestions.push(...processedQuestions)
+        manifest[source.relativePath] = {
+          setId: source.setId,
+          cachePath: relative(CACHE_DIR, source.cachePath),
+        }
+        entriesToSync.push({ source, entry })
+        totalQuestionCount += processedQuestions.length
 
         console.log(`✓ (${questions.length} questions)`)
       }
     } finally {
       kagome.shutdown()
     }
-
   }
 
-  if (allQuestions.length === 0) {
-    console.log("No questions to import.")
+  if (totalQuestionCount === 0 && removedEntries.length === 0) {
+    console.log("No matching questions found.")
     return
   }
 
-  console.log(`\nWriting ${allQuestions.length} questions to temp file...`)
-  writeFileSync(
-    TEMP_FILE,
-    allQuestions.map((q) => JSON.stringify(q)).join("\n"),
-  )
+  if (options.noImport) {
+    for (const { source, entry } of entriesToSync) {
+      saveCacheEntry(source, entry)
+    }
+    saveManifest(manifest)
+    console.log("Skipping Convex import (--no-import).")
+  } else {
+    await syncSentencePracticeToConvex(
+      entriesToSync.map(({ entry }) => entry),
+      removedEntries.map(([, entry]) => entry.setId),
+    )
 
-  console.log("Importing to Convex...")
-  execSync(
-    `bunx convex import --table sentencePracticeQuestions ${TEMP_FILE} --replace`,
-    { stdio: "inherit" },
-  )
+    for (const { source, entry } of entriesToSync) {
+      saveCacheEntry(source, entry)
+    }
+    for (const [relativePath, entry] of [
+      ...removedEntries,
+      ...staleMovedEntries,
+    ]) {
+      const cachePath = join(CACHE_DIR, entry.cachePath)
+      if (existsSync(cachePath)) rmSync(cachePath)
+      delete manifest[relativePath]
+    }
+    saveManifest(manifest)
+  }
 
-  saveCache(cache)
-  unlinkSync(TEMP_FILE)
-  console.log(`\n✓ Done! Imported ${allQuestions.length} questions`)
+  const importSummary = options.noImport
+    ? "Convex import skipped"
+    : `updated ${entriesToSync.length} sets`
+  console.log(`\n✓ Done! Found ${totalQuestionCount} questions, ${importSummary}`)
 }
 
 main().catch((error) => {
