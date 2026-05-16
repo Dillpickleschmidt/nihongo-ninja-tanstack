@@ -6,39 +6,6 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "図書館[としょかん]に 雑誌[ざっし]を" },
-          { text: "読[よ]みに", blank: true },
-          {
-            text: "行[い]く",
-            blank: true,
-            conjugation: {
-              pos: "Godan verb - Iku/Yuku special class",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-      },
-      {
-        segments: [
-          { text: "図書館[としょかん]へ 雑誌[ざっし]を" },
-          { text: "読[よ]みに", blank: true },
-          {
-            text: "行[い]く",
-            blank: true,
-            conjugation: {
-              pos: "Godan verb - Iku/Yuku special class",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "へ instead of に for destination",
-      },
-      {
-        segments: [
           { text: "私[わたし]は 図書館[としょかん]に 雑誌[ざっし]を" },
           { text: "読[よ]みに", blank: true },
           {
@@ -321,7 +288,9 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "私[わたし]は 友達[ともだち]と 食堂[しょくどう]に 昼[ひる]ご 飯[はん]を" },
+          {
+            text: "私[わたし]は 友達[ともだち]と 食堂[しょくどう]に 昼[ひる]ご 飯[はん]を",
+          },
           { text: "食[た]べに", blank: true },
           {
             text: "行[い]く",
@@ -337,7 +306,9 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "私[わたし]は 友達[ともだち]と 食堂[しょくどう]へ 昼[ひる]ご 飯[はん]を" },
+          {
+            text: "私[わたし]は 友達[ともだち]と 食堂[しょくどう]へ 昼[ひる]ご 飯[はん]を",
+          },
           { text: "食[た]べに", blank: true },
           {
             text: "行[い]く",
@@ -354,7 +325,9 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "私[わたし]は 友達[ともだち]と 食堂[しょくどう]に ご 飯[はん]を" },
+          {
+            text: "私[わたし]は 友達[ともだち]と 食堂[しょくどう]に ご 飯[はん]を",
+          },
           { text: "食[た]べに", blank: true },
           {
             text: "行[い]く",
@@ -371,7 +344,9 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "私[わたし]は 友達[ともだち]と 食堂[しょくどう]へ ご 飯[はん]を" },
+          {
+            text: "私[わたし]は 友達[ともだち]と 食堂[しょくどう]へ ご 飯[はん]を",
+          },
           { text: "食[た]べに", blank: true },
           {
             text: "行[い]く",
@@ -388,7 +363,9 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "友達[ともだち]と 食堂[しょくどう]に 昼[ひる]ご 飯[はん]を" },
+          {
+            text: "私[わたし]は 食堂[しょくどう]に 友達[ともだち]と 昼[ひる]ご 飯[はん]を",
+          },
           { text: "食[た]べに", blank: true },
           {
             text: "行[い]く",
@@ -401,7 +378,64 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Subject 私は dropped; keeps 友達と for 'with a friend'",
+        notes: "食堂に before 友達と.",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 食堂[しょくどう]に 友達[ともだち]と ご 飯[はん]を",
+          },
+          { text: "食[た]べに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "食堂に before 友達と + ご飯.",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 食堂[しょくどう]へ 友達[ともだち]と 昼[ひる]ご 飯[はん]を",
+          },
+          { text: "食[た]べに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "食堂へ before 友達と.",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 食堂[しょくどう]へ 友達[ともだち]と ご 飯[はん]を",
+          },
+          { text: "食[た]べに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "食堂へ before 友達と + ご飯.",
       },
     ],
   },
@@ -475,6 +509,40 @@ export const questions: Question[] = [
           },
         ],
         notes: "が + へ; adds 友達と",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は カフェに 友達[ともだち]と コーヒーを" },
+          { text: "飲[の]みに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "カフェに before 友達と.",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は カフェへ 友達[ともだち]と コーヒーを" },
+          { text: "飲[の]みに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "カフェへ before 友達と.",
       },
       {
         segments: [
@@ -552,40 +620,6 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "私[わたし]が 公園[こうえん]に 友[とも]だちに" },
-          { text: "会[あ]いに", blank: true },
-          {
-            text: "行[い]く",
-            blank: true,
-            conjugation: {
-              pos: "Godan verb - Iku/Yuku special class",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "が instead of は",
-      },
-      {
-        segments: [
-          { text: "私[わたし]が 公園[こうえん]へ 友[とも]だちに" },
-          { text: "会[あ]いに", blank: true },
-          {
-            text: "行[い]く",
-            blank: true,
-            conjugation: {
-              pos: "Godan verb - Iku/Yuku special class",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "が + へ",
-      },
-      {
-        segments: [
           { text: "私[わたし]は 公園[こうえん]に 友[とも]だちと" },
           { text: "会[あ]いに", blank: true },
           {
@@ -620,7 +654,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "友[とも]だちに" },
+          { text: "私[わたし]は 友[とも]だちに" },
           { text: "会[あ]いに", blank: true },
           { text: "公園[こうえん]に" },
           {
@@ -634,7 +668,61 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Purpose before destination; subject 私は dropped",
+        notes: "Purpose before destination.",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は 友[とも]だちに" },
+          { text: "会[あ]いに", blank: true },
+          { text: "公園[こうえん]へ" },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Purpose before destination + へ.",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は 友[とも]だちと" },
+          { text: "会[あ]いに", blank: true },
+          { text: "公園[こうえん]に" },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Purpose before destination + 友だちと.",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は 友[とも]だちと" },
+          { text: "会[あ]いに", blank: true },
+          { text: "公園[こうえん]へ" },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Purpose before destination + 友だちと + へ.",
       },
     ],
   },
@@ -981,6 +1069,584 @@ export const questions: Question[] = [
       {
         segments: [
           {
+            text: "私[わたし]は 週末[しゅうまつ]、 友[とも]だちのところに ゲームを",
+          },
+          { text: "しに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "ところ + に",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 週末[しゅうまつ]、 友[とも]だちのところに ゲームを",
+          },
+          { text: "やりに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "ところ + やる + に",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 週末[しゅうまつ]、 友[とも]だちのところへ ゲームを",
+          },
+          { text: "しに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "ところ + へ",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 週末[しゅうまつ]、 友[とも]だちのところへ ゲームを",
+          },
+          { text: "やりに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "ところ + やる + へ",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 週末[しゅうまつ]、 友[とも]だちのうちに ゲーム",
+          },
+          { text: "しに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        register: "casual",
+        notes: "Casual no-を variant + うちに",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 週末[しゅうまつ]、 友[とも]だちのうちに ゲーム",
+          },
+          { text: "やりに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        register: "casual",
+        notes: "Casual no-を + やる + うちに",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 週末[しゅうまつ]、 友[とも]だちのうちへ ゲーム",
+          },
+          { text: "しに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        register: "casual",
+        notes: "Casual no-を variant + うちへ",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 週末[しゅうまつ]、 友[とも]だちのうちへ ゲーム",
+          },
+          { text: "やりに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        register: "casual",
+        notes: "Casual no-を + やる + うちへ",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 週末[しゅうまつ]、 友[とも]だちの 家[いえ]に ゲーム",
+          },
+          { text: "しに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        register: "casual",
+        notes: "Casual no-を variant + 家に",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 週末[しゅうまつ]、 友[とも]だちの 家[いえ]に ゲーム",
+          },
+          { text: "やりに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        register: "casual",
+        notes: "Casual no-を + やる + 家に",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 週末[しゅうまつ]、 友[とも]だちの 家[いえ]へ ゲーム",
+          },
+          { text: "しに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        register: "casual",
+        notes: "Casual no-を variant + 家へ",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 週末[しゅうまつ]、 友[とも]だちの 家[いえ]へ ゲーム",
+          },
+          { text: "やりに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        register: "casual",
+        notes: "Casual no-を + やる + 家へ",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 今週末[こんしゅうまつ]、 友[とも]だちのうちへ ゲームを",
+          },
+          { text: "しに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "今週末 + うちへ",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 今週末[こんしゅうまつ]、 友[とも]だちの 家[いえ]へ ゲームを",
+          },
+          { text: "しに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "今週末 + 家へ",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 今週末[こんしゅうまつ]、 友[とも]だちのうちに ゲームを",
+          },
+          { text: "やりに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "今週末 + やる + うちに",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 今週末[こんしゅうまつ]、 友[とも]だちのうちへ ゲームを",
+          },
+          { text: "やりに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "今週末 + やる + うちへ",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 今週末[こんしゅうまつ]、 友[とも]だちの 家[いえ]に ゲームを",
+          },
+          { text: "やりに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "今週末 + やる + 家に",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 今週末[こんしゅうまつ]、 友[とも]だちの 家[いえ]へ ゲームを",
+          },
+          { text: "やりに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "今週末 + やる + 家へ",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 週末[しゅうまつ]、 友[とも]だちのうちに",
+          },
+          { text: "遊[あそ]びに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "遊びに行く variant (週末 + うちに).",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 週末[しゅうまつ]、 友[とも]だちのうちへ",
+          },
+          { text: "遊[あそ]びに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "遊びに行く variant (週末 + うちへ).",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 週末[しゅうまつ]、 友[とも]だちの 家[いえ]に",
+          },
+          { text: "遊[あそ]びに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "遊びに行く variant (週末 + 家に).",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 週末[しゅうまつ]、 友[とも]だちの 家[いえ]へ",
+          },
+          { text: "遊[あそ]びに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "遊びに行く variant (週末 + 家へ).",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 週末[しゅうまつ]、 友[とも]だちのところに",
+          },
+          { text: "遊[あそ]びに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "遊びに行く variant (週末 + ところに).",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 週末[しゅうまつ]、 友[とも]だちのところへ",
+          },
+          { text: "遊[あそ]びに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "遊びに行く variant (週末 + ところへ).",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 今週末[こんしゅうまつ]、 友[とも]だちのうちに",
+          },
+          { text: "遊[あそ]びに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "遊びに行く variant (今週末 + うちに).",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 今週末[こんしゅうまつ]、 友[とも]だちのうちへ",
+          },
+          { text: "遊[あそ]びに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "遊びに行く variant (今週末 + うちへ).",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 今週末[こんしゅうまつ]、 友[とも]だちの 家[いえ]に",
+          },
+          { text: "遊[あそ]びに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "遊びに行く variant (今週末 + 家に).",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 今週末[こんしゅうまつ]、 友[とも]だちの 家[いえ]へ",
+          },
+          { text: "遊[あそ]びに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "遊びに行く variant (今週末 + 家へ).",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 今週末[こんしゅうまつ]、 友[とも]だちのところに",
+          },
+          { text: "遊[あそ]びに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "遊びに行く variant (今週末 + ところに).",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 今週末[こんしゅうまつ]、 友[とも]だちのところへ",
+          },
+          { text: "遊[あそ]びに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "遊びに行く variant (今週末 + ところへ).",
+      },
+      {
+        segments: [
+          {
             text: "私[わたし]は 今週末[こんしゅうまつ]、 友[とも]だちのうちに ゲームを",
           },
           { text: "しに", blank: true },
@@ -1038,7 +1704,7 @@ export const questions: Question[] = [
     ],
   },
   {
-    english: "I'm going to the hospital to see a friend.",
+    english: "I'm going to the hospital to visit a friend.",
     answers: [
       {
         segments: [
@@ -1071,41 +1737,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "へ instead of に",
-      },
-      {
-        segments: [
-          { text: "病院[びょういん]に 友[とも]だちに" },
-          { text: "会[あ]いに", blank: true },
-          {
-            text: "行[い]く",
-            blank: true,
-            conjugation: {
-              pos: "Godan verb - Iku/Yuku special class",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "私は dropped",
-      },
-      {
-        segments: [
-          { text: "病院[びょういん]へ 友[とも]だちに" },
-          { text: "会[あ]いに", blank: true },
-          {
-            text: "行[い]く",
-            blank: true,
-            conjugation: {
-              pos: "Godan verb - Iku/Yuku special class",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "私は dropped + へ",
+        notes: "へ for destination",
       },
       {
         segments: [
@@ -1122,7 +1754,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "友達 (full kanji) instead of 友だち",
+        notes: "友達 (full kanji) instead of 友だち + に",
       },
       {
         segments: [
@@ -1139,12 +1771,12 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "友達 + へ",
+        notes: "友達 (full kanji) instead of 友だち + へ",
       },
       {
         segments: [
-          { text: "私[わたし]が 病院[びょういん]に 友[とも]だちに" },
-          { text: "会[あ]いに", blank: true },
+          { text: "私[わたし]は 友[とも]だちに" },
+          { text: "会[あ]いに 病院[びょういん]に", blank: true },
           {
             text: "行[い]く",
             blank: true,
@@ -1156,11 +1788,62 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "が instead of は",
+        notes: "Purpose first + に",
       },
       {
         segments: [
-          { text: "病院[びょういん]に 友[とも]だちを" },
+          { text: "私[わたし]は 友[とも]だちに" },
+          { text: "会[あ]いに 病院[びょういん]へ", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Purpose first + へ",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は 友達[ともだち]に" },
+          { text: "会[あ]いに 病院[びょういん]に", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Purpose first + に + 友達 (full kanji)",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は 友達[ともだち]に" },
+          { text: "会[あ]いに 病院[びょういん]へ", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Purpose first + へ + 友達 (full kanji)",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は 病院[びょういん]に 友[とも]だちを" },
           { text: "見舞[みま]いに", blank: true },
           {
             text: "行[い]く",
@@ -1173,15 +1856,139 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes:
-          '見舞いに行く (visit sick person) — idiomatic for "see a friend at hospital"',
+        notes: "見舞いに行く (visit sick person) + に",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は 病院[びょういん]へ 友[とも]だちを" },
+          { text: "見舞[みま]いに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "見舞いに行く (visit sick person) + へ",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は 友[とも]だちを" },
+          { text: "見舞[みま]いに 病院[びょういん]に", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "見舞いに行く, purpose first + に",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は 友[とも]だちを" },
+          { text: "見舞[みま]いに 病院[びょういん]へ", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "見舞いに行く, purpose first + へ",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 友[とも]だちの お見舞[みま]いに 病院[びょういん]に",
+          },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "お見舞いに行く + に",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 友[とも]だちの お見舞[みま]いに 病院[びょういん]へ",
+          },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "お見舞いに行く + へ",
       },
     ],
   },
   {
-    english: "I'm going to the sea this weekend to surf.",
+    english: "I'm going to the ocean this weekend to surf.",
     hint: "surf = サーフィン (as in サーフィンをする)",
     answers: [
+      {
+        segments: [
+          {
+            text: "私[わたし]は 今週末[こんしゅうまつ]、 海[うみ]に サーフィンを",
+          },
+          { text: "しに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "今週末 + に",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 今週末[こんしゅうまつ]、 海[うみ]へ サーフィンを",
+          },
+          { text: "しに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "今週末 + へ",
+      },
       {
         segments: [
           { text: "私[わたし]は 週末[しゅうまつ]、 海[うみ]に サーフィンを" },
@@ -1197,6 +2004,7 @@ export const questions: Question[] = [
             },
           },
         ],
+        notes: "週末 + に",
       },
       {
         segments: [
@@ -1213,11 +2021,13 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "へ instead of に",
+        notes: "週末 + へ",
       },
       {
         segments: [
-          { text: "私[わたし]は 海[うみ]に 週末[しゅうまつ] サーフィンを" },
+          {
+            text: "私[わたし]は 今週末[こんしゅうまつ]、 海[うみ]に サーフィン",
+          },
           { text: "しに", blank: true },
           {
             text: "行[い]く",
@@ -1230,11 +2040,14 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Destination first, then time",
+        register: "casual",
+        notes: "Casual no-を + 今週末 + に",
       },
       {
         segments: [
-          { text: "私[わたし]は 海[うみ]へ 週末[しゅうまつ] サーフィンを" },
+          {
+            text: "私[わたし]は 今週末[こんしゅうまつ]、 海[うみ]へ サーフィン",
+          },
           { text: "しに", blank: true },
           {
             text: "行[い]く",
@@ -1247,7 +2060,8 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Destination first + へ",
+        register: "casual",
+        notes: "Casual no-を + 今週末 + へ",
       },
       {
         segments: [
@@ -1265,7 +2079,7 @@ export const questions: Question[] = [
           },
         ],
         register: "casual",
-        notes: "を omitted",
+        notes: "Casual no-を + 週末 + に",
       },
       {
         segments: [
@@ -1283,7 +2097,41 @@ export const questions: Question[] = [
           },
         ],
         register: "casual",
-        notes: "を omitted + へ",
+        notes: "Casual no-を + 週末 + へ",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は サーフィンを" },
+          { text: "しに 海[うみ]に", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Purpose first + に",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は サーフィンを" },
+          { text: "しに 海[うみ]へ", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Purpose first + へ",
       },
       {
         segments: [
@@ -1300,17 +2148,33 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "今週末は + 私は dropped",
+        notes: "今週末は + 私は dropped + に",
+      },
+      {
+        segments: [
+          { text: "今週末[こんしゅうまつ]は 海[うみ]へ サーフィンを" },
+          { text: "しに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "今週末は + 私は dropped + へ",
       },
     ],
   },
   {
-    english: "Isn't Saki going to the supermarket to buy fruit?",
-    hint: "Saki = 咲 (さき)",
+    english: "I'm not going to the supermarket to buy fruit.",
     answers: [
       {
         segments: [
-          { text: "咲[さき]さんは スーパーに 果物[くだもの]を" },
+          { text: "私[わたし]は スーパーに 果物[くだもの]を" },
           { text: "買[か]いに", blank: true },
           {
             text: "行[い]く",
@@ -1322,12 +2186,11 @@ export const questions: Question[] = [
               tense: "non-past",
             },
           },
-          { text: "か" },
         ],
       },
       {
         segments: [
-          { text: "咲[さき]さんは スーパーへ 果物[くだもの]を" },
+          { text: "私[わたし]は スーパーへ 果物[くだもの]を" },
           { text: "買[か]いに", blank: true },
           {
             text: "行[い]く",
@@ -1339,13 +2202,12 @@ export const questions: Question[] = [
               tense: "non-past",
             },
           },
-          { text: "か" },
         ],
-        notes: "へ instead of に",
+        notes: "果物 + へ",
       },
       {
         segments: [
-          { text: "咲[さき]さんは 果物[くだもの]を" },
+          { text: "私[わたし]は 果物[くだもの]を" },
           { text: "買[か]いに", blank: true },
           { text: "スーパーに", blank: true },
           {
@@ -1358,13 +2220,12 @@ export const questions: Question[] = [
               tense: "non-past",
             },
           },
-          { text: "か" },
         ],
-        notes: "Purpose before destination",
+        notes: "Purpose before destination + 果物 + に",
       },
       {
         segments: [
-          { text: "咲[さき]さんは 果物[くだもの]を" },
+          { text: "私[わたし]は 果物[くだもの]を" },
           { text: "買[か]いに", blank: true },
           { text: "スーパーへ", blank: true },
           {
@@ -1377,13 +2238,12 @@ export const questions: Question[] = [
               tense: "non-past",
             },
           },
-          { text: "か" },
         ],
-        notes: "Purpose before destination + へ",
+        notes: "Purpose before destination + 果物 + へ",
       },
       {
         segments: [
-          { text: "咲[さき]さんが スーパーに 果物[くだもの]を" },
+          { text: "私[わたし]は スーパーに フルーツを" },
           { text: "買[か]いに", blank: true },
           {
             text: "行[い]く",
@@ -1395,13 +2255,12 @@ export const questions: Question[] = [
               tense: "non-past",
             },
           },
-          { text: "か" },
         ],
-        notes: "が instead of は",
+        notes: "フルーツ + に",
       },
       {
         segments: [
-          { text: "咲[さき]さんが スーパーへ 果物[くだもの]を" },
+          { text: "私[わたし]は スーパーへ フルーツを" },
           { text: "買[か]いに", blank: true },
           {
             text: "行[い]く",
@@ -1413,19 +2272,56 @@ export const questions: Question[] = [
               tense: "non-past",
             },
           },
-          { text: "か" },
         ],
-        notes: "が + へ",
+        notes: "フルーツ + へ",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は フルーツを" },
+          { text: "買[か]いに", blank: true },
+          { text: "スーパーに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Purpose before destination + フルーツ + に",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は フルーツを" },
+          { text: "買[か]いに", blank: true },
+          { text: "スーパーへ", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Purpose before destination + フルーツ + へ",
       },
     ],
   },
   {
-    english: "Shunsuke goes to Italy to eat pizza.",
+    english: "Shunsuke usually goes to an Italian restaurant to eat pizza.",
     hint: "Shunsuke = 俊介 (しゅんすけ)",
     answers: [
       {
         segments: [
-          { text: "俊介[しゅんすけ]さんは イタリアへ ピザを" },
+          {
+            text: "俊介[しゅんすけ]さんは たいてい イタリアンレストランに ピザを",
+          },
           { text: "食[た]べに", blank: true },
           {
             text: "行[い]く",
@@ -1438,10 +2334,13 @@ export const questions: Question[] = [
             },
           },
         ],
+        notes: "たいてい + Italian restaurant + に",
       },
       {
         segments: [
-          { text: "俊介[しゅんすけ]さんは イタリアに ピザを" },
+          {
+            text: "俊介[しゅんすけ]さんは たいてい イタリアンレストランへ ピザを",
+          },
           { text: "食[た]べに", blank: true },
           {
             text: "行[い]く",
@@ -1454,13 +2353,13 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "に instead of へ",
+        notes: "たいてい + Italian restaurant + へ",
       },
       {
         segments: [
-          { text: "俊介[しゅんすけ]さんは ピザを" },
+          { text: "俊介[しゅんすけ]さんは たいてい ピザを" },
           { text: "食[た]べに", blank: true },
-          { text: "イタリアへ", blank: true },
+          { text: "イタリアンレストランに", blank: true },
           {
             text: "行[い]く",
             blank: true,
@@ -1472,13 +2371,14 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Purpose before destination",
+        notes:
+          "たいてい + purpose before destination + Italian restaurant + に",
       },
       {
         segments: [
-          { text: "俊介[しゅんすけ]さんは ピザを" },
+          { text: "俊介[しゅんすけ]さんは たいてい ピザを" },
           { text: "食[た]べに", blank: true },
-          { text: "イタリアに", blank: true },
+          { text: "イタリアンレストランへ", blank: true },
           {
             text: "行[い]く",
             blank: true,
@@ -1490,11 +2390,14 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Purpose before destination + に",
+        notes:
+          "たいてい + purpose before destination + Italian restaurant + へ",
       },
       {
         segments: [
-          { text: "俊介[しゅんすけ]さんが イタリアへ ピザを" },
+          {
+            text: "俊介[しゅんすけ]さんは たいてい イタリア料理[りょうり]の レストランに ピザを",
+          },
           { text: "食[た]べに", blank: true },
           {
             text: "行[い]く",
@@ -1507,11 +2410,13 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "が instead of は",
+        notes: "たいてい + Italian-food restaurant + に",
       },
       {
         segments: [
-          { text: "俊介[しゅんすけ]さんが イタリアに ピザを" },
+          {
+            text: "俊介[しゅんすけ]さんは たいてい イタリア料理[りょうり]の レストランへ ピザを",
+          },
           { text: "食[た]べに", blank: true },
           {
             text: "行[い]く",
@@ -1524,17 +2429,581 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "が + に",
+        notes: "たいてい + Italian-food restaurant + へ",
+      },
+      {
+        segments: [
+          { text: "俊介[しゅんすけ]さんは たいてい ピザを" },
+          { text: "食[た]べに", blank: true },
+          { text: "イタリア料理[りょうり]の レストランに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes:
+          "たいてい + purpose before destination + Italian-food restaurant + に",
+      },
+      {
+        segments: [
+          { text: "俊介[しゅんすけ]さんは たいてい ピザを" },
+          { text: "食[た]べに", blank: true },
+          { text: "イタリア料理[りょうり]の レストランへ", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes:
+          "たいてい + purpose before destination + Italian-food restaurant + へ",
+      },
+      {
+        segments: [
+          {
+            text: "俊介[しゅんすけ]さんは たいてい イタリアンの レストランに ピザを",
+          },
+          { text: "食[た]べに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "たいてい + イタリアンのレストラン + に",
+      },
+      {
+        segments: [
+          {
+            text: "俊介[しゅんすけ]さんは たいてい イタリアンの レストランへ ピザを",
+          },
+          { text: "食[た]べに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "たいてい + イタリアンのレストラン + へ",
+      },
+      {
+        segments: [
+          { text: "俊介[しゅんすけ]さんは たいてい ピザを" },
+          { text: "食[た]べに", blank: true },
+          { text: "イタリアンの レストランに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes:
+          "たいてい + purpose before destination + イタリアンのレストラン + に",
+      },
+      {
+        segments: [
+          { text: "俊介[しゅんすけ]さんは たいてい ピザを" },
+          { text: "食[た]べに", blank: true },
+          { text: "イタリアンの レストランへ", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes:
+          "たいてい + purpose before destination + イタリアンのレストラン + へ",
+      },
+      {
+        segments: [
+          {
+            text: "俊介[しゅんすけ]さんは 普段[ふだん] イタリアンレストランに ピザを",
+          },
+          { text: "食[た]べに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "普段 + Italian restaurant + に",
+      },
+      {
+        segments: [
+          {
+            text: "俊介[しゅんすけ]さんは 普段[ふだん] イタリアンレストランへ ピザを",
+          },
+          { text: "食[た]べに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "普段 + Italian restaurant + へ",
+      },
+      {
+        segments: [
+          { text: "俊介[しゅんすけ]さんは 普段[ふだん] ピザを" },
+          { text: "食[た]べに", blank: true },
+          { text: "イタリアンレストランに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "普段 + purpose before destination + Italian restaurant + に",
+      },
+      {
+        segments: [
+          { text: "俊介[しゅんすけ]さんは 普段[ふだん] ピザを" },
+          { text: "食[た]べに", blank: true },
+          { text: "イタリアンレストランへ", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "普段 + purpose before destination + Italian restaurant + へ",
+      },
+      {
+        segments: [
+          {
+            text: "俊介[しゅんすけ]さんは 普段[ふだん] イタリア料理[りょうり]の レストランに ピザを",
+          },
+          { text: "食[た]べに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "普段 + Italian-food restaurant + に",
+      },
+      {
+        segments: [
+          {
+            text: "俊介[しゅんすけ]さんは 普段[ふだん] イタリア料理[りょうり]の レストランへ ピザを",
+          },
+          { text: "食[た]べに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "普段 + Italian-food restaurant + へ",
+      },
+      {
+        segments: [
+          { text: "俊介[しゅんすけ]さんは 普段[ふだん] ピザを" },
+          { text: "食[た]べに", blank: true },
+          { text: "イタリア料理[りょうり]の レストランに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes:
+          "普段 + purpose before destination + Italian-food restaurant + に",
+      },
+      {
+        segments: [
+          { text: "俊介[しゅんすけ]さんは 普段[ふだん] ピザを" },
+          { text: "食[た]べに", blank: true },
+          { text: "イタリア料理[りょうり]の レストランへ", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes:
+          "普段 + purpose before destination + Italian-food restaurant + へ",
+      },
+      {
+        segments: [
+          {
+            text: "俊介[しゅんすけ]さんは 普段[ふだん] イタリアンの レストランに ピザを",
+          },
+          { text: "食[た]べに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "普段 + イタリアンのレストラン + に",
+      },
+      {
+        segments: [
+          {
+            text: "俊介[しゅんすけ]さんは 普段[ふだん] イタリアンの レストランへ ピザを",
+          },
+          { text: "食[た]べに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "普段 + イタリアンのレストラン + へ",
+      },
+      {
+        segments: [
+          { text: "俊介[しゅんすけ]さんは 普段[ふだん] ピザを" },
+          { text: "食[た]べに", blank: true },
+          { text: "イタリアンの レストランに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes:
+          "普段 + purpose before destination + イタリアンのレストラン + に",
+      },
+      {
+        segments: [
+          { text: "俊介[しゅんすけ]さんは 普段[ふだん] ピザを" },
+          { text: "食[た]べに", blank: true },
+          { text: "イタリアンの レストランへ", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes:
+          "普段 + purpose before destination + イタリアンのレストラン + へ",
+      },
+      {
+        segments: [
+          { text: "俊介[しゅんすけ]さんは よく イタリアンレストランに ピザを" },
+          { text: "食[た]べに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "よく + Italian restaurant + に",
+      },
+      {
+        segments: [
+          { text: "俊介[しゅんすけ]さんは よく イタリアンレストランへ ピザを" },
+          { text: "食[た]べに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "よく + Italian restaurant + へ",
+      },
+      {
+        segments: [
+          { text: "俊介[しゅんすけ]さんは よく ピザを" },
+          { text: "食[た]べに", blank: true },
+          { text: "イタリアンレストランに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "よく + purpose before destination + Italian restaurant + に",
+      },
+      {
+        segments: [
+          { text: "俊介[しゅんすけ]さんは よく ピザを" },
+          { text: "食[た]べに", blank: true },
+          { text: "イタリアンレストランへ", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "よく + purpose before destination + Italian restaurant + へ",
+      },
+      {
+        segments: [
+          {
+            text: "俊介[しゅんすけ]さんは よく イタリア料理[りょうり]の レストランに ピザを",
+          },
+          { text: "食[た]べに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "よく + Italian-food restaurant + に",
+      },
+      {
+        segments: [
+          {
+            text: "俊介[しゅんすけ]さんは よく イタリア料理[りょうり]の レストランへ ピザを",
+          },
+          { text: "食[た]べに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "よく + Italian-food restaurant + へ",
+      },
+      {
+        segments: [
+          { text: "俊介[しゅんすけ]さんは よく ピザを" },
+          { text: "食[た]べに", blank: true },
+          { text: "イタリア料理[りょうり]の レストランに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes:
+          "よく + purpose before destination + Italian-food restaurant + に",
+      },
+      {
+        segments: [
+          { text: "俊介[しゅんすけ]さんは よく ピザを" },
+          { text: "食[た]べに", blank: true },
+          { text: "イタリア料理[りょうり]の レストランへ", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes:
+          "よく + purpose before destination + Italian-food restaurant + へ",
+      },
+      {
+        segments: [
+          {
+            text: "俊介[しゅんすけ]さんは よく イタリアンの レストランに ピザを",
+          },
+          { text: "食[た]べに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "よく + イタリアンのレストラン + に",
+      },
+      {
+        segments: [
+          {
+            text: "俊介[しゅんすけ]さんは よく イタリアンの レストランへ ピザを",
+          },
+          { text: "食[た]べに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "よく + イタリアンのレストラン + へ",
+      },
+      {
+        segments: [
+          { text: "俊介[しゅんすけ]さんは よく ピザを" },
+          { text: "食[た]べに", blank: true },
+          { text: "イタリアンの レストランに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes:
+          "よく + purpose before destination + イタリアンのレストラン + に",
+      },
+      {
+        segments: [
+          { text: "俊介[しゅんすけ]さんは よく ピザを" },
+          { text: "食[た]べに", blank: true },
+          { text: "イタリアンの レストランへ", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes:
+          "よく + purpose before destination + イタリアンのレストラン + へ",
       },
     ],
   },
   {
-    english: "Yosuke goes to cram school to study kanji.",
+    english: "Yosuke goes to cram school to study English.",
     hint: "Yosuke = 陽介 (ようすけ)",
     answers: [
       {
         segments: [
-          { text: "陽介[ようすけ]さんは 塾[じゅく]へ 漢字[かんじ]を 勉強[べんきょう]" },
+          {
+            text: "陽介[ようすけ]さんは 塾[じゅく]に 英語[えいご]を 勉強[べんきょう]",
+          },
           { text: "しに", blank: true },
           {
             text: "行[い]く",
@@ -1547,10 +3016,13 @@ export const questions: Question[] = [
             },
           },
         ],
+        notes: "英語を勉強しに + に",
       },
       {
         segments: [
-          { text: "陽介[ようすけ]さんは 塾[じゅく]に 漢字[かんじ]を 勉強[べんきょう]" },
+          {
+            text: "陽介[ようすけ]さんは 塾[じゅく]へ 英語[えいご]を 勉強[べんきょう]",
+          },
           { text: "しに", blank: true },
           {
             text: "行[い]く",
@@ -1563,29 +3035,11 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "に instead of へ",
+        notes: "英語を勉強しに + へ",
       },
       {
         segments: [
-          { text: "陽介[ようすけ]さんは 漢字[かんじ]を 勉強[べんきょう]" },
-          { text: "しに", blank: true },
-          { text: "塾[じゅく]へ", blank: true },
-          {
-            text: "行[い]く",
-            blank: true,
-            conjugation: {
-              pos: "Godan verb - Iku/Yuku special class",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "Purpose before destination",
-      },
-      {
-        segments: [
-          { text: "陽介[ようすけ]さんは 漢字[かんじ]を 勉強[べんきょう]" },
+          { text: "陽介[ようすけ]さんは 英語[えいご]を 勉強[べんきょう]" },
           { text: "しに", blank: true },
           { text: "塾[じゅく]に", blank: true },
           {
@@ -1599,17 +3053,109 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Purpose before destination + に",
+        notes: "Purpose before destination + 英語を勉強しに + に",
+      },
+      {
+        segments: [
+          { text: "陽介[ようすけ]さんは 英語[えいご]を 勉強[べんきょう]" },
+          { text: "しに", blank: true },
+          { text: "塾[じゅく]へ", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Purpose before destination + 英語を勉強しに + へ",
+      },
+      {
+        segments: [
+          {
+            text: "陽介[ようすけ]さんは 塾[じゅく]に 英語[えいご]の 勉強[べんきょう]を",
+          },
+          { text: "しに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "英語の勉強をしに + に",
+      },
+      {
+        segments: [
+          {
+            text: "陽介[ようすけ]さんは 塾[じゅく]へ 英語[えいご]の 勉強[べんきょう]を",
+          },
+          { text: "しに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "英語の勉強をしに + へ",
+      },
+      {
+        segments: [
+          { text: "陽介[ようすけ]さんは 英語[えいご]の 勉強[べんきょう]を" },
+          { text: "しに", blank: true },
+          { text: "塾[じゅく]に", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Purpose before destination + 英語の勉強をしに + に",
+      },
+      {
+        segments: [
+          { text: "陽介[ようすけ]さんは 英語[えいご]の 勉強[べんきょう]を" },
+          { text: "しに", blank: true },
+          { text: "塾[じゅく]へ", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Purpose before destination + 英語の勉強をしに + へ",
       },
     ],
   },
   {
-    english: "Rina goes to the restaurant to eat tonkatsu.",
-    hint: "Rina = 莉奈 (りな)",
+    english: "Rina goes to the mall to eat tonkatsu.",
+    hint: "mall = モール / ショッピングモール",
     answers: [
       {
         segments: [
-          { text: "莉奈[りな]さんは レストランに とんかつを" },
+          { text: "莉奈[りな]さんは モールに とんかつを" },
           { text: "食[た]べに", blank: true },
           {
             text: "行[い]く",
@@ -1622,10 +3168,11 @@ export const questions: Question[] = [
             },
           },
         ],
+        notes: "mall + に",
       },
       {
         segments: [
-          { text: "莉奈[りな]さんは レストランへ とんかつを" },
+          { text: "莉奈[りな]さんは モールへ とんかつを" },
           { text: "食[た]べに", blank: true },
           {
             text: "行[い]く",
@@ -1638,31 +3185,13 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "へ instead of に",
-      },
-      {
-        segments: [
-          { text: "莉奈[りな]さんは とんかつを" },
-          { text: "食[た]べに", blank: true },
-          { text: "レストランに", blank: true },
-          {
-            text: "行[い]く",
-            blank: true,
-            conjugation: {
-              pos: "Godan verb - Iku/Yuku special class",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "Purpose before destination",
+        notes: "mall + へ",
       },
       {
         segments: [
           { text: "莉奈[りな]さんは とんかつを" },
           { text: "食[た]べに", blank: true },
-          { text: "レストランへ", blank: true },
+          { text: "モールに", blank: true },
           {
             text: "行[い]く",
             blank: true,
@@ -1674,7 +3203,95 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Purpose before destination + へ",
+        notes: "Purpose before destination + mall + に",
+      },
+      {
+        segments: [
+          { text: "莉奈[りな]さんは とんかつを" },
+          { text: "食[た]べに", blank: true },
+          { text: "モールへ", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Purpose before destination + mall + へ",
+      },
+      {
+        segments: [
+          { text: "莉奈[りな]さんは ショッピングモールに とんかつを" },
+          { text: "食[た]べに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "shopping mall + に",
+      },
+      {
+        segments: [
+          { text: "莉奈[りな]さんは ショッピングモールへ とんかつを" },
+          { text: "食[た]べに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "shopping mall + へ",
+      },
+      {
+        segments: [
+          { text: "莉奈[りな]さんは とんかつを" },
+          { text: "食[た]べに", blank: true },
+          { text: "ショッピングモールに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Purpose before destination + shopping mall + に",
+      },
+      {
+        segments: [
+          { text: "莉奈[りな]さんは とんかつを" },
+          { text: "食[た]べに", blank: true },
+          { text: "ショッピングモールへ", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Purpose before destination + shopping mall + へ",
       },
     ],
   },
@@ -1684,7 +3301,9 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "私[わたし]は 楓[かえで]さんのうちに 教科書[きょうかしょ]を" },
+          {
+            text: "私[わたし]は 楓[かえで]さんに 教科書[きょうかしょ]を",
+          },
           { text: "返[かえ]しに", blank: true },
           {
             text: "行[い]く",
@@ -1697,10 +3316,13 @@ export const questions: Question[] = [
             },
           },
         ],
+        notes: "Person as indirect object; destination/place implied",
       },
       {
         segments: [
-          { text: "私[わたし]は 楓[かえで]さんのうちへ 教科書[きょうかしょ]を" },
+          {
+            text: "私[わたし]は 教科書[きょうかしょ]を 楓[かえで]さんに",
+          },
           { text: "返[かえ]しに", blank: true },
           {
             text: "行[い]く",
@@ -1713,11 +3335,13 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "へ instead of に",
+        notes: "Object before recipient; destination/place implied",
       },
       {
         segments: [
-          { text: "楓[かえで]さんのうちに 教科書[きょうかしょ]を" },
+          {
+            text: "私[わたし]は 楓[かえで]さんのうちに 教科書[きょうかしょ]を",
+          },
           { text: "返[かえ]しに", blank: true },
           {
             text: "行[い]く",
@@ -1730,11 +3354,13 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "私は dropped",
+        notes: "うち + に",
       },
       {
         segments: [
-          { text: "楓[かえで]さんのうちへ 教科書[きょうかしょ]を" },
+          {
+            text: "私[わたし]は 楓[かえで]さんのうちへ 教科書[きょうかしょ]を",
+          },
           { text: "返[かえ]しに", blank: true },
           {
             text: "行[い]く",
@@ -1747,11 +3373,13 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "私は dropped + へ",
+        notes: "うち + へ",
       },
       {
         segments: [
-          { text: "教科書[きょうかしょ]を 楓[かえで]さんのうちに" },
+          {
+            text: "私[わたし]は 楓[かえで]さんのところに 教科書[きょうかしょ]を",
+          },
           { text: "返[かえ]しに", blank: true },
           {
             text: "行[い]く",
@@ -1764,62 +3392,13 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Object fronted",
+        notes: "ところ + に",
       },
       {
         segments: [
-          { text: "私[わたし]は 教科書[きょうかしょ]を 楓[かえで]さんのうちに" },
-          { text: "返[かえ]しに", blank: true },
           {
-            text: "行[い]く",
-            blank: true,
-            conjugation: {
-              pos: "Godan verb - Iku/Yuku special class",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
+            text: "私[わたし]は 楓[かえで]さんのところへ 教科書[きょうかしょ]を",
           },
-        ],
-        notes: "私は + object before destination",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は 教科書[きょうかしょ]を 楓[かえで]さんのうちへ" },
-          { text: "返[かえ]しに", blank: true },
-          {
-            text: "行[い]く",
-            blank: true,
-            conjugation: {
-              pos: "Godan verb - Iku/Yuku special class",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "私は + object before destination + へ",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は 楓[かえで]さんのところに 教科書[きょうかしょ]を" },
-          { text: "返[かえ]しに", blank: true },
-          {
-            text: "行[い]く",
-            blank: true,
-            conjugation: {
-              pos: "Godan verb - Iku/Yuku special class",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "ところ instead of うち",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は 楓[かえで]さんのところへ 教科書[きょうかしょ]を" },
           { text: "返[かえ]しに", blank: true },
           {
             text: "行[い]く",
@@ -1834,12 +3413,322 @@ export const questions: Question[] = [
         ],
         notes: "ところ + へ",
       },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 楓[かえで]さんの 家[いえ]に 教科書[きょうかしょ]を",
+          },
+          { text: "返[かえ]しに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "家 + に",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 楓[かえで]さんの 家[いえ]へ 教科書[きょうかしょ]を",
+          },
+          { text: "返[かえ]しに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "家 + へ",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 教科書[きょうかしょ]を 楓[かえで]さんのうちに",
+          },
+          { text: "返[かえ]しに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Object before destination + うち + に",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 教科書[きょうかしょ]を 楓[かえで]さんのうちへ",
+          },
+          { text: "返[かえ]しに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Object before destination + うち + へ",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 教科書[きょうかしょ]を 楓[かえで]さんのところに",
+          },
+          { text: "返[かえ]しに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Object before destination + ところ + に",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 教科書[きょうかしょ]を 楓[かえで]さんのところへ",
+          },
+          { text: "返[かえ]しに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Object before destination + ところ + へ",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 教科書[きょうかしょ]を 楓[かえで]さんの 家[いえ]に",
+          },
+          { text: "返[かえ]しに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Object before destination + 家 + に",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 教科書[きょうかしょ]を 楓[かえで]さんの 家[いえ]へ",
+          },
+          { text: "返[かえ]しに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Object before destination + 家 + へ",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 教科書[きょうかしょ]を",
+          },
+          { text: "返[かえ]しに", blank: true },
+          { text: "楓[かえで]さんのうちに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Purpose before destination + うち + に",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 教科書[きょうかしょ]を",
+          },
+          { text: "返[かえ]しに", blank: true },
+          { text: "楓[かえで]さんのうちへ", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Purpose before destination + うち + へ",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 教科書[きょうかしょ]を",
+          },
+          { text: "返[かえ]しに", blank: true },
+          { text: "楓[かえで]さんのところに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Purpose before destination + ところ + に",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 教科書[きょうかしょ]を",
+          },
+          { text: "返[かえ]しに", blank: true },
+          { text: "楓[かえで]さんのところへ", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Purpose before destination + ところ + へ",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 教科書[きょうかしょ]を",
+          },
+          { text: "返[かえ]しに", blank: true },
+          { text: "楓[かえで]さんの 家[いえ]に", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Purpose before destination + 家 + に",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 教科書[きょうかしょ]を",
+          },
+          { text: "返[かえ]しに", blank: true },
+          { text: "楓[かえで]さんの 家[いえ]へ", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Purpose before destination + 家 + へ",
+      },
     ],
   },
   {
-    english: "Daiki is going to the teacher's place to ask about the homework.",
+    english: "Daiki is going to go ask the teacher about the homework.",
     hint: "Daiki = 大輝 (だいき)",
     answers: [
+      {
+        segments: [
+          {
+            text: "大輝[だいき]さんは 先生[せんせい]に 宿題[しゅくだい]について",
+          },
+          { text: "聞[き]きに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "先生に + について",
+      },
+      {
+        segments: [
+          {
+            text: "大輝[だいき]さんは 先生[せんせい]に 宿題[しゅくだい]のことを",
+          },
+          { text: "聞[き]きに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "先生に + のことを",
+      },
       {
         segments: [
           {
@@ -1857,25 +3746,7 @@ export const questions: Question[] = [
             },
           },
         ],
-      },
-      {
-        segments: [
-          {
-            text: "大輝[だいき]さんは 先生[せんせい]のところへ 宿題[しゅくだい]について",
-          },
-          { text: "聞[き]きに", blank: true },
-          {
-            text: "行[い]く",
-            blank: true,
-            conjugation: {
-              pos: "Godan verb - Iku/Yuku special class",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "へ instead of に",
+        notes: "ところに + について",
       },
       {
         segments: [
@@ -1894,7 +3765,26 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "のことを instead of について",
+        notes: "ところに + のことを",
+      },
+      {
+        segments: [
+          {
+            text: "大輝[だいき]さんは 先生[せんせい]のところへ 宿題[しゅくだい]について",
+          },
+          { text: "聞[き]きに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "ところへ + について",
       },
       {
         segments: [
@@ -1913,12 +3803,12 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "のことを + へ",
+        notes: "ところへ + のことを",
       },
       {
         segments: [
           {
-            text: "大輝[だいき]さんは 宿題[しゅくだい]について 先生[せんせい]のところに",
+            text: "大輝[だいき]さんは 宿題[しゅくだい]について 先生[せんせい]に",
           },
           { text: "聞[き]きに", blank: true },
           {
@@ -1932,11 +3822,13 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "について fronted",
+        notes: "Topic first + 先生に + について",
       },
       {
         segments: [
-          { text: "大輝[だいき]さんは 先生[せんせい]のところに 宿題[しゅくだい]を" },
+          {
+            text: "大輝[だいき]さんは 宿題[しゅくだい]のことを 先生[せんせい]に",
+          },
           { text: "聞[き]きに", blank: true },
           {
             text: "行[い]く",
@@ -1949,12 +3841,15 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "宿題を (direct object) instead of について",
+        notes: "Topic first + 先生に + のことを",
       },
       {
         segments: [
-          { text: "大輝[だいき]さんは 先生[せんせい]のところへ 宿題[しゅくだい]を" },
+          {
+            text: "大輝[だいき]さんは 宿題[しゅくだい]について",
+          },
           { text: "聞[き]きに", blank: true },
+          { text: "先生[せんせい]のところに", blank: true },
           {
             text: "行[い]く",
             blank: true,
@@ -1966,7 +3861,67 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "宿題を + へ",
+        notes: "Topic first + ところに + について",
+      },
+      {
+        segments: [
+          {
+            text: "大輝[だいき]さんは 宿題[しゅくだい]について",
+          },
+          { text: "聞[き]きに", blank: true },
+          { text: "先生[せんせい]のところへ", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Topic first + ところへ + について",
+      },
+      {
+        segments: [
+          {
+            text: "大輝[だいき]さんは 宿題[しゅくだい]のことを",
+          },
+          { text: "聞[き]きに", blank: true },
+          { text: "先生[せんせい]のところに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Topic first + ところに + のことを",
+      },
+      {
+        segments: [
+          {
+            text: "大輝[だいき]さんは 宿題[しゅくだい]のことを",
+          },
+          { text: "聞[き]きに", blank: true },
+          { text: "先生[せんせい]のところへ", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Topic first + ところへ + のことを",
       },
     ],
   },
@@ -1974,6 +3929,40 @@ export const questions: Question[] = [
     english: "I'm going to Mei's place to borrow a dictionary.",
     hint: "Mei = 芽衣 (めい)",
     answers: [
+      {
+        segments: [
+          { text: "私[わたし]は 芽衣[めい]さんに 辞書[じしょ]を" },
+          { text: "借[か]りに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Person as source; destination/place implied",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は 辞書[じしょ]を 芽衣[めい]さんに" },
+          { text: "借[か]りに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Object before source; destination/place implied",
+      },
       {
         segments: [
           { text: "私[わたし]は 芽衣[めい]さんのうちに 辞書[じしょ]を" },
@@ -1989,23 +3978,7 @@ export const questions: Question[] = [
             },
           },
         ],
-      },
-      {
-        segments: [
-          { text: "私[わたし]は 芽衣[めい]さんのところに 辞書[じしょ]を" },
-          { text: "借[か]りに", blank: true },
-          {
-            text: "行[い]く",
-            blank: true,
-            conjugation: {
-              pos: "Godan verb - Iku/Yuku special class",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "ところ instead of うち",
+        notes: "うち + に",
       },
       {
         segments: [
@@ -2022,7 +3995,24 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "へ instead of に",
+        notes: "うち + へ",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は 芽衣[めい]さんのところに 辞書[じしょ]を" },
+          { text: "借[か]りに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "ところ + に",
       },
       {
         segments: [
@@ -2043,7 +4033,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "芽衣[めい]さんのうちに 辞書[じしょ]を" },
+          { text: "私[わたし]は 芽衣[めい]さんの 家[いえ]に 辞書[じしょ]を" },
           { text: "借[か]りに", blank: true },
           {
             text: "行[い]く",
@@ -2056,11 +4046,11 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "私は dropped",
+        notes: "家 + に",
       },
       {
         segments: [
-          { text: "芽衣[めい]さんのうちへ 辞書[じしょ]を" },
+          { text: "私[わたし]は 芽衣[めい]さんの 家[いえ]へ 辞書[じしょ]を" },
           { text: "借[か]りに", blank: true },
           {
             text: "行[い]く",
@@ -2073,7 +4063,109 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "私は dropped + へ",
+        notes: "家 + へ",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は 辞書[じしょ]を 芽衣[めい]さんのうちに" },
+          { text: "借[か]りに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Object before destination + うち + に",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は 辞書[じしょ]を 芽衣[めい]さんのうちへ" },
+          { text: "借[か]りに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Object before destination + うち + へ",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は 辞書[じしょ]を 芽衣[めい]さんのところに" },
+          { text: "借[か]りに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Object before destination + ところ + に",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は 辞書[じしょ]を 芽衣[めい]さんのところへ" },
+          { text: "借[か]りに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Object before destination + ところ + へ",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は 辞書[じしょ]を 芽衣[めい]さんの 家[いえ]に" },
+          { text: "借[か]りに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Object before destination + 家 + に",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は 辞書[じしょ]を 芽衣[めい]さんの 家[いえ]へ" },
+          { text: "借[か]りに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Object before destination + 家 + へ",
       },
       {
         segments: [
@@ -2091,7 +4183,25 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Purpose before destination",
+        notes: "Purpose before destination + うち + に",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は 辞書[じしょ]を" },
+          { text: "借[か]りに", blank: true },
+          { text: "芽衣[めい]さんのうちへ", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Purpose before destination + うち + へ",
       },
       {
         segments: [
@@ -2109,7 +4219,61 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Purpose before destination + ところ",
+        notes: "Purpose before destination + ところ + に",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は 辞書[じしょ]を" },
+          { text: "借[か]りに", blank: true },
+          { text: "芽衣[めい]さんのところへ", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Purpose before destination + ところ + へ",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は 辞書[じしょ]を" },
+          { text: "借[か]りに", blank: true },
+          { text: "芽衣[めい]さんの 家[いえ]に", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Purpose before destination + 家 + に",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は 辞書[じしょ]を" },
+          { text: "借[か]りに", blank: true },
+          { text: "芽衣[めい]さんの 家[いえ]へ", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Purpose before destination + 家 + へ",
       },
     ],
   },
@@ -2117,6 +4281,40 @@ export const questions: Question[] = [
     english: "I'm going to Riku's place to watch a movie.",
     hint: "Riku = 陸 (りく)",
     answers: [
+      {
+        segments: [
+          { text: "私[わたし]は 陸[りく]さんに 映画[えいが]を" },
+          { text: "見[み]に", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Person target; destination/place implied",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は 映画[えいが]を 陸[りく]さんに" },
+          { text: "見[み]に", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Object before person target; destination/place implied",
+      },
       {
         segments: [
           { text: "私[わたし]は 陸[りく]さんのうちに 映画[えいが]を" },
@@ -2132,6 +4330,7 @@ export const questions: Question[] = [
             },
           },
         ],
+        notes: "うち + に",
       },
       {
         segments: [
@@ -2148,7 +4347,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "へ instead of に",
+        notes: "うち + へ",
       },
       {
         segments: [
@@ -2165,7 +4364,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "ところ instead of うち",
+        notes: "ところ + に",
       },
       {
         segments: [
@@ -2186,7 +4385,143 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "映画[えいが]を" },
+          { text: "私[わたし]は 陸[りく]さんの 家[いえ]に 映画[えいが]を" },
+          { text: "見[み]に", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "家 + に",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は 陸[りく]さんの 家[いえ]へ 映画[えいが]を" },
+          { text: "見[み]に", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "家 + へ",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は 映画[えいが]を 陸[りく]さんのうちに" },
+          { text: "見[み]に", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Object before destination + うち + に",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は 映画[えいが]を 陸[りく]さんのうちへ" },
+          { text: "見[み]に", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Object before destination + うち + へ",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は 映画[えいが]を 陸[りく]さんのところに" },
+          { text: "見[み]に", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Object before destination + ところ + に",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は 映画[えいが]を 陸[りく]さんのところへ" },
+          { text: "見[み]に", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Object before destination + ところ + へ",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は 映画[えいが]を 陸[りく]さんの 家[いえ]に" },
+          { text: "見[み]に", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Object before destination + 家 + に",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は 映画[えいが]を 陸[りく]さんの 家[いえ]へ" },
+          { text: "見[み]に", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Object before destination + 家 + へ",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は 映画[えいが]を" },
           { text: "見[み]に", blank: true },
           { text: "陸[りく]さんのうちに", blank: true },
           {
@@ -2200,11 +4535,11 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Purpose before destination",
+        notes: "Purpose before destination + うち + に",
       },
       {
         segments: [
-          { text: "映画[えいが]を" },
+          { text: "私[わたし]は 映画[えいが]を" },
           { text: "見[み]に", blank: true },
           { text: "陸[りく]さんのうちへ", blank: true },
           {
@@ -2218,12 +4553,13 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Purpose before destination + へ",
+        notes: "Purpose before destination + うち + へ",
       },
       {
         segments: [
-          { text: "私[わたし]は 陸[りく]さんのいえに 映画[えいが]を" },
+          { text: "私[わたし]は 映画[えいが]を" },
           { text: "見[み]に", blank: true },
+          { text: "陸[りく]さんのところに", blank: true },
           {
             text: "行[い]く",
             blank: true,
@@ -2235,12 +4571,13 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "いえ instead of うち",
+        notes: "Purpose before destination + ところ + に",
       },
       {
         segments: [
-          { text: "私[わたし]は 陸[りく]さんのいえへ 映画[えいが]を" },
+          { text: "私[わたし]は 映画[えいが]を" },
           { text: "見[み]に", blank: true },
+          { text: "陸[りく]さんのところへ", blank: true },
           {
             text: "行[い]く",
             blank: true,
@@ -2252,30 +4589,50 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "いえ + へ",
+        notes: "Purpose before destination + ところ + へ",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は 映画[えいが]を" },
+          { text: "見[み]に", blank: true },
+          { text: "陸[りく]さんの 家[いえ]に", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Purpose before destination + 家 + に",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は 映画[えいが]を" },
+          { text: "見[み]に", blank: true },
+          { text: "陸[りく]さんの 家[いえ]へ", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Purpose before destination + 家 + へ",
       },
     ],
   },
   {
-    english: "Kaede goes to the bookstore to buy a souvenir.",
+    english: "Kaede went to the bookstore to buy a souvenir.",
     hint: "Kaede = 楓 (かえで)",
     answers: [
-      {
-        segments: [
-          { text: "楓[かえで]さんは 本屋[ほんや]へ お 土産[みやげ]を" },
-          { text: "買[か]いに", blank: true },
-          {
-            text: "行[い]く",
-            blank: true,
-            conjugation: {
-              pos: "Godan verb - Iku/Yuku special class",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-      },
       {
         segments: [
           { text: "楓[かえで]さんは 本屋[ほんや]に お 土産[みやげ]を" },
@@ -2287,17 +4644,16 @@ export const questions: Question[] = [
               pos: "Godan verb - Iku/Yuku special class",
               form: "normal",
               polarity: "positive",
-              tense: "non-past",
+              tense: "past",
             },
           },
         ],
-        notes: "に instead of へ",
+        notes: "本屋 + お土産 + に",
       },
       {
         segments: [
-          { text: "楓[かえで]さんは お 土産[みやげ]を" },
+          { text: "楓[かえで]さんは 本屋[ほんや]へ お 土産[みやげ]を" },
           { text: "買[か]いに", blank: true },
-          { text: "本屋[ほんや]へ", blank: true },
           {
             text: "行[い]く",
             blank: true,
@@ -2305,11 +4661,11 @@ export const questions: Question[] = [
               pos: "Godan verb - Iku/Yuku special class",
               form: "normal",
               polarity: "positive",
-              tense: "non-past",
+              tense: "past",
             },
           },
         ],
-        notes: "Purpose before destination",
+        notes: "本屋 + お土産 + へ",
       },
       {
         segments: [
@@ -2323,15 +4679,33 @@ export const questions: Question[] = [
               pos: "Godan verb - Iku/Yuku special class",
               form: "normal",
               polarity: "positive",
-              tense: "non-past",
+              tense: "past",
             },
           },
         ],
-        notes: "Purpose before destination + に",
+        notes: "Purpose before destination + 本屋 + お土産 + に",
       },
       {
         segments: [
-          { text: "楓[かえで]さんは 本屋[ほんや]へ 土産[みやげ]を" },
+          { text: "楓[かえで]さんは お 土産[みやげ]を" },
+          { text: "買[か]いに", blank: true },
+          { text: "本屋[ほんや]へ", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "Purpose before destination + 本屋 + お土産 + へ",
+      },
+      {
+        segments: [
+          { text: "楓[かえで]さんは 本屋[ほんや]さんに お 土産[みやげ]を" },
           { text: "買[か]いに", blank: true },
           {
             text: "行[い]く",
@@ -2340,11 +4714,64 @@ export const questions: Question[] = [
               pos: "Godan verb - Iku/Yuku special class",
               form: "normal",
               polarity: "positive",
-              tense: "non-past",
+              tense: "past",
             },
           },
         ],
-        notes: "土産 without honorific お",
+        notes: "本屋さん + お土産 + に",
+      },
+      {
+        segments: [
+          { text: "楓[かえで]さんは 本屋[ほんや]さんへ お 土産[みやげ]を" },
+          { text: "買[か]いに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "本屋さん + お土産 + へ",
+      },
+      {
+        segments: [
+          { text: "楓[かえで]さんは お 土産[みやげ]を" },
+          { text: "買[か]いに", blank: true },
+          { text: "本屋[ほんや]さんに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "Purpose before destination + 本屋さん + お土産 + に",
+      },
+      {
+        segments: [
+          { text: "楓[かえで]さんは お 土産[みやげ]を" },
+          { text: "買[か]いに", blank: true },
+          { text: "本屋[ほんや]さんへ", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "Purpose before destination + 本屋さん + お土産 + へ",
       },
       {
         segments: [
@@ -2357,15 +4784,15 @@ export const questions: Question[] = [
               pos: "Godan verb - Iku/Yuku special class",
               form: "normal",
               polarity: "positive",
-              tense: "non-past",
+              tense: "past",
             },
           },
         ],
-        notes: "土産 + に",
+        notes: "本屋 + 土産 + に",
       },
       {
         segments: [
-          { text: "楓[かえで]さんが 本屋[ほんや]へ お 土産[みやげ]を" },
+          { text: "楓[かえで]さんは 本屋[ほんや]へ 土産[みやげ]を" },
           { text: "買[か]いに", blank: true },
           {
             text: "行[い]く",
@@ -2374,15 +4801,51 @@ export const questions: Question[] = [
               pos: "Godan verb - Iku/Yuku special class",
               form: "normal",
               polarity: "positive",
-              tense: "non-past",
+              tense: "past",
             },
           },
         ],
-        notes: "が instead of は",
+        notes: "本屋 + 土産 + へ",
       },
       {
         segments: [
-          { text: "楓[かえで]さんが 本屋[ほんや]に お 土産[みやげ]を" },
+          { text: "楓[かえで]さんは 土産[みやげ]を" },
+          { text: "買[か]いに", blank: true },
+          { text: "本屋[ほんや]に", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "Purpose before destination + 本屋 + 土産 + に",
+      },
+      {
+        segments: [
+          { text: "楓[かえで]さんは 土産[みやげ]を" },
+          { text: "買[か]いに", blank: true },
+          { text: "本屋[ほんや]へ", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "Purpose before destination + 本屋 + 土産 + へ",
+      },
+      {
+        segments: [
+          { text: "楓[かえで]さんは 本屋[ほんや]さんに 土産[みやげ]を" },
           { text: "買[か]いに", blank: true },
           {
             text: "行[い]く",
@@ -2391,16 +4854,69 @@ export const questions: Question[] = [
               pos: "Godan verb - Iku/Yuku special class",
               form: "normal",
               polarity: "positive",
-              tense: "non-past",
+              tense: "past",
             },
           },
         ],
-        notes: "が + に",
+        notes: "本屋さん + 土産 + に",
+      },
+      {
+        segments: [
+          { text: "楓[かえで]さんは 本屋[ほんや]さんへ 土産[みやげ]を" },
+          { text: "買[か]いに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "本屋さん + 土産 + へ",
+      },
+      {
+        segments: [
+          { text: "楓[かえで]さんは 土産[みやげ]を" },
+          { text: "買[か]いに", blank: true },
+          { text: "本屋[ほんや]さんに", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "Purpose before destination + 本屋さん + 土産 + に",
+      },
+      {
+        segments: [
+          { text: "楓[かえで]さんは 土産[みやげ]を" },
+          { text: "買[か]いに", blank: true },
+          { text: "本屋[ほんや]さんへ", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "Purpose before destination + 本屋さん + 土産 + へ",
       },
     ],
   },
   {
-    english: "I'm going to the convenience store to buy some water.",
+    english: "I'm going to the convenience store to buy water.",
     answers: [
       {
         segments: [
@@ -2434,40 +4950,6 @@ export const questions: Question[] = [
           },
         ],
         notes: "へ instead of に",
-      },
-      {
-        segments: [
-          { text: "コンビニに 水[みず]を" },
-          { text: "買[か]いに", blank: true },
-          {
-            text: "行[い]く",
-            blank: true,
-            conjugation: {
-              pos: "Godan verb - Iku/Yuku special class",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "私は dropped",
-      },
-      {
-        segments: [
-          { text: "コンビニへ 水[みず]を" },
-          { text: "買[か]いに", blank: true },
-          {
-            text: "行[い]く",
-            blank: true,
-            conjugation: {
-              pos: "Godan verb - Iku/Yuku special class",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "私は dropped + へ",
       },
       {
         segments: [
