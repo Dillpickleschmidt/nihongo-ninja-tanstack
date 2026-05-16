@@ -259,6 +259,28 @@ function generatePronounVariations(answers: RichAnswer[]): RichAnswer[] {
             })
           }
         }
+
+        // Special case: casual sentence-initial "私は" → "私、"
+        if (
+          basePronoun === "私[わたし]" &&
+          i === 0 &&
+          answer.originalPoliteForm === false &&
+          answer.original.startsWith("私[わたし]は")
+        ) {
+          const newOriginal = answer.original.replace(
+            "私[わたし]は",
+            "私[わたし]、",
+          )
+          if (newOriginal !== answer.original && !resultMap.has(newOriginal)) {
+            resultMap.set(newOriginal, {
+              ...answer,
+              original: newOriginal,
+              plain: removeFurigana(newOriginal),
+              kana: convertToKana(newOriginal),
+              pronounType: "私[わたし]、",
+            })
+          }
+        }
       }
     }
 

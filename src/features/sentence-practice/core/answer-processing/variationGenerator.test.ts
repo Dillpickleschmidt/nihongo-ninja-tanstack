@@ -60,6 +60,29 @@ describe("generateCanonicalAnswers", () => {
     expect(result.some((a) => a.pronounType === "僕[ぼく]")).toBe(true)
   })
 
+  it("generates comma-topic 私 only for casual sentence-initial 私は", () => {
+    const segments: RichSegment[] = [
+      createRichSegment("私[わたし]は", false),
+      createRichSegment("公園[こうえん]に", false),
+      createRichSegment("行[い]く", false),
+    ]
+
+    const casual = generateCanonicalAnswers(segments, 0, false)
+    const polite = generateCanonicalAnswers(segments, 0, true)
+
+    expect(
+      casual.some(
+        (a) =>
+          stripSeparators(a.original) ===
+            "私[わたし]、公園[こうえん]に行[い]く" &&
+          a.pronounType === "私[わたし]、",
+      ),
+    ).toBe(true)
+    expect(
+      polite.some((a) => stripSeparators(a.original).startsWith("私[わたし]、")),
+    ).toBe(false)
+  })
+
   it("sets metadata correctly", () => {
     const segments: RichSegment[] = [createRichSegment("こんにちは", false)]
     const result = generateCanonicalAnswers(segments, 1, false)
