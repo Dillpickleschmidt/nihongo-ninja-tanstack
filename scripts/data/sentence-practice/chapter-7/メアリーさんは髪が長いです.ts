@@ -40,6 +40,42 @@ export const questions: Question[] = [
         ],
         notes: "とても instead of すごく",
       },
+      {
+        segments: [
+          { text: "陽介[ようすけ]さんのお 兄[にい]さんは" },
+          { text: "目[め]が", blank: true },
+          { text: "本当[ほんとう]に" },
+          {
+            text: "大[おお]きい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "本当に instead of すごく",
+      },
+      {
+        segments: [
+          { text: "陽介[ようすけ]さんのお 兄[にい]さんは" },
+          { text: "目[め]が", blank: true },
+          { text: "とっても" },
+          {
+            text: "大[おお]きい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "とっても instead of すごく",
+      },
     ],
   },
   {
@@ -77,6 +113,40 @@ export const questions: Question[] = [
           },
         ],
         notes: "Explicit 私の",
+      },
+      {
+        segments: [
+          { text: "姉[あね]は" },
+          { text: "髪[かみ]が", blank: true },
+          {
+            text: "短[みじか]め",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "短め instead of 短い",
+      },
+      {
+        segments: [
+          { text: "私[わたし]の 姉[あね]は" },
+          { text: "髪[かみ]が", blank: true },
+          {
+            text: "短[みじか]め",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Explicit 私の + 短め",
       },
     ],
   },
@@ -118,6 +188,114 @@ export const questions: Question[] = [
         ],
         notes: "とても instead of すごく",
       },
+      {
+        segments: [
+          { text: "弟[おとうと]は" },
+          { text: "口[くち]が", blank: true },
+          { text: "本当[ほんとう]に" },
+          {
+            text: "大[おお]きい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "本当に instead of すごく",
+      },
+      {
+        segments: [
+          { text: "弟[おとうと]は" },
+          { text: "口[くち]が", blank: true },
+          { text: "とっても" },
+          {
+            text: "大[おお]きい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "とっても instead of すごく",
+      },
+      {
+        segments: [
+          { text: "私[わたし]の 弟[おとうと]は" },
+          { text: "口[くち]が", blank: true },
+          { text: "すごく" },
+          {
+            text: "大[おお]きい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Explicit 私の",
+      },
+      {
+        segments: [
+          { text: "私[わたし]の 弟[おとうと]は" },
+          { text: "口[くち]が", blank: true },
+          { text: "とても" },
+          {
+            text: "大[おお]きい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Explicit 私の + とても",
+      },
+      {
+        segments: [
+          { text: "私[わたし]の 弟[おとうと]は" },
+          { text: "口[くち]が", blank: true },
+          { text: "本当[ほんとう]に" },
+          {
+            text: "大[おお]きい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Explicit 私の + 本当に",
+      },
+      {
+        segments: [
+          { text: "私[わたし]の 弟[おとうと]は" },
+          { text: "口[くち]が", blank: true },
+          { text: "とっても" },
+          {
+            text: "大[おお]きい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Explicit 私の + とっても",
+      },
     ],
   },
   {
@@ -139,6 +317,132 @@ export const questions: Question[] = [
             },
           },
         ],
+      },
+      {
+        segments: [
+          { text: "母[はは]は" },
+          { text: "目[め]が", blank: true },
+          { text: "とても" },
+          {
+            text: "きれい",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "とても instead of すごく",
+      },
+      {
+        segments: [
+          { text: "母[はは]は" },
+          { text: "目[め]が", blank: true },
+          { text: "本当[ほんとう]に" },
+          {
+            text: "きれい",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "本当に instead of すごく",
+      },
+      {
+        segments: [
+          { text: "母[はは]は" },
+          { text: "目[め]が", blank: true },
+          { text: "とっても" },
+          {
+            text: "きれい",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "とっても instead of すごく",
+      },
+      {
+        segments: [
+          { text: "私[わたし]の 母[はは]は" },
+          { text: "目[め]が", blank: true },
+          { text: "すごく" },
+          {
+            text: "きれい",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Explicit 私の",
+      },
+      {
+        segments: [
+          { text: "私[わたし]の 母[はは]は" },
+          { text: "目[め]が", blank: true },
+          { text: "とても" },
+          {
+            text: "きれい",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Explicit 私の + とても",
+      },
+      {
+        segments: [
+          { text: "私[わたし]の 母[はは]は" },
+          { text: "目[め]が", blank: true },
+          { text: "本当[ほんとう]に" },
+          {
+            text: "きれい",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Explicit 私の + 本当に",
+      },
+      {
+        segments: [
+          { text: "私[わたし]の 母[はは]は" },
+          { text: "目[め]が", blank: true },
+          { text: "とっても" },
+          {
+            text: "きれい",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Explicit 私の + とっても",
       },
     ],
   },
@@ -166,23 +470,6 @@ export const questions: Question[] = [
         segments: [
           { text: "兄[あに]は" },
           { text: "足[あし]が", blank: true },
-          {
-            text: "長[なが]い",
-            blank: true,
-            conjugation: {
-              pos: "I-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "Without すごく",
-      },
-      {
-        segments: [
-          { text: "兄[あに]は" },
-          { text: "足[あし]が", blank: true },
           { text: "とても" },
           {
             text: "長[なが]い",
@@ -197,10 +484,118 @@ export const questions: Question[] = [
         ],
         notes: "とても instead of すごく",
       },
+      {
+        segments: [
+          { text: "兄[あに]は" },
+          { text: "足[あし]が", blank: true },
+          { text: "本当[ほんとう]に" },
+          {
+            text: "長[なが]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "本当に instead of すごく",
+      },
+      {
+        segments: [
+          { text: "兄[あに]は" },
+          { text: "足[あし]が", blank: true },
+          { text: "とっても" },
+          {
+            text: "長[なが]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "とっても instead of すごく",
+      },
+      {
+        segments: [
+          { text: "私[わたし]の 兄[あに]は" },
+          { text: "足[あし]が", blank: true },
+          { text: "すごく" },
+          {
+            text: "長[なが]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Explicit 私の",
+      },
+      {
+        segments: [
+          { text: "私[わたし]の 兄[あに]は" },
+          { text: "足[あし]が", blank: true },
+          { text: "とても" },
+          {
+            text: "長[なが]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Explicit 私の + とても",
+      },
+      {
+        segments: [
+          { text: "私[わたし]の 兄[あに]は" },
+          { text: "足[あし]が", blank: true },
+          { text: "本当[ほんとう]に" },
+          {
+            text: "長[なが]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Explicit 私の + 本当に",
+      },
+      {
+        segments: [
+          { text: "私[わたし]の 兄[あに]は" },
+          { text: "足[あし]が", blank: true },
+          { text: "とっても" },
+          {
+            text: "長[なが]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Explicit 私の + とっても",
+      },
     ],
   },
   {
-    english: "My grandmother's hands are really cute.",
+    english: "My grandmother has really small hands.",
     answers: [
       {
         segments: [
@@ -208,7 +603,7 @@ export const questions: Question[] = [
           { text: "手[て]が", blank: true },
           { text: "すごく" },
           {
-            text: "かわいい",
+            text: "小[ちい]さい",
             blank: true,
             conjugation: {
               pos: "I-adjective",
@@ -223,8 +618,9 @@ export const questions: Question[] = [
         segments: [
           { text: "おばあさんは" },
           { text: "手[て]が", blank: true },
+          { text: "とても" },
           {
-            text: "かわいい",
+            text: "小[ちい]さい",
             blank: true,
             conjugation: {
               pos: "I-adjective",
@@ -234,7 +630,43 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Without すごく",
+        notes: "とても instead of すごく",
+      },
+      {
+        segments: [
+          { text: "おばあさんは" },
+          { text: "手[て]が", blank: true },
+          { text: "本当[ほんとう]に" },
+          {
+            text: "小[ちい]さい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "本当に instead of すごく",
+      },
+      {
+        segments: [
+          { text: "おばあさんは" },
+          { text: "手[て]が", blank: true },
+          { text: "とっても" },
+          {
+            text: "小[ちい]さい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "とっても instead of すごく",
       },
     ],
   },
@@ -244,10 +676,10 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "父[ちち]は" },
-          { text: "肩[かた]が", blank: true },
+          { text: "肩幅[かたはば]が", blank: true },
           { text: "すごく" },
           {
-            text: "大[おお]きい",
+            text: "広[ひろ]い",
             blank: true,
             conjugation: {
               pos: "I-adjective",
@@ -274,14 +706,15 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "肩幅が広い (shoulder width is broad) — more idiomatic for \"broad shoulders\"",
+        notes: "とても instead of すごく",
       },
       {
         segments: [
-          { text: "父[ちち]はすごく" },
-          { text: "肩[かた]が", blank: true },
+          { text: "父[ちち]は" },
+          { text: "肩幅[かたはば]が", blank: true },
+          { text: "本当[ほんとう]に" },
           {
-            text: "大[おお]きい",
+            text: "広[ひろ]い",
             blank: true,
             conjugation: {
               pos: "I-adjective",
@@ -291,7 +724,97 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "すごく moved before 肩が",
+        notes: "本当に instead of すごく",
+      },
+      {
+        segments: [
+          { text: "父[ちち]は" },
+          { text: "肩幅[かたはば]が", blank: true },
+          { text: "とっても" },
+          {
+            text: "広[ひろ]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "とっても instead of すごく",
+      },
+      {
+        segments: [
+          { text: "私[わたし]の 父[ちち]は" },
+          { text: "肩幅[かたはば]が", blank: true },
+          { text: "すごく" },
+          {
+            text: "広[ひろ]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Explicit 私の",
+      },
+      {
+        segments: [
+          { text: "私[わたし]の 父[ちち]は" },
+          { text: "肩幅[かたはば]が", blank: true },
+          { text: "とても" },
+          {
+            text: "広[ひろ]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Explicit 私の + とても",
+      },
+      {
+        segments: [
+          { text: "私[わたし]の 父[ちち]は" },
+          { text: "肩幅[かたはば]が", blank: true },
+          { text: "本当[ほんとう]に" },
+          {
+            text: "広[ひろ]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Explicit 私の + 本当に",
+      },
+      {
+        segments: [
+          { text: "私[わたし]の 父[ちち]は" },
+          { text: "肩幅[かたはば]が", blank: true },
+          { text: "とっても" },
+          {
+            text: "広[ひろ]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Explicit 私の + とっても",
       },
     ],
   },
@@ -317,6 +840,60 @@ export const questions: Question[] = [
       },
       {
         segments: [
+          { text: "妹[いもうと]は" },
+          { text: "耳[みみ]が", blank: true },
+          { text: "とても" },
+          {
+            text: "かわいい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "とても instead of すごく",
+      },
+      {
+        segments: [
+          { text: "妹[いもうと]は" },
+          { text: "耳[みみ]が", blank: true },
+          { text: "本当[ほんとう]に" },
+          {
+            text: "かわいい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "本当に instead of すごく",
+      },
+      {
+        segments: [
+          { text: "妹[いもうと]は" },
+          { text: "耳[みみ]が", blank: true },
+          { text: "とっても" },
+          {
+            text: "かわいい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "とっても instead of すごく",
+      },
+      {
+        segments: [
           { text: "私[わたし]の 妹[いもうと]は" },
           { text: "耳[みみ]が", blank: true },
           { text: "すごく" },
@@ -332,6 +909,60 @@ export const questions: Question[] = [
           },
         ],
         notes: "Explicit 私の",
+      },
+      {
+        segments: [
+          { text: "私[わたし]の 妹[いもうと]は" },
+          { text: "耳[みみ]が", blank: true },
+          { text: "とても" },
+          {
+            text: "かわいい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Explicit 私の + とても",
+      },
+      {
+        segments: [
+          { text: "私[わたし]の 妹[いもうと]は" },
+          { text: "耳[みみ]が", blank: true },
+          { text: "本当[ほんとう]に" },
+          {
+            text: "かわいい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Explicit 私の + 本当に",
+      },
+      {
+        segments: [
+          { text: "私[わたし]の 妹[いもうと]は" },
+          { text: "耳[みみ]が", blank: true },
+          { text: "とっても" },
+          {
+            text: "かわいい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Explicit 私の + とっても",
       },
     ],
   },
@@ -373,6 +1004,42 @@ export const questions: Question[] = [
         ],
         notes: "とても instead of すごく",
       },
+      {
+        segments: [
+          { text: "おばあさんは" },
+          { text: "指[ゆび]が", blank: true },
+          { text: "本当[ほんとう]に" },
+          {
+            text: "長[なが]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "本当に instead of すごく",
+      },
+      {
+        segments: [
+          { text: "おばあさんは" },
+          { text: "指[ゆび]が", blank: true },
+          { text: "とっても" },
+          {
+            text: "長[なが]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "とっても instead of すごく",
+      },
     ],
   },
   {
@@ -413,6 +1080,42 @@ export const questions: Question[] = [
         ],
         notes: "とても instead of すごく",
       },
+      {
+        segments: [
+          { text: "おじいさんは" },
+          { text: "鼻[はな]が", blank: true },
+          { text: "本当[ほんとう]に" },
+          {
+            text: "大[おお]きい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "本当に instead of すごく",
+      },
+      {
+        segments: [
+          { text: "おじいさんは" },
+          { text: "鼻[はな]が", blank: true },
+          { text: "とっても" },
+          {
+            text: "大[おお]きい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "とっても instead of すごく",
+      },
     ],
   },
   {
@@ -439,6 +1142,7 @@ export const questions: Question[] = [
         segments: [
           { text: "姉[あね]は" },
           { text: "指[ゆび]が", blank: true },
+          { text: "とても" },
           {
             text: "長[なが]い",
             blank: true,
@@ -450,7 +1154,43 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Without すごく",
+        notes: "とても instead of すごく",
+      },
+      {
+        segments: [
+          { text: "姉[あね]は" },
+          { text: "指[ゆび]が", blank: true },
+          { text: "本当[ほんとう]に" },
+          {
+            text: "長[なが]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "本当に instead of すごく",
+      },
+      {
+        segments: [
+          { text: "姉[あね]は" },
+          { text: "指[ゆび]が", blank: true },
+          { text: "とっても" },
+          {
+            text: "長[なが]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "とっても instead of すごく",
       },
       {
         segments: [
@@ -472,7 +1212,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "姉[あね]は" },
+          { text: "私[わたし]の 姉[あね]は" },
           { text: "指[ゆび]が", blank: true },
           { text: "とても" },
           {
@@ -486,12 +1226,13 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "とても instead of すごく",
+        notes: "Explicit 私の + とても",
       },
       {
         segments: [
           { text: "私[わたし]の 姉[あね]は" },
           { text: "指[ゆび]が", blank: true },
+          { text: "本当[ほんとう]に" },
           {
             text: "長[なが]い",
             blank: true,
@@ -503,7 +1244,25 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "私の + without すごく",
+        notes: "Explicit 私の + 本当に",
+      },
+      {
+        segments: [
+          { text: "私[わたし]の 姉[あね]は" },
+          { text: "指[ゆび]が", blank: true },
+          { text: "とっても" },
+          {
+            text: "長[なが]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Explicit 私の + とっても",
       },
     ],
   },
@@ -531,6 +1290,7 @@ export const questions: Question[] = [
         segments: [
           { text: "おじいさんは" },
           { text: "足[あし]が", blank: true },
+          { text: "とても" },
           {
             text: "短[みじか]い",
             blank: true,
@@ -542,7 +1302,43 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Without すごく",
+        notes: "とても instead of すごく",
+      },
+      {
+        segments: [
+          { text: "おじいさんは" },
+          { text: "足[あし]が", blank: true },
+          { text: "本当[ほんとう]に" },
+          {
+            text: "短[みじか]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "本当に instead of すごく",
+      },
+      {
+        segments: [
+          { text: "おじいさんは" },
+          { text: "足[あし]が", blank: true },
+          { text: "とっても" },
+          {
+            text: "短[みじか]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "とっても instead of すごく",
       },
     ],
   },
@@ -584,14 +1380,123 @@ export const questions: Question[] = [
         ],
         notes: "とても instead of すごく",
       },
+      {
+        segments: [
+          { text: "父[ちち]は" },
+          { text: "車[くるま]が", blank: true },
+          { text: "本当[ほんとう]に" },
+          {
+            text: "速[はや]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "本当に instead of すごく",
+      },
+      {
+        segments: [
+          { text: "父[ちち]は" },
+          { text: "車[くるま]が", blank: true },
+          { text: "とっても" },
+          {
+            text: "速[はや]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "とっても instead of すごく",
+      },
+      {
+        segments: [
+          { text: "私[わたし]の 父[ちち]は" },
+          { text: "車[くるま]が", blank: true },
+          { text: "すごく" },
+          {
+            text: "速[はや]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Explicit 私の",
+      },
+      {
+        segments: [
+          { text: "私[わたし]の 父[ちち]は" },
+          { text: "車[くるま]が", blank: true },
+          { text: "とても" },
+          {
+            text: "速[はや]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Explicit 私の + とても",
+      },
+      {
+        segments: [
+          { text: "私[わたし]の 父[ちち]は" },
+          { text: "車[くるま]が", blank: true },
+          { text: "本当[ほんとう]に" },
+          {
+            text: "速[はや]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Explicit 私の + 本当に",
+      },
+      {
+        segments: [
+          { text: "私[わたし]の 父[ちち]は" },
+          { text: "車[くるま]が", blank: true },
+          { text: "とっても" },
+          {
+            text: "速[はや]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Explicit 私の + とっても",
+      },
     ],
   },
   {
-    english: "My older sister has a really cute face.",
+    english: "The hamster has a really cute face.",
+    hint: "hamster = ハムスター",
     answers: [
       {
         segments: [
-          { text: "姉[あね]は" },
+          { text: "ハムスターは" },
           { text: "顔[かお]が", blank: true },
           { text: "すごく" },
           {
@@ -608,8 +1513,9 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "姉[あね]は" },
+          { text: "ハムスターは" },
           { text: "顔[かお]が", blank: true },
+          { text: "とても" },
           {
             text: "かわいい",
             blank: true,
@@ -621,7 +1527,43 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Without すごく",
+        notes: "とても instead of すごく",
+      },
+      {
+        segments: [
+          { text: "ハムスターは" },
+          { text: "顔[かお]が", blank: true },
+          { text: "本当[ほんとう]に" },
+          {
+            text: "かわいい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "本当に instead of すごく",
+      },
+      {
+        segments: [
+          { text: "ハムスターは" },
+          { text: "顔[かお]が", blank: true },
+          { text: "とっても" },
+          {
+            text: "かわいい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "とっても instead of すごく",
       },
     ],
   },
@@ -663,6 +1605,42 @@ export const questions: Question[] = [
         ],
         notes: "とても instead of すごく",
       },
+      {
+        segments: [
+          { text: "おじいさんは" },
+          { text: "耳[みみ]が", blank: true },
+          { text: "本当[ほんとう]に" },
+          {
+            text: "大[おお]きい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "本当に instead of すごく",
+      },
+      {
+        segments: [
+          { text: "おじいさんは" },
+          { text: "耳[みみ]が", blank: true },
+          { text: "とっても" },
+          {
+            text: "大[おお]きい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "とっても instead of すごく",
+      },
     ],
   },
   {
@@ -689,6 +1667,7 @@ export const questions: Question[] = [
         segments: [
           { text: "弟[おとうと]は" },
           { text: "指[ゆび]が", blank: true },
+          { text: "とても" },
           {
             text: "短[みじか]い",
             blank: true,
@@ -700,7 +1679,115 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Without すごく",
+        notes: "とても instead of すごく",
+      },
+      {
+        segments: [
+          { text: "弟[おとうと]は" },
+          { text: "指[ゆび]が", blank: true },
+          { text: "本当[ほんとう]に" },
+          {
+            text: "短[みじか]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "本当に instead of すごく",
+      },
+      {
+        segments: [
+          { text: "弟[おとうと]は" },
+          { text: "指[ゆび]が", blank: true },
+          { text: "とっても" },
+          {
+            text: "短[みじか]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "とっても instead of すごく",
+      },
+      {
+        segments: [
+          { text: "私[わたし]の 弟[おとうと]は" },
+          { text: "指[ゆび]が", blank: true },
+          { text: "すごく" },
+          {
+            text: "短[みじか]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Explicit 私の",
+      },
+      {
+        segments: [
+          { text: "私[わたし]の 弟[おとうと]は" },
+          { text: "指[ゆび]が", blank: true },
+          { text: "とても" },
+          {
+            text: "短[みじか]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Explicit 私の + とても",
+      },
+      {
+        segments: [
+          { text: "私[わたし]の 弟[おとうと]は" },
+          { text: "指[ゆび]が", blank: true },
+          { text: "本当[ほんとう]に" },
+          {
+            text: "短[みじか]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Explicit 私の + 本当に",
+      },
+      {
+        segments: [
+          { text: "私[わたし]の 弟[おとうと]は" },
+          { text: "指[ゆび]が", blank: true },
+          { text: "とっても" },
+          {
+            text: "短[みじか]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Explicit 私の + とっても",
       },
     ],
   },
@@ -742,10 +1829,118 @@ export const questions: Question[] = [
         ],
         notes: "とても instead of すごく",
       },
+      {
+        segments: [
+          { text: "母[はは]は" },
+          { text: "車[くるま]が", blank: true },
+          { text: "本当[ほんとう]に" },
+          {
+            text: "速[はや]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "本当に instead of すごく",
+      },
+      {
+        segments: [
+          { text: "母[はは]は" },
+          { text: "車[くるま]が", blank: true },
+          { text: "とっても" },
+          {
+            text: "速[はや]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "とっても instead of すごく",
+      },
+      {
+        segments: [
+          { text: "私[わたし]の 母[はは]は" },
+          { text: "車[くるま]が", blank: true },
+          { text: "すごく" },
+          {
+            text: "速[はや]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Explicit 私の",
+      },
+      {
+        segments: [
+          { text: "私[わたし]の 母[はは]は" },
+          { text: "車[くるま]が", blank: true },
+          { text: "とても" },
+          {
+            text: "速[はや]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Explicit 私の + とても",
+      },
+      {
+        segments: [
+          { text: "私[わたし]の 母[はは]は" },
+          { text: "車[くるま]が", blank: true },
+          { text: "本当[ほんとう]に" },
+          {
+            text: "速[はや]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Explicit 私の + 本当に",
+      },
+      {
+        segments: [
+          { text: "私[わたし]の 母[はは]は" },
+          { text: "車[くるま]が", blank: true },
+          { text: "とっても" },
+          {
+            text: "速[はや]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Explicit 私の + とっても",
+      },
     ],
   },
   {
-    english: "My grandfather's stomach is really big.",
+    english: "My grandfather has a really big belly.",
     answers: [
       {
         segments: [
@@ -781,6 +1976,42 @@ export const questions: Question[] = [
           },
         ],
         notes: "とても instead of すごく",
+      },
+      {
+        segments: [
+          { text: "おじいさんは" },
+          { text: "おなかが", blank: true },
+          { text: "本当[ほんとう]に" },
+          {
+            text: "大[おお]きい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "本当に instead of すごく",
+      },
+      {
+        segments: [
+          { text: "おじいさんは" },
+          { text: "おなかが", blank: true },
+          { text: "とっても" },
+          {
+            text: "大[おお]きい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "とっても instead of すごく",
       },
     ],
   },
@@ -808,6 +2039,7 @@ export const questions: Question[] = [
         segments: [
           { text: "妹[いもうと]は" },
           { text: "髪[かみ]が", blank: true },
+          { text: "とても" },
           {
             text: "きれい",
             blank: true,
@@ -819,7 +2051,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Without すごく",
+        notes: "とても instead of すごく",
       },
       {
         segments: [
@@ -843,6 +2075,42 @@ export const questions: Question[] = [
         segments: [
           { text: "妹[いもうと]は" },
           { text: "髪[かみ]が", blank: true },
+          { text: "とっても" },
+          {
+            text: "きれい",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "とっても instead of すごく",
+      },
+      {
+        segments: [
+          { text: "私[わたし]の 妹[いもうと]は" },
+          { text: "髪[かみ]が", blank: true },
+          { text: "すごく" },
+          {
+            text: "きれい",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Explicit 私の",
+      },
+      {
+        segments: [
+          { text: "私[わたし]の 妹[いもうと]は" },
+          { text: "髪[かみ]が", blank: true },
           { text: "とても" },
           {
             text: "きれい",
@@ -855,7 +2123,43 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "とても instead of すごく",
+        notes: "Explicit 私の + とても",
+      },
+      {
+        segments: [
+          { text: "私[わたし]の 妹[いもうと]は" },
+          { text: "髪[かみ]が", blank: true },
+          { text: "本当[ほんとう]に" },
+          {
+            text: "きれい",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Explicit 私の + 本当に",
+      },
+      {
+        segments: [
+          { text: "私[わたし]の 妹[いもうと]は" },
+          { text: "髪[かみ]が", blank: true },
+          { text: "とっても" },
+          {
+            text: "きれい",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Explicit 私の + とっても",
       },
     ],
   },
@@ -896,6 +2200,114 @@ export const questions: Question[] = [
           },
         ],
         notes: "とても instead of すごく",
+      },
+      {
+        segments: [
+          { text: "父[ちち]は" },
+          { text: "手[て]が", blank: true },
+          { text: "本当[ほんとう]に" },
+          {
+            text: "大[おお]きい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "本当に instead of すごく",
+      },
+      {
+        segments: [
+          { text: "父[ちち]は" },
+          { text: "手[て]が", blank: true },
+          { text: "とっても" },
+          {
+            text: "大[おお]きい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "とっても instead of すごく",
+      },
+      {
+        segments: [
+          { text: "私[わたし]の 父[ちち]は" },
+          { text: "手[て]が", blank: true },
+          { text: "すごく" },
+          {
+            text: "大[おお]きい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Explicit 私の",
+      },
+      {
+        segments: [
+          { text: "私[わたし]の 父[ちち]は" },
+          { text: "手[て]が", blank: true },
+          { text: "とても" },
+          {
+            text: "大[おお]きい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Explicit 私の + とても",
+      },
+      {
+        segments: [
+          { text: "私[わたし]の 父[ちち]は" },
+          { text: "手[て]が", blank: true },
+          { text: "本当[ほんとう]に" },
+          {
+            text: "大[おお]きい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Explicit 私の + 本当に",
+      },
+      {
+        segments: [
+          { text: "私[わたし]の 父[ちち]は" },
+          { text: "手[て]が", blank: true },
+          { text: "とっても" },
+          {
+            text: "大[おお]きい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Explicit 私の + とっても",
       },
     ],
   },
