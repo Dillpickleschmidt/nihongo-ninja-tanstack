@@ -48,6 +48,17 @@ export const questions: Question[] = [
         register: "casual",
         notes: "に instead of で, without final です",
       },
+      {
+        segments: [
+          { text: "公園[こうえん]のベンチの 上[うえ]で" },
+          { text: " 寝[ね]て", blank: true },
+          { text: "いる", blank: true },
+          { text: "犬[いぬ]", blank: true },
+          { text: "は 私[わたし]の" },
+          { text: "です" },
+        ],
+        notes: "ベンチの上で (on top of the bench)",
+      },
     ],
   },
   {
@@ -107,6 +118,42 @@ export const questions: Question[] = [
         ],
         notes: "本当に instead of すごく",
       },
+      {
+        segments: [
+          { text: "田中[たなか]さんが 飲[の]んで", blank: true },
+          { text: "いる", blank: true },
+          { text: "コーヒーは とっても" },
+          {
+            text: " 美味[おい]しい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "とっても instead of すごく",
+      },
+      {
+        segments: [
+          { text: "田中[たなか]さんの 飲[の]んで", blank: true },
+          { text: "いる", blank: true },
+          { text: "コーヒーは すごく" },
+          {
+            text: " 美味[おい]しい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "の instead of が in relative clause",
+      },
     ],
   },
   {
@@ -116,7 +163,7 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "先週[せんしゅう]" },
-          { text: "小林[こばやし]さんが 書[か]いた 手紙[てがみ]", blank: true },
+          { text: "小林[こばやし]さんからもらった 手紙[てがみ]", blank: true },
           { text: "は すごく" },
           {
             text: " 短[みじか]い",
@@ -129,29 +176,11 @@ export const questions: Question[] = [
             },
           },
         ],
-      },
-      {
-        segments: [
-          { text: "小林[こばやし]さんが 先週[せんしゅう]" },
-          { text: " 書[か]いた 手紙[てがみ]", blank: true },
-          { text: "は すごく" },
-          {
-            text: " 短[みじか]い",
-            blank: true,
-            conjugation: {
-              pos: "I-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "past",
-            },
-          },
-        ],
-        notes: "小林さん at start before 先週",
       },
       {
         segments: [
           { text: "先週[せんしゅう]" },
-          { text: "小林[こばやし]さんが 書[か]いた 手紙[てがみ]", blank: true },
+          { text: "小林[こばやし]さんからもらった 手紙[てがみ]", blank: true },
           { text: "は とても" },
           {
             text: " 短[みじか]い",
@@ -170,6 +199,41 @@ export const questions: Question[] = [
         segments: [
           { text: "先週[せんしゅう]" },
           { text: "小林[こばやし]さんからもらった 手紙[てがみ]", blank: true },
+          { text: "は 本当[ほんとう]に" },
+          {
+            text: " 短[みじか]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "本当に instead of すごく",
+      },
+      {
+        segments: [
+          { text: "先週[せんしゅう]" },
+          { text: "小林[こばやし]さんからもらった 手紙[てがみ]", blank: true },
+          { text: "は とっても" },
+          {
+            text: " 短[みじか]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "とっても instead of すごく",
+      },
+      {
+        segments: [
+          { text: "小林[こばやし]さんから 先週[せんしゅう]もらった 手紙[てがみ]", blank: true },
           { text: "は すごく" },
           {
             text: " 短[みじか]い",
@@ -182,7 +246,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Using もらった (got) instead of 書いた (wrote)",
+        notes: "小林さんから before 先週",
       },
     ],
   },
@@ -221,6 +285,28 @@ export const questions: Question[] = [
         ],
         notes: "Dropping 男の from 男の人",
       },
+      {
+        segments: [
+          { text: "あそこの" },
+          { text: " 赤[あか]い 帽子[ぼうし]をかぶって", blank: true },
+          { text: "いる", blank: true },
+          { text: "男[おとこ]の 人[ひと]", blank: true },
+          { text: "は 私[わたし]の 父[ちち]" },
+          { text: "です" },
+        ],
+        notes: "あそこの (over there)",
+      },
+      {
+        segments: [
+          { text: "向[む]こうで" },
+          { text: " 赤[あか]い 帽子[ぼうし]をかぶって", blank: true },
+          { text: "いる", blank: true },
+          { text: "男[おとこ]の 人[ひと]", blank: true },
+          { text: "は 私[わたし]の 父[ちち]" },
+          { text: "です" },
+        ],
+        notes: "向こうで (over there)",
+      },
     ],
   },
   {
@@ -231,16 +317,18 @@ export const questions: Question[] = [
         segments: [
           { text: "図書館[としょかん]で" },
           { text: " 借[か]りた 本[ほん]", blank: true },
-          { text: "は すごく 面白[おもしろ]い 話[はなし]が" },
-          { text: "ある", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "は 話[はなし]が すごく" },
+          { text: "面白[おもしろ]い", blank: true },
+          { text: "です" },
         ],
       },
       {
         segments: [
           { text: "図書館[としょかん]から" },
           { text: " 借[か]りた 本[ほん]", blank: true },
-          { text: "は すごく 面白[おもしろ]い 話[はなし]が" },
-          { text: "ある", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "は 話[はなし]が すごく" },
+          { text: "面白[おもしろ]い", blank: true },
+          { text: "です" },
         ],
         notes: "から instead of で",
       },
@@ -248,19 +336,51 @@ export const questions: Question[] = [
         segments: [
           { text: "図書館[としょかん]で" },
           { text: " 借[か]りた 本[ほん]", blank: true },
-          { text: "は とても 面白[おもしろ]い 話[はなし]が" },
-          { text: "ある", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "は 話[はなし]が とても" },
+          { text: "面白[おもしろ]い", blank: true },
+          { text: "です" },
         ],
         notes: "とても instead of すごく",
       },
       {
         segments: [
-          { text: "図書館[としょかん]から" },
+          { text: "図書館[としょかん]で" },
           { text: " 借[か]りた 本[ほん]", blank: true },
-          { text: "は とても 面白[おもしろ]い 話[はなし]が" },
-          { text: "ある", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "normal", polarity: "positive", tense: "non-past" } },
+          { text: "は 話[はなし]が 本当[ほんとう]に" },
+          { text: "面白[おもしろ]い", blank: true },
+          { text: "です" },
         ],
-        notes: "から + とても",
+        notes: "本当に instead of すごく",
+      },
+      {
+        segments: [
+          { text: "図書館[としょかん]で" },
+          { text: " 借[か]りた 本[ほん]", blank: true },
+          { text: "は 話[はなし]が とっても" },
+          { text: "面白[おもしろ]い", blank: true },
+          { text: "です" },
+        ],
+        notes: "とっても instead of すごく",
+      },
+      {
+        segments: [
+          { text: "図書館[としょかん]で" },
+          { text: " 借[か]りた 本[ほん]", blank: true },
+          { text: "は ストーリーが すごく" },
+          { text: "面白[おもしろ]い", blank: true },
+          { text: "です" },
+        ],
+        notes: "ストーリー instead of 話",
+      },
+      {
+        segments: [
+          { text: "図書館[としょかん]で" },
+          { text: " 借[か]りた 本[ほん]", blank: true },
+          { text: "は 内容[ないよう]が すごく" },
+          { text: "面白[おもしろ]い", blank: true },
+          { text: "です" },
+        ],
+        notes: "内容 (content) instead of 話",
       },
     ],
   },
@@ -298,23 +418,23 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "あの" },
+          { text: "向[む]こうで" },
           { text: " 電話[でんわ]して", blank: true },
           { text: "いる", blank: true },
           { text: " 女[おんな]の 人[ひと]は 私[わたし]の 姉[あね]" },
           { text: "です" },
         ],
-        notes: "あの instead of あそこで",
+        notes: "向こうで instead of あそこで",
       },
       {
         segments: [
-          { text: "あの" },
+          { text: "向[む]こうで" },
           { text: " 電話[でんわ]をして", blank: true },
           { text: "いる", blank: true },
           { text: " 女[おんな]の 人[ひと]は 私[わたし]の 姉[あね]" },
           { text: "です" },
         ],
-        notes: "あの + 電話をしている",
+        notes: "向こうで + 電話をしている",
       },
       {
         segments: [
@@ -335,7 +455,7 @@ export const questions: Question[] = [
         segments: [
           { text: "やるのを" },
           { text: " 忘[わす]れた 宿題[しゅくだい]", blank: true },
-          { text: "は 明日[あした]" },
+          { text: "は 明日[あした]まで" },
           { text: "です" },
         ],
       },
@@ -343,7 +463,7 @@ export const questions: Question[] = [
         segments: [
           { text: "するのを" },
           { text: " 忘[わす]れた 宿題[しゅくだい]", blank: true },
-          { text: "は 明日[あした]" },
+          { text: "は 明日[あした]まで" },
           { text: "です" },
         ],
         notes: "する instead of やる",
@@ -351,7 +471,7 @@ export const questions: Question[] = [
       {
         segments: [
           { text: " 忘[わす]れた 宿題[しゅくだい]", blank: true },
-          { text: "は 明日[あした]" },
+          { text: "は 明日[あした]まで" },
           { text: "です" },
         ],
         notes: "Shorter: just 忘れた宿題",
@@ -362,10 +482,37 @@ export const questions: Question[] = [
           { text: " 忘[わす]れて", blank: true },
           { text: "いた", blank: true },
           { text: "宿題[しゅくだい]", blank: true },
-          { text: "が 明日[あした]まで" },
+          { text: "は 明日[あした]まで" },
           { text: "です" },
         ],
-        notes: "明日まで means due by tomorrow",
+        notes: "忘れていた + 明日まで",
+      },
+      {
+        segments: [
+          { text: "やるのを" },
+          { text: " 忘[わす]れた 宿題[しゅくだい]", blank: true },
+          { text: "の 提出[ていしゅつ]は 明日[あした]" },
+          { text: "です" },
+        ],
+        notes: "提出は明日です",
+      },
+      {
+        segments: [
+          { text: "するのを" },
+          { text: " 忘[わす]れた 宿題[しゅくだい]", blank: true },
+          { text: "の 提出[ていしゅつ]は 明日[あした]" },
+          { text: "です" },
+        ],
+        notes: "する + 提出は明日です",
+      },
+      {
+        segments: [
+          { text: "やるのを" },
+          { text: " 忘[わす]れた 宿題[しゅくだい]", blank: true },
+          { text: "は 明日[あした] 提出[ていしゅつ]" },
+          { text: "です" },
+        ],
+        notes: "明日提出です",
       },
     ],
   },
@@ -402,6 +549,36 @@ export const questions: Question[] = [
         ],
         notes: "とても instead of すごく",
       },
+      {
+        segments: [
+          { text: "楓[かえで]さんが 今[いま] 歌[うた]って", blank: true },
+          { text: "いる", blank: true },
+          { text: "歌[うた]", blank: true },
+          { text: "は 本当[ほんとう]に 人気[にんき]が" },
+          { text: "ある", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "normal", polarity: "positive", tense: "non-past" } },
+        ],
+        notes: "本当に instead of すごく",
+      },
+      {
+        segments: [
+          { text: "楓[かえで]さんが 今[いま] 歌[うた]って", blank: true },
+          { text: "いる", blank: true },
+          { text: "歌[うた]", blank: true },
+          { text: "は とっても 人気[にんき]が" },
+          { text: "ある", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "normal", polarity: "positive", tense: "non-past" } },
+        ],
+        notes: "とっても instead of すごく",
+      },
+      {
+        segments: [
+          { text: "楓[かえで]さんが 今[いま] 歌[うた]って", blank: true },
+          { text: "いる", blank: true },
+          { text: "曲[きょく]", blank: true },
+          { text: "は すごく 人気[にんき]が" },
+          { text: "ある", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "normal", polarity: "positive", tense: "non-past" } },
+        ],
+        notes: "曲 instead of 歌",
+      },
 
     ],
   },
@@ -412,7 +589,7 @@ export const questions: Question[] = [
         segments: [
           { text: "昨日[きのう]" },
           { text: " 行[い]ったカフェ", blank: true },
-          { text: "は すごく よい 音楽[おんがく]が" },
+          { text: "は すごく いい 音楽[おんがく]が" },
           { text: "ある", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "normal", polarity: "positive", tense: "past" } },
         ],
       },
@@ -420,7 +597,7 @@ export const questions: Question[] = [
         segments: [
           { text: "昨日[きのう]" },
           { text: " 行[い]ったカフェ", blank: true },
-          { text: "には すごく よい 音楽[おんがく]が" },
+          { text: "には すごく いい 音楽[おんがく]が" },
           { text: "ある", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "normal", polarity: "positive", tense: "past" } },
         ],
         notes: "には instead of は",
@@ -428,27 +605,18 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "昨日[きのう]" },
-          { text: " 行[い]った 店[みせ]", blank: true },
-          { text: "は すごく よい 音楽[おんがく]が" },
-          { text: "ある", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "normal", polarity: "positive", tense: "past" } },
+          { text: " 行[い]ったカフェ", blank: true },
+          { text: "は 音楽[おんがく]が すごく" },
+          { text: " よい", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "past" } },
         ],
-        notes: "店 instead of カフェ",
-      },
-      {
-        segments: [
-          { text: "昨日[きのう]" },
-          { text: " 行[い]った 店[みせ]", blank: true },
-          { text: "には すごく よい 音楽[おんがく]が" },
-          { text: "ある", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "normal", polarity: "positive", tense: "past" } },
-        ],
-        notes: "店 + には",
+        notes: "音楽がよかった",
       },
       {
         segments: [
           { text: "昨日[きのう]" },
           { text: " 行[い]ったカフェ", blank: true },
-          { text: "は とても よい 音楽[おんがく]が" },
-          { text: "ある", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "normal", polarity: "positive", tense: "past" } },
+          { text: "は 音楽[おんがく]が とても" },
+          { text: " よい", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "past" } },
         ],
         notes: "とても instead of すごく",
       },
@@ -456,10 +624,44 @@ export const questions: Question[] = [
         segments: [
           { text: "昨日[きのう]" },
           { text: " 行[い]ったカフェ", blank: true },
-          { text: "は 音楽[おんがく]がとても" },
+          { text: "は 音楽[おんがく]が 本当[ほんとう]に" },
           { text: " よい", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "past" } },
         ],
-        notes: "音楽がよかった instead of よい音楽があった",
+        notes: "本当に instead of すごく",
+      },
+      {
+        segments: [
+          { text: "昨日[きのう]" },
+          { text: " 行[い]ったカフェ", blank: true },
+          { text: "は 音楽[おんがく]が とっても" },
+          { text: " よい", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "past" } },
+        ],
+        notes: "とっても instead of すごく",
+      },
+      {
+        segments: [
+          { text: "昨日[きのう]" },
+          { text: " 行[い]ったカフェ", blank: true },
+          { text: "では すごく いい 音楽[おんがく]が 流[なが]れていました", blank: true },
+        ],
+        notes: "いい音楽が流れていました",
+      },
+      {
+        segments: [
+          { text: "昨日[きのう]" },
+          { text: " 行[い]ったカフェ", blank: true },
+          { text: "では すごく いい 音楽[おんがく]が かかっていました", blank: true },
+        ],
+        notes: "いい音楽がかかっていました",
+      },
+      {
+        segments: [
+          { text: "昨日[きのう]" },
+          { text: " 行[い]った 店[みせ]", blank: true },
+          { text: "は 音楽[おんがく]が すごく" },
+          { text: " よい", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "past" } },
+        ],
+        notes: "店 instead of カフェ",
       },
     ],
   },
@@ -509,6 +711,39 @@ export const questions: Question[] = [
         register: "polite",
         notes: "に instead of で, with じゃないです",
       },
+      {
+        segments: [
+          { text: "私[わたし]のかばんの 上[うえ]で" },
+          { text: " 寝[ね]て", blank: true },
+          { text: "いる", blank: true },
+          { text: "猫[ねこ]", blank: true },
+          { text: "は 私[わたし]のじゃないです" },
+        ],
+        register: "polite",
+        notes: "Explicit 私のかばん",
+      },
+      {
+        segments: [
+          { text: "私[わたし]のかばんの 上[うえ]に" },
+          { text: " 寝[ね]て", blank: true },
+          { text: "いる", blank: true },
+          { text: "猫[ねこ]", blank: true },
+          { text: "は 私[わたし]のじゃないです" },
+        ],
+        register: "polite",
+        notes: "Explicit 私のかばん + に",
+      },
+      {
+        segments: [
+          { text: "私[わたし]のかばんの 上[うえ]で" },
+          { text: " 寝[ね]て", blank: true },
+          { text: "いる", blank: true },
+          { text: "猫[ねこ]", blank: true },
+          { text: "は 私[わたし]のじゃない" },
+        ],
+        register: "casual",
+        notes: "Explicit 私のかばん, casual",
+      },
     ],
   },
   {
@@ -532,6 +767,63 @@ export const questions: Question[] = [
           { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "past" } },
         ],
         notes: "混んでいた directly describes being crowded",
+      },
+      {
+        segments: [
+          { text: "今朝[けさ]" },
+          { text: " 乗[の]った 電車[でんしゃ]", blank: true },
+          { text: "は とても 人[ひと]が" },
+          { text: " 多[おお]い", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "past" } },
+        ],
+        notes: "とても + 人が多かった",
+      },
+      {
+        segments: [
+          { text: "今朝[けさ]" },
+          { text: " 乗[の]った 電車[でんしゃ]", blank: true },
+          { text: "は 本当[ほんとう]に 人[ひと]が" },
+          { text: " 多[おお]い", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "past" } },
+        ],
+        notes: "本当に + 人が多かった",
+      },
+      {
+        segments: [
+          { text: "今朝[けさ]" },
+          { text: " 乗[の]った 電車[でんしゃ]", blank: true },
+          { text: "は とっても 人[ひと]が" },
+          { text: " 多[おお]い", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "past" } },
+        ],
+        notes: "とっても + 人が多かった",
+      },
+      {
+        segments: [
+          { text: "今朝[けさ]" },
+          { text: " 乗[の]った 電車[でんしゃ]", blank: true },
+          { text: "は とても" },
+          { text: "混[こ]んで", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "past" } },
+        ],
+        notes: "とても + 混んでいた",
+      },
+      {
+        segments: [
+          { text: "今朝[けさ]" },
+          { text: " 乗[の]った 電車[でんしゃ]", blank: true },
+          { text: "は 本当[ほんとう]に" },
+          { text: "混[こ]んで", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "past" } },
+        ],
+        notes: "本当に + 混んでいた",
+      },
+      {
+        segments: [
+          { text: "今朝[けさ]" },
+          { text: " 乗[の]った 電車[でんしゃ]", blank: true },
+          { text: "は とっても" },
+          { text: "混[こ]んで", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "past" } },
+        ],
+        notes: "とっても + 混んでいた",
       },
     ],
   },
@@ -572,6 +864,39 @@ export const questions: Question[] = [
         ],
         notes: "人 instead of 学生",
       },
+      {
+        segments: [
+          { text: "図書館[としょかん]で 今[いま]" },
+          { text: " 勉強[べんきょう]して", blank: true },
+          { text: "いる", blank: true },
+          { text: "学生[がくせい]", blank: true },
+          { text: "は 俊介[しゅんすけ]さんの 弟[おとうと]" },
+          { text: "です" },
+        ],
+        notes: "図書館で今 word order",
+      },
+      {
+        segments: [
+          { text: "図書館[としょかん]で 今[いま]" },
+          { text: " 勉強[べんきょう]して", blank: true },
+          { text: "いる", blank: true },
+          { text: "大学生[だいがくせい]", blank: true },
+          { text: "は 俊介[しゅんすけ]さんの 弟[おとうと]" },
+          { text: "です" },
+        ],
+        notes: "図書館で今 + 大学生",
+      },
+      {
+        segments: [
+          { text: "図書館[としょかん]で 今[いま]" },
+          { text: " 勉強[べんきょう]して", blank: true },
+          { text: "いる", blank: true },
+          { text: "人[ひと]", blank: true },
+          { text: "は 俊介[しゅんすけ]さんの 弟[おとうと]" },
+          { text: "です" },
+        ],
+        notes: "図書館で今 + 人",
+      },
     ],
   },
   {
@@ -594,6 +919,55 @@ export const questions: Question[] = [
           { text: "ある", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "normal", polarity: "positive", tense: "past" } },
         ],
         notes: "には instead of は",
+      },
+      {
+        segments: [
+          { text: "藤井[ふじい]さんから" },
+          { text: " もらったメール", blank: true },
+          { text: "には すごく 長[なが]い 話[はなし]が 書[か]いてありました", blank: true },
+        ],
+        notes: "話が書いてありました",
+      },
+      {
+        segments: [
+          { text: "藤井[ふじい]さんから" },
+          { text: " もらったメール", blank: true },
+          { text: "には とても 長[なが]い 話[はなし]が 書[か]いてありました", blank: true },
+        ],
+        notes: "とても + 話が書いてありました",
+      },
+      {
+        segments: [
+          { text: "藤井[ふじい]さんから" },
+          { text: " もらったメール", blank: true },
+          { text: "には 本当[ほんとう]に 長[なが]い 話[はなし]が 書[か]いてありました", blank: true },
+        ],
+        notes: "本当に + 話が書いてありました",
+      },
+      {
+        segments: [
+          { text: "藤井[ふじい]さんから" },
+          { text: " もらったメール", blank: true },
+          { text: "には とっても 長[なが]い 話[はなし]が 書[か]いてありました", blank: true },
+        ],
+        notes: "とっても + 話が書いてありました",
+      },
+      {
+        segments: [
+          { text: "藤井[ふじい]さんから" },
+          { text: " もらったメール", blank: true },
+          { text: "は 内容[ないよう]が すごく" },
+          { text: "長[なが]い", blank: true, conjugation: { pos: "I-adjective", form: "normal", polarity: "positive", tense: "past" } },
+        ],
+        notes: "内容が長かった",
+      },
+      {
+        segments: [
+          { text: "藤井[ふじい]さんから" },
+          { text: " 来[き]たメール", blank: true },
+          { text: "には すごく 長[なが]い 話[はなし]が 書[か]いてありました", blank: true },
+        ],
+        notes: "来たメール instead of もらったメール",
       },
 
     ],
@@ -644,6 +1018,50 @@ export const questions: Question[] = [
         ],
         notes: "とても instead of すごく",
       },
+      {
+        segments: [
+          { text: "駅[えき]の 近[ちか]くに、" },
+          { text: " 草[くさ]の 上[うえ]で 寝[ね]て", blank: true },
+          { text: "いる", blank: true },
+          { text: "本当[ほんとう]に 大[おお]きい 犬[いぬ]がいる 公園[こうえん]", blank: true },
+          { text: "が" },
+          { text: "ある", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "normal", polarity: "positive", tense: "non-past" } },
+        ],
+        notes: "本当に instead of すごく",
+      },
+      {
+        segments: [
+          { text: "駅[えき]の 近[ちか]くに、" },
+          { text: " 草[くさ]の 上[うえ]で 寝[ね]て", blank: true },
+          { text: "いる", blank: true },
+          { text: "とっても 大[おお]きい 犬[いぬ]がいる 公園[こうえん]", blank: true },
+          { text: "が" },
+          { text: "ある", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "normal", polarity: "positive", tense: "non-past" } },
+        ],
+        notes: "とっても instead of すごく",
+      },
+      {
+        segments: [
+          { text: "駅[えき]の 近[ちか]くの 公園[こうえん]には、" },
+          { text: " 芝生[しばふ]の 上[うえ]で 寝[ね]て", blank: true },
+          { text: "いる", blank: true },
+          { text: "すごく 大[おお]きい 犬[いぬ]", blank: true },
+          { text: "が" },
+          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+        ],
+        notes: "芝生の上",
+      },
+      {
+        segments: [
+          { text: "駅[えき]の 近[ちか]くの 公園[こうえん]に、" },
+          { text: " 草[くさ]の 上[うえ]で 寝[ね]て", blank: true },
+          { text: "いる", blank: true },
+          { text: "すごく 大[おお]きい 犬[いぬ]", blank: true },
+          { text: "が" },
+          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "non-past" } },
+        ],
+        notes: "公園に without は",
+      },
     ],
   },
   {
@@ -675,6 +1093,24 @@ export const questions: Question[] = [
         ],
         notes: "が presents the photo as the thing located on the desk",
       },
+      {
+        segments: [
+          { text: "去年[きょねん]の 夏[なつ]、" },
+          { text: " 海[うみ]で 撮[と]った 写真[しゃしん]", blank: true },
+          { text: "が 私[わたし]の 机[つくえ]の 上[うえ]に" },
+          { text: "ある", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "normal", polarity: "positive", tense: "non-past" } },
+        ],
+        notes: "が + explicit 私の机",
+      },
+      {
+        segments: [
+          { text: "去年[きょねん]の 夏[なつ]に" },
+          { text: " 海[うみ]で 撮[と]った 写真[しゃしん]", blank: true },
+          { text: "が 私[わたし]の 机[つくえ]の 上[うえ]に" },
+          { text: "ある", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "normal", polarity: "positive", tense: "non-past" } },
+        ],
+        notes: "に + が + explicit 私の机",
+      },
     ],
   },
   {
@@ -704,6 +1140,52 @@ export const questions: Question[] = [
         ],
         notes: "Reversed topic",
       },
+      {
+        segments: [
+          { text: " 大[おお]きな 赤[あか]いドアのある 店[みせ]は" },
+          { text: "瑞希[みずき]さんのお 姉[ねえ]さんが 働[はたら]いて", blank: true },
+          { text: "いる", blank: true },
+          { text: "店[みせ]", blank: true },
+          { text: "です" },
+        ],
+        notes: "大きな instead of 大きい",
+      },
+      {
+        segments: [
+          { text: "瑞希[みずき]さんのお 姉[ねえ]さんが 働[はたら]いて" },
+          { text: "いる" },
+          { text: "店[みせ]は" },
+          {
+            text: " 大[おお]きな 赤[あか]いドアのある 店[みせ]",
+            blank: true,
+          },
+          { text: "です" },
+        ],
+        notes: "Reversed topic + 大きな",
+      },
+      {
+        segments: [
+          { text: " 大[おお]きな 赤[あか]いドアがある 店[みせ]は" },
+          { text: "瑞希[みずき]さんのお 姉[ねえ]さんが 働[はたら]いて", blank: true },
+          { text: "いる", blank: true },
+          { text: "店[みせ]", blank: true },
+          { text: "です" },
+        ],
+        notes: "ドアがある instead of ドアのある",
+      },
+      {
+        segments: [
+          { text: "瑞希[みずき]さんのお 姉[ねえ]さんが 働[はたら]いて" },
+          { text: "いる" },
+          { text: "店[みせ]は" },
+          {
+            text: " 大[おお]きな 赤[あか]いドアがある 店[みせ]",
+            blank: true,
+          },
+          { text: "です" },
+        ],
+        notes: "Reversed topic + ドアがある",
+      },
     ],
   },
   {
@@ -712,48 +1194,33 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: " 長[なが]い 髪[かみ]のある 教師[きょうし]は" },
-          {
-            text: " 一年[いちねん] イタリアに 住[す]んだ 教師[きょうし]",
-            blank: true,
-          },
+          { text: " 髪[かみ]が 長[なが]い 先生[せんせい]は" },
+          { text: " 一年[いちねん] 間[かん]イタリアに 住[す]んで", blank: true },
+          { text: "いた", blank: true },
+          { text: "人[ひと]", blank: true },
           { text: "です" },
         ],
       },
       {
         segments: [
-          { text: " 長[なが]い 髪[かみ]がある 教師[きょうし]は" },
-          {
-            text: " 一年[いちねん] イタリアに 住[す]んだ 教師[きょうし]",
-            blank: true,
-          },
+          { text: " 髪[かみ]の 長[なが]い 先生[せんせい]は" },
+          { text: " 一年[いちねん] 間[かん]イタリアに 住[す]んで", blank: true },
+          { text: "いた", blank: true },
+          { text: "人[ひと]", blank: true },
           { text: "です" },
         ],
-        notes: "がある instead of のある",
+        notes: "髪の長い instead of 髪が長い",
       },
       {
         segments: [
-          { text: " 長[なが]い 髪[かみ]のある 教師[きょうし]は" },
-          {
-            text: " 一年[いちねん] 間[かん]イタリアに 住[す]んだ 教師[きょうし]",
-            blank: true,
-          },
+          { text: " 髪[かみ]が 長[なが]い 教師[きょうし]は" },
+          { text: " 一年[いちねん] 間[かん]イタリアに 住[す]んで", blank: true },
+          { text: "いた", blank: true },
+          { text: "人[ひと]", blank: true },
           { text: "です" },
         ],
-        notes: "一年間 with 間",
+        notes: "教師 instead of 先生",
       },
-      {
-        segments: [
-          { text: " 長[なが]い 髪[かみ]がある 教師[きょうし]は" },
-          {
-            text: " 一年[いちねん] 間[かん]イタリアに 住[す]んだ 教師[きょうし]",
-            blank: true,
-          },
-          { text: "です" },
-        ],
-        notes: "一年間 with がある",
-      },
-
       {
         segments: [
           { text: " 髪[かみ]の 長[なが]い 教師[きょうし]は" },
@@ -762,7 +1229,15 @@ export const questions: Question[] = [
           { text: "人[ひと]", blank: true },
           { text: "です" },
         ],
-        notes: "髪の長い describes the teacher by the hair itself; 住んでいた人 describes the past residence",
+        notes: "髪の長い + 教師",
+      },
+      {
+        segments: [
+          { text: " 一年[いちねん] 間[かん]イタリアに 住[す]んでいた 先生[せんせい]は", blank: true },
+          { text: " 髪[かみ]が 長[なが]い 人[ひと]" },
+          { text: "です" },
+        ],
+        notes: "Reversed: lived in Italy for a year as the qualifying clause",
       },
     ],
   },
@@ -773,34 +1248,12 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "昨日[きのう]" },
-          { text: " した テスト", blank: true },
+          { text: " 受[う]けた 試験[しけん]", blank: true },
           { text: "には" },
-          { text: " ぜんぜん 分[わ]からなかった 質問[しつもん]", blank: true },
+          { text: " 全然[ぜんぜん] 分[わ]からなかった 問題[もんだい]", blank: true },
           { text: "が" },
           { text: "ある", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "normal", polarity: "positive", tense: "past" } },
         ],
-      },
-      {
-        segments: [
-          { text: "昨日[きのう]" },
-          { text: " した テスト", blank: true },
-          { text: "に" },
-          { text: " ぜんぜん 分[わ]からなかった 質問[しつもん]", blank: true },
-          { text: "が" },
-          { text: "ある", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "normal", polarity: "positive", tense: "past" } },
-        ],
-        notes: "に instead of には",
-      },
-      {
-        segments: [
-          { text: "昨日[きのう]" },
-          { text: " した 試験[しけん]", blank: true },
-          { text: "には" },
-          { text: " ぜんぜん 分[わ]からなかった 質問[しつもん]", blank: true },
-          { text: "が" },
-          { text: "ある", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "normal", polarity: "positive", tense: "past" } },
-        ],
-        notes: "試験 instead of テスト",
       },
       {
         segments: [
@@ -811,7 +1264,40 @@ export const questions: Question[] = [
           { text: "が" },
           { text: "ある", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "normal", polarity: "positive", tense: "past" } },
         ],
-        notes: "受けた試験 (\"took an exam\") + 問題 (exam problem) instead of 質問",
+        notes: "に instead of には",
+      },
+      {
+        segments: [
+          { text: "昨日[きのう]" },
+          { text: " 受[う]けた テスト", blank: true },
+          { text: "には" },
+          { text: " 全然[ぜんぜん] 分[わ]からなかった 問題[もんだい]", blank: true },
+          { text: "が" },
+          { text: "ある", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "normal", polarity: "positive", tense: "past" } },
+        ],
+        notes: "テスト instead of 試験",
+      },
+      {
+        segments: [
+          { text: "昨日[きのう]" },
+          { text: " 受[う]けた テスト", blank: true },
+          { text: "に" },
+          { text: " 全然[ぜんぜん] 分[わ]からなかった 問題[もんだい]", blank: true },
+          { text: "が" },
+          { text: "ある", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "normal", polarity: "positive", tense: "past" } },
+        ],
+        notes: "テスト + に",
+      },
+      {
+        segments: [
+          { text: "昨日[きのう]" },
+          { text: " 受[う]けた 試験[しけん]", blank: true },
+          { text: "には" },
+          { text: " 全然[ぜんぜん] 分[わ]からなかった 質問[しつもん]", blank: true },
+          { text: "が" },
+          { text: "ある", conjugation: { pos: "Godan verb with 'ru' ending (irregular verb)", form: "normal", polarity: "positive", tense: "past" } },
+        ],
+        notes: "質問 instead of 問題",
       },
     ],
   },
@@ -824,7 +1310,7 @@ export const questions: Question[] = [
         segments: [
           { text: "楓[かえで]さんの 隣[となり]にいる、" },
           {
-            text: "くせ 毛[げ]のある 女[おんな]の 人[ひと]",
+            text: "くせ 毛[げ]の 女[おんな]の 子[こ]",
             blank: true,
           },
           { text: "は 一年生[いちねんせい]" },
@@ -833,9 +1319,9 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "くせ 毛[げ]のある、" },
+          { text: "くせ 毛[げ]の、" },
           {
-            text: "楓[かえで]さんの 隣[となり]にいる 女[おんな]の 人[ひと]",
+            text: "楓[かえで]さんの 隣[となり]にいる 女[おんな]の 子[こ]",
             blank: true,
           },
           { text: "は 一年生[いちねんせい]" },
@@ -847,13 +1333,25 @@ export const questions: Question[] = [
         segments: [
           { text: "楓[かえで]さんの 隣[となり]にいる、" },
           {
-            text: "くせ 毛[げ]がある 女[おんな]の 人[ひと]",
+            text: "くせ 毛[げ]の 女[おんな]の 人[ひと]",
             blank: true,
           },
           { text: "は 一年生[いちねんせい]" },
           { text: "です" },
         ],
-        notes: "がある instead of のある",
+        notes: "女の人 instead of 女の子",
+      },
+      {
+        segments: [
+          { text: "楓[かえで]さんの 隣[となり]にいる、" },
+          {
+            text: "髪[かみ]が くせ 毛[げ]の 女[おんな]の 子[こ]",
+            blank: true,
+          },
+          { text: "は 一年生[いちねんせい]" },
+          { text: "です" },
+        ],
+        notes: "髪がくせ毛",
       },
     ],
   },
