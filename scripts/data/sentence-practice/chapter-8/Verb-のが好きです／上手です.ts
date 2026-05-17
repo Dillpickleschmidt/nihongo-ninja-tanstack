@@ -37,38 +37,6 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "歌[うた]を 歌[うた]うのが あまり" },
-          {
-            text: " 上手[じょうず]",
-            blank: true,
-            conjugation: {
-              pos: "Na-adjective",
-              form: "normal",
-              polarity: "negative",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "Dropped 私は",
-      },
-      {
-        segments: [
-          { text: "歌[うた]うのが あまり" },
-          {
-            text: " 上手[じょうず]",
-            blank: true,
-            conjugation: {
-              pos: "Na-adjective",
-              form: "normal",
-              polarity: "negative",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "Dropped 私は and 歌を",
-      },
-      {
-        segments: [
           { text: "私[わたし]は 歌[うた]を 歌[うた]うのが" },
           {
             text: " 下手[へた]",
@@ -177,7 +145,7 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "小林[こばやし]さんが イタリア 料理[りょうり]を 作[つく]るのが とても",
+            text: "小林[こばやし]さんは イタリア 料理[りょうり]を 作[つく]るのが とっても",
           },
           {
             text: " 上手[じょうず]",
@@ -190,7 +158,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "が instead of は",
+        notes: "とっても instead of とても",
       },
     ],
   },
@@ -214,7 +182,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "夏[なつ]にすいかを 食[た]べるのが" },
+          { text: "私[わたし]は 夏[なつ]にスイカを 食[た]べるのが" },
           {
             text: " 大好[だいす]き",
             blank: true,
@@ -226,23 +194,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Dropped 私は",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は 夏[なつ] すいかを 食[た]べるのが" },
-          {
-            text: " 大好[だいす]き",
-            blank: true,
-            conjugation: {
-              pos: "Na-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "Without に particle after 夏",
+        notes: "スイカ in katakana",
       },
       {
         segments: [
@@ -298,38 +250,6 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "漢字[かんじ]を 書[か]くのが ちょっと" },
-          {
-            text: " 下手[へた]",
-            blank: true,
-            conjugation: {
-              pos: "Na-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "Dropped 私は",
-      },
-      {
-        segments: [
-          { text: "漢字[かんじ]を 書[か]くのが" },
-          {
-            text: " 下手[へた]",
-            blank: true,
-            conjugation: {
-              pos: "Na-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "Dropped 私は, without ちょっと",
-      },
-      {
-        segments: [
           { text: "私[わたし]は 漢字[かんじ]を 書[か]くのが あまり" },
           {
             text: " 上手[じょうず]",
@@ -382,40 +302,6 @@ export const questions: Question[] = [
           { text: "か" },
         ],
       },
-      {
-        segments: [
-          { text: "楓[かえで]さんが 雑誌[ざっし]を 読[よ]むのが" },
-          {
-            text: " 好[す]き",
-            blank: true,
-            conjugation: {
-              pos: "Na-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "か" },
-        ],
-        notes: "が instead of は",
-      },
-      {
-        segments: [
-          { text: "楓[かえで]さんは 雑誌[ざっし]を 読[よ]むのは" },
-          {
-            text: " 好[す]き",
-            blank: true,
-            conjugation: {
-              pos: "Na-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "か" },
-        ],
-        notes: "のは instead of のが",
-      },
     ],
   },
   {
@@ -440,7 +326,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "陽介[ようすけ]さんが 運転[うんてん]するのが" },
+          { text: "陽介[ようすけ]さんは 車[くるま]を 運転[うんてん]するのが" },
           {
             text: " 上手[じょうず]",
             blank: true,
@@ -453,110 +339,13 @@ export const questions: Question[] = [
           },
           { text: "か" },
         ],
-        notes: "が instead of は",
-      },
-      {
-        segments: [
-          { text: "陽介[ようすけ]さんは 運転[うんてん]するのは" },
-          {
-            text: " 上手[じょうず]",
-            blank: true,
-            conjugation: {
-              pos: "Na-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "か" },
-        ],
-        notes: "のは instead of のが",
+        notes: "Explicit 車を",
       },
     ],
   },
   {
     english: "I love listening to music but I'm not very good at singing.",
     answers: [
-      {
-        segments: [
-          { text: "私[わたし]は 音楽[おんがく]を 聞[き]くのが" },
-          {
-            text: " 大好[だいす]き",
-            blank: true,
-            conjugation: {
-              pos: "Na-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "けど、歌[うた]を 歌[うた]うのは あまり" },
-          {
-            text: " 上手[じょうず]",
-            blank: true,
-            conjugation: {
-              pos: "Na-adjective",
-              form: "normal",
-              polarity: "negative",
-              tense: "non-past",
-            },
-          },
-        ],
-      },
-      {
-        segments: [
-          { text: "私[わたし]は 音楽[おんがく]を 聞[き]くのが" },
-          {
-            text: " 大好[だいす]き",
-            blank: true,
-            conjugation: {
-              pos: "Na-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "が、歌[うた]を 歌[うた]うのは あまり" },
-          {
-            text: " 上手[じょうず]",
-            blank: true,
-            conjugation: {
-              pos: "Na-adjective",
-              form: "normal",
-              polarity: "negative",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "が conjunction instead of けど",
-      },
-      {
-        segments: [
-          { text: "音楽[おんがく]を 聞[き]くのが" },
-          {
-            text: " 大好[だいす]き",
-            blank: true,
-            conjugation: {
-              pos: "Na-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "けど、歌[うた]を 歌[うた]うのは あまり" },
-          {
-            text: " 上手[じょうず]",
-            blank: true,
-            conjugation: {
-              pos: "Na-adjective",
-              form: "normal",
-              polarity: "negative",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "Dropped 私は",
-      },
       {
         segments: [
           { text: "私[わたし]は 音楽[おんがく]を 聞[き]くのが" },
@@ -582,7 +371,34 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "のが instead of のは in second clause",
+        notes: "聞く + 歌を歌う + けど",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は 音楽[おんがく]を 聞[き]くのが" },
+          {
+            text: " 大好[だいす]き",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "けど、歌[うた]うのが あまり" },
+          {
+            text: " 上手[じょうず]",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "聞く + 歌う + けど",
       },
       {
         segments: [
@@ -609,11 +425,11 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "が conjunction + のが in second clause",
+        notes: "聞く + 歌を歌う + が conjunction",
       },
       {
         segments: [
-          { text: "音楽[おんがく]を 聞[き]くのは" },
+          { text: "私[わたし]は 音楽[おんがく]を 聞[き]くのが" },
           {
             text: " 大好[だいす]き",
             blank: true,
@@ -624,7 +440,142 @@ export const questions: Question[] = [
               tense: "non-past",
             },
           },
-          { text: "けど、歌[うた]を 歌[うた]うのは あまり" },
+          { text: "が、歌[うた]うのが あまり" },
+          {
+            text: " 上手[じょうず]",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "聞く + 歌う + が conjunction",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は 音楽[おんがく]を 聴[き]くのが" },
+          {
+            text: " 大好[だいす]き",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "けど、歌[うた]を 歌[うた]うのが あまり" },
+          {
+            text: " 上手[じょうず]",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "聴く + 歌を歌う + けど",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は 音楽[おんがく]を 聴[き]くのが" },
+          {
+            text: " 大好[だいす]き",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "けど、歌[うた]うのが あまり" },
+          {
+            text: " 上手[じょうず]",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "聴く + 歌う + けど",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は 音楽[おんがく]を 聴[き]くのが" },
+          {
+            text: " 大好[だいす]き",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "が、歌[うた]を 歌[うた]うのが あまり" },
+          {
+            text: " 上手[じょうず]",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "聴く + 歌を歌う + が conjunction",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は 音楽[おんがく]を 聴[き]くのが" },
+          {
+            text: " 大好[だいす]き",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "が、歌[うた]うのが あまり" },
+          {
+            text: " 上手[じょうず]",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "聴く + 歌う + が conjunction",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は 音楽[おんがく]を 聞[き]くのが" },
+          {
+            text: " 大好[だいす]き",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "けど、歌[うた]を 歌[うた]うのが あまり" },
           {
             text: " 得意[とくい]",
             blank: true,
@@ -636,7 +587,34 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "得意 (specialty) instead of 上手; のは in both clauses",
+        notes: "得意 instead of 上手",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は 音楽[おんがく]を 聞[き]くのが" },
+          {
+            text: " 大好[だいす]き",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "けど、歌[うた]うのが あまり" },
+          {
+            text: " 得意[とくい]",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "得意 + 歌う",
       },
     ],
   },
@@ -696,33 +674,6 @@ export const questions: Question[] = [
           },
         ],
         notes: "が conjunction",
-      },
-      {
-        segments: [
-          { text: "俊介[しゅんすけ]さんは お 皿[さら]を 洗[あら]うのは" },
-          {
-            text: " 下手[へた]",
-            blank: true,
-            conjugation: {
-              pos: "Na-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "けど、料理[りょうり]するのが" },
-          {
-            text: " 大好[だいす]き",
-            blank: true,
-            conjugation: {
-              pos: "Na-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "のは for contrast in first clause",
       },
       {
         segments: [
@@ -893,33 +844,6 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "瑞希[みずき]さんは 海[うみ]に 行[い]くのが" },
-          {
-            text: " 大好[だいす]き",
-            blank: true,
-            conjugation: {
-              pos: "Na-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "けど、泳[およ]ぐのが" },
-          {
-            text: " 下手[へた]",
-            blank: true,
-            conjugation: {
-              pos: "Na-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "Reversed clause order",
-      },
-      {
-        segments: [
           { text: "瑞希[みずき]さんは 泳[およ]ぐのが" },
           {
             text: " 苦手[にがて]",
@@ -1011,40 +935,6 @@ export const questions: Question[] = [
         ],
         notes: "ゲームする without を particle."
       },
-      {
-        segments: [
-          { text: "陽翔[はると]さんが 宿題[しゅくだい]の 後[あと]で ゲームを するのが" },
-          {
-            text: " 好[す]き",
-            blank: true,
-            conjugation: {
-              pos: "Na-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "か" },
-        ],
-        notes: "が instead of は",
-      },
-      {
-        segments: [
-          { text: "陽翔[はると]さんが 宿題[しゅくだい]の 後[あと]で ゲームするのが" },
-          {
-            text: " 好[す]き",
-            blank: true,
-            conjugation: {
-              pos: "Na-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "か" },
-        ],
-        notes: "が instead of は, with ゲームする without を particle.",
-      },
     ],
   },
   {
@@ -1104,60 +994,6 @@ export const questions: Question[] = [
         ],
         notes: "が conjunction",
       },
-      {
-        segments: [
-          { text: "ミクさんは 写真[しゃしん]を 撮[と]るのが" },
-          {
-            text: " 上手[じょうず]",
-            blank: true,
-            conjugation: {
-              pos: "Na-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "けど、本[ほん]を 読[よ]むのは" },
-          {
-            text: " 好[す]き",
-            blank: true,
-            conjugation: {
-              pos: "Na-adjective",
-              form: "normal",
-              polarity: "negative",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "のは for contrast in second clause",
-      },
-      {
-        segments: [
-          { text: "ミクさんは 写真[しゃしん]を 撮[と]るのが" },
-          {
-            text: " 上手[じょうず]",
-            blank: true,
-            conjugation: {
-              pos: "Na-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "が、本[ほん]を 読[よ]むのは" },
-          {
-            text: " 好[す]き",
-            blank: true,
-            conjugation: {
-              pos: "Na-adjective",
-              form: "normal",
-              polarity: "negative",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "のは for contrast + が conjunction",
-      },
     ],
   },
   {
@@ -1216,60 +1052,6 @@ export const questions: Question[] = [
           },
         ],
         notes: "が conjunction",
-      },
-      {
-        segments: [
-          { text: "明子[あきこ]さんは 料理[りょうり]するのが" },
-          {
-            text: " 上手[じょうず]",
-            blank: true,
-            conjugation: {
-              pos: "Na-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "けど、掃除[そうじ]するのは" },
-          {
-            text: " 好[す]き",
-            blank: true,
-            conjugation: {
-              pos: "Na-adjective",
-              form: "normal",
-              polarity: "negative",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "のは for contrast in second clause",
-      },
-      {
-        segments: [
-          { text: "明子[あきこ]さんが 料理[りょうり]するのが" },
-          {
-            text: " 上手[じょうず]",
-            blank: true,
-            conjugation: {
-              pos: "Na-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "けど、掃除[そうじ]するのが" },
-          {
-            text: " 好[す]き",
-            blank: true,
-            conjugation: {
-              pos: "Na-adjective",
-              form: "normal",
-              polarity: "negative",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "が instead of は for subject",
       },
     ],
   },
@@ -1371,7 +1153,7 @@ export const questions: Question[] = [
               tense: "non-past",
             },
           },
-          { text: "けど、毎日[まいにち] 勉強[べんきょう]するのは" },
+          { text: "けど、毎日[まいにち] 勉強[べんきょう]をするのが" },
           {
             text: " 好[す]き",
             blank: true,
@@ -1383,13 +1165,13 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "のは for contrast in second clause",
+        notes: "勉強をする instead of 勉強する",
       },
     ],
   },
   {
     english:
-      "Yosuke doesn't like doing overtime work, but he's good at finishing his job quickly.",
+      "Yosuke doesn't like doing overtime work, but he's good at doing his work quickly.",
     hint: "Yosuke = 陽介 (ようすけ)",
     answers: [
       {
@@ -1472,33 +1254,6 @@ export const questions: Question[] = [
         ],
         notes: "やる instead of する",
       },
-      {
-        segments: [
-          { text: "陽介[ようすけ]さんは 残業[ざんぎょう]するのは" },
-          {
-            text: " 好[す]き",
-            blank: true,
-            conjugation: {
-              pos: "Na-adjective",
-              form: "normal",
-              polarity: "negative",
-              tense: "non-past",
-            },
-          },
-          { text: "けど、仕事[しごと]を 早[はや]くするのが" },
-          {
-            text: " 上手[じょうず]",
-            blank: true,
-            conjugation: {
-              pos: "Na-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "のは for contrast in first clause",
-      },
     ],
   },
   {
@@ -1520,24 +1275,6 @@ export const questions: Question[] = [
             },
           },
         ],
-      },
-      {
-        segments: [
-          {
-            text: "おじいさんは 面白[おもしろ]い 話[はなし]を 話[はな]すのが すごく",
-          },
-          {
-            text: " 上手[じょうず]",
-            blank: true,
-            conjugation: {
-              pos: "Na-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "話す instead of する",
       },
       {
         segments: [
@@ -1574,6 +1311,96 @@ export const questions: Question[] = [
           },
         ],
         notes: "本当に instead of すごく",
+      },
+      {
+        segments: [
+          {
+            text: "おじいさんは 面白[おもしろ]い 話[はなし]を するのが とっても",
+          },
+          {
+            text: " 上手[じょうず]",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "とっても instead of すごく",
+      },
+      {
+        segments: [
+          {
+            text: "おじいさんは 面白[おもしろ]い 話[はなし]を 聞[き]かせるのが すごく",
+          },
+          {
+            text: " 上手[じょうず]",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "聞かせる + すごく",
+      },
+      {
+        segments: [
+          {
+            text: "おじいさんは 面白[おもしろ]い 話[はなし]を 聞[き]かせるのが とても",
+          },
+          {
+            text: " 上手[じょうず]",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "聞かせる + とても instead of すごく",
+      },
+      {
+        segments: [
+          {
+            text: "おじいさんは 面白[おもしろ]い 話[はなし]を 聞[き]かせるのが 本当[ほんとう]に",
+          },
+          {
+            text: " 上手[じょうず]",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "聞かせる + 本当に instead of すごく",
+      },
+      {
+        segments: [
+          {
+            text: "おじいさんは 面白[おもしろ]い 話[はなし]を 聞[き]かせるのが とっても",
+          },
+          {
+            text: " 上手[じょうず]",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "聞かせる + とっても instead of すごく",
       },
     ],
   },
@@ -1661,60 +1488,6 @@ export const questions: Question[] = [
         ],
         notes: "へ instead of に",
       },
-      {
-        segments: [
-          { text: "陽翔[はると]さんは 泳[およ]ぐのが" },
-          {
-            text: " 上手[じょうず]",
-            blank: true,
-            conjugation: {
-              pos: "Na-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "けど、海[うみ]に 行[い]くのは" },
-          {
-            text: " 好[す]き",
-            blank: true,
-            conjugation: {
-              pos: "Na-adjective",
-              form: "normal",
-              polarity: "negative",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "のは for contrast in second clause",
-      },
-      {
-        segments: [
-          { text: "陽翔[はると]さんは 泳[およ]ぐのが" },
-          {
-            text: " 上手[じょうず]",
-            blank: true,
-            conjugation: {
-              pos: "Na-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "が、海[うみ]に 行[い]くのは" },
-          {
-            text: " 好[す]き",
-            blank: true,
-            conjugation: {
-              pos: "Na-adjective",
-              form: "normal",
-              polarity: "negative",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "のは for contrast + が conjunction",
-      },
     ],
   },
   {
@@ -1801,33 +1574,6 @@ export const questions: Question[] = [
         ],
         notes: "好き instead of 大好き",
       },
-      {
-        segments: [
-          { text: "明子[あきこ]さんは 洗濯[せんたく]するのは" },
-          {
-            text: " 下手[へた]",
-            blank: true,
-            conjugation: {
-              pos: "Na-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "けど、料理[りょうり]するのが" },
-          {
-            text: " 大好[だいす]き",
-            blank: true,
-            conjugation: {
-              pos: "Na-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "のは for contrast in first clause",
-      },
     ],
   },
   {
@@ -1885,33 +1631,6 @@ export const questions: Question[] = [
           },
         ],
         notes: "が conjunction",
-      },
-      {
-        segments: [
-          { text: "おばあさんは コンピューターを 使[つか]うのは" },
-          {
-            text: " 下手[へた]",
-            blank: true,
-            conjugation: {
-              pos: "Na-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "けど、手紙[てがみ]を 書[か]くのが" },
-          {
-            text: " 大好[だいす]き",
-            blank: true,
-            conjugation: {
-              pos: "Na-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "のは for contrast in first clause",
       },
       {
         segments: [
@@ -1997,7 +1716,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "慎司[しんじ]さんが 日本語[にほんご]を 話[はな]すのが すごく" },
+          { text: "慎司[しんじ]さんは 日本語[にほんご]を 話[はな]すのが とっても" },
           {
             text: " 上手[じょうず]",
             blank: true,
@@ -2009,7 +1728,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "が instead of は",
+        notes: "とっても instead of すごく",
       },
     ],
   },
@@ -2127,7 +1846,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "直美[なおみ]さんは 人[ひと]の 話[はなし]を 聞[き]くのが すごく" },
+          { text: "直美[なおみ]さんは 人[ひと]の 話[はなし]を 聞[き]くのが 本当[ほんとう]に" },
           {
             text: " 上手[じょうず]",
             blank: true,
@@ -2138,7 +1857,7 @@ export const questions: Question[] = [
               tense: "non-past",
             },
           },
-          { text: "けど、話[はな]すのは" },
+          { text: "けど、話[はな]すのが" },
           {
             text: " 好[す]き",
             blank: true,
@@ -2150,11 +1869,11 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "のは for contrast in second clause",
+        notes: "本当に instead of すごく",
       },
       {
         segments: [
-          { text: "直美[なおみ]さんは 人[ひと]の 話[はなし]を 聞[き]くのが とても" },
+          { text: "直美[なおみ]さんは 人[ひと]の 話[はなし]を 聞[き]くのが とっても" },
           {
             text: " 上手[じょうず]",
             blank: true,
@@ -2165,7 +1884,7 @@ export const questions: Question[] = [
               tense: "non-past",
             },
           },
-          { text: "けど、話[はな]すのは" },
+          { text: "けど、話[はな]すのが" },
           {
             text: " 好[す]き",
             blank: true,
@@ -2177,34 +1896,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "とても + のは for contrast",
-      },
-      {
-        segments: [
-          { text: "直美[なおみ]さんは 人[ひと]の 話[はなし]を 聞[き]くのが とても" },
-          {
-            text: " 上手[じょうず]",
-            blank: true,
-            conjugation: {
-              pos: "Na-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "が、話[はな]すのは" },
-          {
-            text: " 好[す]き",
-            blank: true,
-            conjugation: {
-              pos: "Na-adjective",
-              form: "normal",
-              polarity: "negative",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "とても + のは + が conjunction",
+        notes: "とっても instead of すごく",
       },
     ],
   },
