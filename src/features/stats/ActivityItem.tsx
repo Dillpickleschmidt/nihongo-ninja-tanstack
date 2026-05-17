@@ -29,15 +29,15 @@ export function ActivityItem(props: ActivityItemProps) {
   const color = () => TYPE_COLORS[props.moduleType] ?? "255, 255, 255"
 
   return (
-    <div class="flex items-center gap-3 py-2.5">
+    <div class="flex items-center gap-2.5 py-1.5">
       <div
         class="h-2 w-2 rounded-full shrink-0"
         style={{ background: `rgb(${color()})`, opacity: "0.5" }}
       />
-      <span class="text-sm text-foreground/70 truncate flex-1 dark:text-white/60">
+      <span class="flex-1 truncate text-sm text-foreground/70 dark:text-white/60">
         {formatModuleName(props.modulePath)}
       </span>
-      <span class="text-sm text-muted-foreground tabular-nums shrink-0 dark:text-white/40">
+      <span class="shrink-0 text-xs tabular-nums text-muted-foreground dark:text-white/40">
         {props.progressUnits} XP
       </span>
       <span class="text-xs text-muted-foreground/70 tabular-nums shrink-0 w-16 text-right dark:text-white/25">

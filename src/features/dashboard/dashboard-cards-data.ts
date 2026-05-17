@@ -7,11 +7,19 @@ export interface DashboardCard {
   moduleType?: string // maps to module icon and color from module-helpers
   tags?: string[]
   dueCountType?: "vocab" | "sentences" // which due count to show
+  tabLabel?: string // short label for the tool showcase tab rail
+  bullets?: string[] // feature highlights shown in the tool showcase
 }
 
 export const PRACTICE_TOOLS: DashboardCard[] = [
   {
     id: "learning-path",
+    tabLabel: "Learning Path",
+    bullets: [
+      "Lorem ipsum dolor sit amet consectetur adipiscing",
+      "Sed do eiusmod tempor incididunt ut labore",
+      "Et dolore magna aliqua ut enim ad minim",
+    ],
     title: "Learning Path",
     description: "Follow a structured path through lessons, vocabulary, and grammar",
     href: "/learn",
@@ -21,6 +29,12 @@ export const PRACTICE_TOOLS: DashboardCard[] = [
   },
   {
     id: "sentence-practice",
+    tabLabel: "Sentences",
+    bullets: [
+      "Veniam quis nostrud exercitation ullamco laboris",
+      "Nisi ut aliquip ex ea commodo consequat",
+      "Duis aute irure dolor in reprehenderit voluptate",
+    ],
     title: "Sentence Practice",
     description: "Practice reading and understanding full Japanese sentences",
     href: "/sentence-practice",
@@ -31,6 +45,12 @@ export const PRACTICE_TOOLS: DashboardCard[] = [
   },
   {
     id: "vocab-practice",
+    tabLabel: "Vocabulary",
+    bullets: [
+      "Velit esse cillum dolore eu fugiat nulla",
+      "Pariatur excepteur sint occaecat cupidatat non",
+      "Proident sunt in culpa qui officia deserunt",
+    ],
     title: "Vocabulary Practice",
     description: "Master words with spaced repetition flashcards",
     href: "/vocab",
@@ -41,6 +61,12 @@ export const PRACTICE_TOOLS: DashboardCard[] = [
   },
   {
     id: "conjugation-practice",
+    tabLabel: "Conjugation",
+    bullets: [
+      "Mollit anim id est laborum sed ut perspiciatis",
+      "Unde omnis iste natus error sit voluptatem",
+      "Accusantium doloremque laudantium totam rem",
+    ],
     title: "Conjugation Practice",
     description: "Drill verb and adjective conjugations until they're automatic",
     href: "/conjugation",
@@ -50,6 +76,12 @@ export const PRACTICE_TOOLS: DashboardCard[] = [
   },
   {
     id: "counter-practice",
+    tabLabel: "Counters",
+    bullets: [
+      "Aperiam eaque ipsa quae ab illo inventore",
+      "Veritatis et quasi architecto beatae vitae",
+      "Dicta sunt explicabo nemo enim ipsam voluptatem",
+    ],
     title: "Counter Practice",
     description: "Learn and drill Japanese counting systems",
     href: "/counters",
@@ -59,6 +91,12 @@ export const PRACTICE_TOOLS: DashboardCard[] = [
   },
   {
     id: "kana-practice",
+    tabLabel: "Kana",
+    bullets: [
+      "Quia voluptas sit aspernatur aut odit fugit",
+      "Sed quia consequuntur magni dolores eos qui",
+      "Ratione voluptatem sequi nesciunt neque porro",
+    ],
     title: "Kana Practice",
     description: "Learn and review hiragana and katakana",
     href: "/kana",

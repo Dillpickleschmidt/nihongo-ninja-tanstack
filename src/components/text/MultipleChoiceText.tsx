@@ -27,7 +27,7 @@ export default function MultipleChoiceText(props: MultipleChoiceTextProps) {
 
   const getTextColorClass = (option: string) => {
     if (correct()[option]) {
-      return "dark:bg-green-500 bg-[#00F064] bg-opacity-[90%] rounded-md font-medium text-black pr-2"
+      return "rounded-md bg-[#00F064]/90 pr-2 font-medium text-black dark:bg-green-500/90"
     } else if (clicked()[option]) {
       return "dark:text-red-500 text-[#FF0000] rounded-md font-medium"
     } else {

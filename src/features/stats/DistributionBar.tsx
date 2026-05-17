@@ -32,7 +32,7 @@ export function DistributionBar(props: DistributionBarProps) {
       when={(props.data?.length ?? 0) > 0}
       fallback={<p class="text-sm text-muted-foreground dark:text-white/30">No activity this week</p>}
     >
-      <div class="flex h-2.5 w-full overflow-hidden rounded-full bg-muted/70 dark:bg-white/[0.04]">
+      <div class="flex h-1.5 w-full overflow-hidden rounded-full bg-muted/70 dark:bg-white/4">
         <For each={props.data}>
           {(item) => {
             const pct = () =>
@@ -54,8 +54,8 @@ export function DistributionBar(props: DistributionBarProps) {
         </For>
       </div>
 
-      <div class="mt-3 flex items-start justify-between gap-4">
-        <div class="flex flex-wrap gap-x-5 gap-y-2">
+      <div class="mt-2 flex items-start justify-between gap-3">
+        <div class="flex flex-wrap gap-x-4 gap-y-1.5">
           <For each={props.data}>
             {(item) => {
               const color = TYPE_COLORS[item.moduleType] ?? "255, 255, 255"
@@ -65,12 +65,12 @@ export function DistributionBar(props: DistributionBarProps) {
                   ? Math.round((item.progressUnits / totalUnits()) * 100)
                   : 0
               return (
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-1.5">
                   <div
-                    class="h-3 w-3 rounded"
+                    class="h-2.5 w-2.5 rounded"
                     style={{ background: `rgb(${color})`, opacity: "0.6" }}
                   />
-                  <span class="text-sm text-muted-foreground dark:text-white/50">
+                  <span class="text-xs text-muted-foreground dark:text-white/50">
                     {label}{" "}
                     <span class="text-foreground/70 font-medium dark:text-white/70 tabular-nums">
                       {pct()}%
@@ -83,7 +83,7 @@ export function DistributionBar(props: DistributionBarProps) {
         </div>
 
         <Show when={props.rangeLabel}>
-          <span class="text-sm text-muted-foreground/70 tabular-nums whitespace-nowrap dark:text-white/20">
+          <span class="whitespace-nowrap text-xs tabular-nums text-muted-foreground/70 dark:text-white/20">
             {props.rangeLabel}
           </span>
         </Show>

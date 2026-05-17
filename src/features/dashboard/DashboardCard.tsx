@@ -49,13 +49,13 @@ export function DashboardCard(props: DashboardCardProps) {
       >
         <Link
           to={props.card.href}
-          class="dashboard-card group block overflow-hidden rounded-[22px] border border-border/40 transition-colors duration-300 hover:border-dynamic-accent/25 dark:border-white/5 dark:hover:border-dynamic-accent/20"
+          class="dashboard-card block overflow-hidden rounded-[22px] border border-border/40 dark:border-white/5"
         >
         <div class="relative aspect-[16/10] overflow-hidden">
           <img
             src={props.card.image}
             alt={props.card.title}
-            class="size-full object-cover transition-transform duration-500 group-hover:scale-105"
+            class="size-full object-cover"
           />
           <div
             class="pointer-events-none absolute inset-0"
@@ -89,7 +89,7 @@ export function DashboardCard(props: DashboardCardProps) {
                   />
                 )}
               </Show>
-              <h3 class="font-semibold text-white transition-colors group-hover:text-dynamic-accent">
+              <h3 class="font-semibold text-white">
                 {props.card.title}
               </h3>
             </div>

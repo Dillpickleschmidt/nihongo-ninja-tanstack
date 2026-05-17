@@ -261,7 +261,7 @@ export function ImmersionKitExamples(props: { examples: ImmersionKitExample[] })
                   />
                 </div>
               </Show>
-              <div class="min-w-0 flex-grow">
+              <div class="min-w-0 grow">
                 <div class="mb-1.5 flex items-center gap-2">
                   <button
                     class="hover:bg-muted rounded-full p-1.5 transition-colors"
@@ -367,7 +367,7 @@ function RealExamplesSkeleton() {
         {() => (
           <div class="flex gap-3">
             <Skeleton class="h-24 w-36 shrink-0 rounded-lg" />
-            <div class="min-w-0 flex-grow space-y-2">
+            <div class="min-w-0 grow space-y-2">
               <Skeleton class="h-4 w-24 rounded" />
               <Skeleton class="h-5 w-full rounded" />
               <Skeleton class="h-3 w-3/4 rounded" />

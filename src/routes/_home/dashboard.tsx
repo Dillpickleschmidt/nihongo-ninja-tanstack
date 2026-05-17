@@ -23,13 +23,12 @@ import { usePreferences } from "@/lib/preferences"
 import { parsePreferencesCookie } from "@/query/model/preferences"
 import { ProgressRing, getProgressColor } from "@/features/stats/ProgressRing"
 import { ModuleCard } from "@/features/stats/ModuleCard"
-import { DistributionBar } from "@/features/stats/DistributionBar"
 import { ActivityItem } from "@/features/stats/ActivityItem"
 import { Skeleton } from "@/components/ui/custom/skeleton"
 import { DashboardCard } from "@/features/dashboard/DashboardCard"
-import { NextUpPanel } from "@/features/dashboard/NextUpPanel"
 import { ReviewModeDialog } from "@/features/dashboard/ReviewModeDialog"
-import { ReviewPanel } from "@/features/dashboard/ReviewPanel"
+import { TodayActionsPanel } from "@/features/dashboard/TodayActionsPanel"
+import { ToolShowcase } from "@/features/dashboard/ToolShowcase"
 import {
   PRACTICE_TOOLS,
   MEDIA_RESOURCES,
@@ -47,7 +46,6 @@ export const Route = createFileRoute("/_home/dashboard")({
     }
 
     const todayKey = getLocalDateKey()
-    const range = getLastNDaysRange(7)
     const streakRange = getLastNDaysRange(30)
 
     if (context.auth.userId) {
@@ -61,12 +59,6 @@ export const Route = createFileRoute("/_home/dashboard")({
       )
       context.queryClient.prefetchQuery(
         convexQuery(api.api.progress.getRecentModuleActivity, { limit: 10 }),
-      )
-      context.queryClient.prefetchQuery(
-        convexQuery(api.api.progress.getDistribution, {
-          fromDateKey: range.fromDateKey,
-          toDateKey: range.toDateKey,
-        }),
       )
       context.queryClient.prefetchQuery(
         convexQuery(api.api.progress.getDailyProgressRange, {
@@ -107,7 +99,6 @@ function DashboardComponent() {
 
   const today = new Date()
   const todayKey = () => getLocalDateKey()
-  const range = createMemo(() => getLastNDaysRange(7))
   const streakRange = createMemo(() => getLastNDaysRange(30))
   const user = getUser()
   const { dueCounts } = useSrs()
@@ -130,15 +121,6 @@ function DashboardComponent() {
   const recentActivityQuery = useConvexQuery(
     api.api.progress.getRecentModuleActivity,
     () => ({ limit: 10 }),
-    () => ({ enabled: !!user() }),
-  )
-
-  const distributionQuery = useConvexQuery(
-    api.api.progress.getDistribution,
-    () => ({
-      fromDateKey: range().fromDateKey,
-      toDateKey: range().toDateKey,
-    }),
     () => ({ enabled: !!user() }),
   )
 
@@ -176,12 +158,6 @@ function DashboardComponent() {
   const reversedModules = createMemo(() => {
     const rows = dailyStatsQuery.data()
     return rows === undefined ? undefined : [...rows].reverse()
-  })
-
-  const weeklyTotalXP = createMemo(() => {
-    const rows = distributionQuery.data()
-    if (rows === undefined) return undefined
-    return rows.reduce((sum, row) => sum + row.progressUnits, 0)
   })
 
   const streakStats = createMemo(() => getStreakStats(dailyProgressRangeQuery.data(), today))
@@ -233,22 +209,36 @@ function DashboardComponent() {
       <main class="mx-auto max-w-7xl px-6 pt-16 pb-32 sm:px-8 lg:pt-20">
         {/* HERO ───────────────────────────────────────────────── */}
         <section class="relative">
-          <span class="pointer-events-none absolute -top-6 right-0 select-none font-japanese text-[10rem] leading-none text-foreground/[0.045] sm:-top-10 sm:text-[14rem] dark:text-white/[0.03]">
+          <span class="pointer-events-none absolute -top-6 left-0 select-none font-japanese text-[10rem] leading-none text-foreground/4.5 sm:-top-10 sm:-left-4 sm:text-[14rem] dark:text-white/3">
             道
           </span>
 
-          <div class="animate-fade-up opacity-0">
-            <div class="flex items-baseline gap-5 flex-wrap">
-              <h1 class="font-excalifont text-5xl tracking-tight text-foreground/90 sm:text-6xl dark:text-white/90">
-                Today
-              </h1>
-              <span class="font-japanese text-base text-muted-foreground dark:text-white/40">
-                {todayLabelJa}
-              </span>
+          <div class="relative flex animate-fade-up flex-col gap-7 opacity-0 lg:flex-row lg:items-center lg:justify-between lg:gap-10">
+            <div>
+              <div class="flex items-baseline gap-5 flex-wrap">
+                <h1 class="font-excalifont text-5xl tracking-tight text-foreground/90 sm:text-6xl dark:text-white/90">
+                  Today
+                </h1>
+                <span class="font-japanese text-base text-muted-foreground dark:text-white/40">
+                  {todayLabelJa}
+                </span>
+              </div>
+              <p class="mt-3 text-base text-muted-foreground dark:text-white/45">
+                {todayLabel}
+              </p>
             </div>
-            <p class="mt-3 text-base text-muted-foreground dark:text-white/45">
-              {todayLabel}
-            </p>
+
+            <TodayActionsPanel
+              class="w-full shrink-0 lg:w-[31rem]"
+              mod={nextModule()}
+              nextLoading={
+                dashboardQuery.data() === undefined && !!selectedPathId()
+              }
+              meanings={dueCounts().vocabMeanings}
+              spellings={dueCounts().vocabSpellings}
+              total={dueCounts().vocabTotal}
+              onStartReview={() => setDialogOpen(true)}
+            />
           </div>
 
           {/* Snapshot strip */}
@@ -309,50 +299,10 @@ function DashboardComponent() {
           </div>
         </section>
 
-        {/* Perforated separator */}
-        <div class="mt-10 perforated h-px opacity-70" />
-
-        {/* PRIMARY ACTIONS ─────────────────────────────────────── */}
-        <section
-          class="mt-10 grid gap-4 animate-fade-up opacity-0 lg:grid-cols-[3fr_2fr]"
-          style={{ "animation-delay": "200ms" }}
-        >
-          <NextUpPanel
-            mod={nextModule()}
-            loading={dashboardQuery.data() === undefined && !!selectedPathId()}
-          />
-          <ReviewPanel
-            meanings={dueCounts().vocabMeanings}
-            spellings={dueCounts().vocabSpellings}
-            total={dueCounts().vocabTotal}
-            onStart={() => setDialogOpen(true)}
-          />
-        </section>
-
-        {/* PRACTICE TOOLS ──────────────────────────────────────── */}
-        <section class="mt-6">
-          <SectionLabelLine
-            label="Practice tools"
-            kanji="練"
-            delay={250}
-          />
-          <div class="mt-7 grid gap-x-4 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
-            <Index each={PRACTICE_TOOLS}>
-              {(card, index) => (
-                <DashboardCard
-                  card={card()}
-                  index={index}
-                  vocabDueCount={() => dueCounts().vocabTotal}
-                />
-              )}
-            </Index>
-          </div>
-        </section>
-
         {/* TODAY + WEEK + ACTIVITY ─────────────────────────────── */}
-        <section class="mt-20 grid gap-x-12 gap-y-14 lg:grid-cols-[3fr_2fr]">
-          <div>
-            <SectionLabelLine label="Today's modules" kanji="今" delay={300} />
+        <section class="mt-10 grid gap-x-10 gap-y-8 lg:grid-cols-[3fr_2fr]">
+          <div class="max-h-64 overflow-y-auto pr-1">
+            <SectionLabelLine label="Today's modules" kanji="今" delay={150} />
             <Show
               when={dailyStatsQuery.data() !== undefined}
               fallback={<SkeletonRows count={3} />}
@@ -360,17 +310,20 @@ function DashboardComponent() {
               <Show
                 when={dailyStatsQuery.data()!.length > 0}
                 fallback={
-                  <p class="mt-6 text-sm text-muted-foreground dark:text-white/25">
-                    Nothing practiced yet today — pick something above to start.
+                  <p
+                    class="mt-6 animate-fade-up text-sm text-muted-foreground opacity-0 dark:text-white/25"
+                    style={{ "animation-delay": "220ms" }}
+                  >
+                    Nothing practiced yet today. Pick a practice tool to start.
                   </p>
                 }
               >
-                <div class="mt-4 divide-y divide-border/50 dark:divide-white/5">
+                <div class="mt-2 divide-y divide-border/50 dark:divide-white/5">
                   <For each={reversedModules()!}>
-                    {(row, i) => (
+                    {(row) => (
                       <div
                         class="animate-fade-up opacity-0"
-                        style={{ "animation-delay": `${325 + i() * 40}ms` }}
+                        style={{ "animation-delay": "220ms" }}
                       >
                         <ModuleCard
                           modulePath={row.modulePath}
@@ -387,55 +340,54 @@ function DashboardComponent() {
             </Show>
           </div>
 
-          <div class="space-y-10">
-            <div>
-              <div class="flex items-baseline justify-between">
-                <SectionLabelLine label="This week" delay={350} />
-                <span class="text-xs text-muted-foreground tabular-nums dark:text-white/40">
-                  <Show when={weeklyTotalXP() !== undefined} fallback="– XP">{weeklyTotalXP()!.toLocaleString()} XP</Show>
-                </span>
-              </div>
-              <div class="mt-5">
-                <DistributionBar
-                  data={distributionQuery.data()}
-                  rangeLabel={`${formatDateShort(range().fromDateKey)} – ${formatDateShort(range().toDateKey)}`}
-                />
-              </div>
-            </div>
-
-            <div>
-              <SectionLabelLine label="Recent activity" delay={400} />
-              <div class="mt-3">
+          <div class="max-h-56 overflow-y-auto pr-1">
+            <SectionLabelLine label="Recent activity" delay={200} />
+            <div class="mt-2">
+              <Show
+                when={recentActivityQuery.data() !== undefined}
+                fallback={<SkeletonDots count={5} />}
+              >
                 <Show
-                  when={recentActivityQuery.data() !== undefined}
-                  fallback={<SkeletonDots count={5} />}
+                  when={recentActivityQuery.data()!.length > 0}
+                  fallback={
+                    <p class="text-sm text-muted-foreground dark:text-white/25">
+                      No recent activity
+                    </p>
+                  }
                 >
-                  <Show
-                    when={recentActivityQuery.data()!.length > 0}
-                    fallback={
-                      <p class="text-sm text-muted-foreground dark:text-white/25">
-                        No recent activity
-                      </p>
-                    }
+                  <div
+                    class="animate-fade-up divide-y divide-border/40 opacity-0 dark:divide-white/4"
+                    style={{ "animation-delay": "270ms" }}
                   >
-                    <div class="divide-y divide-border/40 dark:divide-white/[0.04]">
-                      <For each={recentActivityQuery.data()}>
-                        {(row) => (
-                          <ActivityItem
-                            modulePath={row.modulePath}
-                            moduleType={row.moduleType}
-                            progressUnits={row.progressUnits}
-                            questionsAnswered={row.questionsAnswered}
-                            lastUpdatedAt={row.lastUpdatedAt}
-                          />
-                        )}
-                      </For>
-                    </div>
-                  </Show>
+                    <For each={recentActivityQuery.data()}>
+                      {(row) => (
+                        <ActivityItem
+                          modulePath={row.modulePath}
+                          moduleType={row.moduleType}
+                          progressUnits={row.progressUnits}
+                          questionsAnswered={row.questionsAnswered}
+                          lastUpdatedAt={row.lastUpdatedAt}
+                        />
+                      )}
+                    </For>
+                  </div>
                 </Show>
-              </div>
+              </Show>
             </div>
           </div>
+        </section>
+
+        {/* PRACTICE TOOLS ──────────────────────────────────────── */}
+        <section class="mt-8">
+          <SectionLabelLine
+            label="Practice tools"
+            kanji="練"
+            delay={200}
+          />
+          <ToolShowcase
+            tools={PRACTICE_TOOLS}
+            vocabDueCount={() => dueCounts().vocabTotal}
+          />
         </section>
 
         {/* MEDIA ──────────────────────────────────────────────── */}
@@ -582,7 +534,7 @@ function SkeletonRows(props: { count: number }) {
 
 function SkeletonDots(props: { count: number }) {
   return (
-    <div class="divide-y divide-border/40 dark:divide-white/[0.04]">
+    <div class="divide-y divide-border/40 dark:divide-white/4">
       <For each={Array.from({ length: props.count })}>
         {(_, i) => (
           <div class="flex items-center gap-3 py-2.5">
