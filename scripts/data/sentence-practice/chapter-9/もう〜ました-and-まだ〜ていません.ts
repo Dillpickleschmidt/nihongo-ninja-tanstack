@@ -152,58 +152,7 @@ export const questions: Question[] = [
         notes:
           'Using いる (to be at home) — "Is Kenji already home?" present state',
       },
-      {
-        segments: [
-          { text: "もう けんじさんは 家[いえ]に" },
-          {
-            text: " 帰[かえ]る",
-            blank: true,
-            conjugation: {
-              pos: "Godan verb with 'ru' ending (irregular verb)",
-              form: "normal",
-              polarity: "positive",
-              tense: "past",
-            },
-          },
-          { text: "か" },
-        ],
-        notes:
-          "もう moved to front of sentence — natural alternative word order, with 家に",
-      },
-      {
-        segments: [
-          { text: "もう けんじさんは" },
-          {
-            text: " 帰[かえ]る",
-            blank: true,
-            conjugation: {
-              pos: "Godan verb with 'ru' ending (irregular verb)",
-              form: "normal",
-              polarity: "positive",
-              tense: "past",
-            },
-          },
-          { text: "か" },
-        ],
-        notes: "もう at the start, without 家に",
-      },
-      {
-        segments: [
-          { text: "もう けんじさんは 家[いえ]に" },
-          {
-            text: "いる",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "か" },
-        ],
-        notes: "もう at the front, using いる — word order variation",
-      },
+
       {
         segments: [
           { text: "けんじさんはもう 家[いえ]に" },
@@ -239,6 +188,14 @@ export const questions: Question[] = [
           { text: "か" },
         ],
         notes: "帰ってきた emphasizes coming back home",
+      },
+      {
+        segments: [
+          { text: "けんじさんはもう" },
+          { text: " 家[いえ]", blank: true },
+          { text: "ですか" },
+        ],
+        notes: "Conversational: もう家ですか",
       },
     ],
   },
@@ -397,6 +354,56 @@ export const questions: Question[] = [
         ],
         notes: "ので (more neutral connector) instead of から",
       },
+      {
+        segments: [
+          { text: "まだ 宿題[しゅくだい]が", blank: true },
+          { text: "あるので、 今晩[こんばん]は" },
+          {
+            text: " 出[で]かける",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "ので + 今晩",
+      },
+      {
+        segments: [
+          { text: "宿題[しゅくだい]がまだあるので、 今晩[こんばん]は" },
+          {
+            text: " 出[で]かける",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "宿題がまだあるので",
+      },
+      {
+        segments: [
+          { text: "宿題[しゅくだい]がまだ 終[お]わって" },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
+          { text: "ので、 今晩[こんばん]は" },
+          {
+            text: " 出[で]かける",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "宿題がまだ終わっていないので",
+      },
     ],
   },
   {
@@ -449,15 +456,7 @@ export const questions: Question[] = [
         ],
         notes: 'が instead of けど/でも for "but" (more formal conjunction)',
       },
-      {
-        segments: [
-          { text: "本[ほん]はまだ 読[よ]んで" },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
-          { text: "けど、その 映画[えいが]は" },
-          { text: "もう 見[み]た", blank: true },
-        ],
-        notes: "Reversed clause order: book clause first, then movie clause",
-      },
+
       {
         segments: [
           { text: "その 映画[えいが]は" },
@@ -480,6 +479,24 @@ export const questions: Question[] = [
           { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
         ],
         notes: "が (more formal connector) instead of けど",
+      },
+      {
+        segments: [
+          { text: "その 映画[えいが]は" },
+          { text: "もう 見[み]た", blank: true },
+          { text: "けど、 まだ 本[ほん]は 読[よ]んで" },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
+        ],
+        notes: "まだ before 本は",
+      },
+      {
+        segments: [
+          { text: "その 映画[えいが]は" },
+          { text: "もう 見[み]た", blank: true },
+          { text: "けど、 まだ 本[ほん]を 読[よ]んで" },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
+        ],
+        notes: "まだ before 本を",
       },
     ],
   },
@@ -518,6 +535,38 @@ export const questions: Question[] = [
         ],
         notes: "With を after 洗濯",
       },
+      {
+        segments: [
+          { text: "洗濯[せんたく]はまだ", blank: true },
+          { text: "して" },
+          {
+            text: "いる", blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "洗濯はまだ",
+      },
+      {
+        segments: [
+          { text: "洗濯[せんたく]をまだ", blank: true },
+          { text: "して" },
+          {
+            text: "いる", blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "洗濯をまだ",
+      },
     ],
   },
   {
@@ -537,8 +586,8 @@ export const questions: Question[] = [
               tense: "past",
             },
           },
+          { text: "か" },
         ],
-        notes: "たけしさんは + もう + ホストファミリーに",
       },
       {
         segments: [
@@ -553,6 +602,7 @@ export const questions: Question[] = [
               tense: "past",
             },
           },
+          { text: "か" },
         ],
         notes: "Using を particle: 電話を + した",
       },
@@ -569,73 +619,9 @@ export const questions: Question[] = [
               tense: "past",
             },
           },
-        ],
-        notes: "Using へ instead of に particle with ホストファミリー",
-      },
-      {
-        segments: [
-          { text: "もうたけしさんはホストファミリーに" },
-          {
-            text: " 電話[でんわ]する",
-            blank: true,
-            conjugation: {
-              pos: "Suru verb - compound word",
-              form: "normal",
-              polarity: "positive",
-              tense: "past",
-            },
-          },
-        ],
-        notes: "もう fronted to start of sentence",
-      },
-      {
-        segments: [
-          { text: "たけしさんがもうホストファミリーに" },
-          {
-            text: " 電話[でんわ]する",
-            blank: true,
-            conjugation: {
-              pos: "Suru verb - compound word",
-              form: "normal",
-              polarity: "positive",
-              tense: "past",
-            },
-          },
-        ],
-        notes: "Using が instead of は for たけし",
-      },
-      {
-        segments: [
-          { text: "たけしさんがもうホストファミリーに 電話[でんわ]を" },
-          {
-            text: "する",
-            blank: true,
-            conjugation: {
-              pos: "Suru verb - special class",
-              form: "normal",
-              polarity: "positive",
-              tense: "past",
-            },
-          },
-        ],
-        notes: "が + を particle combination",
-      },
-      {
-        segments: [
-          { text: "たけしさんはもうホストファミリーに" },
-          {
-            text: " 電話[でんわ]する",
-            blank: true,
-            conjugation: {
-              pos: "Suru verb - compound word",
-              form: "normal",
-              polarity: "positive",
-              tense: "past",
-            },
-          },
           { text: "か" },
         ],
-        notes: "With か question particle",
+        notes: "Using へ instead of に particle with ホストファミリー",
       },
     ],
   },
@@ -946,6 +932,41 @@ export const questions: Question[] = [
         ],
         notes: "私は at start, チケットを, が conjunction",
       },
+      {
+        segments: [
+          { text: "チケットはもう 買[か]ってありますけど、", blank: true },
+          { text: "さきさんはまだ 私[わたし]に 電話[でんわ]して" },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "買ってあります resultant-state phrasing",
+      },
+      {
+        segments: [
+          { text: "チケットはもう" },
+          {
+            text: " 買[か]う",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'u' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+          { text: "けど、さきさんからはまだ 電話[でんわ]が" },
+          { text: "ありません", blank: true },
+        ],
+        notes: "さきさんからはまだ電話がありません",
+      },
     ],
   },
   {
@@ -1006,60 +1027,7 @@ export const questions: Question[] = [
         ],
         notes: "Using が to connect; 夕ご飯 for dinner.",
       },
-      {
-        segments: [
-          { text: "野菜[やさい]はもう" },
-          {
-            text: " 洗[あら]う",
-            blank: true,
-            conjugation: {
-              pos: "Godan verb with 'u' ending",
-              form: "normal",
-              polarity: "positive",
-              tense: "past",
-            },
-          },
-          { text: "けど、 夕[ゆう]ご 飯[はん]はまだ 料理[りょうり]して" },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
-        ],
-        notes: '料理する instead of 作る for "make dinner"; 夕ご飯.',
-      },
-      {
-        segments: [
-          { text: "野菜[やさい]はもう" },
-          {
-            text: " 洗[あら]う",
-            blank: true,
-            conjugation: {
-              pos: "Godan verb with 'u' ending",
-              form: "normal",
-              polarity: "positive",
-              tense: "past",
-            },
-          },
-          { text: "けど、 晩[ばん]ご 飯[はん]はまだ 料理[りょうり]して" },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
-        ],
-        notes: '料理する for "make"; 晩ご飯; けど connecting.',
-      },
-      {
-        segments: [
-          { text: "野菜[やさい]はもう" },
-          {
-            text: " 洗[あら]う",
-            blank: true,
-            conjugation: {
-              pos: "Godan verb with 'u' ending",
-              form: "normal",
-              polarity: "positive",
-              tense: "past",
-            },
-          },
-          { text: "が、 晩[ばん]ご 飯[はん]はまだ 料理[りょうり]して" },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
-        ],
-        notes: "が connecting; 料理する; 晩ご飯.",
-      },
+
       {
         segments: [
           { text: "野菜[やさい]はもう" },
@@ -1077,6 +1045,68 @@ export const questions: Question[] = [
           { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
         ],
         notes: "ご飯 alone (meal) instead of 晩ご飯/夕ご飯; けど; 作る.",
+      },
+      {
+        segments: [
+          { text: "野菜[やさい]はもう" },
+          {
+            text: " 洗[あら]う",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'u' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+          { text: "けど、 晩[ばん]ご 飯[はん]はまだ 作[つく]って" },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
+        ],
+        notes: "晩ご飯 + けど + 作る",
+      },
+      {
+        segments: [
+          { text: "もう 野菜[やさい]は" },
+          {
+            text: " 洗[あら]う",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'u' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+          { text: "けど、 夕[ゆう]ご 飯[はん]はまだ 作[つく]って" },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
+        ],
+        notes: "もう野菜は word order",
+      },
+      {
+        segments: [
+          { text: "野菜[やさい]はもう 洗[あら]ってありますけど、", blank: true },
+          { text: "夕[ゆう]ご 飯[はん]はまだ 作[つく]って" },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
+        ],
+        notes: "洗ってあります resultant-state phrasing",
+      },
+      {
+        segments: [
+          { text: "野菜[やさい]はもう" },
+          {
+            text: " 洗[あら]う",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'u' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+          { text: "けど、 夕飯[ゆうはん]はまだ 作[つく]って" },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
+        ],
+        notes: "夕飯 instead of 夕ご飯",
       },
     ],
   },
@@ -1302,6 +1332,23 @@ export const questions: Question[] = [
         ],
         notes: "まだ moved before 作文を, が conjunction, 雑誌は topic",
       },
+      {
+        segments: [
+          { text: "雑誌[ざっし]はもう 読[よ]んでありますけど、", blank: true },
+          { text: "作文[さくぶん]はまだ 書[か]いて" },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "読んであります resultant-state phrasing",
+      },
     ],
   },
   {
@@ -1323,23 +1370,7 @@ export const questions: Question[] = [
         ],
         notes: "コンサートは + もう word order",
       },
-      {
-        segments: [
-          { text: "もう", blank: true },
-          { text: "コンサートは" },
-          {
-            text: " 始[はじ]まる",
-            conjugation: {
-              pos: "Godan verb with 'ru' ending",
-              form: "normal",
-              polarity: "positive",
-              tense: "past",
-            },
-          },
-          { text: "か" },
-        ],
-        notes: "もう fronted for emphasis: もう + コンサートは + 始まった？",
-      },
+
       {
         segments: [
           { text: "コンサートがもう", blank: true },
@@ -1356,23 +1387,7 @@ export const questions: Question[] = [
         ],
         notes: "が instead of は: コンサートが + もう",
       },
-      {
-        segments: [
-          { text: "もう", blank: true },
-          { text: "コンサートが" },
-          {
-            text: " 始[はじ]まる",
-            conjugation: {
-              pos: "Godan verb with 'ru' ending",
-              form: "normal",
-              polarity: "positive",
-              tense: "past",
-            },
-          },
-          { text: "か" },
-        ],
-        notes: "もう fronted + が particle: もう + コンサートが + 始まった？",
-      },
+
       {
         segments: [
           { text: "コンサートはもう", blank: true },
@@ -1409,6 +1424,23 @@ export const questions: Question[] = [
         register: "casual",
         notes: "が + の soft question: コンサートがもう始まったの？",
       },
+      {
+        segments: [
+          { text: "コンサートはもう 始[はじ]まって", blank: true },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "始まっていますか",
+      },
     ],
   },
   {
@@ -1430,6 +1462,14 @@ export const questions: Question[] = [
           { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
         ],
         notes: "Explicit 私は subject added at the start",
+      },
+      {
+        segments: [
+          { text: "アンケートはまだ" },
+          { text: " 答[こた]えて", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
+        ],
+        notes: "アンケートは topic-marked",
       },
     ],
   },
@@ -1453,22 +1493,7 @@ export const questions: Question[] = [
         ],
         notes: "ゆきさんは as the topic",
       },
-      {
-        segments: [
-          { text: "ゆきさんがまだシャワーを" },
-          { text: " 浴[あ]びて", blank: true },
-          {
-            text: "いる", blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "negative",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "Using が instead of は as the subject particle",
-      },
+
       {
         segments: [
           { text: "ゆきさんはシャワーをまだ" },
@@ -1485,6 +1510,22 @@ export const questions: Question[] = [
         ],
         notes:
           "まだ placed after the object シャワーを, still natural Japanese",
+      },
+      {
+        segments: [
+          { text: "ゆきさんはまだシャワーに" },
+          { text: " 入[はい]って", blank: true },
+          {
+            text: "いる", blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "シャワーに入っていない",
       },
     ],
   },
@@ -1572,6 +1613,54 @@ export const questions: Question[] = [
           },
         ],
         notes: "私は at the start, with 今日まだ order",
+      },
+      {
+        segments: [
+          { text: "まだ 今日[きょう]は 日記[にっき]を 書[か]いて" },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "まだ今日は",
+      },
+      {
+        segments: [
+          { text: "今日[きょう]の 日記[にっき]はまだ 書[か]いて" },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "今日の日記はまだ",
+      },
+      {
+        segments: [
+          { text: "今日[きょう]はまだ 日記[にっき]を つけて" },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "日記をつける",
       },
     ],
   },
@@ -1775,6 +1864,42 @@ export const questions: Question[] = [
         ],
         notes: "シャワーは as the topic, やる instead of する",
       },
+      {
+        segments: [
+          { text: "シャワーはもう 済[す]ませましたけど、", blank: true },
+          { text: "まだ" },
+          { text: " 宿題[しゅくだい]を" },
+          { text: "して" },
+          {
+            text: "いる", blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "シャワーを済ませる",
+      },
+      {
+        segments: [
+          { text: "もうシャワーに 入[はい]りましたけど、", blank: true },
+          { text: "まだ" },
+          { text: " 宿題[しゅくだい]を" },
+          { text: "して" },
+          {
+            text: "いる", blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "シャワーに入る",
+      },
     ],
   },
   {
@@ -1800,30 +1925,7 @@ export const questions: Question[] = [
         ],
         notes: "Using テスト instead of 試験 for exam",
       },
-      {
-        segments: [
-          { text: "試験[しけん]は" },
-          { text: "まだ", blank: true },
-          { text: " 終[お]わって" },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
-          { text: "の" },
-          { text: "か" },
-        ],
-        register: "casual",
-        notes: "Casual の-question with 試験; softer inquiry tone",
-      },
-      {
-        segments: [
-          { text: "テストは" },
-          { text: "まだ", blank: true },
-          { text: " 終[お]わって" },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
-          { text: "の" },
-          { text: "か" },
-        ],
-        register: "casual",
-        notes: "テスト + の question",
-      },
+
     ],
   },
   {
@@ -1846,24 +1948,7 @@ export const questions: Question[] = [
         ],
         notes: "もう with past tense question",
       },
-      {
-        segments: [
-          { text: "はなさんはもう" },
-          {
-            text: " 寝[ね]る",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "past",
-            },
-          },
-          { text: "のか" },
-        ],
-        register: "casual",
-        notes: "のか ending for confirmation",
-      },
+
       {
         segments: [
           { text: "はなさんはもう" },
@@ -1885,40 +1970,20 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "もう" },
-          { text: "はなさんは" },
+          { text: "はなさんはもう 寝[ね]て", blank: true },
           {
-            text: " 寝[ね]る",
+            text: "いる",
             blank: true,
             conjugation: {
               pos: "Ichidan verb",
               form: "normal",
               polarity: "positive",
-              tense: "past",
+              tense: "non-past",
             },
           },
           { text: "か" },
         ],
-        notes: "もう at sentence start, before the topic は",
-      },
-      {
-        segments: [
-          { text: "もう" },
-          { text: "はなさんは" },
-          {
-            text: " 寝[ね]る",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "past",
-            },
-          },
-          { text: "のか" },
-        ],
-        register: "casual",
-        notes: "もう sentence-initial + のか confirmation question",
+        notes: "寝ていますか resultant-state phrasing",
       },
     ],
   },
@@ -1982,7 +2047,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "もうりくさんは 昼[ひる]ご 飯[はん]を" },
+          { text: "りくさんはもう お 昼[ひる]を" },
           {
             text: " 食[た]べる",
             blank: true,
@@ -1995,11 +2060,11 @@ export const questions: Question[] = [
           },
           { text: "か" },
         ],
-        notes: "もう fronted before りく for emphasis",
+        notes: "お昼 instead of 昼ご飯",
       },
       {
         segments: [
-          { text: "りくさんがもう 昼[ひる]ご 飯[はん]を" },
+          { text: "りくさんはもう 昼食[ちゅうしょく]を" },
           {
             text: " 食[た]べる",
             blank: true,
@@ -2012,8 +2077,7 @@ export const questions: Question[] = [
           },
           { text: "か" },
         ],
-        notes:
-          "Using が instead of は for りく — focuses on Riku as the subject of inquiry",
+        notes: "昼食 instead of 昼ご飯",
       },
     ],
   },
@@ -2092,6 +2156,22 @@ export const questions: Question[] = [
           { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
         ],
         notes: "を instead of は, with が",
+      },
+      {
+        segments: [
+          { text: "お 弁当[べんとう]はもう 買[か]いましたけど、", blank: true },
+          { text: "まだ 食[た]べて", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
+        ],
+        notes: "買いましたけど",
+      },
+      {
+        segments: [
+          { text: "お 弁当[べんとう]はもう 買[か]ってありますけど、", blank: true },
+          { text: "まだ 食[た]べて", blank: true },
+          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
+        ],
+        notes: "買ってあります resultant-state phrasing",
       },
     ],
   },
@@ -2196,6 +2276,55 @@ export const questions: Question[] = [
           },
         ],
         notes: "まだ after お金が + だから sentence connector",
+      },
+      {
+        segments: [
+          { text: "まだ", blank: true },
+          { text: "お 金[かね]があるので、お 土産[みやげ]を" },
+          {
+            text: " 買[か]う",
+            conjugation: {
+              pos: "Godan verb with 'u' ending",
+              form: "volitional",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "ので instead of から",
+      },
+      {
+        segments: [
+          { text: "お 金[かね]が" },
+          { text: "まだ", blank: true },
+          { text: "あるので、お 土産[みやげ]を" },
+          {
+            text: " 買[か]う",
+            conjugation: {
+              pos: "Godan verb with 'u' ending",
+              form: "volitional",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "お金がまだあるので",
+      },
+      {
+        segments: [
+          { text: "まだ", blank: true },
+          { text: "お 金[かね]が 残[のこ]っているから、お 土産[みやげ]を" },
+          {
+            text: " 買[か]う",
+            conjugation: {
+              pos: "Godan verb with 'u' ending",
+              form: "volitional",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "お金が残っている",
       },
     ],
   },
@@ -2315,6 +2444,63 @@ export const questions: Question[] = [
           },
         ],
         notes: "だから conjunction with を on 漢字, まだ after object",
+      },
+      {
+        segments: [
+          { text: "もう", blank: true },
+          { text: " 時間[じかん]がないから、" },
+          { text: "まだ", blank: true },
+          { text: " 漢字[かんじ]を 覚[おぼ]えて" },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "もう時間がないから",
+      },
+      {
+        segments: [
+          { text: "もう", blank: true },
+          { text: " 暇[ひま]な 時間[じかん]がないから、" },
+          { text: "まだ", blank: true },
+          { text: " 漢字[かんじ]を 覚[おぼ]えて" },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "もう暇な時間がないから",
+      },
+      {
+        segments: [
+          { text: "もう", blank: true },
+          { text: " 自由[じゆう]な 時間[じかん]がないから、" },
+          { text: "まだ", blank: true },
+          { text: " 漢字[かんじ]を 覚[おぼ]えて" },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "もう自由な時間がないから",
       },
     ],
   },
