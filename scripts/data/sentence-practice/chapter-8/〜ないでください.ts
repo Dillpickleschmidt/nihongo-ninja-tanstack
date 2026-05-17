@@ -40,6 +40,22 @@ export const questions: Question[] = [
         ],
         notes: "Without 私の",
       },
+      {
+        segments: [
+          { text: "テスト 中[ちゅう]に 私[わたし]の 辞書[じしょ]を" },
+          { text: "使[つか]わないで", blank: true },
+          { text: "ください", blank: true },
+        ],
+        notes: "テスト中に instead of テストで",
+      },
+      {
+        segments: [
+          { text: "テスト 中[ちゅう]に 辞書[じしょ]を" },
+          { text: "使[つか]わないで", blank: true },
+          { text: "ください", blank: true },
+        ],
+        notes: "テスト中に + without 私の",
+      },
     ],
   },
   {
@@ -92,6 +108,22 @@ export const questions: Question[] = [
         ],
         notes: "おやつ (snack/afternoon treat) instead of お菓子",
       },
+      {
+        segments: [
+          { text: "夕[ゆう]ご 飯[はん]の 前[まえ]に おやつを" },
+          { text: "食[た]べないで", blank: true },
+          { text: "ください", blank: true },
+        ],
+        notes: "夕ご飯 + おやつ",
+      },
+      {
+        segments: [
+          { text: "夕食[ゆうしょく]の 前[まえ]に おやつを" },
+          { text: "食[た]べないで", blank: true },
+          { text: "ください", blank: true },
+        ],
+        notes: "夕食 + おやつ",
+      },
     ],
   },
   {
@@ -103,6 +135,22 @@ export const questions: Question[] = [
           { text: "忘[わす]れないで", blank: true },
           { text: "ください", blank: true },
         ],
+      },
+      {
+        segments: [
+          { text: "明日[あした]の 朝[あさ]は 宿題[しゅくだい]を" },
+          { text: "忘[わす]れないで", blank: true },
+          { text: "ください", blank: true },
+        ],
+        notes: "明日の朝は",
+      },
+      {
+        segments: [
+          { text: "明日[あした]の 朝[あさ]に 宿題[しゅくだい]を" },
+          { text: "忘[わす]れないで", blank: true },
+          { text: "ください", blank: true },
+        ],
+        notes: "明日の朝に",
       },
     ],
   },
@@ -139,6 +187,14 @@ export const questions: Question[] = [
           { text: "ください", blank: true },
         ],
         notes: "ソファーの上で",
+      },
+      {
+        segments: [
+          { text: "ソファで" },
+          { text: "眠[ねむ]らないで", blank: true },
+          { text: "ください", blank: true },
+        ],
+        notes: "眠る instead of 寝る",
       },
     ],
   },
@@ -198,11 +254,11 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "クラスの 間[あいだ]は" },
-          { text: "寝[ね]ないで", blank: true },
+          { text: "授業[じゅぎょう]中[ちゅう]に" },
+          { text: "眠[ねむ]らないで", blank: true },
           { text: "ください", blank: true },
         ],
-        notes: "クラスの間は (during class)",
+        notes: "眠る instead of 寝る",
       },
     ],
   },
@@ -226,11 +282,11 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "映画[えいが]の 間[あいだ]" },
+          { text: "映画[えいが]を 見[み]ている 間[あいだ]に" },
           { text: "話[はな]さないで", blank: true },
           { text: "ください", blank: true },
         ],
-        notes: "Without に particle",
+        notes: "映画を見ている間に",
       },
       {
         segments: [
@@ -275,6 +331,22 @@ export const questions: Question[] = [
           { text: "ください", blank: true },
         ],
         notes: "〜ながら (while driving)",
+      },
+      {
+        segments: [
+          { text: "運転[うんてん]しながら スマホを" },
+          { text: "使[つか]わないで", blank: true },
+          { text: "ください", blank: true },
+        ],
+        notes: "〜ながら + スマホ",
+      },
+      {
+        segments: [
+          { text: "運転[うんてん]しながら 携帯[けいたい]電話[でんわ]を" },
+          { text: "使[つか]わないで", blank: true },
+          { text: "ください", blank: true },
+        ],
+        notes: "〜ながら + 携帯電話",
       },
       {
         segments: [
@@ -327,14 +399,6 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "勝手[かって]に 窓[まど]を" },
-          { text: "開[あ]けないで", blank: true },
-          { text: "ください", blank: true },
-        ],
-        notes: "勝手に (without permission) — natural one-clause phrasing",
-      },
-      {
-        segments: [
           { text: "先[さき]に 聞[き]かずに 窓[まど]を" },
           { text: "開[あ]けないで", blank: true },
           { text: "ください", blank: true },
@@ -362,15 +426,6 @@ export const questions: Question[] = [
           { text: "ください", blank: true },
         ],
         notes: "行く instead of 出かける",
-      },
-      {
-        segments: [
-          { text: "傘[かさ]を" },
-          { text: "忘[わす]れないで", blank: true },
-          { text: "ください", blank: true },
-        ],
-        notes:
-          "忘れないでください (don't forget) — natural idiomatic alternative",
       },
     ],
   },
@@ -436,6 +491,15 @@ export const questions: Question[] = [
       },
       {
         segments: [
+          { text: "スイカを" },
+          { text: "洗[あら]わないで", blank: true },
+          { text: "切[き]らないで", blank: true },
+          { text: "ください", blank: true },
+        ],
+        notes: "スイカ katakana spelling",
+      },
+      {
+        segments: [
           { text: "すいかを 洗[あら]わずに" },
           { text: "切[き]らないで", blank: true },
           { text: "ください", blank: true },
@@ -475,6 +539,16 @@ export const questions: Question[] = [
           { text: "ください", blank: true },
         ],
         notes: "朝食 (formal) instead of 朝ご飯",
+      },
+      {
+        segments: [
+          { text: "朝食[ちょうしょく]を" },
+          { text: "食[た]べないで", blank: true },
+          { text: "仕事[しごと]へ" },
+          { text: "行[い]かないで", blank: true },
+          { text: "ください", blank: true },
+        ],
+        notes: "朝食 + へ",
       },
       {
         segments: [
@@ -520,11 +594,13 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "言[い]わずに 電気[でんき]を" },
+          { text: "私[わたし]に 何[なに]も" },
+          { text: "言[い]わないで", blank: true },
+          { text: "電気[でんき]を" },
           { text: "消[け]さないで", blank: true },
           { text: "ください", blank: true },
         ],
-        notes: "〜ずに alternative for \"without telling\"",
+        notes: "何も言わないで (without saying anything)",
       },
       {
         segments: [
@@ -569,6 +645,16 @@ export const questions: Question[] = [
       },
       {
         segments: [
+          { text: "私[わたし]を" },
+          { text: "待[ま]たないで", blank: true },
+          { text: "先[さき]に" },
+          { text: "帰[かえ]らないで", blank: true },
+          { text: "ください", blank: true },
+        ],
+        notes: "先に帰る (go home ahead/first)",
+      },
+      {
+        segments: [
           { text: "私[わたし]を 待[ま]たずに" },
           { text: "帰[かえ]らないで", blank: true },
           { text: "ください", blank: true },
@@ -602,6 +688,14 @@ export const questions: Question[] = [
           { text: "ください", blank: true },
         ],
         notes: "ここでは (topic emphasis)",
+      },
+      {
+        segments: [
+          { text: "ここで 写真[しゃしん]を" },
+          { text: "撮影[さつえい]しないで", blank: true },
+          { text: "ください", blank: true },
+        ],
+        notes: "撮影する (formal)",
       },
     ],
   },
@@ -646,6 +740,22 @@ export const questions: Question[] = [
           { text: "ください", blank: true },
         ],
         notes: "Without 私の",
+      },
+      {
+        segments: [
+          { text: "私[わたし]の 部屋[へや]には" },
+          { text: "入[はい]らないで", blank: true },
+          { text: "ください", blank: true },
+        ],
+        notes: "には (topic/contrast emphasis)",
+      },
+      {
+        segments: [
+          { text: "部屋[へや]には" },
+          { text: "入[はい]らないで", blank: true },
+          { text: "ください", blank: true },
+        ],
+        notes: "Without 私の + には",
       },
     ],
   },
@@ -694,6 +804,15 @@ export const questions: Question[] = [
         ],
         notes: "先に fronted before 歌を",
       },
+      {
+        segments: [
+          { text: "その 歌[うた]を" },
+          { text: "聞[き]かないで", blank: true },
+          { text: "歌[うた]わないで", blank: true },
+          { text: "ください", blank: true },
+        ],
+        notes: "その歌 (the song) explicit",
+      },
     ],
   },
   {
@@ -713,6 +832,14 @@ export const questions: Question[] = [
           { text: "ください", blank: true },
         ],
         notes: "毎日は (topic emphasis)",
+      },
+      {
+        segments: [
+          { text: "毎日[まいにち] 残業[ざんぎょう]を" },
+          { text: "しないで", blank: true },
+          { text: "ください", blank: true },
+        ],
+        notes: "残業をする with を",
       },
     ],
   },
