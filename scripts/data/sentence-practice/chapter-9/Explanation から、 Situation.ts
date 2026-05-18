@@ -492,59 +492,11 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "ゆきさんが まだ 寝[ね]ている" },
-          { text: "から", blank: true },
-          { text: "、電気[でんき]を つけないでください" },
-        ],
-        notes: "Using が to neutrally identify Yuki as the one sleeping",
-      },
-      {
-        segments: [
-          { text: "まだ ゆきさんは 寝[ね]ている" },
-          { text: "から", blank: true },
-          { text: "、電気[でんき]を つけないでください" },
-        ],
-        notes: "Adverb まだ placed at the beginning of the reason clause",
-      },
-      {
-        segments: [
-          { text: "まだ ゆきさんが 寝[ね]ている" },
-          { text: "から", blank: true },
-          { text: "、電気[でんき]を つけないでください" },
-        ],
-        notes: "Adverb まだ first, with が marking the subject",
-      },
-      {
-        segments: [
           { text: "ゆきさんは まだ 寝[ね]ている" },
           { text: "から", blank: true },
           { text: "、電気[でんき] つけないでください" },
         ],
         notes: "Casual particle drop: omitting を after 電気",
-      },
-      {
-        segments: [
-          { text: "ゆきさんが まだ 寝[ね]ている" },
-          { text: "から", blank: true },
-          { text: "、電気[でんき] つけないでください" },
-        ],
-        notes: "Using が for Yuki and dropping を after 電気",
-      },
-      {
-        segments: [
-          { text: "まだ ゆきさんは 寝[ね]ている" },
-          { text: "から", blank: true },
-          { text: "、電気[でんき] つけないでください" },
-        ],
-        notes: "Adverb first and object particle を omitted",
-      },
-      {
-        segments: [
-          { text: "まだ ゆきさんが 寝[ね]ている" },
-          { text: "から", blank: true },
-          { text: "、電気[でんき] つけないでください" },
-        ],
-        notes: "Adverb first, が subject marker, and を omitted",
       },
     ],
   },
@@ -791,6 +743,57 @@ export const questions: Question[] = [
         ],
         notes: "Explicit subject and テスト, with 'answer(s)' as object.",
       },
+      {
+        segments: [
+          { text: "昨日[きのう]の 試験[しけん]は 難[むずか]しかった" },
+          { text: "から", blank: true },
+          { text: "、一[ひと]つも " },
+          {
+            text: "答[こた]える",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "negative",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "Uses 一つも for 'not even one'.",
+      },
+      {
+        segments: [
+          { text: "昨日[きのう]の テストは 難[むずか]しかった" },
+          { text: "から", blank: true },
+          { text: "、一問[いちもん]も " },
+          {
+            text: "答[こた]える",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "negative",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "Uses 一問も for 'not a single question' in a test context.",
+      },
+      {
+        segments: [
+          { text: "昨日[きのう]の 試験[しけん]は 難[むずか]しかった" },
+          { text: "から", blank: true },
+          { text: "、何[なに]も " },
+          {
+            text: "解答[かいとう]する",
+            conjugation: {
+              pos: "Suru verb - compound word",
+              form: "normal",
+              polarity: "negative",
+              tense: "past",
+            },
+          },
+        ],
+        notes: "Formal exam-context verb 解答する.",
+      },
     ],
   },
   {
@@ -1035,6 +1038,74 @@ export const questions: Question[] = [
         ],
         notes: "Using 今日のランチ as topic",
       },
+      {
+        segments: [
+          { text: "この レストランは " },
+          { text: "有名[ゆうめい]だから", blank: true },
+          { text: "、今日[きょう]は ここで お 昼[ひる]ご飯[はん]を " },
+          {
+            text: "食[た]べる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "volitional",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Using お昼ご飯 for lunch",
+      },
+      {
+        segments: [
+          { text: "この レストランは " },
+          { text: "有名[ゆうめい]だから", blank: true },
+          { text: "、今日[きょう]は ここで 昼食[ちゅうしょく]を " },
+          {
+            text: "食[た]べる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "volitional",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Using 昼食 for lunch",
+      },
+      {
+        segments: [
+          { text: "この レストランは " },
+          { text: "有名[ゆうめい]だから", blank: true },
+          { text: "、今日[きょう]の お 昼[ひる]は ここで " },
+          {
+            text: "食[た]べる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "volitional",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Using 今日のお昼 as the topic",
+      },
+      {
+        segments: [
+          { text: "ここは " },
+          { text: "有名[ゆうめい]な レストランだから", blank: true },
+          { text: "、今日[きょう]は ここで ランチを " },
+          {
+            text: "食[た]べる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "volitional",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Paraphrase with ランチ",
+      },
     ],
   },
   {
@@ -1215,6 +1286,78 @@ export const questions: Question[] = [
           },
         ],
         notes: "Explicitly says with Kenji, using のがじょうず",
+      },
+      {
+        segments: [
+          { text: "健二[けんじ]さんは 歌[うた]が 上手[じょうず]" },
+          { text: "だから", blank: true },
+          { text: "、今晩[こんばん] カラオケに 一緒[いっしょ]に " },
+          {
+            text: "行[い]く",
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "volitional",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Places 一緒に after カラオケに",
+      },
+      {
+        segments: [
+          { text: "健二[けんじ]さんは 歌[うた]うのが 上手[じょうず]" },
+          { text: "だから", blank: true },
+          { text: "、今晩[こんばん] カラオケに 一緒[いっしょ]に " },
+          {
+            text: "行[い]く",
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "volitional",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "のがじょうず with 一緒に after カラオケに",
+      },
+      {
+        segments: [
+          { text: "健二[けんじ]さんは 歌[うた]が 上手[じょうず]" },
+          { text: "だから", blank: true },
+          {
+            text: "、今夜[こんや] 健二[けんじ]さんと 一緒[いっしょ]に カラオケに ",
+          },
+          {
+            text: "行[い]く",
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "volitional",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "今夜 with explicit 健二さんと一緒に",
+      },
+      {
+        segments: [
+          { text: "健二[けんじ]さんは 歌[うた]うのが 上手[じょうず]" },
+          { text: "だから", blank: true },
+          {
+            text: "、今夜[こんや] 健二[けんじ]さんと 一緒[いっしょ]に カラオケに ",
+          },
+          {
+            text: "行[い]く",
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "volitional",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "今夜 with explicit 健二さんと一緒に and のがじょうず",
       },
     ],
   },
@@ -1833,6 +1976,74 @@ export const questions: Question[] = [
         ],
         notes: "Rephrased reason with 母 and topicalized 夕ご飯",
       },
+      {
+        segments: [
+          { text: "明日[あした]は 母[はは]の 誕生日[たんじょうび]" },
+          { text: "だから", blank: true },
+          { text: "、夕食[ゆうしょく]を " },
+          {
+            text: "作[つく]る",
+            conjugation: {
+              pos: "Godan verb with 'ru' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Using 夕食 for dinner",
+      },
+      {
+        segments: [
+          { text: "明日[あした]は 母[はは]の 誕生日[たんじょうび]" },
+          { text: "だから", blank: true },
+          { text: "、晩[ばん]ご 飯[はん]を 作[つく]って" },
+          {
+            text: "あげる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "作ってあげる adds natural 'for her' nuance from the birthday context",
+      },
+      {
+        segments: [
+          { text: "明日[あした]は 母[はは]の 誕生日[たんじょうび]" },
+          { text: "だから", blank: true },
+          { text: "、母[はは]に 晩[ばん]ご 飯[はん]を 作[つく]って" },
+          {
+            text: "あげる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Explicitly says making dinner for mother",
+      },
+      {
+        segments: [
+          { text: "明日[あした]は 母[はは]の 誕生日[たんじょうび]" },
+          { text: "だから", blank: true },
+          { text: "、夕食[ゆうしょく]を 作[つく]って" },
+          {
+            text: "あげる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "夕食 with 作ってあげる",
+      },
     ],
   },
   {
@@ -1945,24 +2156,6 @@ export const questions: Question[] = [
           },
         ],
         notes: "Moving 今日 to main clause and using 公園で",
-      },
-      {
-        segments: [
-          { text: "今日[きょう]は " },
-          { text: "天気[てんき]が " },
-          { text: "よいから", blank: true },
-          { text: "、昼[ひる]ご 飯[はん]の 後[あと]で 公園[こうえん]を " },
-          {
-            text: "散歩[さんぽ]する",
-            conjugation: {
-              pos: "Suru verb - compound word",
-              form: "volitional",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "Blank includes the full reason phrase 天気がよいから",
       },
       {
         segments: [
@@ -2260,6 +2453,131 @@ export const questions: Question[] = [
         ],
         notes: "食べた後に with destination へ",
       },
+      {
+        segments: [
+          { text: "今日[きょう]は 天気[てんき]が " },
+          { text: "いいから", blank: true },
+          { text: "、昼[ひる]ご 飯[はん]の 後[あと]で 公園[こうえん]を " },
+          {
+            text: "散歩[さんぽ]する",
+            conjugation: {
+              pos: "Suru verb - compound word",
+              form: "volitional",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Uses conversational いい instead of よい",
+      },
+      {
+        segments: [
+          { text: "今日[きょう]は 天気[てんき]が " },
+          { text: "いいから", blank: true },
+          { text: "、昼[ひる]ご 飯[はん]の 後[あと]で 公園[こうえん]で " },
+          {
+            text: "散歩[さんぽ]する",
+            conjugation: {
+              pos: "Suru verb - compound word",
+              form: "volitional",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "いいから with 公園で散歩する",
+      },
+      {
+        segments: [
+          { text: "今日[きょう]は 天気[てんき]が " },
+          { text: "いいから", blank: true },
+          { text: "、昼[ひる]ご 飯[はん]の 後[あと]に 公園[こうえん]を " },
+          {
+            text: "散歩[さんぽ]する",
+            conjugation: {
+              pos: "Suru verb - compound word",
+              form: "volitional",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "いいから with 後に",
+      },
+      {
+        segments: [
+          { text: "今日[きょう]は 天気[てんき]が " },
+          { text: "いいから", blank: true },
+          {
+            text: "、昼[ひる]ご 飯[はん]を 食[た]べた 後[あと]で 公園[こうえん]を ",
+          },
+          {
+            text: "散歩[さんぽ]する",
+            conjugation: {
+              pos: "Suru verb - compound word",
+              form: "volitional",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "いいから with 食べた後で",
+      },
+      {
+        segments: [
+          { text: "今日[きょう]は 天気[てんき]が " },
+          { text: "いいから", blank: true },
+          {
+            text: "、昼[ひる]ご 飯[はん]の 後[あと]で 公園[こうえん]に 散歩[さんぽ]に ",
+          },
+          {
+            text: "行[い]く",
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "volitional",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "いいから with 公園に散歩に行く",
+      },
+      {
+        segments: [
+          { text: "今日[きょう]は 天気[てんき]が " },
+          { text: "いいから", blank: true },
+          {
+            text: "、昼[ひる]ご 飯[はん]の 後[あと]で 公園[こうえん]へ 散歩[さんぽ]に ",
+          },
+          {
+            text: "行[い]く",
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "volitional",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "いいから with 公園へ散歩に行く",
+      },
+      {
+        segments: [
+          { text: "今日[きょう]の 天気[てんき]は " },
+          { text: "いいから", blank: true },
+          { text: "、昼[ひる]ご 飯[はん]の 後[あと]で 公園[こうえん]を " },
+          {
+            text: "散歩[さんぽ]する",
+            conjugation: {
+              pos: "Suru verb - compound word",
+              form: "volitional",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "今日の天気はいいから",
+      },
     ],
   },
   {
@@ -2269,37 +2587,15 @@ export const questions: Question[] = [
         segments: [
           { text: "教科書[きょうかしょ]を 忘[わす]れた" },
           { text: "から", blank: true },
-          { text: "、この 辞書[じしょ]を 使[つか]っても" },
-          {
-            text: "よい",
-            conjugation: {
-              pos: "I-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "です" },
-          { text: "か" },
+          { text: "、この 辞書[じしょ]を 使[つか]っても いいですか" },
         ],
-        notes: "Uses この辞書を and 使ってもよいですか."
+        notes: "Uses この辞書を and 使ってもいいですか.",
       },
       {
         segments: [
           { text: "私[わたし]の 教科書[きょうかしょ]を 忘[わす]れた" },
           { text: "から", blank: true },
-          { text: "、この 辞書[じしょ]を 使[つか]っても" },
-          {
-            text: "よい",
-            conjugation: {
-              pos: "I-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "です" },
-          { text: "か" },
+          { text: "、この 辞書[じしょ]を 使[つか]っても いいですか" },
         ],
         notes: "Explicitly says my textbook with 私の",
       },
@@ -2307,18 +2603,7 @@ export const questions: Question[] = [
         segments: [
           { text: "私[わたし]は 教科書[きょうかしょ]を 忘[わす]れた" },
           { text: "から", blank: true },
-          { text: "、この 辞書[じしょ]を 使[つか]っても" },
-          {
-            text: "よい",
-            conjugation: {
-              pos: "I-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "です" },
-          { text: "か" },
+          { text: "、この 辞書[じしょ]を 使[つか]っても いいですか" },
         ],
         notes: "Explicit subject 私は at the beginning",
       },
@@ -2329,7 +2614,7 @@ export const questions: Question[] = [
           { text: "、この 辞書[じしょ]を 使[つか]っても かまわない" },
           { text: "か" },
         ],
-        notes: "Uses てもかまわない instead of てもよい",
+        notes: "Uses てもかまわない instead of てもいい",
       },
       {
         segments: [
@@ -2353,18 +2638,7 @@ export const questions: Question[] = [
         segments: [
           { text: "教科書[きょうかしょ]を 忘[わす]れた" },
           { text: "から", blank: true },
-          { text: "、この 辞書[じしょ]、使[つか]っても" },
-          {
-            text: "よい",
-            conjugation: {
-              pos: "I-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "です" },
-          { text: "か" },
+          { text: "、この 辞書[じしょ]、使[つか]っても いいですか" },
         ],
         notes: "Natural casual dropped を after この辞書",
       },
@@ -2376,6 +2650,38 @@ export const questions: Question[] = [
           { text: "か" },
         ],
         notes: "Dropped を after この辞書 with てもかまわない",
+      },
+      {
+        segments: [
+          { text: "教科書[きょうかしょ]を 忘[わす]れた" },
+          { text: "から", blank: true },
+          { text: "、この 辞書[じしょ]を 使[つか]っても かまいませんか" },
+        ],
+        notes: "Uses polite てもかまいませんか",
+      },
+      {
+        segments: [
+          { text: "私[わたし]の 教科書[きょうかしょ]を 忘[わす]れた" },
+          { text: "から", blank: true },
+          { text: "、この 辞書[じしょ]を 使[つか]っても かまいませんか" },
+        ],
+        notes: "Explicitly says my textbook with てもかまいませんか",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は 教科書[きょうかしょ]を 忘[わす]れた" },
+          { text: "から", blank: true },
+          { text: "、この 辞書[じしょ]を 使[つか]っても かまいませんか" },
+        ],
+        notes: "Explicit subject 私は with てもかまいませんか",
+      },
+      {
+        segments: [
+          { text: "教科書[きょうかしょ]を 忘[わす]れた" },
+          { text: "から", blank: true },
+          { text: "、この 辞書[じしょ]、使[つか]っても かまいませんか" },
+        ],
+        notes: "Dropped を after この辞書 with てもかまいませんか",
       },
     ],
   },
@@ -2658,6 +2964,74 @@ export const questions: Question[] = [
           },
         ],
         notes: "Using には to topicalize going to school",
+      },
+      {
+        segments: [
+          { text: "電車[でんしゃ]は " },
+          { text: "速[はや]くて 便利[べんり]だから", blank: true },
+          { text: "、私[わたし]は いつも 電車[でんしゃ]に 乗[の]って 学校[がっこう]に " },
+          {
+            text: "行[い]く",
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Uses 電車に乗って for by train",
+      },
+      {
+        segments: [
+          { text: "電車[でんしゃ]は " },
+          { text: "速[はや]くて 便利[べんり]だから", blank: true },
+          { text: "、いつも 電車[でんしゃ]に 乗[の]って 学校[がっこう]に " },
+          {
+            text: "行[い]く",
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Omitted subject with 電車に乗って",
+      },
+      {
+        segments: [
+          { text: "電車[でんしゃ]は " },
+          { text: "速[はや]くて 便利[べんり]だから", blank: true },
+          { text: "、私[わたし]は いつも 電車[でんしゃ]で 学校[がっこう]に " },
+          {
+            text: "通[かよ]っている",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Uses 学校に通っている for habitual commuting to school",
+      },
+      {
+        segments: [
+          { text: "電車[でんしゃ]は " },
+          { text: "速[はや]くて 便利[べんり]だから", blank: true },
+          { text: "、私[わたし]は いつも 電車[でんしゃ]で " },
+          {
+            text: "通学[つうがく]している",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Uses 電車で通学している for habitual commute",
       },
     ],
   },
@@ -3008,6 +3382,74 @@ export const questions: Question[] = [
         ],
         notes: "Uses は for both the reason-clause topic and the report topic.",
       },
+      {
+        segments: [
+          { text: "兄[あに]が 今[いま] コンピューターを " },
+          { text: "使[つか]っているから", blank: true },
+          { text: "、私[わたし]は 後[あと]で 報告書[ほうこくしょ]を " },
+          {
+            text: "書[か]く",
+            conjugation: {
+              pos: "Godan verb with 'ku' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Uses 報告書 for report.",
+      },
+      {
+        segments: [
+          { text: "兄[あに]が 今[いま] パソコンを " },
+          { text: "使[つか]っているから", blank: true },
+          { text: "、私[わたし]は 後[あと]で 報告書[ほうこくしょ]を " },
+          {
+            text: "書[か]く",
+            conjugation: {
+              pos: "Godan verb with 'ku' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Uses パソコン and 報告書.",
+      },
+      {
+        segments: [
+          { text: "兄[あに]が 今[いま] コンピューターを " },
+          { text: "使[つか]っているから", blank: true },
+          { text: "、私[わたし]は あとで レポートを " },
+          {
+            text: "書[か]く",
+            conjugation: {
+              pos: "Godan verb with 'ku' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Uses kana あとで.",
+      },
+      {
+        segments: [
+          { text: "兄[あに]が 今[いま] パソコンを " },
+          { text: "使[つか]っているから", blank: true },
+          { text: "、私[わたし]は あとで レポートを " },
+          {
+            text: "書[か]く",
+            conjugation: {
+              pos: "Godan verb with 'ku' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Uses パソコン and kana あとで.",
+      },
     ],
   },
   {
@@ -3080,11 +3522,59 @@ export const questions: Question[] = [
         ],
         notes: "Topicalizes both vegetables and meat for contrast.",
       },
+      {
+        segments: [
+          { text: "野菜[やさい]は もう " },
+          { text: "洗[あら]ったから", blank: true },
+          { text: "、肉[にく]を 切[き]ってください" },
+        ],
+        notes: "Topicalizes vegetables and omits 私.",
+      },
+      {
+        segments: [
+          { text: "野菜[やさい]は もう " },
+          { text: "洗[あら]ったから", blank: true },
+          { text: "、肉[にく]は 切[き]ってください" },
+        ],
+        notes: "Topicalizes both vegetables and meat, omitting 私.",
+      },
+      {
+        segments: [
+          { text: "野菜[やさい]は もう " },
+          { text: "洗[あら]ってあるから", blank: true },
+          { text: "、肉[にく]を 切[き]ってください" },
+        ],
+        notes: "Resultant-state 洗ってある: the vegetables are already washed.",
+      },
+      {
+        segments: [
+          { text: "野菜[やさい]は もう " },
+          { text: "洗[あら]ってあるから", blank: true },
+          { text: "、肉[にく]は 切[き]ってください" },
+        ],
+        notes: "Resultant-state 洗ってある with 肉は.",
+      },
+      {
+        segments: [
+          { text: "野菜[やさい]は もう " },
+          { text: "洗[あら]ってありますから", blank: true },
+          { text: "、肉[にく]を 切[き]ってください" },
+        ],
+        notes: "Polite resultant-state 洗ってありますから.",
+      },
+      {
+        segments: [
+          { text: "野菜[やさい]は もう " },
+          { text: "洗[あら]ってありますから", blank: true },
+          { text: "、肉[にく]は 切[き]ってください" },
+        ],
+        notes: "Polite resultant-state 洗ってありますから with 肉は.",
+      },
     ],
   },
   {
     english:
-      "Because my father is a doctor, my father works late at the hospital every night.",
+      "Because my father is a doctor, he works late at the hospital every night.",
     answers: [
       {
         segments: [
@@ -3102,7 +3592,7 @@ export const questions: Question[] = [
           },
         ],
         notes:
-          "Standard phrasing with 父 as the topic and 毎晩 before the place.",
+          "Standard phrasing with 父 as the topic and omitted subject in the main clause.",
       },
       {
         segments: [
@@ -3161,9 +3651,7 @@ export const questions: Question[] = [
         segments: [
           { text: "父[ちち]が 医者[いしゃ]" },
           { text: "だから", blank: true },
-          {
-            text: "、父[ちち]は 毎晩[まいばん] 病院[びょういん]で 遅[おそ]くまで ",
-          },
+          { text: "、毎晩[まいばん] 病院[びょういん]で 遅[おそ]くまで " },
           {
             text: "働[はたら]く",
             conjugation: {
@@ -3174,28 +3662,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes:
-          "Uses が in the reason clause and repeats 父 in the main clause, matching the English repetition more closely.",
-      },
-      {
-        segments: [
-          { text: "父[ちち]は 医者[いしゃ]" },
-          { text: "だから", blank: true },
-          {
-            text: "、父[ちち]は 毎晩[まいばん] 病院[びょういん]で 遅[おそ]くまで ",
-          },
-          {
-            text: "働[はたら]く",
-            conjugation: {
-              pos: "Godan verb with 'ku' ending",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes:
-          "Repeats 父 as the subject of the main clause, closely reflecting the English sentence.",
+        notes: "Uses が in the reason clause while omitting the main-clause subject.",
       },
       {
         segments: [
@@ -3234,22 +3701,71 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "私[わたし]の 父[ちち]が 医者[いしゃ]" },
+          { text: "父[ちち]は 医者[いしゃ]" },
           { text: "だから", blank: true },
+          { text: "、毎晩[まいばん] 病院[びょういん]で 遅[おそ]くまで 勤[つと]めて" },
           {
-            text: "、父[ちち]は 毎晩[まいばん] 病院[びょういん]で 遅[おそ]くまで ",
-          },
-          {
-            text: "働[はたら]く",
+            text: "いる",
             conjugation: {
-              pos: "Godan verb with 'ku' ending",
+              pos: "Ichidan verb",
               form: "normal",
               polarity: "positive",
               tense: "non-past",
             },
           },
         ],
-        notes: "Uses が in the explicit 'my father is a doctor' reason clause.",
+        notes: "Uses 勤めている for working at an institution.",
+      },
+      {
+        segments: [
+          { text: "父[ちち]は 医者[いしゃ]" },
+          { text: "だから", blank: true },
+          { text: "、病院[びょういん]で 毎晩[まいばん] 遅[おそ]くまで 勤[つと]めて" },
+          {
+            text: "いる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "勤めている with location before time.",
+      },
+      {
+        segments: [
+          { text: "父[ちち]は 医者[いしゃ]" },
+          { text: "だから", blank: true },
+          { text: "、毎晩[まいばん] 病院[びょういん]で 遅[おそ]くまで 勤務[きんむ]して" },
+          {
+            text: "いる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Uses 勤務している for working/being on duty.",
+      },
+      {
+        segments: [
+          { text: "私[わたし]の 父[ちち]は 医者[いしゃ]" },
+          { text: "だから", blank: true },
+          { text: "、毎晩[まいばん] 病院[びょういん]で 遅[おそ]くまで 働[はたら]いて" },
+          {
+            text: "いる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Uses 働いている for habitual work.",
       },
     ],
   },
@@ -3514,6 +4030,22 @@ export const questions: Question[] = [
         ],
         notes: "雨が 今 order with the come-carry phrasing.",
       },
+      {
+        segments: [
+          { text: "雨[あめ]が" },
+          { text: "降[ふ]っているから", blank: true },
+          { text: "、傘[かさ]を 駅[えき]に 持[も]ってきてください" },
+        ],
+        notes: "Omits 今 when current rain is contextually implied.",
+      },
+      {
+        segments: [
+          { text: "今[いま] 雨[あめ]" },
+          { text: "だから", blank: true },
+          { text: "、傘[かさ]を 駅[えき]に 持[も]ってきてください" },
+        ],
+        notes: "Uses 今雨だから instead of 雨が降っているから.",
+      },
     ],
   },
   {
@@ -3712,6 +4244,86 @@ export const questions: Question[] = [
         ],
         notes: "Uses contrastive は with 魚",
       },
+      {
+        segments: [
+          { text: "妹[いもうと]は 魚[さかな]が" },
+          { text: "嫌[きら]いだから", blank: true },
+          {
+            text: "、今晩[こんばん]、私[わたし]は 鶏肉料理[とりにくりょうり]を 作[つく]る",
+            conjugation: {
+              pos: "Godan verb with 'ru' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Uses natural 鶏肉料理を作る.",
+      },
+      {
+        segments: [
+          { text: "妹[いもうと]は 魚[さかな]が" },
+          { text: "大嫌[だいきら]いだから", blank: true },
+          {
+            text: "、今晩[こんばん]、私[わたし]は 鶏肉料理[とりにくりょうり]を 作[つく]る",
+            conjugation: {
+              pos: "Godan verb with 'ru' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "大嫌い with 鶏肉料理を作る.",
+      },
+      {
+        segments: [
+          { text: "妹[いもうと]は 魚[さかな]が" },
+          { text: "嫌[きら]いだから", blank: true },
+          {
+            text: "、今夜[こんや]、私[わたし]は 鶏肉料理[とりにくりょうり]を 作[つく]る",
+            conjugation: {
+              pos: "Godan verb with 'ru' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "今夜 with 鶏肉料理を作る.",
+      },
+      {
+        segments: [
+          { text: "妹[いもうと]は 魚[さかな]が" },
+          { text: "嫌[きら]いだから", blank: true },
+          {
+            text: "、今晩[こんばん]、私[わたし]は 鶏肉[とりにく]を 使[つか]った 料理[りょうり]を 作[つく]る",
+            conjugation: {
+              pos: "Godan verb with 'ru' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Uses 鶏肉を使った料理を作る.",
+      },
+      {
+        segments: [
+          { text: "妹[いもうと]は 魚[さかな]が" },
+          { text: "大嫌[だいきら]いだから", blank: true },
+          {
+            text: "、今晩[こんばん]、私[わたし]は 鶏肉[とりにく]を 使[つか]った 料理[りょうり]を 作[つく]る",
+            conjugation: {
+              pos: "Godan verb with 'ru' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "大嫌い with 鶏肉を使った料理を作る.",
+      },
     ],
   },
   {
@@ -3768,15 +4380,6 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "信号[しんごう]が " },
-          { text: "赤[あか]いから", blank: true },
-          { text: "、待[ま]ってください、ここで" },
-        ],
-        notes:
-          "Reversed order of the location phrase; acceptable spoken emphasis",
-      },
-      {
-        segments: [
-          { text: "信号[しんごう]が " },
           { text: "赤[あか]だから", blank: true },
           { text: "、ここで 待[ま]ってください" },
         ],
@@ -3789,6 +4392,22 @@ export const questions: Question[] = [
           { text: "、ここで 待[ま]ってください" },
         ],
         notes: "赤 as a noun with topic は",
+      },
+      {
+        segments: [
+          { text: "信号[しんごう]が " },
+          { text: "赤[あか]ですから", blank: true },
+          { text: "、ここで 待[ま]ってください" },
+        ],
+        notes: "Polite reason clause 赤ですから with が.",
+      },
+      {
+        segments: [
+          { text: "信号[しんごう]は " },
+          { text: "赤[あか]ですから", blank: true },
+          { text: "、ここで 待[ま]ってください" },
+        ],
+        notes: "Polite reason clause 赤ですから with は.",
       },
     ],
   },
@@ -4560,46 +5179,63 @@ export const questions: Question[] = [
         ],
         notes: "Places 今夜は before explicit 私は.",
       },
+      {
+        segments: [
+          { text: "明日[あした] テストが" },
+          { text: "あるから", blank: true },
+          { text: "、今晩[こんばん] ゲームを" },
+          {
+            text: "やる",
+            conjugation: {
+              pos: "Godan verb with 'ru' ending",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Uses ゲームをやる for playing games.",
+      },
+      {
+        segments: [
+          { text: "明日[あした] テストが" },
+          { text: "あるから", blank: true },
+          { text: "、今夜[こんや] ゲームを" },
+          {
+            text: "やる",
+            conjugation: {
+              pos: "Godan verb with 'ru' ending",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Uses 今夜 and ゲームをやる.",
+      },
+      {
+        segments: [
+          { text: "明日[あした]は テストが" },
+          { text: "あるから", blank: true },
+          { text: "、今晩[こんばん] ゲームを" },
+          {
+            text: "やる",
+            conjugation: {
+              pos: "Godan verb with 'ru' ending",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Uses 明日は and ゲームをやる.",
+      },
     ],
   },
   {
     english: "Because the party is lively, everyone is dancing in the room.",
     hint: "party = パーティー",
     answers: [
-      {
-        segments: [
-          { text: "パーティーは " },
-          { text: "にぎやかだから", blank: true },
-          { text: "、皆[みんな]が 部屋[へや]で 踊[おど]って" },
-          {
-            text: "いる",
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "Standard translation with パーティーは and 皆が as the subject",
-      },
-      {
-        segments: [
-          { text: "パーティーが " },
-          { text: "にぎやかだから", blank: true },
-          { text: "、皆[みんな]が 部屋[へや]で 踊[おど]って" },
-          {
-            text: "いる",
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "Using が for the party as the subject/focus",
-      },
       {
         segments: [
           { text: "パーティーは " },
@@ -4633,40 +5269,6 @@ export const questions: Question[] = [
           },
         ],
         notes: "Using が for パーティー and 皆が for everyone as the subject",
-      },
-      {
-        segments: [
-          { text: "パーティーは " },
-          { text: "にぎやかだから", blank: true },
-          { text: "、部屋[へや]で 皆[みんな]が 踊[おど]って" },
-          {
-            text: "いる",
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "Reordered location before subject in the second clause",
-      },
-      {
-        segments: [
-          { text: "パーティーが " },
-          { text: "にぎやかだから", blank: true },
-          { text: "、部屋[へや]で 皆[みんな]が 踊[おど]って" },
-          {
-            text: "いる",
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "Reordered second clause with が marking パーティー",
       },
       {
         segments: [
@@ -4770,6 +5372,57 @@ export const questions: Question[] = [
         ],
         notes: "Using 皆で, 部屋の中で, and が for パーティー",
       },
+      {
+        segments: [
+          { text: "パーティーは " },
+          { text: "にぎやかだから", blank: true },
+          { text: "、みんな 部屋[へや]で 踊[おど]って" },
+          {
+            text: "いる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Uses みんな without が.",
+      },
+      {
+        segments: [
+          { text: "パーティーが " },
+          { text: "にぎやかだから", blank: true },
+          { text: "、みんな 部屋[へや]で 踊[おど]って" },
+          {
+            text: "いる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "が for パーティー with みんな without が.",
+      },
+      {
+        segments: [
+          { text: "パーティーは " },
+          { text: "にぎやかだから", blank: true },
+          { text: "、みんなで 部屋[へや]で 踊[おど]って" },
+          {
+            text: "いる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Uses みんなで 部屋で.",
+      },
     ],
   },
   {
@@ -4812,10 +5465,10 @@ export const questions: Question[] = [
         segments: [
           { text: "今晩[こんばん]は 寒[さむ]い" },
           { text: "から", blank: true },
-          { text: "、窓[まど]を 閉[し]めてくださいませんか" },
+          { text: "、窓[まど]を 閉[し]めてもらえませんか" },
         ],
         notes:
-          "More polite request with てくださいませんか while retaining the reason clause.",
+          "Polite request with てもらえませんか while retaining the reason clause.",
       },
       {
         segments: [
@@ -4827,13 +5480,11 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          {
-            text: "窓[まど]を 閉[し]めてください、今晩[こんばん]は 寒[さむ]い",
-          },
+          { text: "今夜[こんや]は 寒[さむ]い" },
           { text: "から", blank: true },
+          { text: "、窓[まど]を 閉[し]めてもらえませんか" },
         ],
-        notes:
-          "Reversed order with the reason added after the request; natural in speech.",
+        notes: "今夜 with polite てもらえませんか request.",
       },
       {
         segments: [
