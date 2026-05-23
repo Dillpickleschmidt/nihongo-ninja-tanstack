@@ -6,27 +6,12 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "季節[きせつ]の 中[なか]で", blank: true },
-          { text: "秋[あき]が 一番[いちばん] 好[す]き", blank: true },
-          { text: "です" },
-        ],
-        notes: "Standard structure: 季節の中で秋が一番好き",
-      },
-      {
-        segments: [
           { text: "私[わたし]は 季節[きせつ]の 中[なか]で", blank: true },
           { text: "秋[あき]が 一番[いちばん] 好[す]き", blank: true },
           { text: "です" },
         ],
-        notes: "With explicit 私は topic marker",
-      },
-      {
-        segments: [
-          { text: "季節[きせつ]の 中[なか]では", blank: true },
-          { text: "秋[あき]が 一番[いちばん] 好[す]き", blank: true },
-          { text: "です" },
-        ],
-        notes: "With は after で to emphasize the scope (季節の中では)",
+        notes:
+          "With explicit 私は topic marker; pronounless variant is generated automatically.",
       },
       {
         segments: [
@@ -34,7 +19,8 @@ export const questions: Question[] = [
           { text: "秋[あき]が 一番[いちばん] 好[す]き", blank: true },
           { text: "です" },
         ],
-        notes: "With 私は and は after で",
+        notes:
+          "With 私は and は after で; pronounless variant is generated automatically.",
       },
       {
         segments: [
@@ -43,6 +29,22 @@ export const questions: Question[] = [
           { text: "です" },
         ],
         notes: "全ての (all) prefix to emphasize \"out of all seasons\"",
+      },
+      {
+        segments: [
+          { text: "四季[しき]の 中[なか]で、", blank: true },
+          { text: "秋[あき]が 一番[いちばん] 好[す]き", blank: true },
+          { text: "です" },
+        ],
+        notes: "四季 means the four seasons; natural for this context.",
+      },
+      {
+        segments: [
+          { text: "季節[きせつ]では、", blank: true },
+          { text: "秋[あき]が 一番[いちばん] 好[す]き", blank: true },
+          { text: "です" },
+        ],
+        notes: "Concise scope variant.",
       },
     ],
   },
@@ -57,6 +59,7 @@ export const questions: Question[] = [
           { text: "背[せ]が" },
           {
             text: "高[たか]い",
+            blank: true,
             conjugation: {
               pos: "I-adjective",
               form: "normal",
@@ -68,17 +71,88 @@ export const questions: Question[] = [
         ],
         notes: "Standard structure: 家族の中で誰が一番背が高いですか",
       },
-      ],
+      {
+        segments: [
+          { text: "さきさんの 家族[かぞく]の 中[なか]では 誰[だれ]が 一番[いちばん] 背[せ]が" },
+          {
+            text: "高[たか]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Uses 中では for the comparison scope.",
+      },
+      {
+        segments: [
+          { text: "さきさんの 家族[かぞく]で 誰[だれ]が 一番[いちばん] 背[せ]が" },
+          {
+            text: "高[たか]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Uses 家族で instead of 家族の中で.",
+      },
+      {
+        segments: [
+          { text: "さきさんの 家族[かぞく]では 誰[だれ]が 一番[いちばん] 背[せ]が" },
+          {
+            text: "高[たか]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Uses 家族では for the comparison scope.",
+      },
+      {
+        segments: [
+          {
+            text: "さきさんの 家族[かぞく]の 中[なか]で 一番[いちばん] 背[せ]が 高[たか]い 人[ひと]は 誰[だれ]ですか",
+            blank: true,
+          },
+        ],
+        register: "polite",
+        notes: "Asks who the tallest person is; 高い is fixed inside the relative clause before 人.",
+      },
+      {
+        segments: [
+          {
+            text: "さきさんの 家族[かぞく]で 一番[いちばん] 背[せ]が 高[たか]い 人[ひと]は 誰[だれ]ですか",
+            blank: true,
+          },
+        ],
+        register: "polite",
+        notes: "家族で variant of 一番背が高い人は誰ですか; 高い is fixed inside the relative clause.",
+      },
+    ],
   },
   {
-    english: "Among all sports, soccer is the most fun!",
+    english: "Among all the sports at school, soccer is the most fun!",
     answers: [
       {
         segments: [
-          { text: "スポーツの 中[なか]で" },
-          { text: "サッカーが 一番[いちばん]", blank: true },
+          { text: "学校[がっこう]のスポーツの 中[なか]で、サッカーが 一番[いちばん]" },
           {
             text: "楽[たの]しい",
+            blank: true,
             conjugation: {
               pos: "I-adjective",
               form: "normal",
@@ -87,7 +161,87 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Uses が to mark the item chosen as number one."
+        notes: "Uses が to mark the item chosen as number one.",
+      },
+      {
+        segments: [
+          { text: "学校[がっこう]のスポーツの 中[なか]では、サッカーが 一番[いちばん]" },
+          {
+            text: "楽[たの]しい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Uses 中では for the comparison scope.",
+      },
+      {
+        segments: [
+          { text: "学校[がっこう]でするスポーツの 中[なか]で、サッカーが 一番[いちばん]" },
+          {
+            text: "楽[たの]しい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Uses 学校でするスポーツ for sports done at school.",
+      },
+      {
+        segments: [
+          { text: "学校[がっこう]のスポーツでは、サッカーが 一番[いちばん]" },
+          {
+            text: "楽[たの]しい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Concise 学校のスポーツでは variant.",
+      },
+      {
+        segments: [
+          { text: "学校[がっこう]のスポーツの 中[なか]で、サッカーが 一番[いちばん]" },
+          {
+            text: "面白[おもしろ]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Uses 面白い as a natural fun/interesting variant.",
+      },
+      {
+        segments: [
+          { text: "学校[がっこう]のスポーツの 中[なか]で、サッカーが 一番[いちばん] 楽[たの]しいと" },
+          {
+            text: "思[おも]う",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'u' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Opinion variant matching the exclamation tone.",
       },
     ],
   },
@@ -97,87 +251,99 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "この レストランの 食[た]べ 物[もの]の" },
-          { text: "中[なか]で", blank: true },
-          { text: "天[てん]ぷらが" },
-          { text: "一番[いちばん]", blank: true },
-          { text: "有名[ゆうめい]" },
-          { text: "です" },
+          { text: "この レストランの 料理[りょうり]の 中[なか]で 天[てん]ぷらが 一番[いちばん]" },
+          {
+            text: "有名[ゆうめい]",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
         ],
-        notes: "Uses 食べ物 for “food.”"
+        notes: "Using 料理 (dishes/menu items) for restaurant food.",
       },
       {
         segments: [
-          { text: "この レストランの 料理[りょうり]の" },
-          { text: "中[なか]で", blank: true },
-          { text: "天[てん]ぷらが" },
-          { text: "一番[いちばん]", blank: true },
-          { text: "有名[ゆうめい]" },
-          { text: "です" },
+          { text: "この レストランの 食[た]べ 物[もの]の 中[なか]で 天[てん]ぷらが 一番[いちばん]" },
+          {
+            text: "有名[ゆうめい]",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
         ],
-        notes: "Using 料理 (dishes/cooking) instead of 食べ物",
+        notes: "Uses 食べ物 for food.",
       },
       {
         segments: [
-          { text: "この レストランの 料理[りょうり]の" },
-          { text: "中[なか]で", blank: true },
-          { text: "天[てん]ぷらが" },
-          { text: "一番[いちばん]", blank: true },
-          { text: "有名[ゆうめい]" },
+          { text: "この レストランの 料理[りょうり]の 中[なか]では 天[てん]ぷらが 一番[いちばん]" },
+          {
+            text: "有名[ゆうめい]",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
         ],
-        notes: "Using 料理 without copula (bare な-adjective ending)",
+        notes: "Using 料理 with 中では for contrast/topic emphasis.",
       },
       {
         segments: [
-          { text: "この レストランの 食[た]べ 物[もの]の" },
-          { text: "中[なか]で", blank: true },
-          { text: "天[てん]ぷらが" },
-          { text: "一番[いちばん]", blank: true },
-          { text: "有名[ゆうめい]" },
+          { text: "この レストランの 食[た]べ 物[もの]の 中[なか]では 天[てん]ぷらが 一番[いちばん]" },
+          {
+            text: "有名[ゆうめい]",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
         ],
-        notes: "Using 食べ物 without copula (bare な-adjective ending)",
+        notes: "Using 食べ物 with 中では.",
       },
       {
         segments: [
-          { text: "この レストランの 食[た]べ 物[もの]の" },
-          { text: "中[なか]では", blank: true },
-          { text: "天[てん]ぷらが" },
-          { text: "一番[いちばん]", blank: true },
-          { text: "有名[ゆうめい]" },
-          { text: "です" },
+          { text: "この レストランでは 天[てん]ぷらが 一番[いちばん]" },
+          {
+            text: "有名[ゆうめい]",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
         ],
-        notes: "Using 中では with は particle for contrast/topic emphasis",
+        notes: "Natural concise restaurant-scope variant.",
       },
       {
         segments: [
-          { text: "この レストランの 料理[りょうり]の" },
-          { text: "中[なか]では", blank: true },
-          { text: "天[てん]ぷらが" },
-          { text: "一番[いちばん]", blank: true },
-          { text: "有名[ゆうめい]" },
-          { text: "です" },
+          { text: "この レストランの メニューの 中[なか]で 天[てん]ぷらが 一番[いちばん]" },
+          {
+            text: "有名[ゆうめい]",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
         ],
-        notes: "Using 料理 with 中では for contrast/topic emphasis",
-      },
-      {
-        segments: [
-          { text: "この レストランの 食[た]べ 物[もの]の" },
-          { text: "中[なか]では", blank: true },
-          { text: "天[てん]ぷらが" },
-          { text: "一番[いちばん]", blank: true },
-          { text: "有名[ゆうめい]" },
-        ],
-        notes: "Using 食べ物 with 中では, no copula",
-      },
-      {
-        segments: [
-          { text: "この レストランの 料理[りょうり]の" },
-          { text: "中[なか]では", blank: true },
-          { text: "天[てん]ぷらが" },
-          { text: "一番[いちばん]", blank: true },
-          { text: "有名[ゆうめい]" },
-        ],
-        notes: "Using 料理 with 中では, no copula",
+        notes: "Uses メニュー for menu items.",
       },
     ],
   },
@@ -302,14 +468,67 @@ export const questions: Question[] = [
         segments: [
           { text: "飲[の]み 物[もの]の" },
           { text: "中[なか]で", blank: true },
-          { text: "一番[いちばん]", blank: true },
-          { text: "おいしい" },
-          { text: "のはどれ" },
-          { text: "です" },
-          { text: "か" },
+          { text: "一番[いちばん] おいしいのは どれですか", blank: true },
         ],
         register: "polite",
-        notes: "「一番おいしいのはどれ」 — \"which one is the most delicious\"",
+        notes: "「一番おいしいのはどれ」 — polite form.",
+      },
+      {
+        segments: [
+          { text: "飲[の]み 物[もの]の" },
+          { text: "中[なか]で", blank: true },
+          { text: "一番[いちばん] おいしいのは どれ", blank: true },
+        ],
+        register: "casual",
+        notes: "Casual counterpart to どれですか.",
+      },
+      {
+        segments: [
+          { text: "全部[ぜんぶ]の 飲[の]み 物[もの]の 中[なか]で どれが 一番[いちばん]" },
+          {
+            text: "おいしい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "全部の emphasizes all drinks.",
+      },
+      {
+        segments: [
+          { text: "飲[の]み 物[もの]では どれが 一番[いちばん]" },
+          {
+            text: "おいしい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Concise 飲み物では scope variant.",
+      },
+      {
+        segments: [
+          { text: "飲[の]み 物[もの]の 中[なか]で 一番[いちばん] おいしい 飲[の]み 物[もの]は どれですか", blank: true },
+        ],
+        register: "polite",
+        notes: "Asks which drink is the most delicious; polite form.",
+      },
+      {
+        segments: [
+          { text: "飲[の]み 物[もの]の 中[なか]で 一番[いちばん] おいしい 飲[の]み 物[もの]は どれ", blank: true },
+        ],
+        register: "casual",
+        notes: "Casual counterpart to 一番おいしい飲み物はどれですか.",
       },
     ],
   },
@@ -354,14 +573,13 @@ export const questions: Question[] = [
         ],
         notes: "Using どの国 (which country) instead of どこ",
       },
+
       {
         segments: [
-          { text: "世界[せかい]の" },
-          { text: "中[なか]で", blank: true },
-          { text: "どこが" },
-          { text: "一番[いちばん]", blank: true },
+          { text: "世界[せかい]の 国[くに]の 中[なか]では どの 国[くに]が 一番[いちばん]" },
           {
             text: "寒[さむ]い",
+            blank: true,
             conjugation: {
               pos: "I-adjective",
               form: "normal",
@@ -371,16 +589,14 @@ export const questions: Question[] = [
           },
           { text: "か" },
         ],
-        notes: "Shorter: 世界の中で without 国, using どこ",
+        notes: "Uses 中では with どの国.",
       },
       {
         segments: [
-          { text: "世界[せかい]の" },
-          { text: "中[なか]で", blank: true },
-          { text: "どの 国[くに]が" },
-          { text: "一番[いちばん]", blank: true },
+          { text: "世界[せかい]の 国[くに]の 中[なか]では どこが 一番[いちばん]" },
           {
             text: "寒[さむ]い",
+            blank: true,
             conjugation: {
               pos: "I-adjective",
               form: "normal",
@@ -390,8 +606,26 @@ export const questions: Question[] = [
           },
           { text: "か" },
         ],
-        notes: "Shorter: 世界の中で without 国, using どの国",
+        notes: "Uses 中では with どこ.",
       },
+      {
+        segments: [
+          { text: "世界中[せかいじゅう]の 国[くに]の 中[なか]で どの 国[くに]が 一番[いちばん]" },
+          {
+            text: "寒[さむ]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Uses 世界中の国 for countries around the world.",
+      },
+
     ],
   },
   {
@@ -436,108 +670,216 @@ export const questions: Question[] = [
         ],
         notes: "Using 友だち (hiragana) instead of 友達",
       },
+      {
+        segments: [
+          { text: "けんじさんの 友達[ともだち]の 中[なか]では 誰[だれ]が 一番[いちばん]" },
+          {
+            text: "面白[おもしろ]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Uses 中では for the comparison scope.",
+      },
+      {
+        segments: [
+          { text: "けんじさんの 友達[ともだち]では 誰[だれ]が 一番[いちばん]" },
+          {
+            text: "面白[おもしろ]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Concise 友達では variant.",
+      },
+      {
+        segments: [
+          {
+            text: "けんじさんの 友達[ともだち]の 中[なか]で 一番[いちばん] 面白[おもしろ]い 人[ひと]は 誰[だれ]ですか",
+            blank: true,
+          },
+        ],
+        register: "polite",
+        notes: "Asks who the most interesting person is; 面白い is fixed inside the relative clause.",
+      },
+      {
+        segments: [
+          {
+            text: "けんじさんの 友だちの 中[なか]で 一番[いちばん] 面白[おもしろ]い 人[ひと]は 誰[だれ]ですか",
+            blank: true,
+          },
+        ],
+        register: "polite",
+        notes: "友だち spelling with relative clause.",
+      },
     ],
   },
   {
-    english: "Among all the places in this town, the park is the quietest.",
+    english: "In this town, the park is the quietest place.",
     answers: [
       {
         segments: [
-          { text: "この 町[まち]の" },
-          { text: "中[なか]で", blank: true },
-          { text: " 公園[こうえん]が" },
-          { text: "一番[いちばん]", blank: true },
-          { text: " 静[しず]か" },
-          { text: "です" },
+          { text: "この 町[まち]の 中[なか]で 公園[こうえん]が 一番[いちばん]" },
+          {
+            text: "静[しず]か",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
         ],
-        notes: "Uses が to mark the person chosen as number one."
+        notes: "Uses が to mark the place chosen as number one.",
       },
       {
         segments: [
-          { text: "この 町[まち]の" },
-          { text: "中[なか]で", blank: true },
-          { text: " 公園[こうえん]が" },
-          { text: "一番[いちばん]", blank: true },
-          { text: " 静[しず]かな 所[ところ]" },
-          { text: "です" },
+          { text: "この 町[まち]では 公園[こうえん]が 一番[いちばん]" },
+          {
+            text: "静[しず]か",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
         ],
-        notes: "Using 静かな所です (the quietest place) with ところ",
+        notes: "Uses この町では for the town scope.",
+      },
+      {
+        segments: [
+          { text: "この 町[まち]の 中[なか]では 公園[こうえん]が 一番[いちばん]" },
+          {
+            text: "静[しず]か",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Uses 中では for the comparison scope.",
+      },
+      {
+        segments: [
+          { text: "この 町[まち]の 場所[ばしょ]の 中[なか]で 公園[こうえん]が 一番[いちばん]" },
+          {
+            text: "静[しず]か",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Uses 場所の中で for places in town.",
+      },
+      {
+        segments: [
+          {
+            text: "この 町[まち]の 中[なか]で 公園[こうえん]が 一番[いちばん] 静[しず]かな 所[ところ]です",
+            blank: true,
+          },
+        ],
+        register: "polite",
+        notes: "Uses 静かな所です (the quietest place) with ところ.",
+      },
+      {
+        segments: [
+          {
+            text: "この 町[まち]では 公園[こうえん]が 一番[いちばん] 静[しず]かな 所[ところ]です",
+            blank: true,
+          },
+        ],
+        register: "polite",
+        notes: "この町では variant with 静かな所です.",
       },
     ],
   },
   {
-    english: "I ate breakfast in the car.",
+    english: "Among all the rooms at school, the library is the quietest.",
     answers: [
       {
         segments: [
-          { text: "車[くるま]" },
-          { text: "のなかで", blank: true },
-          { text: "朝[あさ]ご 飯[はん]を" },
+          { text: "学校[がっこう]の 部屋[へや]の 中[なか]で 図書館[としょかん]が 一番[いちばん]" },
           {
-            text: "食[た]べる",
+            text: "静[しず]か",
+            blank: true,
             conjugation: {
-              pos: "Ichidan verb",
+              pos: "Na-adjective",
               form: "normal",
               polarity: "positive",
-              tense: "past",
+              tense: "non-past",
             },
           },
         ],
-        notes: "Writes のなかで in hiragana."
+        notes: "Uses 部屋の中で for rooms at school.",
       },
       {
         segments: [
-          { text: "私[わたし]は 車[くるま]" },
-          { text: "のなかで", blank: true },
-          { text: "朝[あさ]ご 飯[はん]を" },
+          { text: "学校[がっこう]の 中[なか]で 図書館[としょかん]が 一番[いちばん]" },
           {
-            text: "食[た]べる",
+            text: "静[しず]か",
+            blank: true,
             conjugation: {
-              pos: "Ichidan verb",
+              pos: "Na-adjective",
               form: "normal",
               polarity: "positive",
-              tense: "past",
+              tense: "non-past",
             },
           },
         ],
-        notes: "With explicit subject 私は",
+        notes: "Broader school-scope variant.",
       },
       {
         segments: [
-          { text: "朝[あさ]ご 飯[はん]を 車[くるま]" },
-          { text: "のなかで", blank: true },
+          { text: "学校[がっこう]では 図書館[としょかん]が 一番[いちばん]" },
           {
-            text: "食[た]べる",
+            text: "静[しず]か",
+            blank: true,
             conjugation: {
-              pos: "Ichidan verb",
+              pos: "Na-adjective",
               form: "normal",
               polarity: "positive",
-              tense: "past",
+              tense: "non-past",
             },
           },
         ],
-        notes: "Reversed word order: 朝ご飯を first, then 車のなかで",
+        notes: "Uses 学校では for the comparison scope.",
       },
       {
         segments: [
-          { text: "私[わたし]は 朝[あさ]ご 飯[はん]を 車[くるま]" },
-          { text: "のなかで", blank: true },
           {
-            text: "食[た]べる",
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "past",
-            },
+            text: "学校[がっこう]の 場所[ばしょ]の 中[なか]で 図書館[としょかん]が 一番[いちばん] 静[しず]かな 所[ところ]です",
+            blank: true,
           },
         ],
-        notes: "With 私は and reversed word order",
+        register: "polite",
+        notes: "Uses 静かな所です for 'the quietest place'.",
       },
     ],
   },
   {
-    english: "Among all of Naomi's brothers and sisters, who is the youngest?",
+    english: "Among all of Naomi's brothers, who is the youngest?",
     hint: "Naomi = なおみ",
     answers: [
       {
@@ -559,109 +901,207 @@ export const questions: Question[] = [
         ],
         notes: "Standard version with 兄弟の中で, direct question with か",
       },
-      ],
+      {
+        segments: [
+          { text: "なおみさんの 兄弟[きょうだい]の 中[なか]では 誰[だれ]が 一番[いちばん]" },
+          {
+            text: "若[わか]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Uses 中では for the comparison scope.",
+      },
+      {
+        segments: [
+          { text: "なおみさんの 兄弟[きょうだい]で 誰[だれ]が 一番[いちばん]" },
+          {
+            text: "若[わか]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Uses 兄弟で instead of 兄弟の中で.",
+      },
+      {
+        segments: [
+          { text: "なおみさんの 兄弟[きょうだい]では 誰[だれ]が 一番[いちばん]" },
+          {
+            text: "若[わか]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Uses 兄弟では for the comparison scope.",
+      },
+      {
+        segments: [
+          {
+            text: "なおみさんの 兄弟[きょうだい]の 中[なか]で 一番[いちばん] 若[わか]い 人[ひと]は 誰[だれ]ですか",
+            blank: true,
+          },
+        ],
+        register: "polite",
+        notes: "Asks who the youngest person is; 若い is fixed inside the relative clause.",
+      },
+      {
+        segments: [
+          {
+            text: "なおみさんの 兄弟[きょうだい]の 中[なか]で 一番[いちばん] 年下[としした]なのは 誰[だれ]ですか",
+            blank: true,
+          },
+        ],
+        register: "polite",
+        notes: "Uses 年下 for youngest in sibling age order.",
+      },
+    ],
   },
   {
     english: "Among all fruits, I like strawberries the best!",
     answers: [
       {
         segments: [
-          { text: "果物[くだもの]" },
-          { text: "の 中[なか]でいちごが 一番[いちばん]", blank: true },
+          { text: "私[わたし]は 果物[くだもの]の 中[なか]で いちごが 一番[いちばん]", blank: true },
           { text: " 好[す]き" },
           { text: "です" },
         ],
         notes:
-          "Standard pattern: 果物の中でいちごが一番 as blank, with です ending",
+          "With explicit 私は; pronounless variants are generated automatically.",
       },
       {
         segments: [
-          { text: "私[わたし]は 果物[くだもの]" },
-          { text: "の 中[なか]でいちごが 一番[いちばん]", blank: true },
+          { text: "私[わたし]は 果物[くだもの]の 中[なか]では いちごが 一番[いちばん]", blank: true },
           { text: " 好[す]き" },
           { text: "です" },
         ],
-        notes: "With explicit subject 私は",
+        notes: "With 中では and explicit 私は.",
       },
       {
         segments: [
-          { text: "果物[くだもの]" },
-          { text: "の 中[なか]でいちごが 一番[いちばん]", blank: true },
+          { text: "全[すべ]ての 果物[くだもの]の 中[なか]で、いちごが 一番[いちばん]", blank: true },
           { text: " 好[す]き" },
+          { text: "です" },
         ],
-        register: "casual",
-        notes: "好き as a plain statement",
+        notes: "全ての emphasizes all fruits.",
+      },
+      {
+        segments: [
+          { text: "果物[くだもの]では、いちごが 一番[いちばん]", blank: true },
+          { text: " 好[す]き" },
+          { text: "です" },
+        ],
+        notes: "Concise 果物では scope variant.",
+      },
+      {
+        segments: [
+          { text: "フルーツの 中[なか]で、いちごが 一番[いちばん]", blank: true },
+          { text: " 好[す]き" },
+          { text: "です" },
+        ],
+        notes: "フルーツ loanword variant.",
       },
     ],
   },
   {
-    english: "I read a magazine in the train yesterday.",
+    english: "Among the reading materials on the train, magazines are the most common.",
     answers: [
       {
         segments: [
-          { text: "昨日[きのう]、" },
-          { text: "電車[でんしゃ]のなかで", blank: true },
-          { text: "雑誌[ざっし]を" },
+          { text: "電車[でんしゃ]の 中[なか]にある 読[よ]み 物[もの]の 中[なか]で、雑誌[ざっし]が 一番[いちばん]" },
           {
-            text: "読[よ]む",
+            text: "多[おお]い",
+            blank: true,
             conjugation: {
-              pos: "Godan verb with 'mu' ending",
+              pos: "I-adjective",
               form: "normal",
               polarity: "positive",
-              tense: "past",
+              tense: "non-past",
             },
           },
         ],
-        notes: "Uses the usual word order and writes のなかで in hiragana."
+        notes: "Uses 読み物 for reading materials and 一番多い for most common/most numerous.",
       },
       {
         segments: [
-          { text: "電車[でんしゃ]のなかで", blank: true },
-          { text: "昨日[きのう]、雑誌[ざっし]を" },
+          { text: "電車[でんしゃ]にある 読[よ]み 物[もの]の 中[なか]で、雑誌[ざっし]が 一番[いちばん]" },
           {
-            text: "読[よ]む",
+            text: "多[おお]い",
+            blank: true,
             conjugation: {
-              pos: "Godan verb with 'mu' ending",
+              pos: "I-adjective",
               form: "normal",
               polarity: "positive",
-              tense: "past",
+              tense: "non-past",
             },
           },
         ],
-        notes: "のなかで at the start, 昨日 after",
+        notes: "Uses 電車にある instead of 電車の中にある.",
       },
       {
         segments: [
-          { text: "昨日[きのう]、雑誌[ざっし]を" },
-          { text: "電車[でんしゃ]のなかで", blank: true },
+          { text: "電車[でんしゃ]の 中[なか]の 読[よ]み 物[もの]の 中[なか]で、雑誌[ざっし]が 一番[いちばん]" },
           {
-            text: "読[よ]む",
+            text: "多[おお]い",
+            blank: true,
             conjugation: {
-              pos: "Godan verb with 'mu' ending",
+              pos: "I-adjective",
               form: "normal",
               polarity: "positive",
-              tense: "past",
+              tense: "non-past",
             },
           },
         ],
-        notes: "Object before location: 雑誌を電車のなかで読んだ",
+        notes: "Uses 電車の中の読み物.",
       },
       {
         segments: [
-          { text: "私[わたし]は 昨日[きのう]、" },
-          { text: "電車[でんしゃ]のなかで", blank: true },
-          { text: "雑誌[ざっし]を" },
+          { text: "電車[でんしゃ]の 読[よ]み 物[もの]の 中[なか]で、雑誌[ざっし]が 一番[いちばん]" },
           {
-            text: "読[よ]む",
+            text: "多[おお]い",
+            blank: true,
             conjugation: {
-              pos: "Godan verb with 'mu' ending",
+              pos: "I-adjective",
               form: "normal",
               polarity: "positive",
-              tense: "past",
+              tense: "non-past",
             },
           },
         ],
-        notes: "With explicit 私は subject",
+        notes: "Compressed 電車の読み物 variant.",
+      },
+      {
+        segments: [
+          { text: "電車[でんしゃ]の 中[なか]にある 読[よ]む 物[もの]の 中[なか]で、雑誌[ざっし]が 一番[いちばん]" },
+          {
+            text: "多[おお]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "More literal 読む物 variant.",
       },
     ],
   },
@@ -721,53 +1161,123 @@ export const questions: Question[] = [
         ],
         notes: 'Using 何が instead of どれが - "what" instead of "which one"',
       },
-      ],
+      {
+        segments: [
+          { text: "歌[うた]の 中[なか]では どれが 一番[いちばん]" },
+          {
+            text: "難[むずか]しい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Uses 中では with どれが.",
+      },
+      {
+        segments: [
+          { text: "歌[うた]の 中[なか]では どの 歌[うた]が 一番[いちばん]" },
+          {
+            text: "難[むずか]しい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Uses 中では with どの歌が.",
+      },
+      {
+        segments: [
+          { text: "歌[うた]の 中[なか]で 一番[いちばん] 難[むずか]しい 歌[うた]は どれですか", blank: true },
+        ],
+        register: "polite",
+        notes: "Polite 一番難しい歌はどれですか variant.",
+      },
+      {
+        segments: [
+          { text: "歌[うた]の 中[なか]で 一番[いちばん] 難[むずか]しい 歌[うた]は どれ", blank: true },
+        ],
+        register: "casual",
+        notes: "Casual counterpart to 一番難しい歌はどれですか.",
+      },
+      {
+        segments: [
+          { text: "歌[うた]の 中[なか]で 一番[いちばん] 難[むずか]しいのは どれですか", blank: true },
+        ],
+        register: "polite",
+        notes: "Polite 一番難しいのはどれですか variant.",
+      },
+      {
+        segments: [
+          { text: "歌[うた]の 中[なか]で 一番[いちばん] 難[むずか]しいのは どれ", blank: true },
+        ],
+        register: "casual",
+        notes: "Casual counterpart to 一番難しいのはどれですか.",
+      },
+    ],
   },
   {
     english: "Among all my classes, I like history the best.",
     answers: [
       {
         segments: [
-          { text: "私[わたし]の クラス" },
-          { text: "の 中[なか]で 歴史[れきし]が 一番[いちばん]", blank: true },
+          { text: "私[わたし]の 授業[じゅぎょう]の 中[なか]で 歴史[れきし]が 一番[いちばん]", blank: true },
           { text: "好[す]き" },
           { text: "です" },
         ],
-        notes:
-          "Standard version using クラス (known vocabulary), 好き as predicate",
+        notes: "Uses 授業 for academic classes.",
       },
       {
         segments: [
-          { text: "私[わたし]の クラス" },
           {
-            text: "の 中[なか]では 歴史[れきし]が 一番[いちばん]",
+            text: "私[わたし]の 授業[じゅぎょう]の 中[なか]では 歴史[れきし]が 一番[いちばん]",
             blank: true,
           },
           { text: "好[す]き" },
           { text: "です" },
         ],
-        notes: "Adding は after の中で for contrast/topic marking",
+        notes: "Adding は after の中で for contrast/topic marking.",
       },
       {
         segments: [
-          { text: "クラス" },
-          { text: "の 中[なか]で 歴史[れきし]が 一番[いちばん]", blank: true },
+          { text: "私[わたし]の 科目[かもく]の 中[なか]で 歴史[れきし]が 一番[いちばん]", blank: true },
           { text: "好[す]き" },
           { text: "です" },
         ],
-        notes: "Dropping 私の - implied from context",
+        notes: "Uses 科目 for school subjects.",
       },
       {
         segments: [
-          { text: "クラス" },
-          {
-            text: "の 中[なか]では 歴史[れきし]が 一番[いちばん]",
-            blank: true,
-          },
+          { text: "取[と]っている 授業[じゅぎょう]の 中[なか]で 歴史[れきし]が 一番[いちばん]", blank: true },
           { text: "好[す]き" },
           { text: "です" },
         ],
-        notes: "Dropping 私の, with は after の中で",
+        notes: "Natural variant meaning among the classes I am taking.",
+      },
+      {
+        segments: [
+          { text: "授業[じゅぎょう]の 中[なか]で 歴史[れきし]が 一番[いちばん]", blank: true },
+          { text: "好[す]き" },
+          { text: "です" },
+        ],
+        notes: "Context-implied my classes.",
+      },
+      {
+        segments: [
+          { text: "科目[かもく]の 中[なか]で 歴史[れきし]が 一番[いちばん]", blank: true },
+          { text: "好[す]き" },
+          { text: "です" },
+        ],
+        notes: "Context-implied my subjects.",
       },
     ],
   },
@@ -808,7 +1318,43 @@ export const questions: Question[] = [
         ],
         notes: "Without 皆/みんな - 寮の中で implying among people in the dorm",
       },
-      ],
+      {
+        segments: [
+          { text: "寮[りょう]のみんなの 中[なか]では たけしさんが 一番[いちばん]", blank: true },
+          { text: "元気[げんき]" },
+          { text: "です" },
+        ],
+        notes: "Uses 中では with みんな.",
+      },
+      {
+        segments: [
+          { text: "寮[りょう]の 皆[みんな]の 中[なか]では たけしさんが 一番[いちばん]", blank: true },
+          { text: "元気[げんき]" },
+          { text: "です" },
+        ],
+        notes: "Uses 中では with 皆.",
+      },
+      {
+        segments: [
+          {
+            text: "寮[りょう]のみんなの 中[なか]で 一番[いちばん] 元気[げんき]な 人[ひと]は たけしさんです",
+            blank: true,
+          },
+        ],
+        register: "polite",
+        notes: "Uses 元気な人 with 元気 fixed before 人.",
+      },
+      {
+        segments: [
+          {
+            text: "寮[りょう]の 中[なか]で 一番[いちばん] 元気[げんき]な 人[ひと]は たけしさんです",
+            blank: true,
+          },
+        ],
+        register: "polite",
+        notes: "Concise 寮の中で variant with 元気な人.",
+      },
+    ],
   },
   {
     english: "Among all vegetables, which one is the cheapest?",
@@ -847,7 +1393,86 @@ export const questions: Question[] = [
         ],
         notes: "何が instead of どれが",
       },
-      ],
+      {
+        segments: [
+          { text: "野菜[やさい]の 中[なか]では どれが 一番[いちばん]" },
+          {
+            text: "安[やす]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Uses 中では with どれが.",
+      },
+      {
+        segments: [
+          { text: "野菜[やさい]の 中[なか]で どの 野菜[やさい]が 一番[いちばん]" },
+          {
+            text: "安[やす]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Uses どの野菜が for which vegetable.",
+      },
+      {
+        segments: [
+          { text: "野菜[やさい]の 中[なか]では どの 野菜[やさい]が 一番[いちばん]" },
+          {
+            text: "安[やす]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Uses 中では with どの野菜が.",
+      },
+      {
+        segments: [
+          { text: "野菜[やさい]の 中[なか]で 一番[いちばん] 安[やす]い 野菜[やさい]は どれですか", blank: true },
+        ],
+        register: "polite",
+        notes: "Polite 一番安い野菜はどれですか variant.",
+      },
+      {
+        segments: [
+          { text: "野菜[やさい]の 中[なか]で 一番[いちばん] 安[やす]い 野菜[やさい]は どれ", blank: true },
+        ],
+        register: "casual",
+        notes: "Casual counterpart to 一番安い野菜はどれですか.",
+      },
+      {
+        segments: [
+          { text: "野菜[やさい]の 中[なか]で 一番[いちばん] 安[やす]いのは どれですか", blank: true },
+        ],
+        register: "polite",
+        notes: "Polite 一番安いのはどれですか variant.",
+      },
+      {
+        segments: [
+          { text: "野菜[やさい]の 中[なか]で 一番[いちばん] 安[やす]いのは どれ", blank: true },
+        ],
+        register: "casual",
+        notes: "Casual counterpart to 一番安いのはどれですか.",
+      },
+    ],
   },
   {
     english: "Among everyone at the company, Rina is the busiest.",
@@ -855,8 +1480,7 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "会社[かいしゃ]の 皆[みんな]の 中[なか]で" },
-          { text: "りなさんが 一番[いちばん]", blank: true },
+          { text: "会社[かいしゃ]の 皆[みんな]の 中[なか]で りなさんが 一番[いちばん]", blank: true },
           {
             text: "忙[いそが]しい",
             blank: true,
@@ -868,14 +1492,14 @@ export const questions: Question[] = [
             },
           },
         ],
+        notes: "Uses 会社の皆の中で with 皆 in kanji.",
       },
       {
         segments: [
-          {
-            text: "会社[かいしゃ]のみんなの中[なか]でりなさんが一番[いちばん]",
-          },
+          { text: "会社[かいしゃ]のみんなの 中[なか]で りなさんが 一番[いちばん]", blank: true },
           {
             text: "忙[いそが]しい",
+            blank: true,
             conjugation: {
               pos: "I-adjective",
               form: "normal",
@@ -884,14 +1508,14 @@ export const questions: Question[] = [
             },
           },
         ],
+        notes: "Uses みんな in hiragana.",
       },
       {
         segments: [
-          {
-            text: "会社[かいしゃ]の 皆[みんな]の中[なか]でりなさんは一番[いちばん]",
-          },
+          { text: "会社[かいしゃ]の 皆[みんな]の 中[なか]で りなさんは 一番[いちばん]", blank: true },
           {
             text: "忙[いそが]しい",
+            blank: true,
             conjugation: {
               pos: "I-adjective",
               form: "normal",
@@ -900,25 +1524,187 @@ export const questions: Question[] = [
             },
           },
         ],
+        notes: "Uses は for Rina as topic.",
+      },
+      {
+        segments: [
+          { text: "会社[かいしゃ]のみんなの 中[なか]では りなさんが 一番[いちばん]", blank: true },
+          {
+            text: "忙[いそが]しい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Uses 中では with みんな.",
+      },
+      {
+        segments: [
+          { text: "会社[かいしゃ]の 皆[みんな]の 中[なか]では りなさんが 一番[いちばん]", blank: true },
+          {
+            text: "忙[いそが]しい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Uses 中では with 皆.",
+      },
+      {
+        segments: [
+          { text: "会社[かいしゃ]の 中[なか]で りなさんが 一番[いちばん]", blank: true },
+          {
+            text: "忙[いそが]しい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Concise 会社の中で variant.",
+      },
+      {
+        segments: [
+          { text: "会社[かいしゃ]のみんなの 中[なか]で 一番[いちばん] 忙[いそが]しい 人[ひと]は りなさんです", blank: true },
+        ],
+        register: "polite",
+        notes: "Uses 忙しい人 with 忙しい fixed before 人.",
+      },
+      {
+        segments: [
+          { text: "会社[かいしゃ]の 中[なか]で 一番[いちばん] 忙[いそが]しい 人[ひと]は りなさんです", blank: true },
+        ],
+        register: "polite",
+        notes: "Concise 会社の中で variant with 忙しい人.",
       },
     ],
   },
   {
-    english:
-      "Among all the animals at the zoo, which one is the most frightening?",
+    english: "Among all the animals at the zoo, which one is the scariest?",
     answers: [
       {
         segments: [
-          { text: "動物園[どうぶつえん]の 動物[どうぶつ]の 中[なか]で" },
-          { text: "どれが 一番[いちばん] 怖[こわ]いか", blank: true },
+          { text: "動物園[どうぶつえん]の 動物[どうぶつ]の 中[なか]で どれが 一番[いちばん]" },
+          {
+            text: "怖[こわ]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
         ],
+        notes: "Standard どれが question.",
       },
       {
         segments: [
+          { text: "動物園[どうぶつえん]の 動物[どうぶつ]の 中[なか]では どれが 一番[いちばん]" },
           {
-            text: "動物園[どうぶつえん]の動物[どうぶつ]のなかでどれが一番[いちばん]怖[こわ]いか",
+            text: "怖[こわ]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
+          { text: "か" },
         ],
+        notes: "Uses 中では with どれが.",
+      },
+      {
+        segments: [
+          { text: "動物園[どうぶつえん]の 動物[どうぶつ]の 中[なか]で どの 動物[どうぶつ]が 一番[いちばん]" },
+          {
+            text: "怖[こわ]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Uses どの動物が for which animal.",
+      },
+      {
+        segments: [
+          { text: "動物園[どうぶつえん]の 動物[どうぶつ]の 中[なか]では どの 動物[どうぶつ]が 一番[いちばん]" },
+          {
+            text: "怖[こわ]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Uses 中では with どの動物が.",
+      },
+      {
+        segments: [
+          { text: "動物園[どうぶつえん]の 中[なか]で どの 動物[どうぶつ]が 一番[いちばん]" },
+          {
+            text: "怖[こわ]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Concise 動物園の中で variant.",
+      },
+      {
+        segments: [
+          { text: "動物園[どうぶつえん]の 動物[どうぶつ]の 中[なか]で 一番[いちばん] 怖[こわ]い 動物[どうぶつ]は どれですか", blank: true },
+        ],
+        register: "polite",
+        notes: "Polite 一番怖い動物はどれですか variant.",
+      },
+      {
+        segments: [
+          { text: "動物園[どうぶつえん]の 動物[どうぶつ]の 中[なか]で 一番[いちばん] 怖[こわ]い 動物[どうぶつ]は どれ", blank: true },
+        ],
+        register: "casual",
+        notes: "Casual counterpart to 一番怖い動物はどれですか.",
+      },
+      {
+        segments: [
+          { text: "動物園[どうぶつえん]の 動物[どうぶつ]の 中[なか]で 一番[いちばん] 怖[こわ]いのは どれですか", blank: true },
+        ],
+        register: "polite",
+        notes: "Polite 一番怖いのはどれですか variant.",
+      },
+      {
+        segments: [
+          { text: "動物園[どうぶつえん]の 動物[どうぶつ]の 中[なか]で 一番[いちばん] 怖[こわ]いのは どれ", blank: true },
+        ],
+        register: "casual",
+        notes: "Casual counterpart to 一番怖いのはどれですか.",
       },
     ],
   },
@@ -927,8 +1713,7 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "私[わたし]が 勉強[べんきょう]している 言語[げんご]の 中[なか]で" },
-          { text: "日本語[にほんご]が 一番[いちばん]", blank: true },
+          { text: "勉強[べんきょう]している 言語[げんご]の 中[なか]で 日本語[にほんご]が 一番[いちばん]", blank: true },
           {
             text: "難[むずか]しい",
             blank: true,
@@ -940,14 +1725,13 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes:
-          "私が勉強している言語の中で means among the languages I study.",
+        notes: "Context-implied subject; among the languages I study.",
       },
       {
         segments: [
-          { text: "私[わたし]が 勉強[べんきょう]している 言語[げんご]のなかで 日本語[にほんご]が 一番[いちばん]" },
+          { text: "私[わたし]が 勉強[べんきょう]している 言語[げんご]の 中[なか]で 日本語[にほんご]が 一番[いちばん]", blank: true },
           {
-            text: " 難[むずか]しい",
+            text: "難[むずか]しい",
             blank: true,
             conjugation: {
               pos: "I-adjective",
@@ -957,13 +1741,13 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "なかで written in hiragana",
+        notes: "Explicit 私が inside the relative clause.",
       },
       {
         segments: [
-          { text: "勉強[べんきょう]している 言語[げんご]の 中[なか]で 日本語[にほんご]が 一番[いちばん]" },
+          { text: "勉強[べんきょう]している 言語[げんご]の 中[なか]では 日本語[にほんご]が 一番[いちばん]", blank: true },
           {
-            text: " 難[むずか]しい",
+            text: "難[むずか]しい",
             blank: true,
             conjugation: {
               pos: "I-adjective",
@@ -973,13 +1757,13 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Dropped 私が at the start",
+        notes: "Uses 中では.",
       },
       {
         segments: [
-          { text: "勉強[べんきょう]している 言語[げんご]のなかで 日本語[にほんご]が 一番[いちばん]" },
+          { text: "私[わたし]が 勉強[べんきょう]している 言語[げんご]の 中[なか]では 日本語[にほんご]が 一番[いちばん]", blank: true },
           {
-            text: " 難[むずか]しい",
+            text: "難[むずか]しい",
             blank: true,
             conjugation: {
               pos: "I-adjective",
@@ -989,65 +1773,154 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Dropped 私の, なかで in hiragana",
+        notes: "Explicit 私が with 中では.",
+      },
+      {
+        segments: [
+          { text: "勉強[べんきょう]している 言葉[ことば]の 中[なか]で 日本語[にほんご]が 一番[いちばん]", blank: true },
+          {
+            text: "難[むずか]しい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Uses 言葉 as a common alternative to 言語.",
+      },
+      {
+        segments: [
+          { text: "勉強[べんきょう]している 言語[げんご]の 中[なか]で 一番[いちばん] 難[むずか]しい 言語[げんご]は 日本語[にほんご]です", blank: true },
+        ],
+        register: "polite",
+        notes: "Polite relative-noun variant with 難しい fixed before 言語.",
+      },
+      {
+        segments: [
+          { text: "勉強[べんきょう]している 言語[げんご]の 中[なか]で 一番[いちばん] 難[むずか]しい 言語[げんご]は 日本語[にほんご]", blank: true },
+        ],
+        register: "casual",
+        notes: "Casual counterpart to 一番難しい言語は日本語です.",
+      },
+      {
+        segments: [
+          { text: "勉強[べんきょう]している 言葉[ことば]の 中[なか]で 一番[いちばん] 難[むずか]しいのは 日本語[にほんご]です", blank: true },
+        ],
+        register: "polite",
+        notes: "Polite 一番難しいのは日本語です variant.",
+      },
+      {
+        segments: [
+          { text: "勉強[べんきょう]している 言葉[ことば]の 中[なか]で 一番[いちばん] 難[むずか]しいのは 日本語[にほんご]", blank: true },
+        ],
+        register: "casual",
+        notes: "Casual counterpart to 一番難しいのは日本語です.",
       },
     ],
   },
   {
-    english: "Among all the celebrities Hana knows, who is the most famous?",
-    hint: "Hana = はな",
+    english: "Among all the players on the soccer team, who is the best?",
+    hint: "soccer team = サッカーチーム",
     answers: [
       {
         segments: [
-          { text: "はなさんが 知[し]っている" },
-          { text: "有名人[ゆうめいじん]の 中[なか]で" },
-          { text: "誰[だれ]が 一番[いちばん]有名[ゆうめい]", blank: true },
-          { text: "か" },
-        ],
-      },
-      {
-        segments: [
-          {
-            text: "はなさんが 知[し]っている 有名人[ゆうめいじん]の中[なか]で誰[だれ]が一番[いちばん]有名[ゆうめい]ですか",
-          },
+          { text: "サッカーチームの 選手[せんしゅ]の 中[なか]で 誰[だれ]が 一番[いちばん]" },
+          { text: "上手[じょうず]", blank: true },
+          { text: "ですか" },
         ],
         register: "polite",
-        notes: "ですか question ending",
+        notes: "Standard polite question with 選手の中で.",
       },
       {
         segments: [
-          {
-            text: "はなさんの知[し]っている 有名人[ゆうめいじん]の 中[なか]で誰[だれ]が一番[いちばん]有名[ゆうめい]か",
-          },
+          { text: "サッカーチームの 選手[せんしゅ]の 中[なか]で 誰[だれ]が 一番[いちばん]" },
+          { text: "上手[じょうず]", blank: true },
         ],
-        notes: "の instead of が for the possessive of はな",
+        register: "casual",
+        notes: "Casual counterpart to 誰が一番上手ですか.",
       },
       {
         segments: [
-          {
-            text: "はなさんの知[し]っている 有名人[ゆうめいじん]の 中[なか]で誰[だれ]が一番[いちばん]有名[ゆうめい]ですか",
-          },
-        ],
-        register: "polite",
-        notes: "の possessive + ですか question ending",
-      },
-      {
-        segments: [
-          {
-            text: "はなさんが 知[し]っている 有名人[ゆうめいじん]のなかで誰[だれ]が一番[いちばん]有名[ゆうめい]か",
-          },
-        ],
-        notes: "のなか written without space as のなかで",
-      },
-      {
-        segments: [
-          {
-            text: "はなさんが 知[し]っている 有名人[ゆうめいじん]のなかで誰[だれ]が一番[いちばん]有名[ゆうめい]ですか",
-          },
+          { text: "サッカーチームの 選手[せんしゅ]の 中[なか]では 誰[だれ]が 一番[いちばん]" },
+          { text: "上手[じょうず]", blank: true },
+          { text: "ですか" },
         ],
         register: "polite",
-        notes: "のなかで + ですか question ending",
+        notes: "Uses 中では with 選手.",
+      },
+      {
+        segments: [
+          { text: "サッカーチームの 選手[せんしゅ]の 中[なか]では 誰[だれ]が 一番[いちばん]" },
+          { text: "上手[じょうず]", blank: true },
+        ],
+        register: "casual",
+        notes: "Casual counterpart to 中では variant.",
+      },
+      {
+        segments: [
+          { text: "サッカーチームの 中[なか]で 誰[だれ]が 一番[いちばん]" },
+          { text: "上手[じょうず]", blank: true },
+          { text: "ですか" },
+        ],
+        register: "polite",
+        notes: "Concise サッカーチームの中で variant.",
+      },
+      {
+        segments: [
+          { text: "サッカーチームの 中[なか]で 誰[だれ]が 一番[いちばん]" },
+          { text: "上手[じょうず]", blank: true },
+        ],
+        register: "casual",
+        notes: "Casual counterpart to サッカーチームの中で variant.",
+      },
+      {
+        segments: [
+          { text: "サッカーチームで 誰[だれ]が 一番[いちばん]" },
+          { text: "上手[じょうず]", blank: true },
+          { text: "ですか" },
+        ],
+        register: "polite",
+        notes: "Natural compressed サッカーチームで variant.",
+      },
+      {
+        segments: [
+          { text: "サッカーチームで 誰[だれ]が 一番[いちばん]" },
+          { text: "上手[じょうず]", blank: true },
+        ],
+        register: "casual",
+        notes: "Casual counterpart to サッカーチームで variant.",
+      },
+      {
+        segments: [
+          { text: "サッカーチームの 選手[せんしゅ]の 中[なか]で 一番[いちばん] 上手[じょうず]な 人[ひと]は 誰[だれ]ですか", blank: true },
+        ],
+        register: "polite",
+        notes: "Uses 上手な人 with 上手な fixed before 人.",
+      },
+      {
+        segments: [
+          { text: "サッカーチームの 選手[せんしゅ]の 中[なか]で 一番[いちばん] 上手[じょうず]な 人[ひと]は 誰[だれ]", blank: true },
+        ],
+        register: "casual",
+        notes: "Casual counterpart to 一番上手な人は誰ですか.",
+      },
+      {
+        segments: [
+          { text: "サッカーチームの 中[なか]で 一番[いちばん] 上手[じょうず]な 人[ひと]は 誰[だれ]ですか", blank: true },
+        ],
+        register: "polite",
+        notes: "Concise サッカーチームの中で variant with 上手な人.",
+      },
+      {
+        segments: [
+          { text: "サッカーチームの 中[なか]で 一番[いちばん] 上手[じょうず]な 人[ひと]は 誰[だれ]", blank: true },
+        ],
+        register: "casual",
+        notes: "Casual counterpart to concise 上手な人 variant.",
       },
     ],
-  },
+  }, 
 ]

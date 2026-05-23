@@ -7,36 +7,6 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "けんじさんは 週末[しゅうまつ] 新幹線[しんかんせん]で" },
-          { text: "どこかに", blank: true },
-          {
-            text: "行[い]く",
-            conjugation: {
-              pos: "Godan verb - Iku/Yuku special class",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "か" },
-        ],
-      },
-      {
-        segments: [
-          {
-            text: "けんじさんは 週末[しゅうまつ] 新幹線[しんかんせん]で どこかへ 行[い]く",
-            conjugation: {
-              pos: "Godan verb - Iku/Yuku special class",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "か" },
-        ],
-      },
-      {
-        segments: [
           { text: "けんじさんは 今週末[こんしゅうまつ] 新幹線[しんかんせん]で" },
           { text: "どこかに", blank: true },
           {
@@ -50,7 +20,7 @@ export const questions: Question[] = [
           },
           { text: "か" },
         ],
-        notes: "今週末 (this weekend) instead of 週末, with 新幹線で"
+        notes: "今週末 explicitly means this weekend.",
       },
       {
         segments: [
@@ -67,91 +37,168 @@ export const questions: Question[] = [
           },
           { text: "か" },
         ],
-        notes: "今週末 + へ, with 新幹線で"
-      },
-    ],
-  },
-  {
-    english: "It rained last weekend, so I didn't go anywhere — I just chilled out at home.",
-    answers: [
-      {
-        segments: [
-          { text: "先週[せんしゅう]の 週末[しゅうまつ]は 雨[あめ]が 降[ふ]っていたから、" },
-          { text: "どこにも", blank: true },
-          { text: "行[い]かなかった。家[いえ]で ごろごろして" },
-          { text: "いる", conjugation: { pos: "Ichidan verb", form: "normal", polarity: "positive", tense: "past" } },
-          { text: "。" },
-        ],
+        notes: "Uses へ for destination.",
       },
       {
         segments: [
+          { text: "けんじさんは 週末[しゅうまつ] 新幹線[しんかんせん]で" },
+          { text: "どこかに", blank: true },
           {
-            text: "先週[せんしゅう]の 週末[しゅうまつ]は 雨[あめ]が 降[ふ]っていたから、どこにも 行[い]かなかった。家[いえ]で ごろごろしていた。",
-          },
-        ],
-        notes: "Same wording in one sentence",
-      },
-      {
-        segments: [
-          {
-            text: "先週[せんしゅう]の 週末[しゅうまつ]は 雨[あめ]が 降[ふ]っていたから、どこにも 行[い]きませんでした。家[いえ]で ごろごろしていました。",
-          },
-        ],
-        notes: "Polite form",
-      },
-      {
-        segments: [
-          {
-            text: "先週[せんしゅう]の 週末[しゅうまつ]は 雨[あめ]が 降[ふ]っていたから、どこへも 行[い]かなかった。家[いえ]で ごろごろしていた。",
-          },
-        ],
-        notes: "どこへも instead of どこにも",
-      },
-      {
-        segments: [
-          {
-            text: "先週[せんしゅう]の 週末[しゅうまつ]は 雨[あめ]が 降[ふ]っていたから、どこへも 行[い]きませんでした。家[いえ]で ごろごろしていました。",
-          },
-        ],
-        notes: "どこへも polite",
-      },
-      {
-        segments: [
-          {
-            text: "先週[せんしゅう]の 週末[しゅうまつ]、雨[あめ]が 降[ふ]っていたから、どこにも 行[い]かなかった。家[いえ]で ごろごろしていた。",
-          },
-        ],
-        notes: "は dropped after 週末",
-      },
-      {
-        segments: [
-          {
-            text: "先週[せんしゅう]の 週末[しゅうまつ]、雨[あめ]が 降[ふ]っていたから、どこへも 行[い]かなかった。家[いえ]で ごろごろしていた。",
-          },
-        ],
-        notes: "どこへも, 家, は dropped",
-      },
-      ],
-  },
-  {
-    english: "Anyone can join this club.",
-    answers: [
-      {
-        segments: [
-          { text: "このサークルは" },
-          { text: "だれでも", blank: true },
-          {
-            text: " 入[はい]れる",
-            blank: true,
+            text: "行[い]く",
             conjugation: {
-              pos: "Ichidan verb",
+              pos: "Godan verb - Iku/Yuku special class",
               form: "normal",
               polarity: "positive",
               tense: "non-past",
             },
           },
+          { text: "か" },
         ],
+        notes: "週末 can mean this weekend from context.",
       },
+      {
+        segments: [
+          { text: "けんじさんは 週末[しゅうまつ] 新幹線[しんかんせん]で" },
+          { text: "どこかへ", blank: true },
+          {
+            text: "行[い]く",
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "週末 with へ for destination.",
+      }
+    ],
+  },
+  {
+    english: "It rained last weekend, so I didn't go anywhere. I just relaxed at home.",
+    answers: [
+      {
+        segments: [
+          { text: "先週末[せんしゅうまつ]は 雨[あめ]が 降[ふ]っていたから、" },
+          { text: "どこにも", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "negative",
+              tense: "past",
+            },
+          },
+          { text: "。家[いえ]で ごろごろして" },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+          { text: "。" },
+        ],
+        notes: "Uses 先週末 and どこにも.",
+      },
+      {
+        segments: [
+          { text: "先週末[せんしゅうまつ]は 雨[あめ]が 降[ふ]っていたから、" },
+          { text: "どこへも", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "negative",
+              tense: "past",
+            },
+          },
+          { text: "。家[いえ]で ごろごろして" },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+          { text: "。" },
+        ],
+        notes: "Uses どこへも.",
+      },
+      {
+        segments: [
+          { text: "先週末[せんしゅうまつ]、雨[あめ]が 降[ふ]っていたから、" },
+          { text: "どこにも", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "negative",
+              tense: "past",
+            },
+          },
+          { text: "。家[いえ]で ごろごろして" },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+          { text: "。" },
+        ],
+        notes: "Drops は after 先週末.",
+      },
+      {
+        segments: [
+          { text: "先週末[せんしゅうまつ]、雨[あめ]が 降[ふ]っていたから、" },
+          { text: "どこへも", blank: true },
+          {
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "negative",
+              tense: "past",
+            },
+          },
+          { text: "。家[いえ]で ごろごろして" },
+          {
+            text: "いる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+          { text: "。" },
+        ],
+        notes: "Drops は after 先週末 and uses どこへも.",
+      }
+    ],
+  },
+  {
+    english: "Anyone can join this circle.",
+    answers: [
       {
         segments: [
           { text: "このサークルには" },
@@ -167,11 +214,11 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "には instead of は",
+        notes: "Uses には for this club as the place/context.",
       },
       {
         segments: [
-          { text: "このサークルに" },
+          { text: "このサークルは" },
           { text: "だれでも", blank: true },
           {
             text: " 入[はい]れる",
@@ -184,12 +231,11 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "に instead of は",
+        notes: "Uses は to topicalize this club.",
       },
       {
         segments: [
-          { text: "このクラブは" },
-          { text: "だれでも", blank: true },
+          { text: "だれでも このサークルに" },
           {
             text: " 入[はい]れる",
             blank: true,
@@ -201,81 +247,98 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "クラブ instead of サークル",
-      },
-      {
-        segments: [
-          { text: "誰[だれ]でも このクラブに" },
-          {
-            text: " 入[はい]れる",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "誰でも fronted + クラブに",
-      },
-      {
-        segments: [
-          { text: "誰[だれ]でも このサークルに" },
-          {
-            text: " 入[はい]れる",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "誰でも fronted + サークルに",
-      },
+        notes: "Fronts だれでも.",
+      }
     ],
   },
   {
-    english: "I'm so hungry — I'd eat anything right now.",
+    english: "I'm hungry, so I'll eat anything.",
     answers: [
       {
         segments: [
-          { text: "おなかが すいた、今[いま]は" },
-          { text: "なんでも 食[た]べられる", blank: true },
-        ],
-      },
-      {
-        segments: [
-          { text: "おなかが すいた。今[いま]は なんでも 食[た]べられます" },
-        ],
-      },
-      {
-        segments: [
-          { text: "おなかが すいたから、今[いま]は なんでも 食[た]べられる" },
-        ],
-      },
-      {
-        segments: [
-          { text: "おなかが すいたから、今[いま]は なんでも 食[た]べられます" },
-        ],
-      },
-      {
-        segments: [
-          { text: "おなかが すいて、今[いま]は なんでも 食[た]べられる" },
-        ],
-      },
-      {
-        segments: [{ text: "おなかが すごく すいた。なんでも 食[た]べられる" }],
-      },
-      {
-        segments: [
+          { text: "おなかが すいたから、" },
+          { text: "なんでも", blank: true },
           {
-            text: "すごく おなかが すいた。今[いま]は なんでも 食[た]べられる",
+            text: "食[た]べる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
         ],
+        notes: "Uses から for the reason.",
       },
+      {
+        segments: [
+          { text: "すごく おなかが すいたから、" },
+          { text: "なんでも", blank: true },
+          {
+            text: "食[た]べる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Adds すごく for very hungry.",
+      },
+      {
+        segments: [
+          { text: "おなかが すごく すいたから、" },
+          { text: "なんでも", blank: true },
+          {
+            text: "食[た]べる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Alternative placement of すごく.",
+      },
+      {
+        segments: [
+          { text: "おなかが すいて、" },
+          { text: "なんでも", blank: true },
+          {
+            text: "食[た]べる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Uses て to connect hunger and eating anything.",
+      },
+      {
+        segments: [
+          { text: "おなかが すいたから、今[いま]は" },
+          { text: "なんでも", blank: true },
+          {
+            text: "食[た]べる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Keeps right now with 今は.",
+      }
     ],
   },
   {
@@ -285,185 +348,184 @@ export const questions: Question[] = [
         segments: [
           { text: "昨日[きのう]、図書館[としょかん]に" },
           { text: "だれも いなかった", blank: true },
-          { text: "から、早[はや]く 帰[かえ]った" },
+          { text: "から、早[はや]く" },
+          {
+            text: "帰[かえ]る",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
         ],
+        notes: "Basic version with に and から.",
       },
       {
         segments: [
+          { text: "昨日[きのう]、図書館[としょかん]には" },
+          { text: "だれも いなかった", blank: true },
+          { text: "から、早[はや]く" },
           {
-            text: "昨日[きのう]、図書館[としょかん]にはだれもいなかったから、早[はや]く 帰[かえ]った",
+            text: "帰[かえ]る",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
           },
         ],
+        notes: "Uses には to mark the library as the relevant location.",
       },
       {
         segments: [
+          { text: "昨日[きのう]、図書館[としょかん]に" },
+          { text: "だれも いなかった", blank: true },
+          { text: "ので、早[はや]く" },
           {
-            text: "昨日[きのう]、図書館[としょかん]にだれもいなかったので、早[はや]く 帰[かえ]った",
+            text: "帰[かえ]る",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
           },
         ],
+        notes: "Uses ので for the reason.",
       },
       {
         segments: [
+          { text: "昨日[きのう]、図書館[としょかん]には" },
+          { text: "だれも いなかった", blank: true },
+          { text: "ので、早[はや]く" },
           {
-            text: "昨日[きのう]、図書館[としょかん]にはだれもいなかったので、早[はや]く 帰[かえ]った",
+            text: "帰[かえ]る",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
           },
         ],
+        notes: "Uses には and ので.",
       },
       {
         segments: [
+          { text: "昨日[きのう]は、図書館[としょかん]に" },
+          { text: "だれも いなかった", blank: true },
+          { text: "から、早[はや]く" },
           {
-            text: "昨日[きのう]は、図書館[としょかん]にだれもいなかったから、早[はや]く 帰[かえ]った",
+            text: "帰[かえ]る",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
           },
         ],
+        notes: "Topicalizes yesterday.",
       },
       {
         segments: [
+          { text: "昨日[きのう]は、図書館[としょかん]には" },
+          { text: "だれも いなかった", blank: true },
+          { text: "から、早[はや]く" },
           {
-            text: "昨日[きのう]は、図書館[としょかん]にはだれもいなかったから、早[はや]く 帰[かえ]った",
+            text: "帰[かえ]る",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
           },
         ],
-      },
+        notes: "Topicalizes yesterday and uses には.",
+      }
     ],
   },
   {
-    english: "I can meet anytime.",
+    english: "Please call me anytime.",
     answers: [
       {
         segments: [
-          { text: "いつでも" },
-          {
-            text: " 会[あ]える",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
+          { text: "いつでも", blank: true },
+          { text: "電話[でんわ]して ください", blank: true },
         ],
+        register: "polite",
+        notes: "Uses いつでも with a polite request.",
       },
       {
         segments: [
-          { text: "私[わたし]は いつでも" },
-          {
-            text: " 会[あ]える",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
+          { text: "いつでも", blank: true },
+          { text: "私[わたし]に 電話[でんわ]して ください", blank: true },
         ],
-        notes: "Explicit 私は",
+        register: "polite",
+        notes: "Adds 私に to specify call me.",
       },
       {
         segments: [
-          { text: "いつでも 暇[ひま]だから、" },
-          {
-            text: " 会[あ]える",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
+          { text: "いつでも", blank: true },
+          { text: "電話[でんわ]をして ください", blank: true },
         ],
-        notes: "Uses 暇だから to make the availability explicit."
-      },
-    ],
-  },
-  {
-    english: "Is there somewhere quieter we could study?",
-    answers: [
-      {
-        segments: [
-          { text: "どこか 静[しず]かなところで", blank: true },
-          {
-            text: "勉強[べんきょう]できる",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "negative",
-              tense: "non-past",
-            },
-          },
-          { text: "か" },
-        ],
+        register: "polite",
+        notes: "Uses 電話をする.",
       },
       {
         segments: [
-          { text: "どこか 静[しず]かなところで 勉強[べんきょう]できないか" },
+          { text: "いつでも", blank: true },
+          { text: "電話[でんわ]して", blank: true },
         ],
-      },
-      {
-        segments: [
-          { text: "どこか 静[しず]かなところで 勉強[べんきょう]しない" },
-        ],
-      },
-      {
-        segments: [
-          { text: "どこか 静[しず]かなところで 勉強[べんきょう]しないか" },
-        ],
-      },
-      {
-        segments: [{ text: "静[しず]かなところが どこかに あるかな" }],
         register: "casual",
-      },
-      {
-        segments: [{ text: "静[しず]かなところが どこかに あるか" }],
-      },
-      {
-        segments: [
-          {
-            text: "どこか 静[しず]かなところで 勉強[べんきょう]する",
-            conjugation: {
-              pos: "Suru verb - included",
-              form: "normal",
-              polarity: "negative",
-              tense: "non-past",
-            },
-          },
-          { text: "か" },
-        ],
-        notes: "勉強しない variation",
+        notes: "Casual request.",
       },
     ],
   },
   {
-    english: "I looked everywhere, but I couldn't find my wallet.",
+    english: "Let's go somewhere quiet.",
     answers: [
       {
         segments: [
-          { text: "どこも 見[み]たけど、 財布[さいふ]が" },
-          { text: "どこにも なかった", blank: true },
+          { text: "どこか 静[しず]かなところに", blank: true },
+          { text: "行[い]きましょう", blank: true },
         ],
+        register: "polite",
+        notes: "Uses に for destination with polite let's.",
       },
       {
         segments: [
-          { text: "どこも見[み]たけど、財布[さいふ]はどこにもなかった" },
+          { text: "どこか 静[しず]かなところへ", blank: true },
+          { text: "行[い]きましょう", blank: true },
         ],
+        register: "polite",
+        notes: "Uses へ for destination.",
       },
       {
         segments: [
-          { text: "どこも見[み]たが、財布[さいふ]がどこにもなかった" },
+          { text: "どこか 静[しず]かなところに", blank: true },
+          { text: "行[い]こう", blank: true },
         ],
+        register: "casual",
+        notes: "Casual volitional.",
       },
       {
         segments: [
-          { text: "どこも見[み]たが、財布[さいふ]はどこにもなかった" },
+          { text: "どこか 静[しず]かなところへ", blank: true },
+          { text: "行[い]こう", blank: true },
         ],
-      },
-      {
-        segments: [
-          { text: "財布[さいふ]がどこにもなかった。どこも見[み]たけど。" },
-        ],
-      },
+        register: "casual",
+        notes: "Casual volitional with へ.",
+      }
     ],
   },
   {
@@ -472,670 +534,361 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          {
-            text: "家族[かぞく]の 中[なか]で 料理[りょうり]が 上手[じょうず]な 人[ひと]は",
-          },
-          { text: "だれも" },
-          {
-            text: "いる",
-            blank: true,
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "negative",
-              tense: "non-past",
-            },
-          },
+          { text: "家族[かぞく]の 中[なか]で 料理[りょうり]が 上手[じょうず]な 人[ひと]は" },
+          { text: "だれも いない", blank: true },
           { text: "から、毎晩[まいばん]" },
-          { text: "どこかで", blank: true },
-          {
-            text: "食[た]べる",
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-      },
-      {
-        segments: [
-          {
-            text: "家族[かぞく]の 中[なか]で 料理[りょうり]が 上手[じょうず]な 人[ひと]は だれも いないから、毎晩[まいばん] どこかで 食[た]べる",
-          },
-        ],
-        notes: "base form",
-      },
-      {
-        segments: [
-          {
-            text: "家族[かぞく]に 料理[りょうり]が 上手[じょうず]な 人[ひと]は だれも いないから、毎晩[まいばん] どこかで 食[た]べる",
-          },
-        ],
-        notes: "家族に variant",
-      },
-      {
-        segments: [
-          {
-            text: "家族[かぞく]の 中[なか]で 料理[りょうり]が 上手[じょうず]な 人[ひと]は だれも いないから、毎晩[まいばん] どこかへ 食[た]べに 行[い]く",
-          },
-        ],
-        notes: "どこかへ食べに行く variant",
-      },
-      {
-        segments: [
-          {
-            text: "家族[かぞく]に 料理[りょうり]が 上手[じょうず]な 人[ひと]は だれも いないから、毎晩[まいばん] どこかへ 食[た]べに 行[い]く",
-          },
-        ],
-        notes: "家族に + どこかへ食べに行く",
-      },
-      {
-        segments: [
-          {
-            text: "うちの 家族[かぞく]の 中[なか]で 料理[りょうり]が 上手[じょうず]な 人[ひと]は だれも いないから、毎晩[まいばん] どこかで 食[た]べる",
-          },
-        ],
-        notes: "うちの家族 variant",
-      },
-      {
-        segments: [
-          {
-            text: "家族[かぞく]に 料理[りょうり]が 上手[じょうず]な 人[ひと]は だれも",
-          },
-          {
-            text: "いる",
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "negative",
-              tense: "non-past",
-            },
-          },
-          { text: "から、毎晩[まいばん] どこかで" },
-          {
-            text: "食[た]べる",
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "家族に variant",
-      },
-      {
-        segments: [
-          {
-            text: "家族[かぞく]の 中[なか]で 料理[りょうり]が 上手[じょうず]な 人[ひと]は だれも",
-          },
-          {
-            text: "いる",
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "negative",
-              tense: "non-past",
-            },
-          },
-          { text: "から、毎晩[まいばん] どこかへ 食[た]べに" },
-          {
-            text: "行[い]く",
-            conjugation: {
-              pos: "Godan verb - Iku/Yuku special class",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "どこかへ陀べに行く variant",
-      },
-      {
-        segments: [
-          {
-            text: "家族[かぞく]に 料理[りょうり]が 上手[じょうず]な 人[ひと]は だれも",
-          },
-          {
-            text: "いる",
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "negative",
-              tense: "non-past",
-            },
-          },
-          { text: "から、毎晩[まいばん] どこかへ 食[た]べに" },
-          {
-            text: "行[い]く",
-            conjugation: {
-              pos: "Godan verb - Iku/Yuku special class",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "家族に + どこかへ食べに行く variant",
-      },
-      {
-        segments: [
-          {
-            text: "うちの 家族[かぞく]の 中[なか]で 料理[りょうり]が 上手[じょうず]な 人[ひと]は だれも",
-          },
-          {
-            text: "いる",
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "negative",
-              tense: "non-past",
-            },
-          },
-          { text: "から、毎晩[まいばん] どこかで" },
-          {
-            text: "食[た]べる",
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "うちの家族 variant",
-      },
-    ],
-  },
-  {
-    english: "I want to go somewhere warm this winter — anywhere is fine.",
-    answers: [
-      {
-        segments: [
-          { text: "今年[ことし]の 冬[ふゆ]は、暖[あたた]かい" },
-          { text: "どこかに 行[い]きたい", blank: true },
-          { text: "。" },
-          { text: "どこでもよい", blank: true },
-          { text: "。" },
-        ],
-      },
-      {
-        segments: [
-          {
-            text: "今年[ことし]の 冬[ふゆ]は、どこか 暖[あたた]かいところへ 行[い]きたい。どこでもよい。",
-          },
-        ],
-        notes: "へ instead of に",
-      },
-      {
-        segments: [
-          {
-            text: "今年[ことし]の 冬[ふゆ]、どこか 暖[あたた]かいところに 行[い]きたい。どこでもよい。",
-          },
-        ],
-        notes: "は dropped after 冬",
-      },
-      {
-        segments: [
-          {
-            text: "今年[ことし]の 冬[ふゆ]、どこか 暖[あたた]かいところへ 行[い]きたい。どこでもよい。",
-          },
-        ],
-        notes: "は dropped + へ",
-      },
-    ],
-  },
-  {
-    english:
-      "Takeshi said he wants to go somewhere in Italy, but I want to go anywhere in Spain.",
-    hint: "Takeshi = たけし",
-    answers: [
-      {
-        segments: [
-          { text: "たけしさんはイタリアの" },
           { text: "どこかに", blank: true },
-          { text: "行[い]くと 聞[き]いたけど、スペインは" },
-          { text: "どこでも", blank: true },
-          { text: "よい。" },
-        ],
-      },
-      {
-        segments: [
+          { text: "食[た]べに" },
           {
-            text: "たけしさんはイタリアのどこかに行[い]くと聞[き]いたけど、私はスペインはどこでもよい。",
-          },
-        ],
-      },
-      {
-        segments: [
-          {
-            text: "たけしさんはイタリアのどこかに行[い]くと聞[き]いたけど、私はスペインのどこでもよい。",
-          },
-        ],
-      },
-      {
-        segments: [
-          {
-            text: "たけしさんはイタリアのどこかに行[い]くって聞[き]いたけど、スペインはどこでもよい。",
-          },
-        ],
-      },
-      {
-        segments: [
-          {
-            text: "たけしさんはイタリアのどこかに行[い]くって聞[き]いたけど、私はスペインのどこでもよい。",
-          },
-        ],
-      },
-      {
-        segments: [
-          {
-            text: "たけしさんはイタリアのどこかに行[い]くと聞[き]いたが、スペインはどこでもよい。",
-          },
-        ],
-      },
-      {
-        segments: [
-          {
-            text: "たけしさんはイタリアのどこかに行[い]くと聞[き]いたが、私はスペインのどこでもよい。",
-          },
-        ],
-      },
-      {
-        segments: [
-          {
-            text: "たけしさんはイタリアのどこかへ行[い]くと聞[き]いたけど、スペインはどこでもよい。",
-          },
-        ],
-      },
-      {
-        segments: [
-          {
-            text: "たけしさんはイタリアのどこかへ行[い]くと聞[き]いたけど、私はスペインのどこでもよい。",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    english: "I asked everyone, but no one knew where Sora had gone.",
-    hint: "Sora = そら",
-    answers: [
-      {
-        segments: [
-          { text: "みんなに 聞[き]いたけど、そらさんが どこに 行[い]ったか、" },
-          { text: "だれも 知[し]らなかった", blank: true },
-        ],
-      },
-      {
-        segments: [
-          {
-            text: "みんなに 聞[き]いたけど、そらさんが どこへ 行[い]ったか、だれも 知[し]らなかった",
-          },
-        ],
-      },
-      {
-        segments: [
-          {
-            text: "だれにも 聞[き]いたけど、そらさんが どこに 行[い]ったか、だれも 知[し]らなかった",
-          },
-        ],
-      },
-      {
-        segments: [
-          {
-            text: "みんなに 聞[き]いたが、そらさんが どこに 行[い]ったか、だれも 知[し]らなかった",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    english:
-      "I'm free this Sunday — we could go anywhere, but somewhere with good food would be best.",
-    answers: [
-      {
-        segments: [
-          { text: "今度[こんど]の 日曜日[にちようび]は 暇[ひま]だから、" },
-          {
-            text: "どこでもよいけど、どこか 食[た]べ 物[もの]がおいしいところに 行[い]きましょう",
+            text: "行[い]く",
             blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
         ],
+        notes: "Uses 家族の中で and に for destination.",
       },
       {
         segments: [
+          { text: "家族[かぞく]の 中[なか]で 料理[りょうり]が 上手[じょうず]な 人[ひと]は" },
+          { text: "だれも いない", blank: true },
+          { text: "から、毎晩[まいばん]" },
+          { text: "どこかへ", blank: true },
+          { text: "食[た]べに" },
           {
-            text: "今度[こんど]の 日曜日[にちようび]は 暇[ひま]だから、どこでもよいけど、どこか 食[た]べ 物[もの]がおいしいところへ 行[い]きましょう",
-          },
-        ],
-      },
-      {
-        segments: [
-          {
-            text: "今度[こんど]の 日曜日[にちようび]、暇[ひま]だから、どこでもよいけど、どこか 食[た]べ 物[もの]がおいしいところに 行[い]きましょう",
-          },
-        ],
-      },
-      {
-        segments: [
-          {
-            text: "今度[こんど]の 日曜日[にちようび]、暇[ひま]だから、どこでもよいけど、どこか 食[た]べ 物[もの]がおいしいところへ 行[い]きましょう",
-          },
-        ],
-      },
-      {
-        segments: [
-          {
-            text: "今週[こんしゅう]の 日曜日[にちようび]は 暇[ひま]だから、どこでもよいけど、どこか 食[た]べ 物[もの]がおいしいところに 行[い]きましょう",
-          },
-        ],
-      },
-      {
-        segments: [
-          {
-            text: "今週[こんしゅう]の 日曜日[にちようび]は 暇[ひま]だから、どこでもよいけど、どこか 食[た]べ 物[もの]がおいしいところへ 行[い]きましょう",
-          },
-        ],
-      },
-      {
-        segments: [
-          {
-            text: "日曜日[にちようび]は 暇[ひま]だから、どこでもよいけど、どこか 食[た]べ 物[もの]がおいしいところに 行[い]きましょう",
-          },
-        ],
-      },
-      {
-        segments: [
-          {
-            text: "今度[こんど]の 日曜日[にちようび]は 暇[ひま]だから、どこでもよいけど、どこか おいしい 食[た]べ 物[もの]があるところに 行[い]きましょう",
-          },
-        ],
-        notes: "Using おいしい食べ物がある instead of 食べ物がおいしい",
-      },
-    ],
-  },
-  {
-    english:
-      "Someone called while I was sleeping, but I didn't recognize the number.",
-    answers: [
-      {
-        segments: [
-          { text: "寝[ね]ていた 時[とき]に、" },
-          { text: "誰[だれ]かから", blank: true },
-          { text: "電話[でんわ]があったけど、番号[ばんごう]がわからなかった" },
-        ],
-      },
-      {
-        segments: [
-          {
-            text: "誰[だれ]かから 電話[でんわ]があったけど、誰[だれ]かわからなかった",
-          },
-        ],
-      },
-      {
-        segments: [
-          {
-            text: "誰[だれ]かから 電話[でんわ]があったけど、誰[だれ]だかはわからなかった",
-          },
-        ],
-      },
-      {
-        segments: [
-          {
-            text: "誰[だれ]かから 電話[でんわ]があったけど、誰[だれ]かはわからなかった",
-          },
-        ],
-      },
-      {
-        segments: [
-          {
-            text: "寝[ね]ている 間[あいだ]に、誰[だれ]かから電話[でんわ]があったけど、番号[ばんごう]がわからなかった",
-          },
-        ],
-      },
-      {
-        segments: [
-          {
-            text: "寝[ね]ていた 間[あいだ]に、誰[だれ]かから電話[でんわ]があったけど、番号[ばんごう]がわからなかった",
-          },
-        ],
-      },
-      {
-        segments: [
-          {
-            text: "寝[ね]ていた 時[とき]、誰[だれ]かから電話[でんわ]があったけど、番号[ばんごう]がわからなかった",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    english:
-      "I want to live somewhere in Japan — anywhere is fine, as long as it's warmer than here.",
-    answers: [
-      {
-        segments: [
-          { text: "日本[にほん]の" },
-          { text: "どこかに 住[す]みたい", blank: true },
-          { text: "。ここより 暖[あたた]かいところならどこでもよい。" },
-        ],
-      },
-      {
-        segments: [
-          {
-            text: "日本[にほん]のどこかがよいと思[おも]います。ここより暖[あたた]かいところならどこでもよいです。",
-          },
-        ],
-        notes: "Polite version",
-      },
-      {
-        segments: [
-          {
-            text: "日本[にほん]のどこかに住[す]んでいるのがよいと思[おも]う。ここより暖[あたた]かいところならどこでもよい。",
-          },
-        ],
-        notes: "どこかに variation with 住んでいる",
-      },
-      {
-        segments: [
-          {
-            text: "日本[にほん]のどこかに 住[す]みたいです。ここより 暖[あたた]かいところならどこでもよいです。",
-          },
-        ],
-        notes: "Polite form with たいです",
-      },
-      {
-        segments: [
-          {
-            text: "私[わたし]は 日本[にほん]のどこかに 住[す]みたい。ここより 暖[あたた]かいところならどこでもよい。",
-          },
-        ],
-        notes: "Explicit subject 私は at start",
-      },
-      {
-        segments: [
-          {
-            text: "私[わたし]は 日本[にほん]のどこかに 住[す]みたいです。ここより 暖[あたた]かいところならどこでもよいです。",
-          },
-        ],
-        notes: "Polite with 私は",
-      },
-    ],
-  },
-  {
-    english:
-      "I've never been anywhere outside of Japan, so I want to go somewhere in Europe someday.",
-    answers: [
-      {
-        segments: [
-          { text: "日本[にほん]の 外[そと]にはどこにも" },
-          {
-            text: "行[い]かなかったから、いつかヨーロッパのどこかに行[い]くつもり",
+            text: "行[い]く",
             blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
-          { text: "です" },
         ],
+        notes: "Uses へ for destination.",
       },
       {
         segments: [
+          { text: "家族[かぞく]に 料理[りょうり]が 上手[じょうず]な 人[ひと]は" },
+          { text: "だれも いない", blank: true },
+          { text: "から、毎晩[まいばん]" },
+          { text: "どこかに", blank: true },
+          { text: "食[た]べに" },
           {
-            text: "日本[にほん]の 外[そと]にはどこにも行[い]かなかったから、いつかヨーロッパのどこかへ行[い]くつもりです",
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
         ],
+        notes: "Uses 家族に for in my family.",
       },
       {
         segments: [
+          { text: "うちの 家族[かぞく]の 中[なか]で 料理[りょうり]が 上手[じょうず]な 人[ひと]は" },
+          { text: "だれも いない", blank: true },
+          { text: "から、毎晩[まいばん]" },
+          { text: "どこかに", blank: true },
+          { text: "食[た]べに" },
           {
-            text: "日本[にほん]の 外[そと]にはどこにも行[い]かなかったから、ヨーロッパのどこかにいつか行[い]くつもりです",
+            text: "行[い]く",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb - Iku/Yuku special class",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
         ],
+        notes: "Uses うちの家族 for my family.",
+      }
+    ],
+  },
+  {
+    english: "This winter, I want to go somewhere warm. Anywhere is fine.",
+    answers: [
+      {
+        segments: [
+          { text: "今年[ことし]の 冬[ふゆ]は、どこか 暖[あたた]かいところに " },
+          {
+            text: "行[い]きたい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "。" },
+          { text: "どこでも" },
+          {
+            text: "いい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "。" },
+        ],
+        notes: "Uses ところ + に and どこでもいい.",
       },
       {
         segments: [
+          { text: "今年[ことし]の 冬[ふゆ]は、どこか 暖[あたた]かいところに " },
           {
-            text: "日本[にほん]の 外[そと]にはどこにも行[い]かなかったから、ヨーロッパのどこかへいつか行[い]くつもりです",
+            text: "行[い]きたい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
+          { text: "。" },
+          { text: "どこでも" },
+          {
+            text: "大丈夫[だいじょうぶ]",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "。" },
         ],
+        notes: "Uses ところ + に and どこでも大丈夫.",
       },
+      {
+        segments: [
+          { text: "今年[ことし]の 冬[ふゆ]は、どこか 暖[あたた]かいところへ " },
+          {
+            text: "行[い]きたい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "。" },
+          { text: "どこでも" },
+          {
+            text: "いい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "。" },
+        ],
+        notes: "Uses ところ + へ and どこでもいい.",
+      },
+      {
+        segments: [
+          { text: "今年[ことし]の 冬[ふゆ]は、どこか 暖[あたた]かいところへ " },
+          {
+            text: "行[い]きたい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "。" },
+          { text: "どこでも" },
+          {
+            text: "大丈夫[だいじょうぶ]",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "。" },
+        ],
+        notes: "Uses ところ + へ and どこでも大丈夫.",
+      },
+      {
+        segments: [
+          { text: "今年[ことし]の 冬[ふゆ]は、どこか 暖[あたた]かい所[ところ]に " },
+          {
+            text: "行[い]きたい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "。" },
+          { text: "どこでも" },
+          {
+            text: "いい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "。" },
+        ],
+        notes: "Uses 所[ところ] + に and どこでもいい.",
+      },
+      {
+        segments: [
+          { text: "今年[ことし]の 冬[ふゆ]は、どこか 暖[あたた]かい所[ところ]に " },
+          {
+            text: "行[い]きたい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "。" },
+          { text: "どこでも" },
+          {
+            text: "大丈夫[だいじょうぶ]",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "。" },
+        ],
+        notes: "Uses 所[ところ] + に and どこでも大丈夫.",
+      },
+      {
+        segments: [
+          { text: "今年[ことし]の 冬[ふゆ]は、どこか 暖[あたた]かい所[ところ]へ " },
+          {
+            text: "行[い]きたい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "。" },
+          { text: "どこでも" },
+          {
+            text: "いい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "。" },
+        ],
+        notes: "Uses 所[ところ] + へ and どこでもいい.",
+      },
+      {
+        segments: [
+          { text: "今年[ことし]の 冬[ふゆ]は、どこか 暖[あたた]かい所[ところ]へ " },
+          {
+            text: "行[い]きたい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "。" },
+          { text: "どこでも" },
+          {
+            text: "大丈夫[だいじょうぶ]",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "。" },
+        ],
+        notes: "Uses 所[ところ] + へ and どこでも大丈夫.",
+      }
+    ],
+  },
+  {
+    english:
+      "I haven't told anyone yet, but I plan to live somewhere outside this town.",
+    answers: [
+      {
+        segments: [
+          { text: "まだ" },
+          { text: "誰[だれ]にも", blank: true },
+          { text: "話[はな]していませんが、この 町[まち]を 出[で]て" },
+          { text: "どこかに", blank: true },
+          { text: "住[す]むつもりです", blank: true },
+        ],
+        register: "polite",
+        notes: "Polite version with 誰にも and どこかに.",
+      },
+      {
+        segments: [
+          { text: "まだ" },
+          { text: "誰[だれ]にも", blank: true },
+          { text: "話[はな]していないけど、この 町[まち]を 出[で]て" },
+          { text: "どこかに", blank: true },
+          { text: "住[す]むつもり", blank: true },
+        ],
+        register: "casual",
+        notes: "Casual version with けど.",
+      },
+      {
+        segments: [
+          { text: "まだ" },
+          { text: "誰[だれ]にも", blank: true },
+          { text: "話[はな]していませんけど、この 町[まち]を 出[で]て" },
+          { text: "どこかに", blank: true },
+          { text: "住[す]むつもりです", blank: true },
+        ],
+        register: "polite",
+        notes: "Polite version with けど.",
+      },
+    ],
+  },
 
-    ],
-  },
-  {
-    english:
-      "I've heard that Hina is moving somewhere — has anyone told you more about it?",
-    hint: "Hina = ひな",
-    answers: [
-      {
-        segments: [
-          { text: "ひなさんはどこかに住[す]むと 聞[き]いたけど、" },
-          { text: "だれかから 何[なに]か 聞[き]きましたか", blank: true },
-        ],
-      },
-      {
-        segments: [
-          {
-            text: "ひなさんはどこかに行[い]くと 聞[き]いたけど、だれかから 何[なに]か 聞[き]きましたか",
-          },
-        ],
-        notes: "行く instead of 住む",
-      },
-      {
-        segments: [
-          {
-            text: "ひなさんはどこかに 住[す]むと 聞[き]いたけど、だれかから 何[なに]か 聞[き]いたか",
-          },
-        ],
-        register: "casual",
-        notes: "Plain question ending",
-      },
-      {
-        segments: [
-          {
-            text: "ひなさんはどこかに 行[い]くと 聞[き]いたけど、だれかから 何[なに]か 聞[き]いたか",
-          },
-        ],
-        register: "casual",
-        notes: "行く instead of 住む",
-      },
-      {
-        segments: [
-          {
-            text: "ひなさんはどこかに 住[す]むと 聞[き]いたけど、あなたはだれかから 何[なに]か 聞[き]きましたか",
-          },
-        ],
-        notes: "with あなたは",
-      },
-    ],
-  },
-  {
-    english:
-      "I haven't told anyone yet, but I'm thinking of moving somewhere outside of this town.",
-    answers: [
-      {
-        segments: [
-          {
-            text: "まだ 誰[だれ]にも 話[はな]していないけど、この 町[まち]を 出[で]て どこかに 住[す]むつもり",
-            blank: true,
-          },
-        ],
-      },
-      {
-        segments: [
-          {
-            text: "まだ誰[だれ]にも話[はな]していないが、この町[まち]を出[で]てどこかに住[す]むつもりです",
-          },
-        ],
-      },
-      {
-        segments: [
-          {
-            text: "まだ誰[だれ]にも話[はな]していませんが、この町[まち]を出[で]てどこかに住[す]むつもりです",
-          },
-        ],
-      },
-      {
-        segments: [
-          {
-            text: "まだ誰[だれ]にも話[はな]していませんけど、この町[まち]を出[で]てどこかに住[す]むつもりです",
-          },
-        ],
-      },
-      {
-        segments: [
-          {
-            text: "まだ誰[だれ]にも話[はな]していないけど、この町[まち]を出[で]てどこかに住[す]むつもりです",
-          },
-        ],
-      },
-      {
-        segments: [
-          {
-            text: "まだ誰[だれ]にも話[はな]していないけど、この町[まち]を出[で]てどこかに住[す]むつもりがある",
-          },
-        ],
-      },
-      ],
-  },
-  {
-    english:
-      "I haven't met anyone interesting lately — I want to meet someone new somewhere outside of this town.",
-    answers: [
-      {
-        segments: [
-          { text: "このごろ、面白[おもしろ]い 人[ひと]には" },
-          { text: "誰[だれ]にも 会[あ]って", blank: true },
-          { text: "いる", blank: true, conjugation: { pos: "Ichidan verb", form: "normal", polarity: "negative", tense: "non-past" } },
-          { text: "。この 町[まち]を 出[で]て、" },
-          {
-            text: "どこかで 新[あたら]しい 人[ひと]に 会[あ]いたい",
-            blank: true,
-          },
-        ],
-      },
-      {
-        segments: [
-          {
-            text: "このごろ、面白[おもしろ]い 人[ひと]には誰[だれ]にも 会[あ]っていない。この 町[まち]を 出[で]て、どこかで 新[あたら]しい 人[ひと]に 会[あ]いたい",
-          },
-        ],
-      },
-      {
-        segments: [
-          {
-            text: "このごろ、面白[おもしろ]い 人[ひと]には誰[だれ]にも会[あ]っていない。どこか、この 町[まち]じゃないところで 新[あたら]しい 人[ひと]に 会[あ]いたい",
-          },
-        ],
-      },
-      {
-        segments: [
-          {
-            text: "このごろ、面白[おもしろ]い 人[ひと]には誰[だれ]にも会[あ]っていない。この 町[まち]を 出[で]て、どこかに 新[あたら]しい 人[ひと]に 会[あ]いに行[い]きたい",
-          },
-        ],
-      },
-    ],
-  },
 ]

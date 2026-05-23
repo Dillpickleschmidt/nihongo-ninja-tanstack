@@ -15,7 +15,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "パーティーで 何[なに]も 食[た]べないつもり" },
+          { text: "パーティーで 何[なに]も 食[た]べないつもり", blank: true },
           { text: "です" },
           { text: "。もう 晩[ばん]ご 飯[はん]を 食[た]べたから。" },
         ],
@@ -23,7 +23,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "パーティーでは 何[なに]も 食[た]べないつもり" },
+          { text: "パーティーでは 何[なに]も 食[た]べないつもり", blank: true },
           { text: "です" },
           { text: "。もう 夕[ゆう]ご 飯[はん]を 食[た]べたから。" },
         ],
@@ -31,7 +31,7 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          { text: "パーティーで 何[なに]も 食[た]べないつもり" },
+          { text: "パーティーで 何[なに]も 食[た]べないつもり", blank: true },
           { text: "です" },
           { text: "。もう 夕[ゆう]ご 飯[はん]を 食[た]べたから。" },
         ],
@@ -40,10 +40,29 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "パーティーでは 何[なに]も" },
-          { text: "食[た]べるつもりは", blank: true },
-          { text: "ありません。もう 夕[ゆう]ご 飯[はん]を 食[た]べたから。" },
+          { text: "食[た]べるつもりは" },
+          {
+            text: "ある",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+          { text: "。もう 晩[ばん]ご 飯[はん]を 食[た]べたから。" },
         ],
-        notes: "食べるつもりはありません (alternate \"have no intent to eat\" structure)",
+        notes: "Uses 食べるつもりはありません / 食べるつもりはない structure.",
+      },
+      {
+        segments: [
+          { text: "パーティーでは 何[なに]も" },
+          { text: "食[た]べるつもりはないです", blank: true },
+          { text: "。もう 晩[ばん]ご 飯[はん]を 食[た]べたから。" },
+        ],
+        register: "polite",
+        notes: "Polite ないです variant.",
       },
     ],
   },
@@ -52,91 +71,105 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "また テストを" },
-          { text: "するつもりは", blank: true },
+          { text: "もう 一度[いちど] 試験[しけん]を" },
+          { text: "受[う]けるつもりは" },
           {
-            text: "ない",
+            text: "ある",
             blank: true,
             conjugation: {
-              pos: "I-adjective",
+              pos: "Godan verb with 'ru' ending (irregular verb)",
               form: "normal",
-              polarity: "positive",
+              polarity: "negative",
               tense: "non-past",
             },
           },
+          { text: "。一回[いっかい]で" },
+          {
+            text: "十分[じゅうぶん]",
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+          { text: "。" },
         ],
+        notes: "Natural exam phrasing with 試験を受ける and 一回で十分でした/だった.",
       },
       {
         segments: [
-          { text: "また テストを" },
-          { text: "するつもりが" },
-          {
-            text: "ない",
-            conjugation: {
-              pos: "I-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
+          { text: "もう 一度[いちど] 試験[しけん]を" },
+          { text: "受[う]けるつもりはないです", blank: true },
+          { text: "。一回[いっかい]で 十分[じゅうぶん]でした。" },
         ],
-        notes: "つもりが + ない variation",
+        register: "polite",
+        notes: "Polite ないです variant.",
       },
       {
         segments: [
-          { text: "テストをまた" },
-          { text: "するつもりは" },
+          { text: "また 試験[しけん]を" },
+          { text: "受[う]けるつもりは" },
           {
-            text: "ない",
+            text: "ある",
+            blank: true,
             conjugation: {
-              pos: "I-adjective",
+              pos: "Godan verb with 'ru' ending (irregular verb)",
               form: "normal",
-              polarity: "positive",
+              polarity: "negative",
               tense: "non-past",
             },
           },
+          { text: "。一回[いっかい]で" },
+          {
+            text: "十分[じゅうぶん]",
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+          { text: "。" },
         ],
-        notes: "また moved after テストを",
+        notes: "Uses また instead of もう一度.",
       },
       {
         segments: [
-          { text: "テストをまた" },
-          { text: "するつもりが" },
+          { text: "試験[しけん]を もう 一度[いちど]" },
+          { text: "受[う]けるつもりは" },
           {
-            text: "ない",
+            text: "ある",
+            blank: true,
             conjugation: {
-              pos: "I-adjective",
+              pos: "Godan verb with 'ru' ending (irregular verb)",
               form: "normal",
-              polarity: "positive",
+              polarity: "negative",
               tense: "non-past",
             },
           },
+          { text: "。一回[いっかい]で" },
+          {
+            text: "十分[じゅうぶん]",
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "past",
+            },
+          },
+          { text: "。" },
         ],
-        notes: "また after テストを + が particle",
+        notes: "Moves もう一度 after 試験を.",
       },
       {
-        segments: [{ text: "また テストを しないつもり" }, { text: "です" }],
-        notes: "しないつもりです - polite ないつもり structure",
-      },
-      {
-        segments: [{ text: "テストをまた しないつもり" }, { text: "です" }],
-        notes: "また word order variation",
-      },
-      {
-        segments: [{ text: "また テストを するつもりは ありません" }],
-        notes: "Formal polite: つもりはありません",
-      },
-      {
-        segments: [{ text: "テストをまた するつもりは ありません" }],
-        notes: "また word order + ありません",
-      },
-      {
-        segments: [{ text: "また テストを するつもりが ありません" }],
-        notes: "が particle + ありません",
-      },
-      {
-        segments: [{ text: "テストをまた するつもりが ありません" }],
-        notes: "また word order + が + ありません",
+        segments: [
+          { text: "もう 一度[いちど] 試験[しけん]を" },
+          { text: "受[う]けないつもり", blank: true },
+          { text: "です。一回[いっかい]で 十分[じゅうぶん]でした。" },
+        ],
+        register: "polite",
+        notes: "受けないつもりです variant.",
       },
     ],
   },
@@ -146,31 +179,12 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "来年[らいねん]の 春[はる]、新幹線[しんかんせん]で 京都[きょうと]に",
-          },
-          { text: "行[い]くつもり", blank: true },
-          { text: "です" },
-        ],
-      },
-      {
-        segments: [
-          {
-            text: "来年[らいねん]の 春[はる]、新幹線[しんかんせん]で 京都[きょうと]へ 行[い]くつもり",
-            blank: true,
-          },
-          { text: "です" },
-        ],
-        notes: "Using へ instead of に",
-      },
-      {
-        segments: [
-          {
             text: "私[わたし]は 来年[らいねん]の 春[はる]、新幹線[しんかんせん]で 京都[きょうと]に 行[い]くつもり",
             blank: true,
           },
           { text: "です" },
         ],
-        notes: "私は at start, with に",
+        notes: "Basic に destination variant."
       },
       {
         segments: [
@@ -180,29 +194,47 @@ export const questions: Question[] = [
           },
           { text: "です" },
         ],
-        notes: "私は at start, with へ",
+        notes: "Uses へ instead of に.",
       },
       {
         segments: [
           {
-            text: "来年[らいねん]の 春[はる]に 京都[きょうと]に 新幹線[しんかんせん]で 行[い]くつもり",
+            text: "私[わたし]は 来年[らいねん]の 春[はる]に 新幹線[しんかんせん]で 京都[きょうと]に 行[い]くつもり",
             blank: true,
           },
           { text: "です" },
         ],
-        notes:
-          "新幹線で moved after time expression — alternative word order, に",
+        notes: "Uses 来年の春に with に.",
       },
       {
         segments: [
           {
-            text: "来年[らいねん]の 春[はる]に 京都[きょうと]へ 新幹線[しんかんせん]で 行[い]くつもり",
+            text: "私[わたし]は 来年[らいねん]の 春[はる]に 新幹線[しんかんせん]で 京都[きょうと]へ 行[い]くつもり",
             blank: true,
           },
           { text: "です" },
         ],
-        notes:
-          "新幹線で moved after time expression — alternative word order, へ",
+        notes: "Uses 来年の春に with へ.",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 来年[らいねん]の 春[はる]に 京都[きょうと]に 新幹線[しんかんせん]で 行[い]くつもり",
+            blank: true,
+          },
+          { text: "です" },
+        ],
+        notes: "Alternative word order, に.",
+      },
+      {
+        segments: [
+          {
+            text: "私[わたし]は 来年[らいねん]の 春[はる]に 京都[きょうと]へ 新幹線[しんかんせん]で 行[い]くつもり",
+            blank: true,
+          },
+          { text: "です" },
+        ],
+        notes: "Alternative word order, へ.",
       },
     ],
   },
@@ -212,31 +244,77 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
+          { text: "私[わたし]は この 古[ふる]い 自転車[じてんしゃ]を" },
+          { text: "売[う]るつもりは" },
+          {
+            text: "ある",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+          { text: "。高校[こうこう]のときから 持[も]って" },
+          {
+            text: "いる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "。" },
+        ],
+        notes: "Uses この古い自転車.",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は この 古[ふる]い 自転車[じてんしゃ]を" },
+          { text: "売[う]るつもりはないです", blank: true },
+          { text: "。高校[こうこう]のときから 持[も]っています。" },
+        ],
+        register: "polite",
+        notes: "Polite ないです variant.",
+      },
+      {
+        segments: [
           { text: "古[ふる]い 自転車[じてんしゃ]を" },
-          { text: "売[う]るつもりはない", blank: true },
-          { text: "。 高校[こうこう]のときから 持[も]っています。" },
+          { text: "売[う]るつもりは" },
+          {
+            text: "ある",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+          { text: "。高校[こうこう]のときから 持[も]って" },
+          {
+            text: "いる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "。" },
         ],
+        notes: "Without この.",
       },
       {
         segments: [
-          {
-            text: "古[ふる]い 自転車[じてんしゃ]を 売[う]るつもりがない。 高校[こうこう]のときから 持[も]っています。",
-          },
+          { text: "私[わたし]は この 古[ふる]い 自転車[じてんしゃ]を" },
+          { text: "売[う]らないつもり", blank: true },
+          { text: "です。高校[こうこう]のときから 持[も]っています。" },
         ],
-      },
-      {
-        segments: [
-          {
-            text: "この 古[ふる]い 自転車[じてんしゃ]を 売[う]るつもりはない。 高校[こうこう]のときから 持[も]っています。",
-          },
-        ],
-      },
-      {
-        segments: [
-          {
-            text: "この 古[ふる]い 自転車[じてんしゃ]を 売[う]るつもりがない。 高校[こうこう]のときから 持[も]っています。",
-          },
-        ],
+        register: "polite",
+        notes: "Uses 売らないつもりです.",
       },
     ],
   },
@@ -249,142 +327,172 @@ export const questions: Question[] = [
           { text: "使[つか]わないつもり", blank: true },
           { text: "です" },
         ],
+        notes: "晩ご飯の時は with ぜんぜん before スマホを.",
       },
       {
         segments: [
           { text: "夕[ゆう]ご 飯[はん]の 時[とき]は、ぜんぜん スマホを" },
-          { text: "使[つか]わないつもり" },
+          { text: "使[つか]わないつもり", blank: true },
           { text: "です" },
         ],
+        notes: "夕ご飯の時は with ぜんぜん before スマホを.",
       },
       {
         segments: [
           { text: "晩[ばん]ご 飯[はん]の 時[とき]は、スマホをぜんぜん" },
-          { text: "使[つか]わないつもり" },
+          { text: "使[つか]わないつもり", blank: true },
           { text: "です" },
         ],
+        notes: "Places ぜんぜん before the verb.",
       },
       {
         segments: [
           { text: "夕[ゆう]ご 飯[はん]の 時[とき]は、スマホをぜんぜん" },
-          { text: "使[つか]わないつもり" },
+          { text: "使[つか]わないつもり", blank: true },
           { text: "です" },
         ],
+        notes: "夕ご飯 with ぜんぜん before the verb.",
       },
       {
         segments: [
-          { text: "晩[ばん]ご 飯[はん]の 時[とき]、ぜんぜん スマホを" },
-          { text: "使[つか]わないつもり" },
+          { text: "晩[ばん]ご 飯[はん]の 間[あいだ]は、ぜんぜん スマホを" },
+          { text: "使[つか]わないつもり", blank: true },
           { text: "です" },
         ],
+        notes: "Uses 晩ご飯の間は for during dinner.",
       },
       {
         segments: [
-          { text: "夕[ゆう]ご 飯[はん]の 時[とき]、ぜんぜん スマホを" },
-          { text: "使[つか]わないつもり" },
+          { text: "夕[ゆう]ご 飯[はん]の 間[あいだ]は、ぜんぜん スマホを" },
+          { text: "使[つか]わないつもり", blank: true },
           { text: "です" },
         ],
+        notes: "Uses 夕ご飯の間は for during dinner.",
       },
       {
         segments: [
-          { text: "晩[ばん]ご 飯[はん]の 時[とき]、スマホをぜんぜん" },
-          { text: "使[つか]わないつもり" },
+          { text: "晩[ばん]ご 飯[はん]中[ちゅう]は、ぜんぜん スマホを" },
+          { text: "使[つか]わないつもり", blank: true },
           { text: "です" },
         ],
+        notes: "Uses 晩ご飯中は for during dinner.",
       },
       {
         segments: [
-          { text: "夕[ゆう]ご 飯[はん]の 時[とき]、スマホをぜんぜん" },
-          { text: "使[つか]わないつもり" },
+          { text: "夕[ゆう]ご 飯[はん]中[ちゅう]は、ぜんぜん スマホを" },
+          { text: "使[つか]わないつもり", blank: true },
           { text: "です" },
         ],
+        notes: "Uses 夕ご飯中は for during dinner.",
       },
-      ],
+    ],
   },
   {
     english:
-      "I have no intention of going back to that restaurant — the fish wasn't even fresh!",
+      "I have no intention of going back to that restaurant — even the fries weren't good!",
+    hint: "fries = ポテト",
     answers: [
       {
         segments: [
-          { text: "あのレストランにまた" },
+          { text: "あのレストランには もう" },
+          { text: "行[い]くつもりは" },
+          {
+            text: "ある",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+          { text: "。ポテトも" },
+          {
+            text: "おいしい",
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "negative",
+              tense: "past",
+            },
+          },
+          { text: "。" },
+        ],
+        notes: "Uses あのレストランにはもう for not going back there.",
+      },
+      {
+        segments: [
+          { text: "あのレストランには もう" },
+          { text: "行[い]くつもりはないです", blank: true },
+          { text: "。ポテトも おいしくありませんでした。" },
+        ],
+        register: "polite",
+        notes: "Polite ないです variant.",
+      },
+      {
+        segments: [
+          { text: "あのレストランに また" },
+          { text: "行[い]くつもりは" },
+          {
+            text: "ある",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+          { text: "。ポテトも" },
+          {
+            text: "おいしい",
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "negative",
+              tense: "past",
+            },
+          },
+          { text: "。" },
+        ],
+        notes: "Uses また行く for going back.",
+      },
+      {
+        segments: [
+          { text: "あのレストランに もう 一度[いちど]" },
+          { text: "行[い]くつもりは" },
+          {
+            text: "ある",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+          { text: "。ポテトも" },
+          {
+            text: "おいしい",
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "negative",
+              tense: "past",
+            },
+          },
+          { text: "。" },
+        ],
+        notes: "Uses もう一度行く for going back.",
+      },
+      {
+        segments: [
+          { text: "ポテトも おいしくなかったから、あのレストランには もう" },
           { text: "行[い]くつもりはない", blank: true },
-          { text: "。 魚[さかな]もおいしくなかったから。" },
-        ],
-        notes:
-          'The blank covers the grammar nucleus: verb (dictionary form) + つもりはない, expressing "have no intention of." The reason clause uses から with い-adjective negative past. 新鮮 is not in known vocabulary, so おいしくなかった is used to convey "wasn\'t even good/fresh."',
-      },
-      {
-        segments: [
-          { text: "あのレストランにまた" },
-          { text: "行[い]くつもりはありません" },
-          { text: "。 魚[さかな]もおいしくなかったから。" },
-        ],
-        notes: "Polite form with ありません",
-      },
-      {
-        segments: [
-          { text: "あのレストランにまた" },
-          { text: "行[い]くつもりがない" },
-          { text: "。 魚[さかな]もおいしくなかったから。" },
-        ],
-        notes: "が instead of は in つもりがない",
-      },
-      {
-        segments: [
-          { text: "あのレストランにまた" },
-          { text: "行[い]くつもりがありません" },
-          { text: "。 魚[さかな]もおいしくなかったから。" },
-        ],
-        notes: "Polite with が: つもりがありません",
-      },
-      {
-        segments: [
-          { text: "あのレストランに" },
-          { text: "行[い]くつもりはない" },
-          { text: "。 魚[さかな]もおいしくなかったから。" },
-        ],
-        notes: "また moved after に (more natural placement)",
-      },
-      {
-        segments: [
-          { text: "あのレストランに" },
-          { text: "行[い]くつもりはありません" },
-          { text: "。 魚[さかな]もおいしくなかったから。" },
-        ],
-        notes: "Without また, polite",
-      },
-      {
-        segments: [
-          { text: "あのレストランにまた" },
-          { text: "行[い]くつもりはない" },
-          { text: "。 魚[さかな]はおいしくなかったから。" },
-        ],
-        notes: "は → が on 魚",
-      },
-      {
-        segments: [
-          { text: "あのレストランにまた" },
-          { text: "行[い]くつもりはありません" },
-          { text: "。 魚[さかな]はおいしくなかったから。" },
-        ],
-        notes: "Polite + 魚は",
-      },
-      {
-        segments: [
-          { text: "魚[さかな]もおいしくなかったから、あのレストランにまた" },
-          { text: "行[い]くつもりはない" },
           { text: "。" },
         ],
-        notes: "Single sentence with けど joining reason",
-      },
-      {
-        segments: [
-          { text: "魚[さかな]もおいしくなかったから、あのレストランにまた" },
-          { text: "行[い]くつもりはありません" },
-          { text: "。" },
-        ],
-        notes: "Reason first, polite",
+        register: "casual",
+        notes: "Reason first, casual.",
       },
     ],
   },
@@ -393,113 +501,150 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "コンサートまで 毎日[まいにち]ギターを" },
+          { text: "私[わたし]は コンサートまで 毎日[まいにち]ギターを" },
           { text: "練習[れんしゅう]するつもり", blank: true },
           { text: "です" },
         ],
+        notes: "Basic wording with コンサートまで.",
       },
       {
         segments: [
-          { text: "コンサートまで ギターを 毎日[まいにち]" },
-          { text: "練習[れんしゅう]するつもり" },
+          { text: "私[わたし]は コンサートまで ギターを 毎日[まいにち]" },
+          { text: "練習[れんしゅう]するつもり", blank: true },
           { text: "です" },
         ],
-        notes: "毎日 after を — same meaning",
+        notes: "Places 毎日 before 練習する.",
       },
       {
         segments: [
-          { text: "毎日[まいにち]コンサートまで ギターを" },
-          { text: "練習[れんしゅう]するつもり" },
+          { text: "私[わたし]は コンサートの日[ひ]まで 毎日[まいにち]ギターを" },
+          { text: "練習[れんしゅう]するつもり", blank: true },
           { text: "です" },
         ],
-        notes: "毎日 at the start of the sentence",
+        notes: "Uses コンサートの日まで for until the concert day.",
       },
       {
         segments: [
-          { text: "コンサートまで 毎日[まいにち]ギターの 練習[れんしゅう]を" },
-          { text: "するつもり" },
+          { text: "私[わたし]は コンサートの日[ひ]まで ギターを 毎日[まいにち]" },
+          { text: "練習[れんしゅう]するつもり", blank: true },
           { text: "です" },
         ],
-        notes: "ギターの練習をする alternative phrasing",
+        notes: "Uses コンサートの日まで with 毎日 before 練習する.",
       },
       {
         segments: [
-          { text: "私[わたし]は コンサートまで 毎日[まいにち]ギターを" },
-          { text: "練習[れんしゅう]するつもり" },
+          { text: "私[わたし]は コンサートまで 毎日[まいにち]ギターの 練習[れんしゅう]を" },
+          { text: "するつもり", blank: true },
           { text: "です" },
         ],
-        notes: "Subject 私は included explicitly",
+        notes: "Uses ギターの練習をする.",
       },
     ],
   },
   {
     english:
       "I have no intention of going back to live in the dormitory — living alone is so much better.",
+    hint: "living alone = 一人暮らし",
     answers: [
       {
         segments: [
-          { text: "寮[りょう]に 帰[かえ]って 住[す]む" },
-          { text: "つもりはない", blank: true },
-          { text: "。一人[ひとり]で 住[す]むほうがとてもよい。" },
+          { text: "もう 寮[りょう]に 戻[もど]るつもりは" },
+          {
+            text: "ある",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+          { text: "。一人暮[ひとりぐ]らしのほうが ずっと" },
+          {
+            text: "いい",
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "。" },
         ],
-        notes:
-          'Uses the つもりはない pattern ("have no intention of") as hinted. 帰って住む = go back to live. 一人で住む ほうがとてもよい = living alone is much better. ずっと is not in known vocabulary so とても is used instead.',
+        notes: "Uses もう寮に戻る for going back to the dormitory.",
       },
       {
         segments: [
+          { text: "もう 寮[りょう]に" },
+          { text: "戻[もど]るつもりはないです", blank: true },
+          { text: "。一人暮[ひとりぐ]らしのほうが ずっと" },
           {
-            text: "寮[りょう]に 帰[かえ]って 住[す]むつもりはありません。一人[ひとり]で 住[す]むほうがとてもよい",
+            text: "いい",
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
+          { text: "。" },
         ],
-        notes: "Polite form: はない → はありません",
+        register: "polite",
+        notes: "Polite ないです variant.",
       },
       {
         segments: [
+          { text: "また 寮[りょう]に 住[す]むつもりは" },
           {
-            text: "寮[りょう]に 帰[かえ]って 住[す]むつもりがない。一人[ひとり]で 住[す]むほうがとてもよい",
+            text: "ある",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
           },
+          { text: "。一人暮[ひとりぐ]らしのほうが ずっと" },
+          {
+            text: "いい",
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "。" },
         ],
-        notes: "Particle swap: は → が",
+        notes: "Uses また寮に住む for living in the dormitory again.",
       },
       {
         segments: [
+          { text: "寮[りょう]に 戻[もど]って 住[す]むつもりは" },
           {
-            text: "寮[りょう]に 帰[かえ]って 住[す]むつもりがありません。一人[ひとり]で 住[す]むほうがとてもよい",
+            text: "ある",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
           },
-        ],
-        notes: "Polite + particle swap: がない → がありません",
-      },
-      {
-        segments: [
+          { text: "。一人暮[ひとりぐ]らしのほうが ずっと" },
           {
-            text: "寮[りょう]に 帰[かえ]って 住[す]むつもりはない。一人[ひとり]で住[す]むほうがよい",
+            text: "いい",
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
+          { text: "。" },
         ],
-        notes: "Without とても",
-      },
-      {
-        segments: [
-          {
-            text: "寮[りょう]に 帰[かえ]って 住[す]むつもりはありません。一人[ひとり]で住[す]むほうがよい",
-          },
-        ],
-        notes: "Polite, without とても",
-      },
-      {
-        segments: [
-          {
-            text: "寮[りょう]に 帰[かえ]って 住[す]むつもりがない。一人[ひとり]で住[す]むほうがよい",
-          },
-        ],
-        notes: "Particle が, without とても",
-      },
-      {
-        segments: [
-          {
-            text: "寮[りょう]に 帰[かえ]って 住[す]むつもりがありません。一人[ひとり]で住[す]むほうがよい",
-          },
-        ],
-        notes: "Polite + が, without とても",
+        notes: "Uses 寮に戻って住む.",
       },
     ],
   },
@@ -509,19 +654,38 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "来月[らいげつ]、アルバイトをやめて、勉強[べんきょう]する" },
+          { text: "私[わたし]は 来月[らいげつ]、アルバイトをやめて、勉強[べんきょう]に 集中[しゅうちゅう]する" },
           { text: "つもり", blank: true },
           { text: "です" },
         ],
+        notes: "Uses 勉強に集中する for focusing on studying.",
       },
       {
         segments: [
-          {
-            text: "アルバイトをやめて、来月[らいげつ]から 勉強[べんきょう]するつもりです",
-          },
+          { text: "私[わたし]は 来月[らいげつ]、バイトをやめて、勉強[べんきょう]に 集中[しゅうちゅう]する" },
+          { text: "つもり", blank: true },
+          { text: "です" },
         ],
+        notes: "Uses バイト instead of アルバイト.",
       },
-      ],
+      {
+        segments: [
+          { text: "来月[らいげつ]から、アルバイトをやめて、勉強[べんきょう]に 集中[しゅうちゅう]する" },
+          { text: "つもり", blank: true },
+          { text: "です" },
+        ],
+        notes: "Uses 来月から to frame the plan from next month.",
+      },
+      {
+        segments: [
+          { text: "私[わたし]は 来月[らいげつ]、アルバイトを やめるつもりです。そして、勉強[べんきょう]に 集中[しゅうちゅう]する" },
+          { text: "つもり", blank: true },
+          { text: "です" },
+        ],
+        register: "polite",
+        notes: "Splits quitting and focusing into two sentences.",
+      },
+    ],
   },
   {
     english:
@@ -530,58 +694,105 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "日曜日[にちようび]は、早[はや]く" },
+          { text: "起[お]きるつもりは" },
+          {
+            text: "ある",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+          { text: "。ゆっくり 寝[ね]られる 唯一[ゆいいつ]の日[ひ]ですから。" },
+        ],
+        register: "polite",
+        notes: "Uses 唯一の日 for the only day.",
+      },
+      {
+        segments: [
+          { text: "日曜日[にちようび]は、早[はや]く" },
+          { text: "起[お]きるつもりはないです", blank: true },
+          { text: "。ゆっくり 寝[ね]られる 唯一[ゆいいつ]の日[ひ]ですから。" },
+        ],
+        register: "polite",
+        notes: "Polite ないです variant with 唯一の日.",
+      },
+      {
+        segments: [
+          { text: "日曜日[にちようび]は、早[はや]く" },
           { text: "起[お]きるつもりはない", blank: true },
-          { text: "。ゆっくり 寝[ね]る 日[ひ]だから。" },
+          { text: "。ゆっくり 寝[ね]られる 唯一[ゆいいつ]の日[ひ]だから。" },
         ],
+        register: "casual",
+        notes: "Casual counterpart with 唯一の日.",
       },
       {
         segments: [
+          { text: "日曜日[にちようび]だけ ゆっくり 寝[ね]られるので、早[はや]く" },
+          { text: "起[お]きるつもりは" },
           {
-            text: "日曜日[にちようび]は、早[はや]く 起[お]きるつもりがない。ゆっくり 寝[ね]る 日[ひ]だから。",
+            text: "ある",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
           },
+          { text: "。" },
         ],
-        notes: "が instead of は in つもりがない",
+        register: "polite",
+        notes: "Uses 日曜日だけ to express the only day.",
       },
       {
         segments: [
-          {
-            text: "日曜日[にちようび]は、早[はや]く 起[お]きるつもりじゃない。ゆっくり 寝[ね]る 日[ひ]だから。",
-          },
+          { text: "日曜日[にちようび]だけ ゆっくり 寝[ね]られるから、早[はや]く" },
+          { text: "起[お]きるつもりはない", blank: true },
+          { text: "。" },
         ],
-        notes: "じゃ instead of は in つもりじゃない",
+        register: "casual",
+        notes: "Casual 日曜日だけ variant.",
       },
       {
         segments: [
+          { text: "日曜日[にちようび]には、早[はや]く" },
+          { text: "起[お]きるつもりは" },
           {
-            text: "日曜日[にちようび]は、早[はや]く 起[お]きるつもりはありません。ゆっくり 寝[ね]る 日[ひ]だから。",
+            text: "ある",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
           },
+          { text: "。ゆっくり 寝[ね]られる 日[ひ]ですから。" },
         ],
-        notes: "Polite: つもりはありません",
+        register: "polite",
+        notes: "Simpler ゆっくり寝られる日 reason.",
       },
       {
         segments: [
+          { text: "日曜日[にちようび]は、早起[はやお]きする" },
+          { text: "つもりは" },
           {
-            text: "日曜日[にちようび]は、早[はや]く 起[お]きるつもりがありません。ゆっくり 寝[ね]る 日[ひ]だから。",
+            text: "ある",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
           },
+          { text: "。ゆっくり 寝[ね]られる 唯一[ゆいいつ]の日[ひ]ですから。" },
         ],
-        notes: "Polite: つもりがありません",
-      },
-      {
-        segments: [
-          {
-            text: "日曜日[にちようび]には、早[はや]く 起[お]きるつもりはない。ゆっくり 寝[ね]る 日[ひ]だから。",
-          },
-        ],
-        notes: "日曜日には instead of 日曜日は",
-      },
-      {
-        segments: [
-          {
-            text: "日曜日[にちようび]は、早[はや]く 起[お]きるつもりはない。ゆっくり寝[ね]られる日[ひ]だから。",
-          },
-        ],
-        notes:
-          "ゆっくり寝られる日だから gives the reason as a day when I can sleep in",
+        register: "polite",
+        notes: "Uses 早起きする instead of 早く起きる.",
       },
     ],
   },
@@ -591,42 +802,43 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "料理[りょうり]クラスを 取[と]って、家[いえ]で すしを" },
+          { text: "私[わたし]は いつか 料理教室[りょうりきょうしつ]に 行[い]って、家[いえ]で 寿司[すし]を" },
           { text: "作[つく]るつもり", blank: true },
           { text: "です" },
         ],
+        notes: "Uses 料理教室に行く for taking a cooking class.",
       },
       {
         segments: [
-          {
-            text: "料理[りょうり]クラスを 取[と]って、家[いえ]で 寿司[すし]を 作[つく]るつもりです",
-          },
+          { text: "私[わたし]は いつか 料理教室[りょうりきょうしつ]に 通[かよ]って、家[いえ]で 寿司[すし]を" },
+          { text: "作[つく]るつもり", blank: true },
+          { text: "です" },
         ],
-        notes: "Using 寿司 kanji spelling",
+        notes: "Uses 料理教室に通う.",
       },
       {
         segments: [
-          {
-            text: "料理[りょうり]のクラスを 取[と]って、家[いえ]で すしを 作[つく]るつもりです",
-          },
+          { text: "私[わたし]は いつか 料理[りょうり]のクラスを 取[と]って、家[いえ]で 寿司[すし]を" },
+          { text: "作[つく]るつもり", blank: true },
+          { text: "です" },
         ],
-        notes: "料理のクラス with の particle",
+        notes: "Uses 料理のクラスを取る.",
       },
       {
         segments: [
-          {
-            text: "料理[りょうり]クラスに 行[い]って、家[いえ]で すしを 作[つく]るつもりです",
-          },
+          { text: "いつか 料理教室[りょうりきょうしつ]に 行[い]って、家[いえ]で すしを" },
+          { text: "作[つく]るつもり", blank: true },
+          { text: "です" },
         ],
-        notes: "料理クラスに行って variation",
+        notes: "Uses kana すし.",
       },
       {
         segments: [
-          {
-            text: "料理[りょうり]のクラスに 行[い]って、家[いえ]で 寿司[すし]を 作[つく]るつもりです",
-          },
+          { text: "私[わたし]は いつか 料理教室[りょうりきょうしつ]に 行[い]って、家[いえ]で お寿司[すし]を" },
+          { text: "作[つく]るつもり", blank: true },
+          { text: "です" },
         ],
-        notes: "料理のクラスに行って、家で寿司 variation",
+        notes: "Uses お寿司.",
       },
     ],
   },
@@ -637,26 +849,74 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "けんじさんは、卒業[そつぎょう]するまで 髪[かみ]を" },
+          { text: "けんじさんは、卒業[そつぎょう]するまでは 髪[かみ]を" },
           { text: "切[き]るつもりはない", blank: true },
-          { text: "と 聞[き]きました" },
+          { text: "と 言[い]って" },
+          {
+            text: "いる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
         ],
+        notes: "Uses 卒業するまでは for until after graduation.",
       },
       {
         segments: [
+          { text: "けんじさんは、卒業[そつぎょう]するまでは 髪[かみ]を" },
+          { text: "切[き]らないつもり", blank: true },
+          { text: "だと 言[い]って" },
           {
-            text: "けんじさんは、卒業[そつぎょう]するまで 髪[かみ]を 切[き]るつもりがないと 聞[き]きました",
+            text: "いる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
         ],
+        notes: "Uses 切らないつもり.",
       },
       {
         segments: [
+          { text: "けんじさんは、卒業[そつぎょう]してから 髪[かみ]を" },
+          { text: "切[き]るつもり", blank: true },
+          { text: "だと 言[い]って" },
           {
-            text: "けんじさんは、卒業[そつぎょう]するまで 髪[かみ]を 切[き]るつもりじゃないと 聞[き]きました",
+            text: "いる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
         ],
+        notes: "Positive plan after graduation.",
       },
-      ],
+      {
+        segments: [
+          { text: "けんじさんは、卒業[そつぎょう]するまでは 髪[かみ]を" },
+          { text: "切[き]るつもりはありません", blank: true },
+          { text: "と 言[い]って" },
+          {
+            text: "いる",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        register: "polite",
+        notes: "Quotes a polite ありません form.",
+      },
+    ],
   },
   {
     english:
@@ -664,135 +924,237 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "バスに" },
-          { text: "乗[の]るつもりはない", blank: true },
-          { text: "。歩[ある]いて 駅[えき]に" },
-          { text: "行[い]くつもり", blank: true },
+          { text: "バスに 乗[の]るつもりは" },
+          {
+            text: "ある",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+          { text: "。駅[えき]まで 歩[ある]いて 行[い]くつもり", blank: true },
           { text: "です" },
         ],
+        notes: "Uses 駅まで歩いて行く for walking to the station.",
+      },
+      {
+        segments: [
+          { text: "バスには 乗[の]るつもりは" },
+          {
+            text: "ある",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+          { text: "。駅[えき]まで 歩[ある]いて 行[い]くつもり", blank: true },
+          { text: "です" },
+        ],
+        notes: "Uses バスには as a contrastive topic.",
       },
       {
         segments: [
           { text: "バスに" },
-          { text: "乗[の]るつもりがない" },
-          { text: "。歩[ある]いて 駅[えき]に" },
-          { text: "行[い]くつもり" },
+          { text: "乗[の]るつもりはないです", blank: true },
+          { text: "。駅[えき]まで 歩[ある]いて 行[い]くつもり", blank: true },
           { text: "です" },
         ],
-        notes: "が instead of は in first clause (uninterested nuance)",
+        register: "polite",
+        notes: "Polite ないです variant.",
       },
       {
         segments: [
-          { text: "バスに" },
-          { text: "乗[の]るつもりはありません" },
-          { text: "。歩[ある]いて 駅[えき]に" },
-          { text: "行[い]くつもり" },
+          { text: "バスに 乗[の]るつもりは" },
+          {
+            text: "ある",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+          { text: "。歩[ある]いて 駅[えき]に 行[い]くつもり", blank: true },
           { text: "です" },
         ],
-        notes: "Polite form with ありません in first clause",
+        notes: "Uses 歩いて駅に行く.",
       },
       {
         segments: [
-          { text: "バスに" },
-          { text: "乗[の]るつもりがありません" },
-          { text: "。歩[ある]いて 駅[えき]に" },
-          { text: "行[い]くつもり" },
+          { text: "バスに 乗[の]らないつもり" },
+          { text: "です", blank: true },
+          { text: "。駅[えき]まで 歩[ある]いて 行[い]くつもり", blank: true },
           { text: "です" },
         ],
-        notes: "Polite form with がありません in first clause",
-      },
-      {
-        segments: [
-          { text: "バスには" },
-          { text: "乗[の]るつもりはない" },
-          { text: "。歩[ある]いて 駅[えき]に" },
-          { text: "行[い]くつもり" },
-          { text: "です" },
-        ],
-        notes: "バスには topic-marked version, polite",
-      },
-      {
-        segments: [
-          { text: "バスに" },
-          { text: "乗[の]るつもりはない" },
-          { text: "。歩[ある]いて 駅[えき]まで" },
-          { text: "行[い]くつもり" },
-          { text: "です" },
-        ],
-        notes: "歩いて駅まで行く variant, polite",
+        register: "polite",
+        notes: "Uses 乗らないつもりです.",
       },
     ],
   },
   {
     english:
       "I have no intention of buying a new computer — this old one still works fine.",
+    hint: "computer = パソコン",
     answers: [
       {
         segments: [
-          { text: "新[あたら]しいパソコンを" },
-          { text: "買[か]うつもりはない", blank: true },
+          { text: "新[あたら]しいパソコンを 買[か]うつもりは" },
           {
-            text: "。この 古[ふる]いパソコンはまだ 大丈夫[だいじょうぶ]だから。",
+            text: "ある",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
           },
+          { text: "。今[いま]のパソコンは まだ" },
+          {
+            text: "使[つか]える",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "。" },
         ],
+        notes: "Uses 今のパソコン for this old one.",
       },
       {
         segments: [
           { text: "新[あたら]しいパソコンを" },
-          { text: "買[か]うつもりがない" },
-          {
-            text: "。この 古[ふる]いパソコンはまだ 大丈夫[だいじょうぶ]だから。",
-          },
+          { text: "買[か]うつもりはないです", blank: true },
+          { text: "。今[いま]のパソコンは まだ 使[つか]えます。" },
         ],
-        notes: "が instead of は in つもりはない",
+        register: "polite",
+        notes: "Polite ないです variant.",
+      },
+      {
+        segments: [
+          { text: "新[あたら]しいパソコンを 買[か]うつもりは" },
+          {
+            text: "ある",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+          { text: "。今[いま]のパソコンは まだ ちゃんと" },
+          {
+            text: "使[つか]える",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "。" },
+        ],
+        notes: "Uses ちゃんと使える for works fine.",
+      },
+      {
+        segments: [
+          { text: "新[あたら]しいパソコンを 買[か]うつもりは" },
+          {
+            text: "ある",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+          { text: "。古[ふる]いのは まだ" },
+          {
+            text: "使[つか]える",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "。" },
+        ],
+        notes: "Uses 古いの for the old one.",
+      },
+      {
+        segments: [
+          { text: "新[あたら]しいパソコンを 買[か]うつもりは" },
+          {
+            text: "ある",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+          { text: "。この 古[ふる]いパソコンは まだ" },
+          {
+            text: "使[つか]える",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "。" },
+        ],
+        notes: "Uses この古いパソコン.",
+      },
+      {
+        segments: [
+          { text: "新[あたら]しいパソコンを 買[か]うつもりは" },
+          {
+            text: "ある",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+          { text: "。今[いま]のは まだ" },
+          {
+            text: "使[つか]える",
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "。" },
+        ],
+        notes: "Uses 今の for the current one.",
       },
       {
         segments: [
           { text: "新[あたら]しいパソコンを" },
-          { text: "買[か]うつもりじゃない" },
-          {
-            text: "。この 古[ふる]いパソコンはまだ 大丈夫[だいじょうぶ]だから。",
-          },
+          { text: "買[か]わないつもり", blank: true },
+          { text: "です。今[いま]のパソコンは まだ 使[つか]えます。" },
         ],
-        notes: "じゃ instead of は in つもりはない",
-      },
-      {
-        segments: [
-          { text: "新[あたら]しいコンピューターを" },
-          { text: "買[か]うつもりはない" },
-          {
-            text: "。この 古[ふる]いコンピューターはまだ 大丈夫[だいじょうぶ]だから。",
-          },
-        ],
-        notes: "コンピューター instead of パソコン",
-      },
-      {
-        segments: [
-          { text: "新[あたら]しいコンピューターを" },
-          { text: "買[か]うつもりがない" },
-          {
-            text: "。この 古[ふる]いコンピューターはまだ 大丈夫[だいじょうぶ]だから。",
-          },
-        ],
-        notes: "コンピューター + が",
-      },
-      {
-        segments: [
-          { text: "新[あたら]しいパソコンを" },
-          { text: "買[か]うつもりはない" },
-          {
-            text: "。その 古[ふる]いパソコンはまだ 大丈夫[だいじょうぶ]だから。",
-          },
-        ],
-        notes: "その instead of この for the old computer",
-      },
-      {
-        segments: [
-          {
-            text: "新[あたら]しいパソコンを買[か]うつもりはありません。この 古[ふる]いパソコンはまだ 大丈夫[だいじょうぶ]",
-          },
-        ],
-        notes: "polite: つもりはありません、大丈夫ですから",
+        register: "polite",
+        notes: "Uses 買わないつもりです.",
       },
     ],
   },
@@ -818,7 +1180,7 @@ export const questions: Question[] = [
           { text: "飲[の]まないつもり", blank: true },
           { text: "です" },
         ],
-        notes: "With ぜんぜん for emphasis on 'any'",
+        notes: "With ぜんぜん for emphasis on 'any'.",
       },
       {
         segments: [
@@ -828,61 +1190,45 @@ export const questions: Question[] = [
           { text: "飲[の]まないつもり", blank: true },
           { text: "です" },
         ],
-        notes: "Topic は on パーティー",
+        notes: "Topic は on パーティー.",
       },
       {
         segments: [
           {
             text: "今年[ことし]、ゆきさんの 誕生日[たんじょうび]パーティーで お酒[さけ]を 飲[の]むつもりは",
           },
-          { text: "ない", blank: true },
-        ],
-        notes: "つもりはない structure - have no intention of drinking",
-      },
-      {
-        segments: [
           {
-            text: "今年[ことし]、ゆきさんの 誕生日[たんじょうび]パーティーで お酒[さけ]を 飲[の]むつもりが",
-          },
-          { text: "ない", blank: true },
-        ],
-        notes: "つもりがない structure",
-      },
-      {
-        segments: [
-          {
-            text: "今年[ことし]、ゆきさんの 誕生日[たんじょうび]パーティーで お酒[さけ]を 飲[の]むつもりは ありません",
+            text: "ある",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
           },
         ],
-        notes: "つもりはありません polite",
+        notes: "Uses 飲むつもりはありません / 飲むつもりはない.",
       },
       {
         segments: [
           {
-            text: "今年[ことし]、ゆきさんの 誕生日[たんじょうび]パーティーで お酒[さけ]を 飲[の]むつもりが ありません",
+            text: "今年[ことし]、ゆきさんの 誕生日[たんじょうび]パーティーで お酒[さけ]を",
           },
+          { text: "飲[の]むつもりはないです", blank: true },
         ],
-        notes: "つもりがありません polite",
+        register: "polite",
+        notes: "Polite ないです variant.",
       },
       {
         segments: [
           {
-            text: "今年[ことし]、ゆきさんの 誕生日[たんじょうび]パーティーで 酒[さけ]を",
+            text: "今年[ことし]は、ゆきさんの 誕生日[たんじょうび]パーティーで お酒[さけ]を",
           },
           { text: "飲[の]まないつもり", blank: true },
           { text: "です" },
         ],
-        notes: "酒 instead of お酒",
-      },
-      {
-        segments: [
-          {
-            text: "ゆきさんの 誕生日[たんじょうび]パーティーで 今年[ことし]は お酒[さけ]を",
-          },
-          { text: "飲[の]まないつもり", blank: true },
-          { text: "です" },
-        ],
-        notes: "今年 moved after パーティーで",
+        notes: "Uses 今年は at the beginning.",
       },
       {
         segments: [
@@ -892,7 +1238,7 @@ export const questions: Question[] = [
           { text: "飲[の]まないつもり", blank: true },
           { text: "です" },
         ],
-        notes: "Sentence starting with ゆきさんの without 今年 up front",
+        notes: "Starts with the party as the topic.",
       },
     ],
   },
@@ -902,86 +1248,75 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "ひろしさんがあんなことを言[い]ったから、もうひろしさんに" },
+          { text: "ひろしさんが あんなことを 言[い]ったから、もう" },
           { text: "話[はな]さないつもり", blank: true },
           { text: "です" },
         ],
+        notes: "Omits Hiroshi in the main clause after the reason establishes him.",
       },
       {
         segments: [
-          {
-            text: "ひろしさんがあんなことを言[い]ったから、もうひろしさんと話[はな]さないつもり",
-          },
+          { text: "ひろしさんが あんなことを 言[い]ったから、二度[にど]と" },
+          { text: "話[はな]さないつもり", blank: true },
           { text: "です" },
         ],
-        notes: "と particle instead of に with 話す",
+        notes: "Uses 二度と for ever again.",
       },
       {
         segments: [
-          {
-            text: "ひろしさんがあんなことを言[い]ったから、もうひろしさんには話[はな]さないつもり",
-          },
+          { text: "ひろしさんが あんなことを 言[い]ったから、もう ひろしさんとは" },
+          { text: "話[はな]さないつもり", blank: true },
           { text: "です" },
         ],
-        notes: "もうひろしさんには (は for emphasis/topic marker added)",
+        notes: "Explicitly marks Hiroshi as the person not to talk with.",
       },
       {
         segments: [
+          { text: "ひろしさんが あんなことを 言[い]ったから、もう 話[はな]すつもりは" },
           {
-            text: "ひろしさんがあんなことを言[い]ったから、もうひろしさんとは話[はな]さないつもり",
+            text: "ある",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
           },
+        ],
+        notes: "Uses 話すつもりはありません / 話すつもりはない.",
+      },
+      {
+        segments: [
+          { text: "ひろしさんが あんなことを 言[い]ったから、二度[にど]と 話[はな]すつもりは" },
+          {
+            text: "ある",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Uses 二度と with 話すつもりはありません/ない.",
+      },
+      {
+        segments: [
+          { text: "ひろしさんが あんなことを 言[い]ったから、もう" },
+          { text: "話[はな]すつもりはないです", blank: true },
+        ],
+        register: "polite",
+        notes: "Polite ないです variant.",
+      },
+      {
+        segments: [
+          { text: "ひろしさんに あんなことを 言[い]われたから、もう" },
+          { text: "話[はな]さないつもり", blank: true },
           { text: "です" },
         ],
-        notes: "もうひろしさんとは (と + は for emphasis)",
-      },
-      {
-        segments: [
-          {
-            text: "ひろしさんがあんなことを言[い]ったから、もうひろしさんに話[はな]すつもりはない",
-          },
-        ],
-        notes:
-          "つもりはない structure — have no intention of speaking to Hiroshi",
-      },
-      {
-        segments: [
-          {
-            text: "ひろしさんがあんなことを言[い]ったから、もうひろしさんと話[はな]すつもりはない",
-          },
-        ],
-        notes: "つもりはない with と particle",
-      },
-      {
-        segments: [
-          {
-            text: "ひろしさんがあんなことを言[い]ったから、もうひろしさんには話[はな]すつもりはない",
-          },
-        ],
-        notes: "つもりはない with には",
-      },
-      {
-        segments: [
-          {
-            text: "ひろしさんがあんなことを言[い]ったから、もうひろしさんとは話[はな]すつもりはない",
-          },
-        ],
-        notes: "つもりはない with とは",
-      },
-      {
-        segments: [
-          {
-            text: "ひろしさんがあんなことを言[い]ったから、もうひろしさんに話[はな]すつもりがない",
-          },
-        ],
-        notes: "つもりがない structure",
-      },
-      {
-        segments: [
-          {
-            text: "ひろしさんがあんなことを言[い]ったから、もうひろしさんとは話[はな]すつもりがない",
-          },
-        ],
-        notes: "つもりがない with とは",
+        notes: "Passive reason: after Hiroshi said that to me.",
       },
     ],
   },
@@ -991,88 +1326,114 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "弁護士[べんごし]に" },
-          { text: "なるつもりはない", blank: true },
-          { text: "。会社[かいしゃ]で" },
-          { text: "働[はたら]くつもり", blank: true },
-          { text: "です" },
-        ],
-      },
-      {
-        segments: [
-          { text: "弁護士[べんごし]に" },
-          { text: "なるつもりがない" },
-          { text: "。会社[かいしゃ]で" },
-          { text: "働[はたら]くつもり" },
-          { text: "です" },
-        ],
-        notes: "が swap in つもりはない → つもりがない",
-      },
-      {
-        segments: [
-          { text: "弁護士[べんごし]に" },
-          { text: "なるつもりじゃない" },
-          { text: "。会社[かいしゃ]で" },
-          { text: "働[はたら]くつもり" },
-          { text: "です" },
-        ],
-        notes: "じゃない swap: つもりはない → つもりじゃない",
-      },
-      {
-        segments: [
-          { text: "弁護士[べんごし]に" },
-          { text: "なるつもりはない" },
-          { text: "。でも、会社[かいしゃ]で" },
-          { text: "働[はたら]くつもり" },
-          { text: "です" },
-        ],
-        notes: "Two sentences connected with でも",
-      },
-      {
-        segments: [
-          { text: "弁護士[べんごし]に" },
-          { text: "なるつもりがない" },
-          { text: "。でも、会社[かいしゃ]で" },
-          { text: "働[はたら]くつもり" },
-          { text: "です" },
-        ],
-        notes: "Two sentences connected with でも; が swap",
-      },
-      {
-        segments: [
-          { text: "弁護士[べんごし]に なるつもりはないが、会社[かいしゃ]で" },
-          { text: "働[はたら]くつもり" },
-          { text: "です" },
-        ],
-        notes: "Joined with が",
-      },
-      {
-        segments: [
-          { text: "弁護士[べんごし]に なるつもりはないけど、会社[かいしゃ]で" },
-          { text: "働[はたら]くつもり" },
-          { text: "です" },
-        ],
-        notes: "Joined with けど",
-      },
-      {
-        segments: [
+          { text: "弁護士[べんごし]に なるつもりは" },
           {
-            text: "弁護士[べんごし]に なるつもりはない。会社員[かいしゃいん]に",
+            text: "ある",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
           },
-          { text: "なるつもり" },
+          { text: "。会社[かいしゃ]で 働[はたら]くつもり", blank: true },
           { text: "です" },
         ],
-        notes: "会社員になるつもり for second clause",
+        notes: "Uses 会社で働くつもり.",
       },
       {
         segments: [
-          {
-            text: "弁護士[べんごし]に なるつもりじゃないけど、会社[かいしゃ]で",
-          },
-          { text: "働[はたら]くつもり" },
+          { text: "弁護士[べんごし]に" },
+          { text: "なるつもりはないです", blank: true },
+          { text: "。会社[かいしゃ]で 働[はたら]くつもり", blank: true },
           { text: "です" },
         ],
-        notes: "つもりじゃない and けど connector",
+        register: "polite",
+        notes: "Polite ないです variant.",
+      },
+      {
+        segments: [
+          { text: "弁護士[べんごし]には なるつもりは" },
+          {
+            text: "ある",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+          { text: "。会社[かいしゃ]で 働[はたら]くつもり", blank: true },
+          { text: "です" },
+        ],
+        notes: "Uses 弁護士には as a contrastive topic.",
+      },
+      {
+        segments: [
+          { text: "弁護士[べんごし]に なるつもりは" },
+          {
+            text: "ある",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+          { text: "。会社員[かいしゃいん]に なるつもり", blank: true },
+          { text: "です" },
+        ],
+        notes: "Uses 会社員になるつもり for the second clause.",
+      },
+      {
+        segments: [
+          { text: "弁護士[べんごし]に なるつもりは" },
+          {
+            text: "ある",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+          { text: "が、会社[かいしゃ]で 働[はたら]くつもり", blank: true },
+          { text: "です" },
+        ],
+        register: "polite",
+        notes: "Joined with が.",
+      },
+      {
+        segments: [
+          { text: "弁護士[べんごし]に なるつもりは" },
+          {
+            text: "ある",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+          { text: "けど、会社[かいしゃ]で 働[はたら]くつもり", blank: true },
+          { text: "です" },
+        ],
+        notes: "Joined with けど.",
+      },
+      {
+        segments: [
+          { text: "弁護士[べんごし]に" },
+          { text: "ならないつもり", blank: true },
+          { text: "です。会社[かいしゃ]で 働[はたら]くつもり", blank: true },
+          { text: "です" },
+        ],
+        register: "polite",
+        notes: "Uses ならないつもりです.",
       },
     ],
   },
@@ -1082,57 +1443,77 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
+          { text: "ホームステイを するつもりは" },
+          {
+            text: "ある",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+          { text: "。寮[りょう]に 住[す]むつもり", blank: true },
+          { text: "です" },
+        ],
+        notes: "Uses ホームステイをするつもりはありません/ない.",
+      },
+      {
+        segments: [
           { text: "ホームステイを" },
-          { text: "するつもりはない", blank: true },
-          { text: "。寮[りょう]に" },
-          { text: "住[す]むつもり", blank: true },
+          { text: "するつもりはないです", blank: true },
+          { text: "。寮[りょう]に 住[す]むつもり", blank: true },
           { text: "です" },
         ],
+        register: "polite",
+        notes: "Polite ないです variant.",
       },
       {
         segments: [
+          { text: "ホームステイは するつもりは" },
           {
-            text: "ホームステイをするつもりがない。寮[りょう]に住[す]むつもり",
+            text: "ある",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
           },
+          { text: "。寮[りょう]に 住[す]むつもり", blank: true },
           { text: "です" },
         ],
-        notes: "が instead of は in first clause",
+        notes: "Uses ホームステイは as a contrastive topic.",
       },
       {
         segments: [
+          { text: "ホームステイを しないつもり" },
+          { text: "です", blank: true },
+          { text: "。寮[りょう]に 住[す]むつもり", blank: true },
+          { text: "です" },
+        ],
+        register: "polite",
+        notes: "Uses しないつもりです.",
+      },
+      {
+        segments: [
+          { text: "ホームステイを するつもりは" },
           {
-            text: "ホームステイをするつもりじゃない。寮[りょう]に住[す]むつもり",
+            text: "ある",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
           },
+          { text: "。寮[りょう]で 生活[せいかつ]するつもり", blank: true },
           { text: "です" },
         ],
-        notes: "じゃない instead of はない",
-      },
-      {
-        segments: [
-          {
-            text: "ホームステイをするつもりはありません。寮[りょう]に住[す]むつもり",
-          },
-          { text: "です" },
-        ],
-        notes: "Polite はありません in first clause",
-      },
-      {
-        segments: [
-          {
-            text: "ホームステイをするつもりがありません。寮[りょう]に住[す]むつもり",
-          },
-          { text: "です" },
-        ],
-        notes: "Polite がありません in first clause",
-      },
-      {
-        segments: [
-          { text: "ホームステイをしないつもり" },
-          { text: "です" },
-          { text: "。寮[りょう]に住[す]むつもり" },
-          { text: "です" },
-        ],
-        notes: "しないつもり variation for first clause",
+        notes: "Uses 寮で生活するつもり.",
       },
     ],
   },
@@ -1142,35 +1523,97 @@ export const questions: Question[] = [
     answers: [
       {
         segments: [
-          { text: "看護師[かんごし]に" },
-          { text: "なるつもりはない", blank: true },
-          { text: "。国際関係[こくさいかんけい]を" },
-          { text: "勉強[べんきょう]するつもり", blank: true },
+          { text: "看護師[かんごし]に なるつもりは" },
+          {
+            text: "ある",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+          { text: "。国際関係[こくさいかんけい]を 勉強[べんきょう]するつもり", blank: true },
           { text: "です" },
         ],
+        notes: "Uses 国際関係を勉強するつもり.",
       },
       {
         segments: [
           { text: "看護師[かんごし]に" },
-          { text: "なるつもりがない" },
-          { text: "。国際関係[こくさいかんけい]を" },
-          { text: "勉強[べんきょう]するつもり" },
+          { text: "なるつもりはないです", blank: true },
+          { text: "。国際関係[こくさいかんけい]を 勉強[べんきょう]するつもり", blank: true },
           { text: "です" },
         ],
-        notes: "つもりがない variant for first clause",
+        register: "polite",
+        notes: "Polite ないです variant.",
+      },
+      {
+        segments: [
+          { text: "看護師[かんごし]には なるつもりは" },
+          {
+            text: "ある",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+          { text: "。国際関係[こくさいかんけい]を 勉強[べんきょう]するつもり", blank: true },
+          { text: "です" },
+        ],
+        notes: "Uses 看護師には as a contrastive topic.",
       },
       {
         segments: [
           { text: "看護師[かんごし]に" },
-          { text: "ならないつもり" },
-          { text: "です" },
-          { text: "。国際関係[こくさいかんけい]を" },
-          { text: "勉強[べんきょう]するつもり" },
+          { text: "ならないつもり", blank: true },
+          { text: "です。国際関係[こくさいかんけい]を 勉強[べんきょう]するつもり", blank: true },
           { text: "です" },
         ],
-        notes: "ないつもり for first clause + つもりです",
+        register: "polite",
+        notes: "Uses ならないつもりです.",
       },
-      ],
+      {
+        segments: [
+          { text: "看護師[かんごし]に なるつもりは" },
+          {
+            text: "ある",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+          { text: "。国際関係学[こくさいかんけいがく]を 勉強[べんきょう]するつもり", blank: true },
+          { text: "です" },
+        ],
+        notes: "Uses 国際関係学 for the field of study.",
+      },
+      {
+        segments: [
+          { text: "看護師[かんごし]に なるつもりは" },
+          {
+            text: "ある",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ru' ending (irregular verb)",
+              form: "normal",
+              polarity: "negative",
+              tense: "non-past",
+            },
+          },
+          { text: "。国際関係[こくさいかんけい]を 専攻[せんこう]するつもり", blank: true },
+          { text: "です" },
+        ],
+        notes: "Uses 専攻する for studying as a major.",
+      },
+    ],
   },
   {
     english: "Is Naomi really planning to go to Australia alone?",
@@ -1192,48 +1635,70 @@ export const questions: Question[] = [
           {
             text: "なおみさんは 本当[ほんとう]に 一人[ひとり]で オーストラリアへ",
           },
-          { text: "行[い]くつもり" },
+          { text: "行[い]くつもり", blank: true },
           { text: "です" },
           { text: "か" },
         ],
         register: "polite",
-        notes: "With へ instead of に",
+        notes: "With へ instead of に.",
       },
       {
         segments: [
           {
             text: "なおみさんは 本当[ほんとう]に オーストラリアに 一人[ひとり]で",
           },
-          { text: "行[い]くつもり" },
+          { text: "行[い]くつもり", blank: true },
           { text: "です" },
           { text: "か" },
         ],
         register: "polite",
-        notes: "Word order: オーストラリアに before 一人で",
+        notes: "Word order: オーストラリアに before 一人で.",
       },
       {
         segments: [
           {
             text: "なおみさんは 本当[ほんとう]に オーストラリアへ 一人[ひとり]で",
           },
-          { text: "行[い]くつもり" },
+          { text: "行[い]くつもり", blank: true },
           { text: "です" },
           { text: "か" },
         ],
         register: "polite",
-        notes: "Word order: オーストラリアへ before 一人で",
+        notes: "Word order: オーストラリアへ before 一人で.",
       },
       {
         segments: [
           {
             text: "本当[ほんとう]に、なおみさんは 一人[ひとり]で オーストラリアに",
           },
-          { text: "行[い]くつもり" },
+          { text: "行[い]くつもり", blank: true },
           { text: "です" },
           { text: "か" },
         ],
         register: "polite",
-        notes: "本当に at start",
+        notes: "本当に at start.",
+      },
+      {
+        segments: [
+          {
+            text: "なおみさんは 本当[ほんとう]に 一人[ひとり]で オーストラリアに",
+          },
+          { text: "行[い]くつもり", blank: true },
+          { text: "？" },
+        ],
+        register: "casual",
+        notes: "Casual question.",
+      },
+      {
+        segments: [
+          {
+            text: "なおみさん、本当[ほんとう]に 一人[ひとり]で オーストラリアに",
+          },
+          { text: "行[い]くつもり", blank: true },
+          { text: "？" },
+        ],
+        register: "casual",
+        notes: "Casual spoken topic with comma.",
       },
     ],
   },

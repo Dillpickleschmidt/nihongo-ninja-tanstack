@@ -7,99 +7,240 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "新幹線[しんかんせん]と 飛行機[ひこうき]と、" },
-          { text: "どちらが 速[はや]いですか", blank: true },
+          { text: "どちらが " },
+          {
+            text: "速[はや]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
         ],
-        register: "polite",
       },
       {
         segments: [
+          { text: "新幹線[しんかんせん]と 飛行機[ひこうき]、どちらが " },
           {
-            text: "新幹線[しんかんせん]と 飛行機[ひこうき]、どちらが 速[はや]いですか",
+            text: "速[はや]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
+          { text: "か" },
         ],
-        register: "polite",
         notes: "と repeated once (second と dropped)",
       },
       {
         segments: [
+          { text: "新幹線[しんかんせん]と 飛行機[ひこうき]と、どちらのほうが " },
           {
-            text: "新幹線[しんかんせん]と 飛行機[ひこうき]と、どちらのほうが 速[はや]いですか",
+            text: "速[はや]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
+          { text: "か" },
         ],
-        register: "polite",
         notes: "どちらのほうが variant",
       },
       {
         segments: [
+          { text: "新幹線[しんかんせん]と 飛行機[ひこうき]、どちらのほうが " },
           {
-            text: "新幹線[しんかんせん]と 飛行機[ひこうき]、どちらのほうが 速[はや]いですか",
+            text: "速[はや]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
+          { text: "か" },
         ],
-        register: "polite",
         notes: "どちらのほうが variant, second と dropped",
       },
       {
         segments: [
+          { text: "新幹線[しんかんせん]と 飛行機[ひこうき]と、どっちが " },
           {
-            text: "新幹線[しんかんせん]と 飛行機[ひこうき]と、どっちが 速[はや]いですか",
+            text: "速[はや]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
+          { text: "か" },
         ],
-        register: "polite",
         notes: "どっち variant",
       },
       {
         segments: [
+          { text: "新幹線[しんかんせん]と 飛行機[ひこうき]、どっちが " },
           {
-            text: "新幹線[しんかんせん]と 飛行機[ひこうき]、どっちが 速[はや]いですか",
+            text: "速[はや]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
+          { text: "か" },
         ],
-        register: "polite",
         notes: "どっち variant, second と dropped",
       },
       {
         segments: [
+          { text: "新幹線[しんかんせん]と 飛行機[ひこうき]と、どっちのほうが " },
           {
-            text: "新幹線[しんかんせん]と 飛行機[ひこうき]と、どっちのほうが 速[はや]いですか",
+            text: "速[はや]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
+          { text: "か" },
         ],
-        register: "polite",
         notes: "どっちのほうが variant",
       },
       {
         segments: [
+          { text: "新幹線[しんかんせん]と 飛行機[ひこうき]、どっちのほうが " },
           {
-            text: "新幹線[しんかんせん]と 飛行機[ひこうき]、どっちのほうが 速[はや]いですか",
+            text: "速[はや]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
+          { text: "か" },
         ],
-        register: "polite",
         notes: "どっちのほうが variant, second と dropped",
       },
       {
         segments: [
+          { text: "飛行機[ひこうき]と 新幹線[しんかんせん]と、どちらが " },
           {
-            text: "飛行機[ひこうき]と 新幹線[しんかんせん]と、どちらが 速[はや]いですか",
+            text: "速[はや]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
+          { text: "か" },
         ],
-        register: "polite",
         notes: "airplane listed first",
       },
       {
         segments: [
+          { text: "飛行機[ひこうき]と 新幹線[しんかんせん]、どちらが " },
           {
-            text: "飛行機[ひこうき]と 新幹線[しんかんせん]、どちらが 速[はや]いですか",
+            text: "速[はや]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
+          { text: "か" },
         ],
-        register: "polite",
         notes: "airplane first, second と dropped",
       },
       {
         segments: [
+          { text: "新幹線[しんかんせん]と 飛行機[ひこうき]では、どちらが " },
           {
-            text: "新幹線[しんかんせん]と 飛行機[ひこうき]では、どちらが 速[はや]いですか",
+            text: "速[はや]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
+          { text: "か" },
         ],
-        register: "polite",
         notes: "では (topic marker) instead of と、",
+      },
+      {
+        segments: [
+          { text: "新幹線[しんかんせん]と 飛行機[ひこうき]では、どちらのほうが " },
+          {
+            text: "速[はや]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "では with どちらのほうが",
+      },
+      {
+        segments: [
+          { text: "新幹線[しんかんせん]と 飛行機[ひこうき]では、どっちが " },
+          {
+            text: "速[はや]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "では with どっち",
+      },
+      {
+        segments: [
+          { text: "飛行機[ひこうき]と 新幹線[しんかんせん]では、どちらが " },
+          {
+            text: "速[はや]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "では with airplane listed first",
       },
     ],
   },
@@ -112,30 +253,55 @@ export const questions: Question[] = [
           { text: "ほうが 好[す]き", blank: true },
           { text: "です" },
         ],
+        register: "polite",
         notes:
           "より～のほうが construction. The blank covers the comparative grammar nucleus ほうが好き.",
       },
       {
         segments: [
-          {
-            text: "すしを 食[た]べるのは、ハンバーガーを 食[た]べるより 好[す]きです",
-          },
+          { text: "すしを 食[た]べるのは、ハンバーガーを 食[た]べるより " },
+          { text: "好[す]き", blank: true },
+          { text: "です" },
         ],
+        register: "polite",
         notes: "のは variant with より at the end",
       },
       {
         segments: [
-          { text: "ハンバーガーを 食[た]べるより、すしのほうが 好[す]きです" },
+          { text: "ハンバーガーを 食[た]べるより、すしのほうが " },
+          { text: "好[す]き", blank: true },
+          { text: "です" },
         ],
+        register: "polite",
         notes:
           "Using noun すし with のほうが (dropping 食べる for the preferred item)",
       },
       {
         segments: [
-          { text: "ハンバーガーより、すしを 食[た]べるほうが 好[す]き" },
+          { text: "ハンバーガーより、すしを 食[た]べる" },
+          { text: "ほうが 好[す]き", blank: true },
           { text: "です" },
         ],
+        register: "polite",
         notes: "ハンバーガーより with noun only for the disliked item",
+      },
+      {
+        segments: [
+          { text: "ハンバーガーを 食[た]べるより、すしを 食[た]べるのが " },
+          { text: "好[す]き", blank: true },
+          { text: "です" },
+        ],
+        register: "polite",
+        notes: "Uses のが好き with comparison carried by より.",
+      },
+      {
+        segments: [
+          { text: "ハンバーガーより、すしのほうが " },
+          { text: "好[す]き", blank: true },
+          { text: "です" },
+        ],
+        register: "polite",
+        notes: "Noun-only comparison with eating implied by context.",
       },
     ],
   },
@@ -163,15 +329,6 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          {
-            text: "インドの 夏[なつ]より、日本[にほん]の 夏[なつ]のほうが 暑[あつ]いですか",
-          },
-        ],
-        register: "polite",
-        notes: "Same comparison as a single sentence",
-      },
-      {
-        segments: [
           { text: "日本[にほん]の 夏[なつ]は、インドの 夏[なつ]より" },
           {
             text: "暑[あつ]い",
@@ -186,6 +343,56 @@ export const questions: Question[] = [
         ],
         notes: "Topic-first word order: 日本の夏は、インドの夏より暑いですか",
       },
+      {
+        segments: [
+          { text: "インドの 夏[なつ]より、日本[にほん]の 夏[なつ]は" },
+          {
+            text: "暑[あつ]い",
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Uses 日本の夏は after the より phrase.",
+      },
+      {
+        segments: [
+          { text: "日本[にほん]の 夏[なつ]のほうが、インドの 夏[なつ]より" },
+          {
+            text: "暑[あつ]い",
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Puts のほうが first, followed by より phrase.",
+      },
+      {
+        segments: [
+          {
+            text: "インドの 夏[なつ]と 日本[にほん]の 夏[なつ]では、どちらのほうが 暑[あつ]いですか",
+          },
+        ],
+        register: "polite",
+        notes: "Uses と...では with どちらのほうが.",
+      },
+      {
+        segments: [
+          {
+            text: "日本[にほん]の 夏[なつ]と インドの 夏[なつ]では、どちらのほうが 暑[あつ]いですか",
+          },
+        ],
+        register: "polite",
+        notes: "と...では comparison with Japan listed first.",
+      },
     ],
   },
   {
@@ -198,92 +405,242 @@ export const questions: Question[] = [
             text: "カフェで 勉強[べんきょう]することと 図書館[としょかん]で 勉強[べんきょう]することと、",
             blank: true,
           },
-          { text: "どちらが 楽[たの]しいですか", blank: true },
+          { text: "どちらが " },
+          {
+            text: "楽[たの]しい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
         ],
-        register: "polite",
         notes:
           'Using こと to nominalize the verbs, and どちらが for the "which" comparison. The hint says to use "I" perspective but since this is a question about what "you find" enjoyable, it\'s naturally phrased as a question directed at the listener. The whole sentence is the target grammar (と～と、どちらが construction).',
       },
       {
         segments: [
+          { text: "カフェで 勉強[べんきょう]することと 図書館[としょかん]で 勉強[べんきょう]することと、どっちが " },
           {
-            text: "カフェで 勉強[べんきょう]することと 図書館[としょかん]で 勉強[べんきょう]することと、どっちが 楽[たの]しいですか",
+            text: "楽[たの]しい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
+          { text: "か" },
         ],
-        register: "polite",
         notes: "Using どっちが instead of どちらが (more casual)",
       },
       {
         segments: [
+          { text: "カフェで 勉強[べんきょう]することと 図書館[としょかん]で 勉強[べんきょう]すること、どちらが " },
           {
-            text: "カフェで 勉強[べんきょう]することと 図書館[としょかん]で 勉強[べんきょう]すること、どちらが 楽[たの]しいですか",
+            text: "楽[たの]しい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
+          { text: "か" },
         ],
-        register: "polite",
         notes: "Dropping the second と before comma",
       },
       {
         segments: [
+          { text: "カフェで 勉強[べんきょう]することと 図書館[としょかん]で 勉強[べんきょう]すること、どっちが " },
           {
-            text: "カフェで 勉強[べんきょう]することと 図書館[としょかん]で 勉強[べんきょう]すること、どっちが 楽[たの]しいですか",
+            text: "楽[たの]しい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
+          { text: "か" },
         ],
-        register: "polite",
         notes: "Dropping the second と, using どっちが",
       },
       {
         segments: [
+          { text: "カフェで 勉強[べんきょう]するのと 図書館[としょかん]で 勉強[べんきょう]するのと、どちらが " },
           {
-            text: "カフェで 勉強[べんきょう]するのと 図書館[としょかん]で 勉強[べんきょう]するのと、どちらが 楽[たの]しいですか",
+            text: "楽[たの]しい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
+          { text: "か" },
         ],
-        register: "polite",
         notes: "Using の instead of こと for nominalization",
       },
       {
         segments: [
+          { text: "カフェで 勉強[べんきょう]するのと 図書館[としょかん]で 勉強[べんきょう]するのと、どっちが " },
           {
-            text: "カフェで 勉強[べんきょう]するのと 図書館[としょかん]で 勉強[べんきょう]するのと、どっちが 楽[たの]しいですか",
+            text: "楽[たの]しい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
+          { text: "か" },
         ],
-        register: "polite",
         notes: "Using の for nominalization and どっちが",
       },
       {
         segments: [
+          { text: "カフェで 勉強[べんきょう]するのと 図書館[としょかん]で 勉強[べんきょう]するの、どちらが " },
           {
-            text: "カフェで 勉強[べんきょう]するのと 図書館[としょかん]で 勉強[べんきょう]するの、どちらが 楽[たの]しいですか",
+            text: "楽[たの]しい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
+          { text: "か" },
         ],
-        register: "polite",
         notes: "Using の for nominalization, dropping second と",
       },
       {
         segments: [
+          { text: "カフェで 勉強[べんきょう]することと 図書館[としょかん]で 勉強[べんきょう]することと、どちらのほうが " },
           {
-            text: "カフェで 勉強[べんきょう]することと 図書館[としょかん]で 勉強[べんきょう]することと、どちらのほうが 楽[たの]しいですか",
+            text: "楽[たの]しい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
+          { text: "か" },
         ],
-        register: "polite",
         notes: "Using どちらのほうが",
       },
       {
         segments: [
+          { text: "カフェで 勉強[べんきょう]するのと 図書館[としょかん]で 勉強[べんきょう]するのと、どちらのほうが " },
           {
-            text: "カフェで 勉強[べんきょう]するのと 図書館[としょかん]で 勉強[べんきょう]するのと、どちらのほうが 楽[たの]しいですか",
+            text: "楽[たの]しい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
+          { text: "か" },
         ],
-        register: "polite",
         notes: "Using の nominalization with どちらのほうが",
       },
       {
         segments: [
+          { text: "カフェで 勉強[べんきょう]するのと 図書館[としょかん]で 勉強[べんきょう]するのでは、どちらの 方[ほう]が " },
           {
-            text: "カフェで 勉強[べんきょう]するのと 図書館[としょかん]で 勉強[べんきょう]するのでは、どちらの 方[ほう]が 楽[たの]しいですか",
+            text: "楽[たの]しい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
+          { text: "か" },
         ],
-        register: "polite",
         notes: "では (topic marker) instead of と、",
+      },
+      {
+        segments: [
+          { text: "カフェで 勉強[べんきょう]するのと 図書館[としょかん]で 勉強[べんきょう]するのでは、どちらが " },
+          {
+            text: "楽[たの]しい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "では with どちらが",
+      },
+      {
+        segments: [
+          { text: "カフェで 勉強[べんきょう]することと 図書館[としょかん]で 勉強[べんきょう]することでは、どちらが " },
+          {
+            text: "楽[たの]しい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "こと nominalization with では and どちらが",
+      },
+      {
+        segments: [
+          { text: "図書館[としょかん]で 勉強[べんきょう]するのと カフェで 勉強[べんきょう]するのと、どちらが " },
+          {
+            text: "楽[たの]しい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Library listed first",
+      },
+      {
+        segments: [
+          { text: "カフェで 勉強[べんきょう]するのと 図書館[としょかん]で 勉強[べんきょう]するのと、どっちのほうが " },
+          {
+            text: "楽[たの]しい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "の nominalization with どっちのほうが",
       },
     ],
   },
@@ -311,19 +668,79 @@ export const questions: Question[] = [
       },
       {
         segments: [
-          {
-            text: "けんじさんの 猫[ねこ]より、けんじさんの 犬[いぬ]のほうが 大[おお]きいですか",
-          },
+          { text: "猫[ねこ]より、 犬[いぬ]のほうが 大[おお]きいですか" },
         ],
         register: "polite",
       },
       {
         segments: [
-          { text: "猫[ねこ]より、 犬[いぬ]のほうが 大[おお]きいですか" },
+          { text: "けんじさんの 犬[いぬ]は、けんじさんの 猫[ねこ]より" },
+          {
+            text: "大[おお]きい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
         ],
-        register: "polite",
+        notes: "Topic-first word order with both pets explicitly possessed by Kenji.",
       },
-      ],
+      {
+        segments: [
+          { text: "けんじさんの 犬[いぬ]は、猫[ねこ]より" },
+          {
+            text: "大[おお]きい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Topic-first word order with Kenji possession inferred for the cat.",
+      },
+      {
+        segments: [
+          { text: "けんじさんの 猫[ねこ]と 犬[いぬ]では、犬[いぬ]のほうが " },
+          {
+            text: "大[おお]きい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Uses と...では comparison over Kenji's cat and dog.",
+      },
+      {
+        segments: [
+          { text: "けんじさんの 犬[いぬ]と 猫[ねこ]では、犬[いぬ]のほうが " },
+          {
+            text: "大[おお]きい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Uses と...では with dog listed first.",
+      },
+    ],
   },
   {
     english: "Taking a bath is about as relaxing as listening to music.",
@@ -331,26 +748,36 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "お 風呂[ふろ]に 入[はい]ることは 音楽[おんがく]を 聞[き]くことと",
+            text: "お 風呂[ふろ]に 入[はい]ることは 音楽[おんがく]を 聞[き]くことと 同[おな]じくらい ",
           },
-          { text: "同[おな]じくらい 楽[たの]しい", blank: true },
+          {
+            text: "リラックスできる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
         ],
         notes:
-          'Uses と同じくらい to express "just as enjoyable as". 楽しい is used as the closest available adjective for "relaxing". お風呂に入ること is compared to 音楽を聞くこと.',
+          'Uses と同じくらい with リラックスできます to match "about as relaxing as".',
       },
-
       {
         segments: [
           {
-            text: "風呂[ふろ]に 入[はい]ることは 音楽[おんがく]を 聞[き]くことと 同[おな]じくらい 楽[たの]しい",
+            text: "お 風呂[ふろ]に 入[はい]ることは 音楽[おんがく]を 聞[き]くことと 同[おな]じぐらい ",
           },
-        ],
-        notes: "Without お on 風呂",
-      },
-      {
-        segments: [
           {
-            text: "お 風呂[ふろ]に 入[はい]ることは 音楽[おんがく]を 聞[き]くことと 同[おな]じぐらい 楽[たの]しい",
+            text: "リラックスできる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
         ],
         notes: "ぐらい variant instead of くらい",
@@ -358,10 +785,38 @@ export const questions: Question[] = [
       {
         segments: [
           {
-            text: "風呂[ふろ]に 入[はい]ることは 音楽[おんがく]を 聞[き]くことと 同[おな]じぐらい 楽[たの]しい",
+            text: "お 風呂[ふろ]に 入[はい]るのは 音楽[おんがく]を 聞[き]くのと 同[おな]じくらい ",
+          },
+          {
+            text: "リラックスできる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
         ],
-        notes: "Without お on 風呂 + ぐらい variant",
+        notes: "Uses の nominalization instead of こと.",
+      },
+      {
+        segments: [
+          {
+            text: "お 風呂[ふろ]に 入[はい]ることは 音楽[おんがく]を 聞[き]くことと 同[おな]じくらい ",
+          },
+          {
+            text: "くつろげる",
+            blank: true,
+            conjugation: {
+              pos: "Ichidan verb",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Uses くつろげます for relaxing.",
       },
     ],
   },
@@ -378,14 +833,76 @@ export const questions: Question[] = [
         register: "polite",
       },
       {
-        segments: [{ text: "ピザより、ワインのほうが 有名[ゆうめい]ですか" }],
-        register: "polite",
+        segments: [
+          { text: "ピザより、ワインのほうが " },
+          {
+            text: "有名[ゆうめい]",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
         notes: "Dropped イタリアの for both",
+      },
+      {
+        segments: [
+          { text: "イタリアのワインは、イタリアのピザより " },
+          { text: "有名[ゆうめい]", blank: true },
+          { text: "ですか" },
+        ],
+        register: "polite",
+        notes: "Topic-first word order.",
+      },
+      {
+        segments: [
+          { text: "イタリアのピザと イタリアのワインでは、どちらのほうが " },
+          {
+            text: "有名[ゆうめい]",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Uses と...では with pizza listed first.",
+      },
+      {
+        segments: [
+          { text: "イタリアのワインと イタリアのピザでは、どちらのほうが " },
+          {
+            text: "有名[ゆうめい]",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Uses と...では with wine listed first.",
+      },
+      {
+        segments: [
+          { text: "ピザと ワインでは、どちらのほうが 有名[ゆうめい]ですか" },
+        ],
+        register: "polite",
+        notes: "Context-implied Italian comparison.",
       },
     ],
   },
   {
-    english: "Between singing and dancing, which does Haruka enjoy more?",
+    english: "Between singing and dancing, which does Haruka like better?",
     hint: "Haruka = はるか",
     answers: [
       {
@@ -400,59 +917,183 @@ export const questions: Question[] = [
       },
       {
         segments: [
+          { text: "はるかさんは 歌[うた]うことと 踊[おど]ることと、どちらのほうが " },
           {
-            text: "はるかさんは 歌[うた]うことと 踊[おど]ることと、どちらのほうが 好[す]きですか",
+            text: "好[す]き",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
+          { text: "か" },
         ],
-        register: "polite",
       },
       {
         segments: [
+          { text: "はるかさんは 歌[うた]うことと 踊[おど]ること、どちらが " },
           {
-            text: "はるかさんは 歌[うた]うことと 踊[おど]ること、どちらが 好[す]きですか",
+            text: "好[す]き",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
+          { text: "か" },
         ],
-        register: "polite",
       },
       {
         segments: [
+          { text: "はるかさんは 歌[うた]うことと 踊[おど]ること、どちらのほうが " },
           {
-            text: "はるかさんは 歌[うた]うことと 踊[おど]ること、どちらのほうが 好[す]きですか",
+            text: "好[す]き",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
+          { text: "か" },
         ],
-        register: "polite",
       },
       {
         segments: [
+          { text: "はるかさんは 歌[うた]うことと 踊[おど]ることと、どっちが " },
           {
-            text: "はるかさんは 歌[うた]うことと 踊[おど]ることと、どっちが 好[す]きですか",
+            text: "好[す]き",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
+          { text: "か" },
         ],
-        register: "polite",
       },
       {
         segments: [
+          { text: "はるかさんは 歌[うた]うことと 踊[おど]ることと、どっちのほうが " },
           {
-            text: "はるかさんは 歌[うた]うことと 踊[おど]ることと、どっちのほうが 好[す]きですか",
+            text: "好[す]き",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
+          { text: "か" },
         ],
-        register: "polite",
       },
       {
         segments: [
+          { text: "はるかさんは 歌[うた]うことと 踊[おど]ること、どっちが " },
           {
-            text: "はるかさんは 歌[うた]うことと 踊[おど]ること、どっちが 好[す]きですか",
+            text: "好[す]き",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
+          { text: "か" },
         ],
-        register: "polite",
       },
       {
         segments: [
+          { text: "はるかさんは 歌[うた]うことと 踊[おど]ること、どっちのほうが " },
           {
-            text: "はるかさんは 歌[うた]うことと 踊[おど]ること、どっちのほうが 好[す]きですか",
+            text: "好[す]き",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
+          { text: "か" },
         ],
-        register: "polite",
+      },
+      {
+        segments: [
+          { text: "はるかさんは 歌[うた]うのと 踊[おど]るのと、どちらが " },
+          {
+            text: "好[す]き",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Uses の nominalization instead of こと.",
+      },
+      {
+        segments: [
+          { text: "はるかさんは 歌[うた]うのと 踊[おど]るのと、どちらのほうが " },
+          {
+            text: "好[す]き",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Uses の nominalization with どちらのほうが.",
+      },
+      {
+        segments: [
+          { text: "はるかさんは 歌[うた]うのと 踊[おど]るの、どっちが " },
+          {
+            text: "好[す]き",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Uses の nominalization, dropping the second と.",
+      },
+      {
+        segments: [
+          { text: "はるかさんは 踊[おど]るのと 歌[うた]うのと、どちらのほうが " },
+          {
+            text: "好[す]き",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Reversed order with の nominalization.",
       },
     ],
   },
@@ -480,7 +1121,65 @@ export const questions: Question[] = [
         register: "polite",
         notes: "Noun + より + Noun + のほうが variant (without verb 乗る)",
       },
-      ],
+      {
+        segments: [
+          { text: "地下鉄[ちかてつ]に 乗[の]るのは、バスに 乗[の]るより " },
+          {
+            text: "便利[べんり]",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Topic-first の nominalization.",
+      },
+      {
+        segments: [
+          { text: "バスに 乗[の]ることより、地下鉄[ちかてつ]に 乗[の]ることのほうが " },
+          {
+            text: "便利[べんり]",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "こと nominalization on both actions.",
+      },
+      {
+        segments: [
+          { text: "地下鉄[ちかてつ]に 乗[の]ることは、バスに 乗[の]ることより " },
+          {
+            text: "便利[べんり]",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Topic-first こと nominalization.",
+      },
+      {
+        segments: [
+          { text: "バスと 地下鉄[ちかてつ]では、地下鉄[ちかてつ]のほうが 便利[べんり]ですか" },
+        ],
+        register: "polite",
+        notes: "Noun comparison with riding implied by context.",
+      },
+    ],
   },
   {
     english: "Is reading books more interesting than watching TV?",
@@ -488,39 +1187,155 @@ export const questions: Question[] = [
       {
         segments: [
           { text: "テレビを 見[み]るより、本[ほん]を 読[よ]むほうが" },
-          { text: "面白[おもしろ]いですか", blank: true },
+          { text: "" },
+          {
+            text: "面白[おもしろ]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
         ],
-        register: "polite",
         notes:
           "The blank covers the adjective predicate including the question marker, as the core comparison outcome of the より～のほうが structure.",
       },
       {
         segments: [
+          { text: "テレビを 見[み]ることより、本[ほん]を 読[よ]むことのほうが" },
           {
-            text: "テレビを 見[み]ることより、本[ほん]を 読[よ]むことのほうが面白[おもしろ]いですか",
+            text: "面白[おもしろ]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
+          { text: "か" },
         ],
-        register: "polite",
         notes: "Using こと nominalizer for both verbs",
       },
       {
         segments: [
+          { text: "本[ほん]を 読[よ]むのは、テレビを 見[み]るより" },
           {
-            text: "本[ほん]を 読[よ]むのは、テレビを 見[み]るより面白[おもしろ]いですか",
+            text: "面白[おもしろ]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
+          { text: "か" },
         ],
-        register: "polite",
         notes:
           "Topic-first word order: 本を読むのは、テレビを見るより面白いですか",
       },
       {
         segments: [
+          { text: "テレビを 見[み]ることより、本[ほん]を 読[よ]むほうが" },
           {
-            text: "テレビを 見[み]ることより、本[ほん]を 読[よ]むほうが面白[おもしろ]いですか",
+            text: "面白[おもしろ]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
+          { text: "か" },
+        ],
+        notes: "こと on first verb only, ほう on second",
+      },
+      {
+        segments: [
+          { text: "テレビを 見[み]るのより、本[ほん]を 読[よ]むほうが " },
+          {
+            text: "面白[おもしろ]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Uses の nominalization for watching TV.",
+      },
+      {
+        segments: [
+          { text: "本[ほん]を 読[よ]むことは、テレビを 見[み]ることより " },
+          {
+            text: "面白[おもしろ]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Topic-first こと nominalization.",
+      },
+      {
+        segments: [
+          { text: "テレビを 見[み]るのと 本[ほん]を 読[よ]むのでは、どちらのほうが " },
+          {
+            text: "面白[おもしろ]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Uses と...では with の nominalization.",
+      },
+      {
+        segments: [
+          { text: "本[ほん]を 読[よ]むのと テレビを 見[み]るのでは、どちらのほうが " },
+          {
+            text: "面白[おもしろ]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Uses と...では with reading listed first.",
+      },
+      {
+        segments: [
+          { text: "テレビより、読書[どくしょ]のほうが 面白[おもしろ]いですか" },
         ],
         register: "polite",
-        notes: "こと on first verb only, ほう on second",
+        notes: "Lexical 読書 variant with watching TV implied by テレビ.",
+      },
+      {
+        segments: [
+          { text: "読書[どくしょ]は、テレビより 面白[おもしろ]いですか" },
+        ],
+        register: "polite",
+        notes: "Topic-first lexical 読書 variant.",
       },
     ],
   },
@@ -546,29 +1361,64 @@ export const questions: Question[] = [
       },
       {
         segments: [
+          { text: "富士山[ふじさん]は韓国[かんこく]のどの山[やま]よりも" },
           {
-            text: "富士山[ふじさん]は韓国[かんこく]のどの山[やま]より高[たか]いですか",
+            text: "高[たか]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
+          { text: "か" },
         ],
-        register: "polite",
+        notes: "よりも variant",
       },
       {
         segments: [
+          { text: "富士山[ふじさん]は 韓国[かんこく]にあるどの 山[やま]より" },
           {
-            text: "富士山[ふじさん]は韓国[かんこく]のどの山[やま]よりも高[たか]いですか",
+            text: "高[たか]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
+          { text: "か" },
         ],
-        register: "polite",
-        notes: "よりも variant",
+        notes: "Explicitly describes mountains located in Korea.",
+      },
+      {
+        segments: [
+          { text: "富士山[ふじさん]は韓国[かんこく]にあるどの山[やま]よりも" },
+          {
+            text: "高[たか]い",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "韓国にある with よりも variant.",
       },
     ],
   },
   {
-    english: "Is living in a dormitory about as convenient as living at home?",
+    english:
+      "Between living at home and living in a dormitory, which do you think is more convenient?",
     answers: [
       {
         segments: [
-          { text: "寮[りょう]に 住[す]むことは うちに 住[す]むことと 同[おな]じくらい" },
+          { text: "うちに 住[す]むことと 寮[りょう]に 住[す]むことでは、どちらのほうが " },
           {
             text: "便利[べんり]",
             blank: true,
@@ -581,54 +1431,89 @@ export const questions: Question[] = [
           },
           { text: "か" },
         ],
-        notes:
-          "Using と同じくらい pattern: Noun/Verb こと + と同じくらい + な-adjective.",
+        notes: "Uses こと nominalization with と...では and どちらのほうが.",
       },
       {
         segments: [
-          { text: "家[いえ]より、寮[りょう]のほうが便利[べんり]ですか" },
-        ],
-        register: "polite",
-      },
-      {
-        segments: [{ text: "うちより寮[りょう]のほうが便利[べんり]ですか" }],
-        register: "polite",
-      },
-      {
-        segments: [
+          { text: "家[いえ]に 住[す]むことと 寮[りょう]に 住[す]むことでは、どちらのほうが " },
           {
-            text: "寮[りょう]に 住[す]むことは うちに 住[す]むことと同[おな]じくらい便利[べんり]ですか",
+            text: "便利[べんり]",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
+          { text: "か" },
         ],
-        register: "polite",
-        notes: "No comma variation",
+        notes: "家 instead of うち.",
       },
       {
         segments: [
+          { text: "寮[りょう]に 住[す]むことと うちに 住[す]むことでは、どちらのほうが " },
           {
-            text: "寮[りょう]に 住[す]むことは 家[いえ]に 住[す]むことと 同[おな]じくらい 便利[べんり]ですか",
+            text: "便利[べんり]",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
+          { text: "か" },
         ],
-        register: "polite",
-        notes: "家 instead of うち",
+        notes: "Dormitory listed first.",
       },
       {
         segments: [
+          { text: "うちに 住[す]むのと 寮[りょう]に 住[す]むのでは、どちらのほうが " },
           {
-            text: "寮[りょう]に 住[す]むことは うちに 住[す]むことと 同[おな]じぐらい 便利[べんり]ですか",
+            text: "便利[べんり]",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
+          { text: "か" },
         ],
-        register: "polite",
-        notes: "ぐらい variant",
+        notes: "Uses の nominalization instead of こと.",
       },
       {
         segments: [
+          { text: "家[いえ]に 住[す]むのと 寮[りょう]に 住[す]むのでは、どちらのほうが " },
           {
-            text: "寮[りょう]に 住[す]むことは 家[いえ]に 住[す]むことと 同[おな]じぐらい 便利[べんり]ですか",
+            text: "便利[べんり]",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
+          { text: "か" },
+        ],
+        notes: "の nominalization with 家 instead of うち.",
+      },
+      {
+        segments: [
+          { text: "うちより、寮[りょう]のほうが 便利[べんり]ですか" },
         ],
         register: "polite",
-        notes: "家 + ぐらい variant",
+        notes: "Answers the comparison directly with うちより.",
+      },
+      {
+        segments: [
+          { text: "家[いえ]より、寮[りょう]のほうが 便利[べんり]ですか" },
+        ],
+        register: "polite",
+        notes: "Answers the comparison directly with 家より.",
       },
     ],
   },
@@ -705,6 +1590,74 @@ export const questions: Question[] = [
         register: "polite",
         notes: "Using どちらのほうが construction",
       },
+      {
+        segments: [
+          { text: "作文[さくぶん]を 書[か]くのと 単語[たんご]を 覚[おぼ]えるのでは、どちらのほうが " },
+          {
+            text: "難[むずか]しい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Uses の nominalization with と...では.",
+      },
+      {
+        segments: [
+          { text: "単語[たんご]を 覚[おぼ]えるのより、作文[さくぶん]を 書[か]くほうが " },
+          {
+            text: "難[むずか]しい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Uses の nominalization for memorizing vocabulary.",
+      },
+      {
+        segments: [
+          { text: "作文[さくぶん]を 書[か]くことは、単語[たんご]を 覚[おぼ]えることより " },
+          {
+            text: "難[むずか]しい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Topic-first こと nominalization.",
+      },
+      {
+        segments: [
+          { text: "作文[さくぶん]と 単語[たんご]では、作文[さくぶん]のほうが " },
+          {
+            text: "難[むずか]しい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Noun comparison with writing/memorizing implied by context.",
+      },
     ],
   },
   {
@@ -765,7 +1718,57 @@ export const questions: Question[] = [
           },
           { text: "か" },
         ],
-        notes: "Reversed order with は instead of のほうが",
+        notes:
+          "Reversed order with は instead of のほうが. 高い is kept as the learner-facing vocabulary for expensive.",
+      },
+      {
+        segments: [
+          {
+            text: "スーパーで 食[た]べ 物[もの]を 買[か]うのと デパートで 食[た]べ 物[もの]を 買[か]うのでは、どちらのほうが 高[たか]いですか",
+            blank: true,
+          },
+        ],
+        register: "polite",
+        notes: "Uses の nominalization with と...では.",
+      },
+      {
+        segments: [
+          {
+            text: "スーパーより、デパートのほうが 食[た]べ 物[もの]の 値段[ねだん]が 高[たか]いですか",
+            blank: true,
+          },
+        ],
+        register: "polite",
+        notes: "More explicit 値段が高い variant while keeping 高い vocabulary.",
+      },
+      {
+        segments: [
+          {
+            text: "スーパーと デパートでは、どちらのほうが 食[た]べ 物[もの]の 値段[ねだん]が 高[たか]いですか",
+            blank: true,
+          },
+        ],
+        register: "polite",
+        notes: "と...では with explicit food prices.",
+      },
+      {
+        segments: [
+          {
+            text: "スーパーで 食[た]べ 物[もの]を 買[か]うより、デパートで 食[た]べ 物[もの]を 買[か]うほうが 高[たか]く",
+          },
+          {
+            text: "つく",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'ku' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Natural 高くつく variant for costing more.",
       },
     ],
   },
@@ -788,10 +1791,8 @@ export const questions: Question[] = [
               tense: "non-past",
             },
           },
-          { text: "です" },
           { text: "か" },
         ],
-        register: "polite",
       },
       {
         segments: [
@@ -825,112 +1826,11 @@ export const questions: Question[] = [
           { text: "か" },
         ],
       },
-    ],
-  },
-  {
-    english: "Is Takeshi's cooking better than his mother's cooking?",
-    hint: "Takeshi = たけし",
-    answers: [
       {
         segments: [
+          { text: "スペインの 冬[ふゆ]と カナダの 冬[ふゆ]では、どちらのほうが " },
           {
-            text: "たけしさんのお母[かあ]さんの料理[りょうり]より、たけしさんの料理[りょうり]のほうが",
-            blank: true,
-          },
-          { text: "上手[じょうず]" },
-          { text: "です" },
-          { text: "か" },
-        ],
-        register: "polite",
-        notes:
-          "Using より〜のほうが to compare Takeshi's cooking to his mother's. 上手 describes cooking skill.",
-      },
-
-      {
-        segments: [
-          {
-            text: "お母[かあ]さんの料理[りょうり]より、たけしさんの料理[りょうり]のほうが上手[じょうず]ですか",
-          },
-        ],
-        register: "polite",
-        notes:
-          "Dropping たけしさんの before お母さん — still clear from context",
-      },
-      {
-        segments: [
-          {
-            text: "たけしさんのお母[かあ]さんの料理[りょうり]より、たけしさんのほうが料理[りょうり]が上手[じょうず]ですか",
-          },
-        ],
-        register: "polite",
-        notes: "Alternative word order: たけしさんのほうが料理が上手ですか",
-      },
-      {
-        segments: [
-          {
-            text: "たけしさんのお母[かあ]さんの料理[りょうり]より、たけしさんの料理[りょうり]のほうがよいですか",
-          },
-        ],
-        register: "polite",
-        notes: "Using よい instead of 上手 — 'is better'",
-      },
-    ],
-  },
-  {
-    english: "Is working at a company more stressful than working part-time?",
-    answers: [
-      {
-        segments: [
-          { text: "アルバイトをすることより、" },
-          { text: "会社[かいしゃ]で 働[はたら]くことのほうが", blank: true },
-          { text: "大変[たいへん]ですか" },
-        ],
-        register: "polite",
-        notes:
-          'Using 大変 (tough/hard) to express "stressful". より～のほうが comparison question structure.',
-      },
-      {
-        segments: [
-          {
-            text: "アルバイトをするより、会社[かいしゃ]で働[はたら]くほうが大変[たいへん]ですか",
-          },
-        ],
-        register: "polite",
-        notes:
-          "Without こと nominalization on both verbs, using verb directly before ほうが",
-      },
-      {
-        segments: [
-          {
-            text: "会社[かいしゃ]で働[はたら]くことはアルバイトをすることより大変[たいへん]ですか",
-          },
-        ],
-        register: "polite",
-        notes: "Reversed order: company work は + part-time より",
-      },
-      {
-        segments: [
-          {
-            text: "アルバイトより会社[かいしゃ]で働[はたら]くほうが大変[たいへん]ですか",
-          },
-        ],
-        register: "polite",
-        notes:
-          "Abbreviated: アルバイトより会社で働くほうが大変ですか — comparing the activity directly",
-      },
-    ],
-  },
-  {
-    english:
-      "Is buying sushi at a supermarket about as delicious as eating it at a sushi restaurant?",
-    answers: [
-      {
-        segments: [
-          {
-            text: "スーパーですしを 買[か]うことは、すし 屋[や]で 食[た]べることと 同[おな]じくらい",
-          },
-          {
-            text: "おいしい",
+            text: "暖[あたた]かい",
             blank: true,
             conjugation: {
               pos: "I-adjective",
@@ -941,178 +1841,528 @@ export const questions: Question[] = [
           },
           { text: "か" },
         ],
-        notes:
-          "Uses と同じくらい to compare buying sushi at a supermarket vs. eating it at a sushi restaurant.",
+        notes: "Uses と...では with Spain listed first.",
       },
       {
         segments: [
+          { text: "カナダの 冬[ふゆ]と スペインの 冬[ふゆ]では、どちらのほうが " },
           {
-            text: "スーパーですしを 買[か]うことより、レストランですしを 食[た]べることのほうがおいしいですか",
+            text: "暖[あたた]かい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
+          { text: "か" },
         ],
-        register: "polite",
-        notes: "Uses こと with より／ほう for comparing actions."
+        notes: "Uses と...では with Canada listed first.",
       },
       {
         segments: [
+          { text: "スペインの 冬[ふゆ]のほうが、カナダの 冬[ふゆ]より" },
           {
-            text: "スーパーですしを 買[か]うよりレストランですしを 食[た]べるほうがおいしいですか",
+            text: " 暖[あたた]かい",
+            blank: true,
+            conjugation: {
+              pos: "I-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
+          { text: "か" },
         ],
-        register: "polite",
-        notes: "Dropped こと, の versions",
-      },
-      {
-        segments: [
-          {
-            text: "スーパーですしを 買[か]うよりも、レストランですしを 食[た]べるほうがおいしいですか",
-          },
-        ],
-        register: "polite",
-        notes: "よりも variation",
-      },
-      {
-        segments: [
-          {
-            text: "スーパーで 買[か]ったすしより、レストランで 食[た]べたすしのほうがおいしいですか",
-          },
-        ],
-        register: "polite",
-        notes: "Noun phrase variation using past tense modifiers",
-      },
-      {
-        segments: [
-          {
-            text: "スーパーですしを 買[か]うことは、すし 屋[や]で 食[た]べることと同[おな]じくらいおいしいですか",
-          },
-        ],
-        register: "polite",
-        notes: "Uses と同じくらい to compare buying sushi at a supermarket with eating it at a sushi restaurant."
-      },
-      {
-        segments: [
-          {
-            text: "スーパーですしを 買[か]うことは、すし 屋[や]で 食[た]べることと同[おな]じぐらいおいしいですか",
-          },
-        ],
-        register: "polite",
-        notes: "ぐらい variation",
-      },
-      {
-        segments: [
-          {
-            text: "スーパーですしを 買[か]うことは、すしやで 食[た]べることと同[おな]じくらいおいしいですか",
-          },
-        ],
-        register: "polite",
-        notes: "すし屋 written without space",
-      },
-      {
-        segments: [
-          {
-            text: "すし 屋[や]で 食[た]べることと同[おな]じくらい、スーパーですしを 買[か]うことはおいしいですか",
-          },
-        ],
-        register: "polite",
-        notes: "Word order: sushi restaurant first",
+        notes: "Puts のほうが first, followed by より phrase.",
       },
     ],
   },
   {
-    english: "Is doing overtime work more tiring than doing laundry?",
+    english: "Takeshi is better at cooking than his mother.",
+    hint: "Takeshi = たけし",
     answers: [
       {
         segments: [
+          { text: "たけしさんは お母さんより 料理[りょうり]が " },
           {
-            text: "洗濯[せんたく]することより、残業[ざんぎょう]することのほうが",
+            text: "上手[じょうず]",
             blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
-          { text: "大変[たいへん]ですか" },
         ],
-        register: "polite",
-        notes:
-          'Using 大変 (tough/hard) as the adjective for "tiring", since there is no い-adjective for "tiring" in the known vocab. 大変 covers the meaning well here. The blank covers the full より～のほうが construction.',
+        notes: "Statement comparing cooking skill with より.",
       },
       {
         segments: [
+          { text: "お母さんより、たけしさんのほうが 料理[りょうり]が " },
           {
-            text: "洗濯[せんたく]することより、残業[ざんぎょう]するほうが大変[たいへん]ですか",
+            text: "上手[じょうず]",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
         ],
-        register: "polite",
+        notes: "Uses より〜のほうが with Takeshi as the better cook.",
+      },
+      {
+        segments: [
+          { text: "たけしさんのほうが、お母さんより 料理[りょうり]が " },
+          {
+            text: "上手[じょうず]",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Puts のほうが first, followed by より phrase.",
+      },
+      {
+        segments: [
+          { text: "たけしさんと お母さんでは、たけしさんのほうが 料理[りょうり]が " },
+          {
+            text: "上手[じょうず]",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Uses と...では with explicit result.",
+      },
+      {
+        segments: [
+          { text: "お母さんと たけしさんでは、たけしさんのほうが 料理[りょうり]が " },
+          {
+            text: "上手[じょうず]",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "と...では with mother listed first.",
+      },
+      {
+        segments: [
+          { text: "たけしさんは お母さんより 料理[りょうり]が " },
+          {
+            text: "得意[とくい]",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Uses 得意 for being good at cooking.",
+      },
+    ],
+  },
+  {
+    english: "I think working part-time is harder than working at a company.",
+    answers: [
+      {
+        segments: [
+          { text: "会社[かいしゃ]で 働[はたら]くより、アルバイトをするほうが 大変[たいへん]だと " },
+          {
+            text: "思[おも]う",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'u' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Statement with と思います and より〜ほうが comparison.",
+      },
+      {
+        segments: [
+          { text: "会社[かいしゃ]で 働[はたら]くことより、アルバイトをすることのほうが 大変[たいへん]だと " },
+          {
+            text: "思[おも]う",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'u' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Uses こと nominalization on both actions.",
+      },
+      {
+        segments: [
+          { text: "アルバイトをすることは、会社[かいしゃ]で 働[はたら]くことより 大変[たいへん]だと " },
+          {
+            text: "思[おも]う",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'u' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Topic-first こと nominalization.",
+      },
+      {
+        segments: [
+          { text: "会社[かいしゃ]で 働[はたら]くのと アルバイトをするのでは、アルバイトをするほうが 大変[たいへん]だと " },
+          {
+            text: "思[おも]う",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'u' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Uses の nominalization with と...では and explicit result.",
+      },
+      {
+        segments: [
+          { text: "会社[かいしゃ]で 働[はたら]くことと アルバイトをすることでは、アルバイトをすることのほうが 大変[たいへん]だと " },
+          {
+            text: "思[おも]う",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'u' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Uses こと nominalization with と...では and explicit result.",
+      },
+      {
+        segments: [
+          { text: "会社[かいしゃ]で 働[はたら]くより、アルバイトのほうが 大変[たいへん]だと " },
+          {
+            text: "思[おも]う",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'u' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Uses noun アルバイト with working implied.",
+      },
+    ],
+  },
+  {
+    english: "Do you think supermarket sushi is better than convenience store sushi?",
+    answers: [
+      {
+        segments: [
+          { text: "コンビニのすしより、スーパーのすしのほうが おいしいと " },
+          {
+            text: "思[おも]う",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'u' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Uses より〜のほうが with と思いますか.",
+      },
+      {
+        segments: [
+          { text: "スーパーのすしは、コンビニのすしより おいしいと " },
+          {
+            text: "思[おも]う",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'u' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Topic-first comparison.",
+      },
+      {
+        segments: [
+          { text: "スーパーのすしと コンビニのすしでは、どちらのほうが おいしいと " },
+          {
+            text: "思[おも]う",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'u' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Uses と...では with supermarket sushi listed first.",
+      },
+      {
+        segments: [
+          { text: "コンビニのすしと スーパーのすしでは、どちらのほうが おいしいと " },
+          {
+            text: "思[おも]う",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'u' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Uses と...では with convenience store sushi listed first.",
+      },
+      {
+        segments: [
+          { text: "コンビニですしを 買[か]うより、スーパーですしを 買[か]うほうが おいしいと " },
+          {
+            text: "思[おも]う",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'u' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+          { text: "か" },
+        ],
+        notes: "Action comparison, with the resulting sushi implied.",
+      },
+    ],
+  },
+  {
+    english: "I think doing laundry is harder than doing homework.",
+    answers: [
+      {
+        segments: [
+          { text: "宿題[しゅくだい]をするより、洗濯[せんたく]するほうが 大変[たいへん]だと " },
+          {
+            text: "思[おも]う",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'u' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Statement with と思います and より〜ほうが comparison.",
+      },
+      {
+        segments: [
+          { text: "宿題[しゅくだい]をすることより、洗濯[せんたく]することのほうが 大変[たいへん]だと " },
+          {
+            text: "思[おも]う",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'u' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Uses こと nominalization on both actions.",
+      },
+      {
+        segments: [
+          { text: "洗濯[せんたく]することは、宿題[しゅくだい]をすることより 大変[たいへん]だと " },
+          {
+            text: "思[おも]う",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'u' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Topic-first こと nominalization.",
+      },
+      {
+        segments: [
+          { text: "宿題[しゅくだい]をするのと 洗濯[せんたく]するのでは、洗濯[せんたく]するほうが 大変[たいへん]だと " },
+          {
+            text: "思[おも]う",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'u' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Uses の nominalization with と...では and explicit result.",
+      },
+      {
+        segments: [
+          { text: "宿題[しゅくだい]をすることと 洗濯[せんたく]することでは、洗濯[せんたく]することのほうが 大変[たいへん]だと " },
+          {
+            text: "思[おも]う",
+            blank: true,
+            conjugation: {
+              pos: "Godan verb with 'u' ending",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
+          },
+        ],
+        notes: "Uses こと nominalization with と...では and explicit result.",
       },
     ],
   },
   {
     english:
-      "Between eating at a restaurant and cooking at home, which do you think is more enjoyable?",
+      "Between eating at a restaurant and eating with your family, which do you like more?",
     answers: [
       {
         segments: [
+          { text: "レストランで 食[た]べるのと 家族[かぞく]と 食[た]べるのでは、どちらのほうが" },
           {
-            text: "レストランで 食[た]べることと 家[いえ]で 料理[りょうり]することと、",
+            text: " 好[す]き",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
-          { text: "どちらが 楽[たの]しいと 思[おも]いますか", blank: true },
+          { text: "か" },
         ],
-        notes:
-          'Verbal phrases using こと nominalizer: レストランで食べること (eating at a restaurant) and 家で料理すること (cooking at home). どちらが～と思いますか for "which do you think is more..."',
+        notes: "Uses の nominalization with と...では and どちらのほうが.",
       },
       {
         segments: [
+          { text: "レストランで 食[た]べることと 家族[かぞく]と 食[た]べることでは、どちらのほうが" },
           {
-            text: "レストランで 食[た]べることと 家[いえ]で 料理[りょうり]すること、どちらが 楽[たの]しいと 思[おも]いますか",
+            text: " 好[す]き",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
+          { text: "か" },
         ],
-        notes: "Second と before どちら dropped",
+        notes: "Uses こと nominalization with と...では.",
       },
       {
         segments: [
+          { text: "レストランで 食[た]べるのと 家族[かぞく]と 食[た]べるのと、どちらが" },
           {
-            text: "レストランで 食[た]べることと 家[いえ]で 料理[りょうり]すること、どちらのほうが 楽[たの]しいと 思[おも]いますか",
+            text: " 好[す]き",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
+          { text: "か" },
         ],
-        notes: "Second と dropped, どちらのほうが variant",
+        notes: "Uses のと...のと with どちらが.",
       },
       {
         segments: [
+          { text: "家族[かぞく]と 食[た]べるのと レストランで 食[た]べるのでは、どちらのほうが" },
           {
-            text: "レストランで 食[た]べることと 家[いえ]で 料理[りょうり]すること、どっちが 楽[たの]しいと 思[おも]いますか",
+            text: " 好[す]き",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
+          { text: "か" },
         ],
-        notes: "Second と dropped, どっちが casual variant",
+        notes: "Family listed first.",
       },
       {
         segments: [
+          { text: "レストランで 食[た]べるより、家族[かぞく]と 食[た]べるほうが" },
           {
-            text: "レストランで 食[た]べることと 家[いえ]で 料理[りょうり]すること、どっちのほうが 楽[たの]しいと 思[おも]いますか",
+            text: " 好[す]き",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
+          { text: "か" },
         ],
-        notes: "Second と dropped, どっちのほうが casual variant",
+        notes: "Direct comparison with family eating as the preferred option.",
       },
       {
         segments: [
+          { text: "家族[かぞく]と 食[た]べるより、レストランで 食[た]べるほうが" },
           {
-            text: "レストランで 食[た]べることと 家[いえ]で 料理[りょうり]すること と、どちらのほうが 楽[たの]しいと 思[おも]いますか",
+            text: " 好[す]き",
+            blank: true,
+            conjugation: {
+              pos: "Na-adjective",
+              form: "normal",
+              polarity: "positive",
+              tense: "non-past",
+            },
           },
+          { text: "か" },
         ],
-        notes: "Both と kept, どちらのほうが variant",
+        notes: "Direct comparison with restaurant eating as the preferred option.",
       },
-      {
-        segments: [
-          {
-            text: "レストランで 食[た]べることと 家[いえ]で 料理[りょうり]すること と、どっちが 楽[たの]しいと 思[おも]いますか",
-          },
-        ],
-        notes: "Both と kept, どっちが variant",
-      },
-      {
-        segments: [
-          {
-            text: "レストランで 食[た]べることと 家[いえ]で 料理[りょうり]すること と、どっちのほうが 楽[たの]しいと 思[おも]いますか",
-          },
-        ],
-        notes: "Both と kept, どっちのほうが variant",
-      },
-      ],
+    ],
   },
 ]
