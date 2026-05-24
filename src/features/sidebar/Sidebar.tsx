@@ -270,12 +270,12 @@ function MenuContent(props: {
   }
 
   return (
-    <nav class="flex flex-col px-1 pb-4 xl:pt-10 2xl:pt-14">
+    <nav class="flex flex-col gap-4 px-1 pb-4 lg:gap-0 xl:pt-11 2xl:pt-15 xl:[@media(min-height:900px)]:gap-8">
       <For each={navigation}>
         {(section) => (
           <div class="flex flex-col">
             <Show when={section.label}>
-              <div class="px-6 pb-1 pt-4 text-[0.6rem] font-semibold uppercase tracking-wide text-muted-foreground first:pt-2 xl:pt-5 xl:first:pt-3 2xl:text-[0.68rem]">
+              <div class="pl-6.5 pr-6 pb-1.5 text-[0.6rem] font-semibold uppercase tracking-wide text-muted-foreground 2xl:text-[0.68rem]">
                 {section.label}
               </div>
             </Show>
@@ -306,7 +306,7 @@ function MenuButton(props: {
       onClick={props.onNavigate}
       class={cn(
         buttonVariants({ variant: "ghost" }),
-        "ease-instant-hover-75 w-full justify-start rounded-md px-6 py-2.5 hover:bg-dynamic-accent/20",
+        "ease-instant-hover-75 w-full justify-start rounded-md pl-6.5 pr-6 py-2.5 hover:bg-dynamic-accent/20",
       )}
     >
         <Show
