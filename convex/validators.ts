@@ -165,13 +165,19 @@ const conjugationPracticeSettingsValidator = v.object({
   emoji: v.boolean(),
 })
 
+const backgroundLockValidator = v.object({
+  scope: v.union(v.literal("path"), v.literal("global")),
+  pathId: v.string(),
+  chapterSlug: v.string(),
+})
+
 export const userPreferencesValidator = v.object({
   srsServicePreferences: srsServicePreferencesValidator,
   activeLearningPath: v.string(),
   activeChapter: v.string(),
   backgroundOverrides: v.object({
-    paths: v.record(v.string(), v.string()),
     chapters: v.record(v.string(), v.string()),
+    lock: v.optional(backgroundLockValidator),
   }),
   hasCompletedOnboarding: v.boolean(),
   tours: v.record(v.string(), v.number()),
@@ -188,7 +194,6 @@ export const DEFAULT_USER_PREFERENCES = {
   activeLearningPath: "genki_1",
   activeChapter: "chapter-0",
   backgroundOverrides: {
-    paths: {},
     chapters: {},
   },
   hasCompletedOnboarding: false,

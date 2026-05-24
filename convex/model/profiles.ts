@@ -25,10 +25,7 @@ export async function updatePreference(
   const identity = await ctx.auth.getUserIdentity()
   if (!identity) throw new Error("Unauthenticated")
 
-  const profile = await ctx.db
-    .query("profiles")
-    .withIndex("by_user", (q) => q.eq("userId", identity.subject))
-    .first()
+  const profile = await ensureProfileExists(ctx)
   if (!profile) throw new Error("Profile not found")
 
   await ctx.db.patch(profile._id, {

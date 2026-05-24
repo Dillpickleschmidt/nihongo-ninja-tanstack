@@ -1,7 +1,7 @@
-import { Show } from "solid-js"
+import { Show, createSignal } from "solid-js"
 import { Link } from "@tanstack/solid-router"
 import { useQuery } from "@tanstack/solid-query"
-import { ChevronUp, LogIn, LogOut, Settings } from "lucide-solid"
+import { ChevronDown, ChevronUp, LogIn, LogOut, Settings } from "lucide-solid"
 import { Button } from "@/components/ui/button"
 import {
   Popover,
@@ -12,6 +12,11 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { getUser, type User } from "@/lib/auth"
 import { autumnCustomerQueryOptions } from "@/query/query-options"
 import { hasActiveProSubscription } from "@/features/billing/model"
+import { BackgroundAssignmentDialog } from "@/features/backgrounds/components/BackgroundAssignmentDialog"
+import { BackgroundPreviewMedia } from "@/features/backgrounds/components/BackgroundPreviewMedia"
+import { resolveBackground } from "@/features/backgrounds/resolveBackground"
+import { getChapterDisplayNumber } from "@/data/utils/chapter-helpers"
+import { usePreferences } from "@/lib/preferences"
 
 export function SidebarAuthFooter(props: { onSignOut?: () => void }) {
   const user = getUser()
@@ -41,6 +46,8 @@ function SignedOutFooter() {
 
 function SignedInFooter(props: { user: User; onSignOut?: () => void }) {
   const customerQuery = useQuery(() => autumnCustomerQueryOptions())
+  const { preferences } = usePreferences()
+  const [isBackgroundDialogOpen, setIsBackgroundDialogOpen] = createSignal(false)
 
   const planLabel = () => {
     if (customerQuery.data === undefined) return "Loading"
@@ -49,6 +56,16 @@ function SignedInFooter(props: { user: User; onSignOut?: () => void }) {
 
   const displayName = () => props.user.name
   const initials = () => displayName().trim().charAt(0).toUpperCase()
+  const backgroundTarget = () => ({
+    pathId: preferences().activeLearningPath,
+    chapterSlug: preferences().activeChapter,
+  })
+  const currentBackground = () =>
+    resolveBackground(
+      preferences().activeLearningPath,
+      preferences().activeChapter,
+      preferences().backgroundOverrides,
+    ).background
 
   return (
     <Popover placement="top-start">
@@ -75,9 +92,27 @@ function SignedInFooter(props: { user: User; onSignOut?: () => void }) {
 
       <PopoverContent class="w-72 border-white/10 bg-neutral-950 p-3 text-white">
         <div class="space-y-3">
-          <div>
-            <p class="truncate text-sm font-medium">{displayName()}</p>
-            <p class="truncate text-xs text-white/45">{props.user.email}</p>
+          <div class="flex items-center gap-3">
+            <div class="min-w-0 flex-1">
+              <p class="truncate text-sm font-medium">{displayName()}</p>
+              <p class="truncate text-xs text-white/45">{props.user.email}</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setIsBackgroundDialogOpen(true)}
+              aria-label="Change current chapter background"
+              class="group relative h-10 w-20 shrink-0 cursor-pointer overflow-hidden rounded-lg border border-white/10 bg-white/5 transition-colors hover:border-white/20"
+            >
+              <BackgroundPreviewMedia
+                item={currentBackground()}
+                width={160}
+                class="h-full w-full object-cover"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
+              <div class="absolute right-1 top-1/2 -translate-y-1/2 rounded-full bg-black/35 p-1 text-white/80 backdrop-blur-md transition-colors group-hover:bg-white/15 group-hover:text-white">
+                <ChevronDown class="size-3" />
+              </div>
+            </button>
           </div>
 
           <div class="flex items-center justify-between text-sm">
@@ -108,6 +143,13 @@ function SignedInFooter(props: { user: User; onSignOut?: () => void }) {
           </div>
         </div>
       </PopoverContent>
+
+      <BackgroundAssignmentDialog
+        open={isBackgroundDialogOpen()}
+        onOpenChange={setIsBackgroundDialogOpen}
+        contextLabel={`Current chapter · Chapter ${getChapterDisplayNumber(preferences().activeChapter)}`}
+        target={backgroundTarget()}
+      />
     </Popover>
   )
 }

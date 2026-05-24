@@ -12,16 +12,6 @@ interface BackgroundContextRowProps {
 }
 
 export function BackgroundContextRow(props: BackgroundContextRowProps) {
-  const background = () => props.resolvedBackground.background
-  const builtInBackground = () => {
-    const current = background()
-    return "src" in current ? current : undefined
-  }
-  const upload = () => {
-    const current = background()
-    return "src" in current ? undefined : { imageId: current.id }
-  }
-
   return (
     <div class="group relative overflow-hidden rounded-xl">
       <button
@@ -34,8 +24,7 @@ export function BackgroundContextRow(props: BackgroundContextRowProps) {
           style={{ "aspect-ratio": props.aspect ?? "16 / 5" }}
         >
           <BackgroundPreviewMedia
-            background={builtInBackground()}
-            upload={upload()}
+            item={props.resolvedBackground.background}
             width={320}
             height={140}
             class="h-full w-full object-cover"

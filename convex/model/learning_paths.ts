@@ -7,7 +7,7 @@ import {
   isBuiltInTextbook,
 } from "../../src/data/utils/textbooks"
 import { getChaptersByTextbook } from "../../src/data/utils/chapters"
-import { removeOverridesForPath } from "../../src/features/backgrounds/overrides"
+import { removeBackgroundPreferencesForPath } from "../../src/features/backgrounds/overrides"
 import { buildPathSelectionPreferences } from "../../src/features/learning-path/selection"
 import { external_resources } from "../../src/data/external_resources"
 import { moduleCatalog } from "../../src/data/utils/modules"
@@ -507,7 +507,7 @@ export async function deleteCustomLearningPath(
   await ctx.db.patch(profile._id, {
     userPreferences: {
       ...profile.userPreferences,
-      backgroundOverrides: removeOverridesForPath(
+      backgroundOverrides: removeBackgroundPreferencesForPath(
         profile.userPreferences.backgroundOverrides,
         pathId,
       ),

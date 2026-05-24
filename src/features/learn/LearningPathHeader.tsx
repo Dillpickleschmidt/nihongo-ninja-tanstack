@@ -1,4 +1,4 @@
-import { For, Show, createEffect, createMemo, createSignal } from "solid-js"
+import { For, Show, Suspense, createEffect, createMemo, createSignal } from "solid-js"
 import { useMutation } from "convex-solidjs"
 import { ChevronDown, RotateCcw, Wallpaper, X } from "lucide-solid"
 import { api } from "convex/_generated/api"
@@ -11,10 +11,9 @@ import {
 } from "@/components/ui/popover"
 import { getChapterDisplayNumber } from "@/data/utils/chapter-helpers"
 import {
-  clearAssignedBackgroundId,
-  getAssignedBackgroundId,
-  setAssignedBackgroundId,
-  type BackgroundScope,
+  clearChapterBackground,
+  getChapterBackgroundId,
+  type BackgroundTarget,
 } from "@/features/backgrounds/overrides"
 import { BackgroundAssignmentDialog } from "@/features/backgrounds/components/BackgroundAssignmentDialog"
 import { BackgroundContextRow } from "@/features/backgrounds/components/BackgroundContextRow"
@@ -31,7 +30,7 @@ import type { LearningPathChapter } from "convex/model/learning_paths"
 export function LearningPathHeader() {
   const [isPathPopoverOpen, setIsPathPopoverOpen] = createSignal(false)
   const [isDialogOpen, setIsDialogOpen] = createSignal(false)
-  const [editTarget, setEditTarget] = createSignal<BackgroundScope | null>(null)
+  const [editTarget, setEditTarget] = createSignal<BackgroundTarget | null>(null)
   const [deletingPathId, setDeletingPathId] = createSignal<string | null>(null)
   const [chaptersExpanded, setChaptersExpanded] = createSignal(false)
   const {
@@ -101,34 +100,28 @@ export function LearningPathHeader() {
   const resolveChapterBackground = (chapterSlug: string) =>
     resolveBackground(activePathId(), chapterSlug, backgroundOverrides())
 
-  const openEditor = (target: BackgroundScope) => {
+  const openEditor = (target: BackgroundTarget) => {
     setEditTarget(target)
     setIsPathPopoverOpen(false)
     setIsDialogOpen(true)
   }
 
-  const hasAssignedBackground = (scope: BackgroundScope) =>
-    !!getAssignedBackgroundId(backgroundOverrides(), scope)
+  const hasChapterBackground = (target: BackgroundTarget) =>
+    !!getChapterBackgroundId(backgroundOverrides(), target)
 
-  const resetBackgroundOverride = (scope: BackgroundScope) => {
+  const resetChapterBackground = (target: BackgroundTarget) => {
     setPreference(
       "backgroundOverrides",
-      clearAssignedBackgroundId(backgroundOverrides(), scope),
+      clearChapterBackground(backgroundOverrides(), target),
     )
   }
 
   const getPathLabel = (pathId: string) =>
     paths().find((path) => path.id === pathId)?.shortName ?? pathId
 
-  const getEditContextLabel = (scope: BackgroundScope) => {
-    if (scope.type === "path") return getPathLabel(scope.pathId)
-    return `${getPathLabel(scope.pathId)} · Chapter ${getChapterDisplayNumber(scope.chapterSlug)}`
-  }
+  const getEditContextLabel = (target: BackgroundTarget) =>
+    `${getPathLabel(target.pathId)} · Chapter ${getChapterDisplayNumber(target.chapterSlug)}`
 
-  const getPreviewChapterSlug = (scope: BackgroundScope) =>
-    scope.type === "path"
-      ? getDefaultChapterSlugForPath(scope.pathId)
-      : scope.chapterSlug
 
   const handleDeletePath = async (
     event: MouseEvent,
@@ -211,41 +204,23 @@ export function LearningPathHeader() {
                           setIsPathPopoverOpen(false)
                         }}
                         actions={
-                          <>
-                            <BackgroundOverrideActions
-                              label={path.shortName}
-                              hasOverride={hasAssignedBackground({
-                                type: "path",
-                                pathId: path.id,
-                              })}
-                              onReset={() =>
-                                resetBackgroundOverride({
-                                  type: "path",
-                                  pathId: path.id,
-                                })
-                              }
-                              onEdit={() =>
-                                openEditor({ type: "path", pathId: path.id })
-                              }
-                            />
-                            <Show when={path.isUserCreated}>
-                              <Button
-                                variant="ghost"
-                                size="icon-sm"
-                                disabled={deletingPathId() === path.id}
-                                onClick={(e) => void handleDeletePath(e, path)}
-                                aria-label={`Delete learning path ${path.name}`}
-                                class="text-white/70 hover:bg-white/10 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
+                          <Show when={path.isUserCreated}>
+                            <Button
+                              variant="ghost"
+                              size="icon-sm"
+                              disabled={deletingPathId() === path.id}
+                              onClick={(e) => void handleDeletePath(e, path)}
+                              aria-label={`Delete learning path ${path.name}`}
+                              class="text-white/70 hover:bg-white/10 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
+                            >
+                              <Show
+                                when={deletingPathId() === path.id}
+                                fallback={<X class="size-3.5" />}
                               >
-                                <Show
-                                  when={deletingPathId() === path.id}
-                                  fallback={<X class="size-3.5" />}
-                                >
-                                  <span class="inline-block size-3.5 animate-spin rounded-full border border-current border-t-transparent" />
-                                </Show>
-                              </Button>
-                            </Show>
-                          </>
+                                <span class="inline-block size-3.5 animate-spin rounded-full border border-current border-t-transparent" />
+                              </Show>
+                            </Button>
+                          </Show>
                         }
                       />
                     )}
@@ -280,8 +255,7 @@ export function LearningPathHeader() {
                       resolvedBackground={resolveChapterBackground(
                         chapter.slug,
                       )}
-                      hasOverride={hasAssignedBackground({
-                        type: "chapter",
+                      hasOverride={hasChapterBackground({
                         pathId: activePathId(),
                         chapterSlug: chapter.slug,
                       })}
@@ -289,15 +263,13 @@ export function LearningPathHeader() {
                         setPreference("activeChapter", chapter.slug)
                       }
                       onReset={() =>
-                        resetBackgroundOverride({
-                          type: "chapter",
+                        resetChapterBackground({
                           pathId: activePathId(),
                           chapterSlug: chapter.slug,
                         })
                       }
                       onEdit={() =>
                         openEditor({
-                          type: "chapter",
                           pathId: activePathId(),
                           chapterSlug: chapter.slug,
                         })
@@ -327,38 +299,22 @@ export function LearningPathHeader() {
         </div>
       </Show>
 
-      <Show when={editTarget()}>
-        {(target) => (
-          <BackgroundAssignmentDialog
-            open={isDialogOpen()}
-            onOpenChange={(open) => {
-              setIsDialogOpen(open)
-              if (!open) setEditTarget(null)
-            }}
-            contextLabel={getEditContextLabel(target())}
-            scope={target()}
-            previewPathId={target().pathId}
-            previewChapterSlug={getPreviewChapterSlug(target())}
-            overrides={backgroundOverrides()}
-            onAssignBackground={(backgroundId) =>
-              setPreference(
-                "backgroundOverrides",
-                setAssignedBackgroundId(
-                  backgroundOverrides(),
-                  target(),
-                  backgroundId,
-                ),
-              )
-            }
-            onClearOverride={() =>
-              setPreference(
-                "backgroundOverrides",
-                clearAssignedBackgroundId(backgroundOverrides(), target()),
-              )
-            }
-          />
-        )}
-      </Show>
+      <Suspense>
+        <Show when={editTarget()}>
+          {(target) => (
+            <BackgroundAssignmentDialog
+              open={isDialogOpen()}
+              onOpenChange={(open) => {
+                setIsDialogOpen(open)
+                if (!open) setEditTarget(null)
+              }}
+              contextLabel={getEditContextLabel(target())}
+              target={target()}
+              getPathLabel={getPathLabel}
+            />
+          )}
+        </Show>
+      </Suspense>
     </section>
   )
 }
@@ -385,20 +341,11 @@ function PathPreviewBackground(props: { pathId: string }) {
       getDefaultChapterSlugForPath(props.pathId),
       preferences().backgroundOverrides,
     ).background
-  const builtInBackground = () => {
-    const current = resolved()
-    return "src" in current ? current : undefined
-  }
-  const upload = () => {
-    const current = resolved()
-    return "src" in current ? undefined : { imageId: current.id }
-  }
 
   return (
     <div class="relative h-24 lg:h-40">
       <BackgroundPreviewMedia
-        background={builtInBackground()}
-        upload={upload()}
+        item={resolved()}
         width={420}
         height={260}
         class="h-full w-full object-cover"
@@ -422,14 +369,6 @@ function ChapterCard(props: {
   const percent = () =>
     total() === 0 ? 0 : (props.completedCount / total()) * 100
   const background = () => props.resolvedBackground.background
-  const builtInBackground = () => {
-    const current = background()
-    return "src" in current ? current : undefined
-  }
-  const upload = () => {
-    const current = background()
-    return "src" in current ? undefined : { imageId: current.id }
-  }
 
   return (
     <div
@@ -448,8 +387,7 @@ function ChapterCard(props: {
       >
         <div class="relative h-32">
           <BackgroundPreviewMedia
-            background={builtInBackground()}
-            upload={upload()}
+            item={background()}
             width={260}
             height={170}
             class="h-full w-full object-cover"

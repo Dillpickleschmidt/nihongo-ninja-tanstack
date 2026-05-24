@@ -1,31 +1,32 @@
 import { Show } from "solid-js"
 import { Image as BaseImage } from "@unpic/solid/base"
 import type { BuiltInBackground } from "../catalog"
+import type { UserImageBackground } from "../resolveBackground"
 import { usePrivateImageSource } from "@/features/images/usePrivateImageSource"
 import { buildPublicUnpicSource } from "@/features/images/transformer"
 
+export type BackgroundPreviewItem = BuiltInBackground | (UserImageBackground & {
+  sourceWidth?: number
+})
+
 interface BackgroundPreviewMediaProps {
-  background?: BuiltInBackground
-  upload?: {
-    imageId: string
-    sourceWidth?: number
-  }
+  item: BackgroundPreviewItem
   width: number
-  height: number
+  height?: number
   class?: string
 }
 
 export function BackgroundPreviewMedia(props: BackgroundPreviewMediaProps) {
   const uploadSource = usePrivateImageSource(
-    () => props.upload?.imageId,
+    () => ("src" in props.item ? undefined : props.item.id),
     () => ({ layout: "fixed", width: props.width }),
-    () => props.upload?.sourceWidth,
+    () => ("src" in props.item ? undefined : props.item.sourceWidth),
   )
   const source = () =>
-    props.background
+    "src" in props.item
       ? buildPublicUnpicSource({
-          src: props.background.src,
-          sourceWidth: props.background.sourceWidth,
+          src: props.item.src,
+          sourceWidth: props.item.sourceWidth,
           layout: { layout: "fixed", width: props.width },
         })
       : uploadSource()
@@ -39,7 +40,7 @@ export function BackgroundPreviewMedia(props: BackgroundPreviewMediaProps) {
           breakpoints={s().breakpoints}
           layout="fixed"
           width={props.width}
-          height={props.height}
+          height={props.height ?? props.width}
           unstyled
           alt="Background preview"
           class={props.class}

@@ -1,48 +1,63 @@
-import { For, Show, createMemo, createSignal, type JSX } from "solid-js"
-import { Check, Upload } from "lucide-solid"
+import { For, Match, Show, Suspense, Switch, createMemo, createSignal, type JSX } from "solid-js"
+import { Check, Lock, Upload } from "lucide-solid"
 import { api } from "convex/_generated/api"
+import { useQuery } from "@tanstack/solid-query"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
-import { useConvexQuery } from "@/lib/convex-query"
+import { convexQuery } from "@/lib/convex-query"
 import { authClient } from "@/lib/auth-client"
 import { cn } from "@/utils"
+import { getChapterDisplayNumber } from "@/data/utils/chapter-helpers"
+import { usePreferences } from "@/lib/preferences"
 import {
   BUILT_IN_BACKGROUND_LIST,
   type BuiltInBackground,
 } from "../catalog"
 import {
-  getAssignedBackgroundId,
-  type BackgroundOverrides,
-  type BackgroundScope,
+  applyBackgroundScope,
+  applyChapterBackgroundSelection,
+  clearBackgroundLock,
+  clearChapterBackground,
+  getActiveBackgroundLock,
+  getChapterBackgroundId,
+  type BackgroundApplyScope,
+  type BackgroundLock,
+  type BackgroundTarget,
 } from "../overrides"
 import { resolveBackground } from "../resolveBackground"
-import { BackgroundPreviewMedia } from "./BackgroundPreviewMedia"
+import {
+  BackgroundPreviewMedia,
+  type BackgroundPreviewItem,
+} from "./BackgroundPreviewMedia"
 
 interface BackgroundAssignmentDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   contextLabel: string
-  scope: BackgroundScope
-  previewPathId?: string
-  previewChapterSlug?: string
-  overrides: BackgroundOverrides
-  onAssignBackground: (backgroundId: string) => void
-  onClearOverride: () => void
+  target: BackgroundTarget
+  getPathLabel?: (pathId: string) => string
 }
 
 export function BackgroundAssignmentDialog(
   props: BackgroundAssignmentDialogProps,
 ) {
   const session = authClient.useSession()
+  const { preferences, setPreference } = usePreferences()
+  const [applyScope, setApplyScope] = createSignal<BackgroundApplyScope>("chapter")
+  const overrides = () => preferences().backgroundOverrides
+  const activeLock = () => getActiveBackgroundLock(overrides(), props.target)
+  const lockedByAnotherChapter = () =>
+    isLockedByAnotherChapter(activeLock(), props.target)
+  const pathLabel = (pathId: string) => props.getPathLabel?.(pathId) ?? pathId
   const resolvedBackground = createMemo(() =>
     resolveBackground(
-      props.previewPathId,
-      props.previewChapterSlug,
-      props.overrides,
+      props.target.pathId,
+      props.target.chapterSlug,
+      overrides(),
     ),
   )
 
   const assignedBackgroundId = () =>
-    getAssignedBackgroundId(props.overrides, props.scope)
+    getChapterBackgroundId(overrides(), props.target)
 
   const highlightId = () =>
     assignedBackgroundId() ?? resolvedBackground().assignedBackgroundId
@@ -58,12 +73,6 @@ export function BackgroundAssignmentDialog(
 
   const isSignedIn = () => !!session().data
 
-  const uploadsQuery = useConvexQuery(
-    api.api.images.listMyImageAssets,
-    () => ({}),
-    () => ({ enabled: props.open && isSignedIn() }),
-  )
-
   const [uploadState, setUploadState] = createSignal<
     | { status: "idle" }
     | { status: "uploading" }
@@ -78,6 +87,47 @@ export function BackgroundAssignmentDialog(
   let fileInputRef: HTMLInputElement | undefined
 
   const handleUploadClick = () => fileInputRef?.click()
+
+  const selectBackground = (backgroundId: string) => {
+    setPreference(
+      "backgroundOverrides",
+      applyChapterBackgroundSelection(overrides(), {
+        ...props.target,
+        backgroundId,
+        scope: activeLock()?.scope ?? applyScope(),
+      }),
+    )
+  }
+
+  const changeApplyScope = (scope: BackgroundApplyScope) => {
+    setApplyScope(scope)
+    setPreference(
+      "backgroundOverrides",
+      applyBackgroundScope(overrides(), { ...props.target, scope }),
+    )
+  }
+
+  const clearChapter = () => {
+    setPreference(
+      "backgroundOverrides",
+      clearChapterBackground(overrides(), props.target),
+    )
+  }
+
+  const unlockBackground = () => {
+    const lock = activeLock()
+    if (!lock) return
+
+    const source = `${pathLabel(lock.pathId)} · Chapter ${getChapterDisplayNumber(lock.chapterSlug)}`
+    const message =
+      lock.scope === "global"
+        ? `This background is currently locked everywhere from ${source}.\n\nUnlock and return to chapter-specific backgrounds?`
+        : `This background is currently locked for ${pathLabel(lock.pathId)} from Chapter ${getChapterDisplayNumber(lock.chapterSlug)}.\n\nUnlock and return to chapter-specific backgrounds for this learning path?`
+    if (!window.confirm(message)) return
+
+    setPreference("backgroundOverrides", clearBackgroundLock(overrides()))
+    setApplyScope("chapter")
+  }
 
   const handleFilePicked = async (file: File) => {
     setUploadState({ status: "uploading" })
@@ -96,7 +146,7 @@ export function BackgroundAssignmentDialog(
         throw new Error(message || `Image upload failed (${res.status})`)
       }
       const upload = (await res.json()) as { imageId: string }
-      props.onAssignBackground(upload.imageId)
+      selectBackground(upload.imageId)
       setUploadState({ status: "idle" })
     } catch (err) {
       const message = err instanceof Error ? err.message : "Upload failed."
@@ -135,7 +185,15 @@ export function BackgroundAssignmentDialog(
         />
 
         <div class="space-y-7 px-6 py-6">
-          <section>
+          <BackgroundScopeSection
+            activeLock={activeLock()}
+            target={props.target}
+            applyScope={applyScope()}
+            onApplyScopeChange={changeApplyScope}
+            onUnlock={unlockBackground}
+          />
+
+          <section class={cn(lockedByAnotherChapter() && "pointer-events-none opacity-45")}>
             <SectionHeader
               label="Your uploads"
               trailing={
@@ -150,35 +208,15 @@ export function BackgroundAssignmentDialog(
                 </button>
               }
             />
-            <Show
-              when={isSignedIn()}
-              fallback={<UploadsSignedOutState />}
-            >
-              <Show
-                when={uploadsQuery.data() !== undefined}
-                fallback={<UploadsLoadingState />}
-              >
-                <Show
-                  when={uploadsQuery.data()!.length}
-                  fallback={<UploadsEmptyState />}
-                >
-                  <BackgroundTileGrid
-                    items={uploadsQuery.data()!.map((asset) => ({
-                      id: asset.imageId,
-                      upload: {
-                        imageId: asset.imageId,
-                        sourceWidth: asset.sourceWidth,
-                      },
-                    }))}
-                    assignedBackgroundId={assignedBackgroundId()}
-                    effectiveBackgroundId={
-                      resolvedBackground().assignedBackgroundId
-                    }
-                    onSelect={props.onAssignBackground}
-                  />
-                </Show>
-              </Show>
-            </Show>
+            <Suspense fallback={<UploadsLoadingState />}>
+              <BackgroundUploadsGrid
+                open={props.open}
+                signedIn={isSignedIn()}
+                assignedBackgroundId={assignedBackgroundId()}
+                effectiveBackgroundId={resolvedBackground().assignedBackgroundId}
+                onSelect={selectBackground}
+              />
+            </Suspense>
             <Show when={uploadError()}>
               {(message) => (
                 <p class="mt-3 text-sm text-red-300/90">{message()}</p>
@@ -186,17 +224,17 @@ export function BackgroundAssignmentDialog(
             </Show>
           </section>
 
-          <section>
+          <section class={cn(lockedByAnotherChapter() && "pointer-events-none opacity-45")}>
             <SectionHeader
               label="Built-in"
               trailing={
                 <Show when={assignedBackgroundId()}>
                   <button
                     type="button"
-                    onClick={props.onClearOverride}
+                    onClick={clearChapter}
                     class="text-sm text-white/55 underline-offset-2 transition-colors hover:text-white hover:underline"
                   >
-                    Clear override
+                    Clear chapter background
                   </button>
                 </Show>
               }
@@ -204,11 +242,11 @@ export function BackgroundAssignmentDialog(
             <BackgroundTileGrid
               items={orderedBuiltIns().map((background) => ({
                 id: background.id,
-                builtIn: background,
+                item: background,
               }))}
               assignedBackgroundId={assignedBackgroundId()}
               effectiveBackgroundId={resolvedBackground().assignedBackgroundId}
-              onSelect={props.onAssignBackground}
+              onSelect={selectBackground}
             />
           </section>
         </div>
@@ -216,6 +254,84 @@ export function BackgroundAssignmentDialog(
     </Dialog>
   )
 }
+
+const SCOPE_OPTIONS = [
+  ["chapter", "This chapter"],
+  ["path", "This learning path"],
+  ["global", "Everywhere"],
+] as const
+
+function BackgroundScopeSection(props: {
+  activeLock: BackgroundLock | null
+  target: BackgroundTarget
+  applyScope: BackgroundApplyScope
+  onApplyScopeChange: (scope: BackgroundApplyScope) => void
+  onUnlock: () => void
+}) {
+  const lockedByAnotherChapter = () =>
+    isLockedByAnotherChapter(props.activeLock, props.target)
+  const selectedScope = () => props.activeLock?.scope ?? props.applyScope
+
+  return (
+    <section>
+      <Show when={lockedByAnotherChapter() ? props.activeLock : null}>
+        {(lock) => (
+          <div class="mb-4 flex items-center justify-between gap-3 border-b border-amber-200/15 pb-3 text-sm text-amber-50">
+            <div class="flex items-center gap-2">
+              <Lock class="size-4" />
+              <span>
+                {lock().scope === "global"
+                  ? "Locked everywhere"
+                  : "Locked for this learning path"}{" "}
+                from {lock().pathId} · {lock().chapterSlug}
+              </span>
+            </div>
+            <button
+              type="button"
+              onClick={props.onUnlock}
+              class="shrink-0 text-xs font-medium text-amber-100 underline-offset-2 transition-colors hover:text-white hover:underline"
+            >
+              Unlock
+            </button>
+          </div>
+        )}
+      </Show>
+
+      <div class="mb-3 text-[11px] uppercase tracking-widest text-white/45">
+        Apply selected background to
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <For each={SCOPE_OPTIONS}>
+          {([value, label]) => (
+            <button
+              type="button"
+              disabled={lockedByAnotherChapter()}
+              onClick={() => props.onApplyScopeChange(value)}
+              class={cn(
+                "rounded-full px-3 py-1.5 text-left text-sm transition-colors disabled:cursor-not-allowed disabled:opacity-45",
+                selectedScope() === value
+                  ? "bg-dynamic-accent/90 text-black"
+                  : "bg-white/7 text-white/70 hover:bg-white/12 hover:text-white",
+              )}
+            >
+              {label}
+            </button>
+          )}
+        </For>
+      </div>
+    </section>
+  )
+}
+
+function isLockedByAnotherChapter(
+  lock: BackgroundLock | null,
+  target: BackgroundTarget,
+) {
+  return !!(
+    lock && (lock.pathId !== target.pathId || lock.chapterSlug !== target.chapterSlug)
+  )
+}
+
 
 function SectionHeader(props: { label: string; trailing?: JSX.Element }) {
   return (
@@ -251,6 +367,53 @@ function UploadsSignedOutState() {
   )
 }
 
+type UploadedBackgroundAsset = {
+  imageId: string
+  sourceWidth?: number
+}
+
+function BackgroundUploadsGrid(props: {
+  open: boolean
+  signedIn: boolean
+  assignedBackgroundId?: string
+  effectiveBackgroundId?: string
+  onSelect: (backgroundId: string) => void
+}) {
+  const uploadsQuery = useQuery(() => ({
+    ...convexQuery(api.api.images.listMyImageAssets, {}),
+    enabled: props.open && props.signedIn,
+  }))
+
+  const uploads = () => uploadsQuery.data as UploadedBackgroundAsset[] | undefined
+
+  return (
+    <Switch>
+      <Match when={!props.signedIn}>
+        <UploadsSignedOutState />
+      </Match>
+      <Match when={uploads() === undefined}>
+        <UploadsLoadingState />
+      </Match>
+      <Match when={uploads()?.length === 0}>
+        <UploadsEmptyState />
+      </Match>
+      <Match when={uploads()}>
+        {(assets) => (
+          <BackgroundTileGrid
+            items={assets().map((asset) => ({
+              id: asset.imageId,
+              item: uploadPreviewItem(asset.imageId, asset.sourceWidth),
+            }))}
+            assignedBackgroundId={props.assignedBackgroundId}
+            effectiveBackgroundId={props.effectiveBackgroundId}
+            onSelect={props.onSelect}
+          />
+        )}
+      </Match>
+    </Switch>
+  )
+}
+
 function UploadsLoadingState() {
   return (
     <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -272,10 +435,19 @@ interface BackgroundTileGridProps {
 
 type BackgroundTileItem = {
   id: string
-  builtIn?: BuiltInBackground
-  upload?: {
-    imageId: string
-    sourceWidth?: number
+  item: BackgroundPreviewItem
+}
+
+function uploadPreviewItem(
+  imageId: string,
+  sourceWidth: number | undefined,
+): BackgroundPreviewItem {
+  return {
+    kind: "image",
+    id: imageId,
+    sourceWidth,
+    layout: "horizontal",
+    opacity: 0.4,
   }
 }
 
@@ -301,8 +473,7 @@ function BackgroundTileGrid(props: BackgroundTileGridProps) {
             >
               <div class="relative aspect-[16/10] overflow-hidden bg-black/40">
                 <BackgroundPreviewMedia
-                  background={item.builtIn}
-                  upload={item.upload}
+                  item={item.item}
                   width={320}
                   height={200}
                   class="h-full w-full object-cover"

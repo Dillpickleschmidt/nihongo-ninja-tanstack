@@ -5,14 +5,15 @@ import {
   type BuiltInBackground,
 } from "./catalog"
 import {
-  getChapterOverrideKey,
+  getChapterBackgroundKey,
   type BackgroundOverrides,
 } from "./overrides"
 import { IMAGE_ID_PREFIX } from "@/features/images/validation"
 
 export type BackgroundSourceScope =
+  | "global-lock"
+  | "path-lock"
   | "chapter"
-  | "path"
   | "curated"
   | "fallback"
 
@@ -32,8 +33,71 @@ export type ResolvedBackground = {
   assignedBackgroundId?: string
 }
 
+export function resolveBackground(
+  pathId: string | undefined,
+  chapterSlug: string | undefined,
+  overrides: BackgroundOverrides,
+): ResolvedBackground {
+  const lock = overrides.lock
+  if (lock && (lock.scope === "global" || lock.pathId === pathId)) {
+    const locked = resolveChapterBackground(overrides, lock.pathId, lock.chapterSlug)
+    if (locked) {
+      return {
+        ...locked,
+        sourceScope: lock.scope === "global" ? "global-lock" : "path-lock",
+        sourceLabel:
+          lock.scope === "global"
+            ? "Locked everywhere"
+            : "Locked for this learning path",
+      }
+    }
+  }
+
+  return (
+    resolveChapterBackground(overrides, pathId, chapterSlug) ?? {
+      background: BUILT_IN_BACKGROUNDS[FALLBACK_BACKGROUND_ID],
+      sourceScope: "fallback",
+      sourceLabel: "Fallback",
+      assignedBackgroundId: FALLBACK_BACKGROUND_ID,
+    }
+  )
+}
+
+function resolveChapterBackground(
+  overrides: BackgroundOverrides,
+  pathId: string | undefined,
+  chapterSlug: string | undefined,
+): ResolvedBackground | undefined {
+  if (!pathId || !chapterSlug) return undefined
+
+  const assignedBackgroundId =
+    overrides.chapters[getChapterBackgroundKey(pathId, chapterSlug)]
+  const assignedBackground = resolveBackgroundId(assignedBackgroundId)
+  if (assignedBackground) {
+    return {
+      background: assignedBackground,
+      sourceScope: "chapter",
+      sourceLabel: "Chapter background",
+      assignedBackgroundId,
+    }
+  }
+
+  const curatedBackgroundId = CURATED_CHAPTER_BACKGROUNDS[pathId]?.[chapterSlug]
+  const curatedBackground = curatedBackgroundId
+    ? BUILT_IN_BACKGROUNDS[curatedBackgroundId]
+    : undefined
+  if (!curatedBackground) return undefined
+
+  return {
+    background: curatedBackground,
+    sourceScope: "curated",
+    sourceLabel: "Curated default",
+    assignedBackgroundId: curatedBackgroundId,
+  }
+}
+
 // Treat unknown, non-upload IDs as stale catalog entries and fall through.
-function resolveOverrideId(
+function resolveBackgroundId(
   id: string | undefined,
 ): BuiltInBackground | UserImageBackground | undefined {
   if (!id) return undefined
@@ -45,61 +109,5 @@ function resolveOverrideId(
     id,
     layout: "horizontal",
     opacity: 0.4,
-  }
-}
-
-export function resolveBackground(
-  pathId: string | undefined,
-  chapterSlug: string | undefined,
-  overrides: BackgroundOverrides,
-): ResolvedBackground {
-  if (pathId && chapterSlug) {
-    const chapterBackgroundId =
-      overrides.chapters[getChapterOverrideKey(pathId, chapterSlug)]
-    const chapterBackground = resolveOverrideId(chapterBackgroundId)
-    if (chapterBackground) {
-      return {
-        background: chapterBackground,
-        sourceScope: "chapter",
-        sourceLabel: "Chapter override",
-        assignedBackgroundId: chapterBackgroundId,
-      }
-    }
-  }
-
-  if (pathId) {
-    const pathBackgroundId = overrides.paths[pathId]
-    const pathBackground = resolveOverrideId(pathBackgroundId)
-    if (pathBackground) {
-      return {
-        background: pathBackground,
-        sourceScope: "path",
-        sourceLabel: "Path override",
-        assignedBackgroundId: pathBackgroundId,
-      }
-    }
-  }
-
-  if (pathId && chapterSlug) {
-    const curatedBackgroundId =
-      CURATED_CHAPTER_BACKGROUNDS[pathId]?.[chapterSlug]
-    const curatedBackground = curatedBackgroundId
-      ? BUILT_IN_BACKGROUNDS[curatedBackgroundId]
-      : undefined
-    if (curatedBackground) {
-      return {
-        background: curatedBackground,
-        sourceScope: "curated",
-        sourceLabel: "Curated default",
-        assignedBackgroundId: curatedBackgroundId,
-      }
-    }
-  }
-
-  return {
-    background: BUILT_IN_BACKGROUNDS[FALLBACK_BACKGROUND_ID],
-    sourceScope: "fallback",
-    sourceLabel: "Fallback",
-    assignedBackgroundId: FALLBACK_BACKGROUND_ID,
   }
 }
