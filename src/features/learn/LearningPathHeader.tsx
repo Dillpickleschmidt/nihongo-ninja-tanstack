@@ -16,7 +16,7 @@ import {
   type BackgroundTarget,
 } from "@/features/backgrounds/overrides"
 import { BackgroundAssignmentDialog } from "@/features/backgrounds/components/BackgroundAssignmentDialog"
-import { BackgroundContextRow } from "@/features/backgrounds/components/BackgroundContextRow"
+import { LearningPathBackgroundCard } from "./components/LearningPathBackgroundCard"
 import { BackgroundPreviewMedia } from "@/features/backgrounds/components/BackgroundPreviewMedia"
 import { resolveBackground } from "@/features/backgrounds/resolveBackground"
 import { getDefaultChapterSlugForPath } from "@/features/learning-path/selection"
@@ -194,7 +194,7 @@ export function LearningPathHeader() {
                 <div class="grid grid-cols-2 gap-2">
                   <For each={paths()}>
                     {(path) => (
-                      <BackgroundContextRow
+                      <LearningPathBackgroundCard
                         title={path.shortName}
                         aspect="16 / 9"
                         resolvedBackground={resolvePathBackground(path.id)}

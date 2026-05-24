@@ -1,8 +1,8 @@
 import { Show, type JSX } from "solid-js"
-import type { ResolvedBackground } from "../resolveBackground"
-import { BackgroundPreviewMedia } from "./BackgroundPreviewMedia"
+import type { ResolvedBackground } from "@/features/backgrounds/resolveBackground"
+import { BackgroundPreviewMedia } from "@/features/backgrounds/components/BackgroundPreviewMedia"
 
-interface BackgroundContextRowProps {
+interface LearningPathBackgroundCardProps {
   title: string
   resolvedBackground: ResolvedBackground
   active?: boolean
@@ -11,13 +11,13 @@ interface BackgroundContextRowProps {
   actions?: JSX.Element
 }
 
-export function BackgroundContextRow(props: BackgroundContextRowProps) {
+export function LearningPathBackgroundCard(props: LearningPathBackgroundCardProps) {
   return (
-    <div class="group relative overflow-hidden rounded-xl">
+    <div class="group relative rounded-xl p-0.5">
       <button
         type="button"
         onClick={props.onSelect}
-        class="ease-instant-hover-200 block w-full cursor-pointer rounded-xl border border-white/6 text-left hover:border-white/12"
+        class="ease-instant-hover-200 block w-full cursor-pointer overflow-hidden rounded-xl border border-white/6 text-left outline-none ring-offset-2 ring-offset-neutral-950 hover:border-white/12 focus-visible:ring-2 focus-visible:ring-white/70"
       >
         <div
           class="relative bg-black/25"
