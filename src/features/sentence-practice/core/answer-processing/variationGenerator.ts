@@ -324,6 +324,7 @@ const HONORIFIC_SWAP_PROTECTED_FORMS = [
   ...KINSHIP_GROUPS.flat(),
   "赤[あか]ちゃん",
   "皆[みな]さん",
+  "ちゃんと",
 ]
 
 function isInHonorificSwapProtectedForm(

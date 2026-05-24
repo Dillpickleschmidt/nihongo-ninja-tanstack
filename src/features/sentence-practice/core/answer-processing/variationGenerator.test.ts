@@ -188,19 +188,25 @@ describe("honorific variations", () => {
 
   it("does not replace honorific-looking text in protected lexical words", () => {
     const segments: RichSegment[] = [
-      createRichSegment("赤[あか]ちゃんが泣[な]いています", false),
+      createRichSegment("赤[あか]ちゃんがちゃんと泣[な]いています", false),
     ]
     const result = generateCanonicalAnswers(segments, 0, true)
 
     expect(
-      result.some((a) => stripSeparators(a.original).includes("赤[あか]ちゃん")),
+      result.some((a) =>
+        stripSeparators(a.original).includes("赤[あか]ちゃんがちゃんと"),
+      ),
     ).toBe(true)
     expect(
-      result.every(
-        (a) =>
-          !stripSeparators(a.original).includes("赤[あか]さん") &&
-          !stripSeparators(a.original).includes("赤[あか]くん"),
-      ),
+      result.every((a) => {
+        const original = stripSeparators(a.original)
+        return (
+          !original.includes("赤[あか]さん") &&
+          !original.includes("赤[あか]くん") &&
+          !original.includes("さんと") &&
+          !original.includes("くんと")
+        )
+      }),
     ).toBe(true)
   })
 })
