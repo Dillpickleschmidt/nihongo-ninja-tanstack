@@ -124,8 +124,8 @@ export function PracticePage(props: PracticePageProps) {
           <div class="space-y-6 px-2">
             {/* Question display */}
             <div class="flex flex-col items-center">
-              <span class="text-sm text-muted-foreground dark:text-white/40">Conjugate this word</span>
-              <span class="mt-1 rounded-full bg-teal-500/10 px-3 py-1 text-xs font-medium text-teal-400">
+              <span class="text-base text-muted-foreground dark:text-white/40">Conjugate this word</span>
+              <span class="mt-1 rounded-full bg-teal-500/10 px-3 py-1 text-sm font-medium text-teal-400">
                 {question().type[3] === "te-form" ? (
                   <>
                     <span class="font-japanese">て</span>-form
@@ -139,7 +139,7 @@ export function PracticePage(props: PracticePageProps) {
                 when={props.noFurigana}
                 fallback={
                   <div
-                    class="mt-4 text-center font-japanese text-3xl font-medium sm:text-5xl"
+                    class="mt-4 text-center font-japanese text-4xl font-medium sm:text-6xl"
                     innerHTML={convertFuriganaToRubyHtml(
                       question().term.furigana,
                       "1rem",
@@ -147,19 +147,19 @@ export function PracticePage(props: PracticePageProps) {
                   />
                 }
               >
-                <div class="mt-4 text-center font-japanese text-3xl font-medium sm:text-5xl">
+                <div class="mt-4 text-center font-japanese text-4xl font-medium sm:text-6xl">
                   {question().term.word}
                 </div>
               </Show>
 
               <Show when={props.showMeaning}>
-                <p class="mt-2 text-lg text-muted-foreground dark:text-white/40">
+                <p class="mt-2 text-xl text-muted-foreground dark:text-white/40">
                   {question().term.meaning}
                 </p>
               </Show>
 
               {/* Conjugation details */}
-              <div class="mt-3 flex flex-wrap items-center justify-center gap-1.5 text-xs text-muted-foreground/70 dark:text-white/30">
+              <div class="mt-3 flex flex-wrap items-center justify-center gap-1.5 text-sm text-muted-foreground/70 dark:text-white/30">
                 <span>{question().type[0]}</span>
                 <span class="text-muted-foreground/40 dark:text-white/15">·</span>
                 <span>{question().type[1]}</span>
@@ -183,7 +183,7 @@ export function PracticePage(props: PracticePageProps) {
                     disabled={isAnswered()}
                     onKeyDown={handleKeyDown}
                     class={cn(
-                      "font-japanese h-12 rounded-2xl border bg-card/70 py-4 text-center text-lg font-medium outline-none transition-colors placeholder:text-muted-foreground/60 dark:bg-white/5 dark:placeholder:text-white/30",
+                      "font-japanese h-12 rounded-2xl border bg-card/70 py-4 text-center text-xl font-medium outline-none transition-colors placeholder:text-muted-foreground/60 dark:bg-white/5 dark:placeholder:text-white/30",
                       !isAnswered() && "border-border/70 focus:border-cyan-500 dark:border-white/10",
                       isAnswered() &&
                         question().correct &&
@@ -200,7 +200,7 @@ export function PracticePage(props: PracticePageProps) {
               <Show when={isAnswered()}>
                 <div
                   class={cn(
-                    "rounded-lg p-3 text-center text-sm font-medium",
+                    "rounded-lg p-3 text-center text-base font-medium",
                     question().correct
                       ? "bg-emerald-500/10 text-emerald-400"
                       : "bg-rose-500/10 text-rose-400",
@@ -211,7 +211,7 @@ export function PracticePage(props: PracticePageProps) {
                     fallback={
                       <>
                         <p>Correct answer(s):</p>
-                        <p class="mt-1 font-japanese text-lg font-bold">
+                        <p class="mt-1 font-japanese text-xl font-bold">
                           {question()
                             .answers.map((a) => a.reading)
                             .join(", ")}

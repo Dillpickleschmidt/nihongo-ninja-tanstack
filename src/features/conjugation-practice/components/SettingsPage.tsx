@@ -129,7 +129,7 @@ export function SettingsPage(props: SettingsPageProps) {
                     onChange={(checked) => handleChange(key, checked)}
                     label={label}
                   />
-                  <p class="mt-0.5 font-japanese text-sm text-muted-foreground/70 dark:text-white/30">
+                  <p class="mt-0.5 font-japanese text-base text-muted-foreground/70 dark:text-white/30">
                     {FORM_EXAMPLES[key]}
                   </p>
                 </div>
@@ -203,7 +203,7 @@ export function SettingsPage(props: SettingsPageProps) {
           <div class="grid gap-6 sm:grid-cols-2">
             <div class="space-y-5">
               <div class="space-y-2">
-                <label class="text-sm font-medium text-muted-foreground dark:text-white/40">
+                <label class="text-base font-medium text-muted-foreground dark:text-white/40">
                   JLPT Level
                 </label>
                 <Select
@@ -297,7 +297,7 @@ function Section(props: {
 }) {
   return (
     <section class="space-y-4 rounded-xl border border-border/70 bg-card/60 p-5 dark:border-white/10 dark:bg-white/5">
-      <h2 class="text-sm font-semibold uppercase tracking-wide text-muted-foreground dark:text-white/40">
+      <h2 class="text-base font-semibold uppercase tracking-wide text-muted-foreground dark:text-white/40">
         {props.title}
       </h2>
       {props.children}
@@ -317,7 +317,7 @@ function ToggleOption(props: {
       onChange={props.onChange}
     >
       <CheckboxInput class="cursor-pointer border-border dark:border-white/20" />
-      <CheckboxLabel class="cursor-pointer text-sm font-medium text-foreground/70 transition-colors hover:text-foreground dark:text-white/70 dark:hover:text-white/90">
+      <CheckboxLabel class="cursor-pointer text-base font-medium text-foreground/70 transition-colors hover:text-foreground dark:text-white/70 dark:hover:text-white/90">
         {props.label}
       </CheckboxLabel>
     </Checkbox>

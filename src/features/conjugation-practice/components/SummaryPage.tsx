@@ -40,15 +40,15 @@ export function SummaryPage(props: SummaryPageProps) {
       <div class="mb-8 grid grid-cols-3 gap-3">
         <div class="rounded-xl border border-emerald-500/20 bg-card/60 p-4 text-center text-emerald-500 dark:bg-white/5 dark:text-emerald-400">
           <div class="text-2xl font-bold">{stats().correct}</div>
-          <div class="text-xs text-muted-foreground dark:text-white/40">Correct</div>
+          <div class="text-sm text-muted-foreground dark:text-white/40">Correct</div>
         </div>
         <div class="rounded-xl border border-blue-500/20 bg-card/60 p-4 text-center text-blue-500 dark:bg-white/5 dark:text-blue-400">
           <div class="text-2xl font-bold">{stats().total}</div>
-          <div class="text-xs text-muted-foreground dark:text-white/40">Total</div>
+          <div class="text-sm text-muted-foreground dark:text-white/40">Total</div>
         </div>
         <div class="rounded-xl border border-purple-500/20 bg-card/60 p-4 text-center text-purple-500 dark:bg-white/5 dark:text-purple-400">
           <div class="text-2xl font-bold">{stats().accuracy}%</div>
-          <div class="text-xs text-muted-foreground dark:text-white/40">Accuracy</div>
+          <div class="text-sm text-muted-foreground dark:text-white/40">Accuracy</div>
         </div>
       </div>
 
@@ -59,16 +59,16 @@ export function SummaryPage(props: SummaryPageProps) {
             <div class="flex items-center gap-4 rounded-xl bg-card/60 p-4 dark:bg-white/5">
               <div class="min-w-0 flex-1">
                 <div class="flex items-baseline gap-3">
-                  <span class="font-japanese text-lg font-bold text-foreground/80 dark:text-white/80">
+                  <span class="font-japanese text-xl font-bold text-foreground/80 dark:text-white/80">
                     {question.term.reading}
                     {question.term.word !== question.term.reading &&
                       ` (${question.term.word})`}
                   </span>
-                  <span class="truncate text-sm text-muted-foreground dark:text-white/40">
+                  <span class="truncate text-base text-muted-foreground dark:text-white/40">
                     {question.type.join(", ")}
                   </span>
                 </div>
-                <div class="mt-1 flex items-center gap-3 text-sm">
+                <div class="mt-1 flex items-center gap-3 text-base">
                   <span class="text-muted-foreground/70 dark:text-white/30">
                     Your answer:{" "}
                     <span class="font-japanese text-foreground/70 dark:text-white/50">
@@ -86,7 +86,7 @@ export function SummaryPage(props: SummaryPageProps) {
               </div>
               <div
                 class={cn(
-                  "flex size-6 shrink-0 items-center justify-center rounded-full text-xs",
+                  "flex size-6 shrink-0 items-center justify-center rounded-full text-sm",
                   question.correct
                     ? "bg-emerald-500/20 text-emerald-400"
                     : "bg-rose-500/20 text-rose-400",

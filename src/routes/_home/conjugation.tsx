@@ -12,6 +12,7 @@ import { parsePreferencesCookie } from "@/query/model/preferences"
 import { SettingsPage } from "@/features/conjugation-practice/components/SettingsPage"
 import { PracticePage } from "@/features/conjugation-practice/components/PracticePage"
 import { SummaryPage } from "@/features/conjugation-practice/components/SummaryPage"
+import { queryKeys } from "~/query/query-keys"
 import {
   generateQuestions,
   getJLPTLevels,
@@ -64,7 +65,15 @@ export const Route = createFileRoute("/_home/conjugation")({
   loaderDeps: ({ search }) => ({
     jlptLevel: search.jlptLevel,
   }),
-  loader: ({ context, deps }) => {
+  loader: ({ context, deps, preload }) => {
+    if (!preload) {
+      context.queryClient.setQueryData(queryKeys.backgroundSettings(), {
+        blur: 6,
+        opacityOffset: -0.32,
+        showGradient: false,
+      })
+    }
+
     const prefs = parsePreferencesCookie()
     const jlptLevel = deps.jlptLevel ?? prefs.conjugationPractice.jlptLevel
     const jlptLevels = getJLPTLevels(jlptLevel)
@@ -139,8 +148,31 @@ function ConjugationPage() {
   }
 
   return (
-    <div class="relative mx-auto min-h-screen max-w-3xl! px-4 pt-16 pb-32 text-foreground dark:text-white">
-      <Switch>
+    <div class="relative min-h-screen overflow-hidden text-foreground dark:text-white">
+      <div
+        class="pointer-events-none fixed inset-0 z-0 opacity-[0.035]"
+        style={{
+          "background-image": "url(/img/dust-splatter-1.png)",
+          "background-size": "600px",
+          "background-repeat": "repeat",
+        }}
+      />
+      <div class="pointer-events-none fixed top-0 right-0 z-0 h-[420px] w-[340px] opacity-18 blur-[1px]">
+        <img
+          src="/img/mountain-temple-1.jpg"
+          alt=""
+          class="h-full w-full object-contain object-right-top"
+        />
+      </div>
+      <div class="pointer-events-none fixed bottom-0 left-0 z-0 size-[300px] opacity-18 md:size-[360px]">
+        <img
+          src="/img/cherry-blossom-branch.jpg"
+          alt=""
+          class="h-full w-full -scale-x-100 object-contain object-left-bottom"
+        />
+      </div>
+      <main class="relative z-10 mx-auto min-h-screen max-w-3xl! px-4 pt-16 pb-32">
+        <Switch>
         <Match when={currentPage() === "settings"}>
           <SettingsPage
             settings={currentSettings}
@@ -172,7 +204,8 @@ function ConjugationPage() {
             )}
           </Show>
         </Match>
-      </Switch>
+        </Switch>
+      </main>
     </div>
   )
 }
