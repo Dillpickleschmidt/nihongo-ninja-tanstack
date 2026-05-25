@@ -1404,26 +1404,7 @@ export const questions: Question[] = [
           { text: "が、会社[かいしゃ]で 働[はたら]くつもり", blank: true },
           { text: "です" },
         ],
-        register: "polite",
-        notes: "Joined with が.",
-      },
-      {
-        segments: [
-          { text: "弁護士[べんごし]に なるつもりは" },
-          {
-            text: "ある",
-            blank: true,
-            conjugation: {
-              pos: "Godan verb with 'ru' ending (irregular verb)",
-              form: "normal",
-              polarity: "negative",
-              tense: "non-past",
-            },
-          },
-          { text: "けど、会社[かいしゃ]で 働[はたら]くつもり", blank: true },
-          { text: "です" },
-        ],
-        notes: "Joined with けど.",
+        notes: "Joined with が."
       },
       {
         segments: [

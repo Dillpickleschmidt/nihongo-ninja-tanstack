@@ -68,32 +68,6 @@ export const questions: Question[] = [
               tense: "non-past",
             },
           },
-          { text: "けど、" },
-          { text: "大[おお]きいのは", blank: true },
-          {
-            text: "古[ふる]い",
-            conjugation: {
-              pos: "I-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "Connected with けど instead of two separate sentences",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は かばんが 二[ふた]つ" },
-          {
-            text: "ある",
-            conjugation: {
-              pos: "Godan verb with 'ru' ending (irregular verb)",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
           { text: "が、" },
           { text: "大[おお]きいのは", blank: true },
           {
@@ -106,33 +80,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "Connected with が (conjunction) instead of separate sentences",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は かばんを 二[ふた]つ 持[も]って" },
-          {
-            text: "いる",
-            conjugation: {
-              pos: "Ichidan verb",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-          { text: "けど、" },
-          { text: "大[おお]きいのは", blank: true },
-          {
-            text: "古[ふる]い",
-            conjugation: {
-              pos: "I-adjective",
-              form: "normal",
-              polarity: "positive",
-              tense: "non-past",
-            },
-          },
-        ],
-        notes: "持っている with けど conjunction",
+        notes: "Joined with が."
       },
       {
         segments: [
@@ -158,7 +106,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        notes: "持っている with が conjunction",
+        notes: "持っている + が."
       },
       {
         segments: [

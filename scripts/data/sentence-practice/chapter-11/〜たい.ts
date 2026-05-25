@@ -123,7 +123,7 @@ export const questions: Question[] = [
               "past",
             ),
           },
-          { text: "けど、お金[おかね]が" },
+          { text: "が、お金[おかね]が" },
           {
             text: "ある",
             blank: true,
@@ -149,7 +149,7 @@ export const questions: Question[] = [
               "past",
             ),
           },
-          { text: "けど、お金[おかね]が" },
+          { text: "が、お金[おかね]が" },
           {
             text: "ある",
             blank: true,
@@ -436,50 +436,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Godan verb with 'u' ending", "positive", "past"),
           },
-          { text: "けど、お金[かね]が 全然[ぜんぜん] " },
-          {
-            text: "ある",
-            blank: true,
-            conjugation: {
-              pos: "Godan verb with 'ru' ending (irregular verb)",
-              form: "normal",
-              polarity: "negative",
-              tense: "past",
-            },
-          },
-        ],
-        notes: "Basic time expression. Uses けど/ですけど for but.",
-      },
-      {
-        segments: [
-          { text: "先月[せんげつ]は、新[あたら]しい 自転車[じてんしゃ]を " },
-          {
-            text: "買[か]う",
-            blank: true,
-            conjugation: tai("Godan verb with 'u' ending", "positive", "past"),
-          },
-          { text: "けど、お金[かね]が 全然[ぜんぜん] " },
-          {
-            text: "ある",
-            blank: true,
-            conjugation: {
-              pos: "Godan verb with 'ru' ending (irregular verb)",
-              form: "normal",
-              polarity: "negative",
-              tense: "past",
-            },
-          },
-        ],
-        notes: "Topicalizes last month. Uses けど/ですけど for but.",
-      },
-      {
-        segments: [
-          { text: "先月[せんげつ]、新[あたら]しい 自転車[じてんしゃ]を " },
-          {
-            text: "買[か]う",
-            blank: true,
-            conjugation: tai("Godan verb with 'u' ending", "positive", "past"),
-          },
           { text: "が、お金[かね]が 全然[ぜんぜん] " },
           {
             text: "ある",
@@ -492,8 +448,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        register: "polite",
-        notes: "Polite version with ですが.",
+        notes: "Basic time expression.",
       },
       {
         segments: [
@@ -515,34 +470,7 @@ export const questions: Question[] = [
             },
           },
         ],
-        register: "polite",
-        notes: "Polite ですが with topicalized last month.",
-      },
-      {
-        segments: [
-          { text: "先月[せんげつ]、新[あたら]しい 自転車[じてんしゃ]を " },
-          {
-            text: "買[か]う",
-            blank: true,
-            conjugation: tai("Godan verb with 'u' ending", "positive", "past"),
-          },
-          { text: "が、お金[かね]が 全然[ぜんぜん] なかった" },
-        ],
-        register: "casual",
-        notes: "Plain written connector が.",
-      },
-      {
-        segments: [
-          { text: "先月[せんげつ]は、新[あたら]しい 自転車[じてんしゃ]を " },
-          {
-            text: "買[か]う",
-            blank: true,
-            conjugation: tai("Godan verb with 'u' ending", "positive", "past"),
-          },
-          { text: "が、お金[かね]が 全然[ぜんぜん] なかった" },
-        ],
-        register: "casual",
-        notes: "Plain written connector が with topicalized time.",
+        notes: "Topicalizes last month.",
       },
       {
         segments: [
@@ -1147,550 +1075,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Godan verb with 'ru' ending", "positive", "past"),
           },
-          { text: "けど、髪[かみ]は" },
-          {
-            text: "洗[あら]う",
-            blank: true,
-            conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
-          },
-        ],
-        notes: "Uses お風呂に, 髪は, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "昨日[きのう]の 夜[よる]、お 風呂[ふろ]に" },
-          {
-            text: "入[はい]る",
-            blank: true,
-            conjugation: tai("Godan verb with 'ru' ending", "positive", "past"),
-          },
-          { text: "けど、髪[かみ]を" },
-          {
-            text: "洗[あら]う",
-            blank: true,
-            conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
-          },
-        ],
-        notes: "Uses お風呂に, 髪を, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "昨日[きのう]の 夜[よる]、お 風呂[ふろ]に" },
-          {
-            text: "入[はい]る",
-            blank: true,
-            conjugation: tai("Godan verb with 'ru' ending", "positive", "past"),
-          },
-          { text: "けど、頭[あたま]は" },
-          {
-            text: "洗[あら]う",
-            blank: true,
-            conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
-          },
-        ],
-        notes: "Uses お風呂に, 頭は, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "昨日[きのう]の 夜[よる]、お 風呂[ふろ]に" },
-          {
-            text: "入[はい]る",
-            blank: true,
-            conjugation: tai("Godan verb with 'ru' ending", "positive", "past"),
-          },
-          { text: "けど、頭[あたま]を" },
-          {
-            text: "洗[あら]う",
-            blank: true,
-            conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
-          },
-        ],
-        notes: "Uses お風呂に, 頭を, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "昨日[きのう]の 夜[よる]、お 風呂[ふろ]には" },
-          {
-            text: "入[はい]る",
-            blank: true,
-            conjugation: tai("Godan verb with 'ru' ending", "positive", "past"),
-          },
-          { text: "けど、髪[かみ]は" },
-          {
-            text: "洗[あら]う",
-            blank: true,
-            conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
-          },
-        ],
-        notes: "Uses contrastive お風呂には, 髪は, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "昨日[きのう]の 夜[よる]、お 風呂[ふろ]には" },
-          {
-            text: "入[はい]る",
-            blank: true,
-            conjugation: tai("Godan verb with 'ru' ending", "positive", "past"),
-          },
-          { text: "けど、髪[かみ]を" },
-          {
-            text: "洗[あら]う",
-            blank: true,
-            conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
-          },
-        ],
-        notes: "Uses contrastive お風呂には, 髪を, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "昨日[きのう]の 夜[よる]、お 風呂[ふろ]には" },
-          {
-            text: "入[はい]る",
-            blank: true,
-            conjugation: tai("Godan verb with 'ru' ending", "positive", "past"),
-          },
-          { text: "けど、頭[あたま]は" },
-          {
-            text: "洗[あら]う",
-            blank: true,
-            conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
-          },
-        ],
-        notes: "Uses contrastive お風呂には, 頭は, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "昨日[きのう]の 夜[よる]、お 風呂[ふろ]には" },
-          {
-            text: "入[はい]る",
-            blank: true,
-            conjugation: tai("Godan verb with 'ru' ending", "positive", "past"),
-          },
-          { text: "けど、頭[あたま]を" },
-          {
-            text: "洗[あら]う",
-            blank: true,
-            conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
-          },
-        ],
-        notes: "Uses contrastive お風呂には, 頭を, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "昨日[きのう]の 夜[よる]は、お 風呂[ふろ]に" },
-          {
-            text: "入[はい]る",
-            blank: true,
-            conjugation: tai("Godan verb with 'ru' ending", "positive", "past"),
-          },
-          { text: "けど、髪[かみ]は" },
-          {
-            text: "洗[あら]う",
-            blank: true,
-            conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
-          },
-        ],
-        notes: "Uses お風呂に, 髪は, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "昨日[きのう]の 夜[よる]は、お 風呂[ふろ]に" },
-          {
-            text: "入[はい]る",
-            blank: true,
-            conjugation: tai("Godan verb with 'ru' ending", "positive", "past"),
-          },
-          { text: "けど、髪[かみ]を" },
-          {
-            text: "洗[あら]う",
-            blank: true,
-            conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
-          },
-        ],
-        notes: "Uses お風呂に, 髪を, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "昨日[きのう]の 夜[よる]は、お 風呂[ふろ]に" },
-          {
-            text: "入[はい]る",
-            blank: true,
-            conjugation: tai("Godan verb with 'ru' ending", "positive", "past"),
-          },
-          { text: "けど、頭[あたま]は" },
-          {
-            text: "洗[あら]う",
-            blank: true,
-            conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
-          },
-        ],
-        notes: "Uses お風呂に, 頭は, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "昨日[きのう]の 夜[よる]は、お 風呂[ふろ]に" },
-          {
-            text: "入[はい]る",
-            blank: true,
-            conjugation: tai("Godan verb with 'ru' ending", "positive", "past"),
-          },
-          { text: "けど、頭[あたま]を" },
-          {
-            text: "洗[あら]う",
-            blank: true,
-            conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
-          },
-        ],
-        notes: "Uses お風呂に, 頭を, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "昨日[きのう]の 夜[よる]は、お 風呂[ふろ]には" },
-          {
-            text: "入[はい]る",
-            blank: true,
-            conjugation: tai("Godan verb with 'ru' ending", "positive", "past"),
-          },
-          { text: "けど、髪[かみ]は" },
-          {
-            text: "洗[あら]う",
-            blank: true,
-            conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
-          },
-        ],
-        notes: "Uses contrastive お風呂には, 髪は, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "昨日[きのう]の 夜[よる]は、お 風呂[ふろ]には" },
-          {
-            text: "入[はい]る",
-            blank: true,
-            conjugation: tai("Godan verb with 'ru' ending", "positive", "past"),
-          },
-          { text: "けど、髪[かみ]を" },
-          {
-            text: "洗[あら]う",
-            blank: true,
-            conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
-          },
-        ],
-        notes: "Uses contrastive お風呂には, 髪を, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "昨日[きのう]の 夜[よる]は、お 風呂[ふろ]には" },
-          {
-            text: "入[はい]る",
-            blank: true,
-            conjugation: tai("Godan verb with 'ru' ending", "positive", "past"),
-          },
-          { text: "けど、頭[あたま]は" },
-          {
-            text: "洗[あら]う",
-            blank: true,
-            conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
-          },
-        ],
-        notes: "Uses contrastive お風呂には, 頭は, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "昨日[きのう]の 夜[よる]は、お 風呂[ふろ]には" },
-          {
-            text: "入[はい]る",
-            blank: true,
-            conjugation: tai("Godan verb with 'ru' ending", "positive", "past"),
-          },
-          { text: "けど、頭[あたま]を" },
-          {
-            text: "洗[あら]う",
-            blank: true,
-            conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
-          },
-        ],
-        notes: "Uses contrastive お風呂には, 頭を, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "昨夜[ゆうべ]、お 風呂[ふろ]に" },
-          {
-            text: "入[はい]る",
-            blank: true,
-            conjugation: tai("Godan verb with 'ru' ending", "positive", "past"),
-          },
-          { text: "けど、髪[かみ]は" },
-          {
-            text: "洗[あら]う",
-            blank: true,
-            conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
-          },
-        ],
-        notes: "Uses お風呂に, 髪は, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "昨夜[ゆうべ]、お 風呂[ふろ]に" },
-          {
-            text: "入[はい]る",
-            blank: true,
-            conjugation: tai("Godan verb with 'ru' ending", "positive", "past"),
-          },
-          { text: "けど、髪[かみ]を" },
-          {
-            text: "洗[あら]う",
-            blank: true,
-            conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
-          },
-        ],
-        notes: "Uses お風呂に, 髪を, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "昨夜[ゆうべ]、お 風呂[ふろ]に" },
-          {
-            text: "入[はい]る",
-            blank: true,
-            conjugation: tai("Godan verb with 'ru' ending", "positive", "past"),
-          },
-          { text: "けど、頭[あたま]は" },
-          {
-            text: "洗[あら]う",
-            blank: true,
-            conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
-          },
-        ],
-        notes: "Uses お風呂に, 頭は, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "昨夜[ゆうべ]、お 風呂[ふろ]に" },
-          {
-            text: "入[はい]る",
-            blank: true,
-            conjugation: tai("Godan verb with 'ru' ending", "positive", "past"),
-          },
-          { text: "けど、頭[あたま]を" },
-          {
-            text: "洗[あら]う",
-            blank: true,
-            conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
-          },
-        ],
-        notes: "Uses お風呂に, 頭を, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "昨夜[ゆうべ]、お 風呂[ふろ]には" },
-          {
-            text: "入[はい]る",
-            blank: true,
-            conjugation: tai("Godan verb with 'ru' ending", "positive", "past"),
-          },
-          { text: "けど、髪[かみ]は" },
-          {
-            text: "洗[あら]う",
-            blank: true,
-            conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
-          },
-        ],
-        notes: "Uses contrastive お風呂には, 髪は, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "昨夜[ゆうべ]、お 風呂[ふろ]には" },
-          {
-            text: "入[はい]る",
-            blank: true,
-            conjugation: tai("Godan verb with 'ru' ending", "positive", "past"),
-          },
-          { text: "けど、髪[かみ]を" },
-          {
-            text: "洗[あら]う",
-            blank: true,
-            conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
-          },
-        ],
-        notes: "Uses contrastive お風呂には, 髪を, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "昨夜[ゆうべ]、お 風呂[ふろ]には" },
-          {
-            text: "入[はい]る",
-            blank: true,
-            conjugation: tai("Godan verb with 'ru' ending", "positive", "past"),
-          },
-          { text: "けど、頭[あたま]は" },
-          {
-            text: "洗[あら]う",
-            blank: true,
-            conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
-          },
-        ],
-        notes: "Uses contrastive お風呂には, 頭は, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "昨夜[ゆうべ]、お 風呂[ふろ]には" },
-          {
-            text: "入[はい]る",
-            blank: true,
-            conjugation: tai("Godan verb with 'ru' ending", "positive", "past"),
-          },
-          { text: "けど、頭[あたま]を" },
-          {
-            text: "洗[あら]う",
-            blank: true,
-            conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
-          },
-        ],
-        notes: "Uses contrastive お風呂には, 頭を, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "昨夜[ゆうべ]は、お 風呂[ふろ]に" },
-          {
-            text: "入[はい]る",
-            blank: true,
-            conjugation: tai("Godan verb with 'ru' ending", "positive", "past"),
-          },
-          { text: "けど、髪[かみ]は" },
-          {
-            text: "洗[あら]う",
-            blank: true,
-            conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
-          },
-        ],
-        notes: "Uses お風呂に, 髪は, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "昨夜[ゆうべ]は、お 風呂[ふろ]に" },
-          {
-            text: "入[はい]る",
-            blank: true,
-            conjugation: tai("Godan verb with 'ru' ending", "positive", "past"),
-          },
-          { text: "けど、髪[かみ]を" },
-          {
-            text: "洗[あら]う",
-            blank: true,
-            conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
-          },
-        ],
-        notes: "Uses お風呂に, 髪を, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "昨夜[ゆうべ]は、お 風呂[ふろ]に" },
-          {
-            text: "入[はい]る",
-            blank: true,
-            conjugation: tai("Godan verb with 'ru' ending", "positive", "past"),
-          },
-          { text: "けど、頭[あたま]は" },
-          {
-            text: "洗[あら]う",
-            blank: true,
-            conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
-          },
-        ],
-        notes: "Uses お風呂に, 頭は, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "昨夜[ゆうべ]は、お 風呂[ふろ]に" },
-          {
-            text: "入[はい]る",
-            blank: true,
-            conjugation: tai("Godan verb with 'ru' ending", "positive", "past"),
-          },
-          { text: "けど、頭[あたま]を" },
-          {
-            text: "洗[あら]う",
-            blank: true,
-            conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
-          },
-        ],
-        notes: "Uses お風呂に, 頭を, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "昨夜[ゆうべ]は、お 風呂[ふろ]には" },
-          {
-            text: "入[はい]る",
-            blank: true,
-            conjugation: tai("Godan verb with 'ru' ending", "positive", "past"),
-          },
-          { text: "けど、髪[かみ]は" },
-          {
-            text: "洗[あら]う",
-            blank: true,
-            conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
-          },
-        ],
-        notes: "Uses contrastive お風呂には, 髪は, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "昨夜[ゆうべ]は、お 風呂[ふろ]には" },
-          {
-            text: "入[はい]る",
-            blank: true,
-            conjugation: tai("Godan verb with 'ru' ending", "positive", "past"),
-          },
-          { text: "けど、髪[かみ]を" },
-          {
-            text: "洗[あら]う",
-            blank: true,
-            conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
-          },
-        ],
-        notes: "Uses contrastive お風呂には, 髪を, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "昨夜[ゆうべ]は、お 風呂[ふろ]には" },
-          {
-            text: "入[はい]る",
-            blank: true,
-            conjugation: tai("Godan verb with 'ru' ending", "positive", "past"),
-          },
-          { text: "けど、頭[あたま]は" },
-          {
-            text: "洗[あら]う",
-            blank: true,
-            conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
-          },
-        ],
-        notes: "Uses contrastive お風呂には, 頭は, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "昨夜[ゆうべ]は、お 風呂[ふろ]には" },
-          {
-            text: "入[はい]る",
-            blank: true,
-            conjugation: tai("Godan verb with 'ru' ending", "positive", "past"),
-          },
-          { text: "けど、頭[あたま]を" },
-          {
-            text: "洗[あら]う",
-            blank: true,
-            conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
-          },
-        ],
-        notes: "Uses contrastive お風呂には, 頭を, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "昨日[きのう]の 夜[よる]、お 風呂[ふろ]に" },
-          {
-            text: "入[はい]る",
-            blank: true,
-            conjugation: tai("Godan verb with 'ru' ending", "positive", "past"),
-          },
           { text: "が、髪[かみ]は" },
           {
             text: "洗[あら]う",
@@ -1698,7 +1082,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with お風呂に and 髪は.",
       },
       {
@@ -1716,7 +1099,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with お風呂に and 髪を.",
       },
       {
@@ -1734,7 +1116,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with お風呂に and 頭は.",
       },
       {
@@ -1752,7 +1133,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with お風呂に and 頭を.",
       },
       {
@@ -1770,7 +1150,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with contrastive お風呂には and 髪は.",
       },
       {
@@ -1788,7 +1167,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with contrastive お風呂には and 髪を.",
       },
       {
@@ -1806,7 +1184,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with contrastive お風呂には and 頭は.",
       },
       {
@@ -1824,7 +1201,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with contrastive お風呂には and 頭を.",
       },
       {
@@ -1842,7 +1218,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with お風呂に and 髪は.",
       },
       {
@@ -1860,7 +1235,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with お風呂に and 髪を.",
       },
       {
@@ -1878,7 +1252,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with お風呂に and 頭は.",
       },
       {
@@ -1896,7 +1269,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with お風呂に and 頭を.",
       },
       {
@@ -1914,7 +1286,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with contrastive お風呂には and 髪は.",
       },
       {
@@ -1932,7 +1303,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with contrastive お風呂には and 髪を.",
       },
       {
@@ -1950,7 +1320,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with contrastive お風呂には and 頭は.",
       },
       {
@@ -1968,7 +1337,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with contrastive お風呂には and 頭を.",
       },
       {
@@ -1986,7 +1354,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with お風呂に and 髪は.",
       },
       {
@@ -2004,7 +1371,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with お風呂に and 髪を.",
       },
       {
@@ -2022,7 +1388,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with お風呂に and 頭は.",
       },
       {
@@ -2040,7 +1405,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with お風呂に and 頭を.",
       },
       {
@@ -2058,7 +1422,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with contrastive お風呂には and 髪は.",
       },
       {
@@ -2076,7 +1439,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with contrastive お風呂には and 髪を.",
       },
       {
@@ -2094,7 +1456,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with contrastive お風呂には and 頭は.",
       },
       {
@@ -2112,7 +1473,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with contrastive お風呂には and 頭を.",
       },
       {
@@ -2130,7 +1490,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with お風呂に and 髪は.",
       },
       {
@@ -2148,7 +1507,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with お風呂に and 髪を.",
       },
       {
@@ -2166,7 +1524,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with お風呂に and 頭は.",
       },
       {
@@ -2184,7 +1541,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with お風呂に and 頭を.",
       },
       {
@@ -2202,7 +1558,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with contrastive お風呂には and 髪は.",
       },
       {
@@ -2220,7 +1575,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with contrastive お風呂には and 髪を.",
       },
       {
@@ -2238,7 +1592,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with contrastive お風呂には and 頭は.",
       },
       {
@@ -2256,7 +1609,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'u' ending", "negative", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with contrastive お風呂には and 頭を.",
       },
       {
@@ -3074,278 +2426,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Ichidan verb", "negative", "past"),
           },
-          { text: "けど、兄[あに]と 一緒[いっしょ]に 朝[あさ]ご 飯[はん]を " },
-          {
-            text: "食[た]べる",
-            blank: true,
-            conjugation: tai("Ichidan verb", "positive", "past"),
-          },
-        ],
-        notes: "Uses 今朝は, 六時に, 兄と一緒に朝ご飯を, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "今朝[けさ]は、六時[ろくじ]に " },
-          {
-            text: "起[お]きる",
-            blank: true,
-            conjugation: tai("Ichidan verb", "negative", "past"),
-          },
-          { text: "けど、兄[あに]と 一緒[いっしょ]に 朝[あさ]ご 飯[はん]が " },
-          {
-            text: "食[た]べる",
-            blank: true,
-            conjugation: tai("Ichidan verb", "positive", "past"),
-          },
-        ],
-        notes: "Uses 今朝は, 六時に, 兄と一緒に朝ご飯が, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "今朝[けさ]は、六時[ろくじ]に " },
-          {
-            text: "起[お]きる",
-            blank: true,
-            conjugation: tai("Ichidan verb", "negative", "past"),
-          },
-          { text: "けど、兄[あに]と 朝[あさ]ご 飯[はん]を " },
-          {
-            text: "食[た]べる",
-            blank: true,
-            conjugation: tai("Ichidan verb", "positive", "past"),
-          },
-        ],
-        notes: "Uses 今朝は, 六時に, 兄と朝ご飯を, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "今朝[けさ]は、六時[ろくじ]に " },
-          {
-            text: "起[お]きる",
-            blank: true,
-            conjugation: tai("Ichidan verb", "negative", "past"),
-          },
-          { text: "けど、兄[あに]と 朝[あさ]ご 飯[はん]が " },
-          {
-            text: "食[た]べる",
-            blank: true,
-            conjugation: tai("Ichidan verb", "positive", "past"),
-          },
-        ],
-        notes: "Uses 今朝は, 六時に, 兄と朝ご飯が, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "今朝[けさ]は、六時[ろくじ]には " },
-          {
-            text: "起[お]きる",
-            blank: true,
-            conjugation: tai("Ichidan verb", "negative", "past"),
-          },
-          { text: "けど、兄[あに]と 一緒[いっしょ]に 朝[あさ]ご 飯[はん]を " },
-          {
-            text: "食[た]べる",
-            blank: true,
-            conjugation: tai("Ichidan verb", "positive", "past"),
-          },
-        ],
-        notes: "Uses 今朝は, 六時には, 兄と一緒に朝ご飯を, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "今朝[けさ]は、六時[ろくじ]には " },
-          {
-            text: "起[お]きる",
-            blank: true,
-            conjugation: tai("Ichidan verb", "negative", "past"),
-          },
-          { text: "けど、兄[あに]と 一緒[いっしょ]に 朝[あさ]ご 飯[はん]が " },
-          {
-            text: "食[た]べる",
-            blank: true,
-            conjugation: tai("Ichidan verb", "positive", "past"),
-          },
-        ],
-        notes: "Uses 今朝は, 六時には, 兄と一緒に朝ご飯が, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "今朝[けさ]は、六時[ろくじ]には " },
-          {
-            text: "起[お]きる",
-            blank: true,
-            conjugation: tai("Ichidan verb", "negative", "past"),
-          },
-          { text: "けど、兄[あに]と 朝[あさ]ご 飯[はん]を " },
-          {
-            text: "食[た]べる",
-            blank: true,
-            conjugation: tai("Ichidan verb", "positive", "past"),
-          },
-        ],
-        notes: "Uses 今朝は, 六時には, 兄と朝ご飯を, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "今朝[けさ]は、六時[ろくじ]には " },
-          {
-            text: "起[お]きる",
-            blank: true,
-            conjugation: tai("Ichidan verb", "negative", "past"),
-          },
-          { text: "けど、兄[あに]と 朝[あさ]ご 飯[はん]が " },
-          {
-            text: "食[た]べる",
-            blank: true,
-            conjugation: tai("Ichidan verb", "positive", "past"),
-          },
-        ],
-        notes: "Uses 今朝は, 六時には, 兄と朝ご飯が, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "今朝[けさ]、六時[ろくじ]に " },
-          {
-            text: "起[お]きる",
-            blank: true,
-            conjugation: tai("Ichidan verb", "negative", "past"),
-          },
-          { text: "けど、兄[あに]と 一緒[いっしょ]に 朝[あさ]ご 飯[はん]を " },
-          {
-            text: "食[た]べる",
-            blank: true,
-            conjugation: tai("Ichidan verb", "positive", "past"),
-          },
-        ],
-        notes: "Uses 今朝, 六時に, 兄と一緒に朝ご飯を, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "今朝[けさ]、六時[ろくじ]に " },
-          {
-            text: "起[お]きる",
-            blank: true,
-            conjugation: tai("Ichidan verb", "negative", "past"),
-          },
-          { text: "けど、兄[あに]と 一緒[いっしょ]に 朝[あさ]ご 飯[はん]が " },
-          {
-            text: "食[た]べる",
-            blank: true,
-            conjugation: tai("Ichidan verb", "positive", "past"),
-          },
-        ],
-        notes: "Uses 今朝, 六時に, 兄と一緒に朝ご飯が, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "今朝[けさ]、六時[ろくじ]に " },
-          {
-            text: "起[お]きる",
-            blank: true,
-            conjugation: tai("Ichidan verb", "negative", "past"),
-          },
-          { text: "けど、兄[あに]と 朝[あさ]ご 飯[はん]を " },
-          {
-            text: "食[た]べる",
-            blank: true,
-            conjugation: tai("Ichidan verb", "positive", "past"),
-          },
-        ],
-        notes: "Uses 今朝, 六時に, 兄と朝ご飯を, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "今朝[けさ]、六時[ろくじ]に " },
-          {
-            text: "起[お]きる",
-            blank: true,
-            conjugation: tai("Ichidan verb", "negative", "past"),
-          },
-          { text: "けど、兄[あに]と 朝[あさ]ご 飯[はん]が " },
-          {
-            text: "食[た]べる",
-            blank: true,
-            conjugation: tai("Ichidan verb", "positive", "past"),
-          },
-        ],
-        notes: "Uses 今朝, 六時に, 兄と朝ご飯が, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "今朝[けさ]、六時[ろくじ]には " },
-          {
-            text: "起[お]きる",
-            blank: true,
-            conjugation: tai("Ichidan verb", "negative", "past"),
-          },
-          { text: "けど、兄[あに]と 一緒[いっしょ]に 朝[あさ]ご 飯[はん]を " },
-          {
-            text: "食[た]べる",
-            blank: true,
-            conjugation: tai("Ichidan verb", "positive", "past"),
-          },
-        ],
-        notes: "Uses 今朝, 六時には, 兄と一緒に朝ご飯を, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "今朝[けさ]、六時[ろくじ]には " },
-          {
-            text: "起[お]きる",
-            blank: true,
-            conjugation: tai("Ichidan verb", "negative", "past"),
-          },
-          { text: "けど、兄[あに]と 一緒[いっしょ]に 朝[あさ]ご 飯[はん]が " },
-          {
-            text: "食[た]べる",
-            blank: true,
-            conjugation: tai("Ichidan verb", "positive", "past"),
-          },
-        ],
-        notes: "Uses 今朝, 六時には, 兄と一緒に朝ご飯が, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "今朝[けさ]、六時[ろくじ]には " },
-          {
-            text: "起[お]きる",
-            blank: true,
-            conjugation: tai("Ichidan verb", "negative", "past"),
-          },
-          { text: "けど、兄[あに]と 朝[あさ]ご 飯[はん]を " },
-          {
-            text: "食[た]べる",
-            blank: true,
-            conjugation: tai("Ichidan verb", "positive", "past"),
-          },
-        ],
-        notes: "Uses 今朝, 六時には, 兄と朝ご飯を, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "今朝[けさ]、六時[ろくじ]には " },
-          {
-            text: "起[お]きる",
-            blank: true,
-            conjugation: tai("Ichidan verb", "negative", "past"),
-          },
-          { text: "けど、兄[あに]と 朝[あさ]ご 飯[はん]が " },
-          {
-            text: "食[た]べる",
-            blank: true,
-            conjugation: tai("Ichidan verb", "positive", "past"),
-          },
-        ],
-        notes: "Uses 今朝, 六時には, 兄と朝ご飯が, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "今朝[けさ]は、六時[ろくじ]に " },
-          {
-            text: "起[お]きる",
-            blank: true,
-            conjugation: tai("Ichidan verb", "negative", "past"),
-          },
           { text: "が、兄[あに]と 一緒[いっしょ]に 朝[あさ]ご 飯[はん]を " },
           {
             text: "食[た]べる",
@@ -3353,7 +2433,6 @@ export const questions: Question[] = [
             conjugation: tai("Ichidan verb", "positive", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with 今朝は, 六時に, and 兄と一緒に朝ご飯を.",
       },
       {
@@ -3371,7 +2450,6 @@ export const questions: Question[] = [
             conjugation: tai("Ichidan verb", "positive", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with 今朝は, 六時に, and 兄と一緒に朝ご飯が.",
       },
       {
@@ -3389,7 +2467,6 @@ export const questions: Question[] = [
             conjugation: tai("Ichidan verb", "positive", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with 今朝は, 六時に, and 兄と朝ご飯を.",
       },
       {
@@ -3407,7 +2484,6 @@ export const questions: Question[] = [
             conjugation: tai("Ichidan verb", "positive", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with 今朝は, 六時に, and 兄と朝ご飯が.",
       },
       {
@@ -3425,7 +2501,6 @@ export const questions: Question[] = [
             conjugation: tai("Ichidan verb", "positive", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with 今朝は, 六時には, and 兄と一緒に朝ご飯を.",
       },
       {
@@ -3443,7 +2518,6 @@ export const questions: Question[] = [
             conjugation: tai("Ichidan verb", "positive", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with 今朝は, 六時には, and 兄と一緒に朝ご飯が.",
       },
       {
@@ -3461,7 +2535,6 @@ export const questions: Question[] = [
             conjugation: tai("Ichidan verb", "positive", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with 今朝は, 六時には, and 兄と朝ご飯を.",
       },
       {
@@ -3479,7 +2552,6 @@ export const questions: Question[] = [
             conjugation: tai("Ichidan verb", "positive", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with 今朝は, 六時には, and 兄と朝ご飯が.",
       },
       {
@@ -3497,7 +2569,6 @@ export const questions: Question[] = [
             conjugation: tai("Ichidan verb", "positive", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with 今朝, 六時に, and 兄と一緒に朝ご飯を.",
       },
       {
@@ -3515,7 +2586,6 @@ export const questions: Question[] = [
             conjugation: tai("Ichidan verb", "positive", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with 今朝, 六時に, and 兄と一緒に朝ご飯が.",
       },
       {
@@ -3533,7 +2603,6 @@ export const questions: Question[] = [
             conjugation: tai("Ichidan verb", "positive", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with 今朝, 六時に, and 兄と朝ご飯を.",
       },
       {
@@ -3551,7 +2620,6 @@ export const questions: Question[] = [
             conjugation: tai("Ichidan verb", "positive", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with 今朝, 六時に, and 兄と朝ご飯が.",
       },
       {
@@ -3569,7 +2637,6 @@ export const questions: Question[] = [
             conjugation: tai("Ichidan verb", "positive", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with 今朝, 六時には, and 兄と一緒に朝ご飯を.",
       },
       {
@@ -3587,7 +2654,6 @@ export const questions: Question[] = [
             conjugation: tai("Ichidan verb", "positive", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with 今朝, 六時には, and 兄と一緒に朝ご飯が.",
       },
       {
@@ -3605,7 +2671,6 @@ export const questions: Question[] = [
             conjugation: tai("Ichidan verb", "positive", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with 今朝, 六時には, and 兄と朝ご飯を.",
       },
       {
@@ -3623,7 +2688,6 @@ export const questions: Question[] = [
             conjugation: tai("Ichidan verb", "positive", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with 今朝, 六時には, and 兄と朝ご飯が.",
       }
     ],
@@ -3641,74 +2705,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Godan verb with 'ru' ending"),
           },
-          { text: "けど、冬[ふゆ]には" },
-          {
-            text: "行[い]く",
-            blank: true,
-            conjugation: tai("Godan verb - Iku/Yuku special class", "negative"),
-          },
-        ],
-        notes: "Uses 一生に一度は and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "人生[じんせい]で 一度[いちど]は 富士山[ふじさん]に" },
-          {
-            text: "登[のぼ]る",
-            blank: true,
-            conjugation: tai("Godan verb with 'ru' ending"),
-          },
-          { text: "けど、冬[ふゆ]には" },
-          {
-            text: "行[い]く",
-            blank: true,
-            conjugation: tai("Godan verb - Iku/Yuku special class", "negative"),
-          },
-        ],
-        notes: "Uses 人生で一度は and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "一度[いちど]は 富士山[ふじさん]に" },
-          {
-            text: "登[のぼ]る",
-            blank: true,
-            conjugation: tai("Godan verb with 'ru' ending"),
-          },
-          { text: "けど、冬[ふゆ]には" },
-          {
-            text: "行[い]く",
-            blank: true,
-            conjugation: tai("Godan verb - Iku/Yuku special class", "negative"),
-          },
-        ],
-        notes: "Uses 一度は and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "富士山[ふじさん]に 一度[いちど]は " },
-          {
-            text: "登[のぼ]る",
-            blank: true,
-            conjugation: tai("Godan verb with 'ru' ending"),
-          },
-          { text: "けど、冬[ふゆ]には" },
-          {
-            text: "行[い]く",
-            blank: true,
-            conjugation: tai("Godan verb - Iku/Yuku special class", "negative"),
-          },
-        ],
-        notes: "Uses 富士山に一度は and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "一生[いっしょう]に 一度[いちど]は 富士山[ふじさん]に" },
-          {
-            text: "登[のぼ]る",
-            blank: true,
-            conjugation: tai("Godan verb with 'ru' ending"),
-          },
           { text: "が、冬[ふゆ]には" },
           {
             text: "行[い]く",
@@ -3716,7 +2712,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb - Iku/Yuku special class", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with 一生に一度は.",
       },
       {
@@ -3734,7 +2729,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb - Iku/Yuku special class", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with 人生で一度は.",
       },
       {
@@ -3752,7 +2746,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb - Iku/Yuku special class", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with 一度は.",
       },
       {
@@ -3770,7 +2763,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb - Iku/Yuku special class", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with 富士山に一度は.",
       }
     ],
@@ -3786,74 +2778,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Godan verb with 'u' ending", "positive", "past"),
           },
-          { text: "けど、毎日[まいにち]は " },
-          {
-            text: "練習[れんしゅう]する",
-            blank: true,
-            conjugation: tai("Suru verb - compound word", "negative", "past"),
-          },
-        ],
-        notes: "Uses 毎日は and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "ギターを " },
-          {
-            text: "習[なら]う",
-            blank: true,
-            conjugation: tai("Godan verb with 'u' ending", "positive", "past"),
-          },
-          { text: "けど、毎日[まいにち] " },
-          {
-            text: "練習[れんしゅう]する",
-            blank: true,
-            conjugation: tai("Suru verb - compound word", "negative", "past"),
-          },
-        ],
-        notes: "Uses 毎日 and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "ギターを " },
-          {
-            text: "習[なら]う",
-            blank: true,
-            conjugation: tai("Godan verb with 'u' ending", "positive", "past"),
-          },
-          { text: "けど、毎日[まいにち] ギターを " },
-          {
-            text: "練習[れんしゅう]する",
-            blank: true,
-            conjugation: tai("Suru verb - compound word", "negative", "past"),
-          },
-        ],
-        notes: "Uses 毎日ギターを and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "ギターを " },
-          {
-            text: "習[なら]う",
-            blank: true,
-            conjugation: tai("Godan verb with 'u' ending", "positive", "past"),
-          },
-          { text: "けど、ギターを 毎日[まいにち] " },
-          {
-            text: "練習[れんしゅう]する",
-            blank: true,
-            conjugation: tai("Suru verb - compound word", "negative", "past"),
-          },
-        ],
-        notes: "Uses ギターを毎日 and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "ギターを " },
-          {
-            text: "習[なら]う",
-            blank: true,
-            conjugation: tai("Godan verb with 'u' ending", "positive", "past"),
-          },
           { text: "が、毎日[まいにち]は " },
           {
             text: "練習[れんしゅう]する",
@@ -3861,7 +2785,6 @@ export const questions: Question[] = [
             conjugation: tai("Suru verb - compound word", "negative", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with 毎日は.",
       },
       {
@@ -3879,7 +2802,6 @@ export const questions: Question[] = [
             conjugation: tai("Suru verb - compound word", "negative", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with 毎日.",
       },
       {
@@ -3897,7 +2819,6 @@ export const questions: Question[] = [
             conjugation: tai("Suru verb - compound word", "negative", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with 毎日ギターを.",
       },
       {
@@ -3915,7 +2836,6 @@ export const questions: Question[] = [
             conjugation: tai("Suru verb - compound word", "negative", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with ギターを毎日.",
       }
     ],
@@ -3932,108 +2852,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Godan verb with 'su' ending", "positive", "past"),
           },
-          { text: "けど、みんなに" },
-          {
-            text: "自己紹介[じこしょうかい]する",
-            blank: true,
-            conjugation: tai("Suru verb - compound word", "negative", "past"),
-          },
-        ],
-        notes: "Uses implicit subject, パーティーで, 有名な歌手と, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "パーティーで、有名[ゆうめい]な 歌手[かしゅ]とは" },
-          {
-            text: "話[はな]す",
-            blank: true,
-            conjugation: tai("Godan verb with 'su' ending", "positive", "past"),
-          },
-          { text: "けど、みんなに" },
-          {
-            text: "自己紹介[じこしょうかい]する",
-            blank: true,
-            conjugation: tai("Suru verb - compound word", "negative", "past"),
-          },
-        ],
-        notes: "Uses implicit subject, パーティーで, 有名な歌手とは, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "パーティーで、私[わたし]は 有名[ゆうめい]な 歌手[かしゅ]と" },
-          {
-            text: "話[はな]す",
-            blank: true,
-            conjugation: tai("Godan verb with 'su' ending", "positive", "past"),
-          },
-          { text: "けど、みんなに" },
-          {
-            text: "自己紹介[じこしょうかい]する",
-            blank: true,
-            conjugation: tai("Suru verb - compound word", "negative", "past"),
-          },
-        ],
-        notes: "Uses explicit 私は, パーティーで, 有名な歌手と, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "パーティーで、私[わたし]は 有名[ゆうめい]な 歌手[かしゅ]とは" },
-          {
-            text: "話[はな]す",
-            blank: true,
-            conjugation: tai("Godan verb with 'su' ending", "positive", "past"),
-          },
-          { text: "けど、みんなに" },
-          {
-            text: "自己紹介[じこしょうかい]する",
-            blank: true,
-            conjugation: tai("Suru verb - compound word", "negative", "past"),
-          },
-        ],
-        notes: "Uses explicit 私は, パーティーで, 有名な歌手とは, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "パーティーでは、有名[ゆうめい]な 歌手[かしゅ]と" },
-          {
-            text: "話[はな]す",
-            blank: true,
-            conjugation: tai("Godan verb with 'su' ending", "positive", "past"),
-          },
-          { text: "けど、みんなに" },
-          {
-            text: "自己紹介[じこしょうかい]する",
-            blank: true,
-            conjugation: tai("Suru verb - compound word", "negative", "past"),
-          },
-        ],
-        notes: "Uses implicit subject, パーティーでは, 有名な歌手と, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "パーティーでは、有名[ゆうめい]な 歌手[かしゅ]とは" },
-          {
-            text: "話[はな]す",
-            blank: true,
-            conjugation: tai("Godan verb with 'su' ending", "positive", "past"),
-          },
-          { text: "けど、みんなに" },
-          {
-            text: "自己紹介[じこしょうかい]する",
-            blank: true,
-            conjugation: tai("Suru verb - compound word", "negative", "past"),
-          },
-        ],
-        notes: "Uses implicit subject, パーティーでは, 有名な歌手とは, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "パーティーで、有名[ゆうめい]な 歌手[かしゅ]と" },
-          {
-            text: "話[はな]す",
-            blank: true,
-            conjugation: tai("Godan verb with 'su' ending", "positive", "past"),
-          },
           { text: "が、みんなに" },
           {
             text: "自己紹介[じこしょうかい]する",
@@ -4041,7 +2859,6 @@ export const questions: Question[] = [
             conjugation: tai("Suru verb - compound word", "negative", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with implicit subject, パーティーで, and 有名な歌手と.",
       },
       {
@@ -4059,7 +2876,6 @@ export const questions: Question[] = [
             conjugation: tai("Suru verb - compound word", "negative", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with implicit subject, パーティーで, and 有名な歌手とは.",
       },
       {
@@ -4077,7 +2893,6 @@ export const questions: Question[] = [
             conjugation: tai("Suru verb - compound word", "negative", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with explicit 私は, パーティーで, and 有名な歌手と.",
       },
       {
@@ -4095,7 +2910,6 @@ export const questions: Question[] = [
             conjugation: tai("Suru verb - compound word", "negative", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with explicit 私は, パーティーで, and 有名な歌手とは.",
       },
       {
@@ -4113,7 +2927,6 @@ export const questions: Question[] = [
             conjugation: tai("Suru verb - compound word", "negative", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with implicit subject, パーティーでは, and 有名な歌手と.",
       },
       {
@@ -4131,7 +2944,6 @@ export const questions: Question[] = [
             conjugation: tai("Suru verb - compound word", "negative", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with implicit subject, パーティーでは, and 有名な歌手とは.",
       }
     ],
@@ -4148,23 +2960,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
           },
-          { text: "けど、今[いま]は " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "negative"),
-          },
-        ],
-        notes: "Uses implicit subject, 高校生の時は, 今は, implicit dorm in second clause, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "高校生[こうこうせい]の 時[とき]は、寮[りょう]に " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
-          },
           { text: "が、今[いま]は " },
           {
             text: "住[す]む",
@@ -4172,7 +2967,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'mu' ending", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with implicit subject, 高校生の時は, 今は, and implicit dorm in second clause.",
       },
       {
@@ -4183,23 +2977,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
           },
-          { text: "けど、今[いま]は 寮[りょう]に " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "negative"),
-          },
-        ],
-        notes: "Uses implicit subject, 高校生の時は, 今は, repeats 寮に in second clause, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "高校生[こうこうせい]の 時[とき]は、寮[りょう]に " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
-          },
           { text: "が、今[いま]は 寮[りょう]に " },
           {
             text: "住[す]む",
@@ -4207,7 +2984,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'mu' ending", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with implicit subject, 高校生の時は, 今は, and repeats 寮に in second clause.",
       },
       {
@@ -4218,23 +2994,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
           },
-          { text: "けど、今[いま]は もう " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "negative"),
-          },
-        ],
-        notes: "Uses implicit subject, 高校生の時は, 今はもう, implicit dorm in second clause, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "高校生[こうこうせい]の 時[とき]は、寮[りょう]に " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
-          },
           { text: "が、今[いま]は もう " },
           {
             text: "住[す]む",
@@ -4242,7 +3001,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'mu' ending", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with implicit subject, 高校生の時は, 今はもう, and implicit dorm in second clause.",
       },
       {
@@ -4253,23 +3011,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
           },
-          { text: "けど、今[いま]は もう 寮[りょう]に " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "negative"),
-          },
-        ],
-        notes: "Uses implicit subject, 高校生の時は, 今はもう, repeats 寮に in second clause, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "高校生[こうこうせい]の 時[とき]は、寮[りょう]に " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
-          },
           { text: "が、今[いま]は もう 寮[りょう]に " },
           {
             text: "住[す]む",
@@ -4277,7 +3018,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'mu' ending", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with implicit subject, 高校生の時は, 今はもう, and repeats 寮に in second clause.",
       },
       {
@@ -4288,23 +3028,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
           },
-          { text: "けど、今[いま]は " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "negative"),
-          },
-        ],
-        notes: "Uses implicit subject, 高校生の時, 今は, implicit dorm in second clause, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "高校生[こうこうせい]の 時[とき]、寮[りょう]に " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
-          },
           { text: "が、今[いま]は " },
           {
             text: "住[す]む",
@@ -4312,7 +3035,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'mu' ending", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with implicit subject, 高校生の時, 今は, and implicit dorm in second clause.",
       },
       {
@@ -4323,23 +3045,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
           },
-          { text: "けど、今[いま]は 寮[りょう]に " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "negative"),
-          },
-        ],
-        notes: "Uses implicit subject, 高校生の時, 今は, repeats 寮に in second clause, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "高校生[こうこうせい]の 時[とき]、寮[りょう]に " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
-          },
           { text: "が、今[いま]は 寮[りょう]に " },
           {
             text: "住[す]む",
@@ -4347,7 +3052,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'mu' ending", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with implicit subject, 高校生の時, 今は, and repeats 寮に in second clause.",
       },
       {
@@ -4358,23 +3062,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
           },
-          { text: "けど、今[いま]は もう " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "negative"),
-          },
-        ],
-        notes: "Uses implicit subject, 高校生の時, 今はもう, implicit dorm in second clause, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "高校生[こうこうせい]の 時[とき]、寮[りょう]に " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
-          },
           { text: "が、今[いま]は もう " },
           {
             text: "住[す]む",
@@ -4382,7 +3069,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'mu' ending", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with implicit subject, 高校生の時, 今はもう, and implicit dorm in second clause.",
       },
       {
@@ -4393,23 +3079,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
           },
-          { text: "けど、今[いま]は もう 寮[りょう]に " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "negative"),
-          },
-        ],
-        notes: "Uses implicit subject, 高校生の時, 今はもう, repeats 寮に in second clause, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "高校生[こうこうせい]の 時[とき]、寮[りょう]に " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
-          },
           { text: "が、今[いま]は もう 寮[りょう]に " },
           {
             text: "住[す]む",
@@ -4417,7 +3086,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'mu' ending", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with implicit subject, 高校生の時, 今はもう, and repeats 寮に in second clause.",
       },
       {
@@ -4428,23 +3096,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
           },
-          { text: "けど、今[いま]は " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "negative"),
-          },
-        ],
-        notes: "Uses implicit subject, 高校の時は, 今は, implicit dorm in second clause, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "高校[こうこう]の 時[とき]は、寮[りょう]に " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
-          },
           { text: "が、今[いま]は " },
           {
             text: "住[す]む",
@@ -4452,7 +3103,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'mu' ending", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with implicit subject, 高校の時は, 今は, and implicit dorm in second clause.",
       },
       {
@@ -4463,23 +3113,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
           },
-          { text: "けど、今[いま]は 寮[りょう]に " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "negative"),
-          },
-        ],
-        notes: "Uses implicit subject, 高校の時は, 今は, repeats 寮に in second clause, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "高校[こうこう]の 時[とき]は、寮[りょう]に " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
-          },
           { text: "が、今[いま]は 寮[りょう]に " },
           {
             text: "住[す]む",
@@ -4487,7 +3120,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'mu' ending", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with implicit subject, 高校の時は, 今は, and repeats 寮に in second clause.",
       },
       {
@@ -4498,23 +3130,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
           },
-          { text: "けど、今[いま]は もう " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "negative"),
-          },
-        ],
-        notes: "Uses implicit subject, 高校の時は, 今はもう, implicit dorm in second clause, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "高校[こうこう]の 時[とき]は、寮[りょう]に " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
-          },
           { text: "が、今[いま]は もう " },
           {
             text: "住[す]む",
@@ -4522,7 +3137,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'mu' ending", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with implicit subject, 高校の時は, 今はもう, and implicit dorm in second clause.",
       },
       {
@@ -4533,23 +3147,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
           },
-          { text: "けど、今[いま]は もう 寮[りょう]に " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "negative"),
-          },
-        ],
-        notes: "Uses implicit subject, 高校の時は, 今はもう, repeats 寮に in second clause, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "高校[こうこう]の 時[とき]は、寮[りょう]に " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
-          },
           { text: "が、今[いま]は もう 寮[りょう]に " },
           {
             text: "住[す]む",
@@ -4557,7 +3154,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'mu' ending", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with implicit subject, 高校の時は, 今はもう, and repeats 寮に in second clause.",
       },
       {
@@ -4568,23 +3164,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
           },
-          { text: "けど、今[いま]は " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "negative"),
-          },
-        ],
-        notes: "Uses implicit subject, 高校生だった時は, 今は, implicit dorm in second clause, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "高校生[こうこうせい]だった 時[とき]は、寮[りょう]に " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
-          },
           { text: "が、今[いま]は " },
           {
             text: "住[す]む",
@@ -4592,7 +3171,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'mu' ending", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with implicit subject, 高校生だった時は, 今は, and implicit dorm in second clause.",
       },
       {
@@ -4603,23 +3181,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
           },
-          { text: "けど、今[いま]は 寮[りょう]に " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "negative"),
-          },
-        ],
-        notes: "Uses implicit subject, 高校生だった時は, 今は, repeats 寮に in second clause, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "高校生[こうこうせい]だった 時[とき]は、寮[りょう]に " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
-          },
           { text: "が、今[いま]は 寮[りょう]に " },
           {
             text: "住[す]む",
@@ -4627,7 +3188,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'mu' ending", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with implicit subject, 高校生だった時は, 今は, and repeats 寮に in second clause.",
       },
       {
@@ -4638,23 +3198,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
           },
-          { text: "けど、今[いま]は もう " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "negative"),
-          },
-        ],
-        notes: "Uses implicit subject, 高校生だった時は, 今はもう, implicit dorm in second clause, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "高校生[こうこうせい]だった 時[とき]は、寮[りょう]に " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
-          },
           { text: "が、今[いま]は もう " },
           {
             text: "住[す]む",
@@ -4662,7 +3205,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'mu' ending", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with implicit subject, 高校生だった時は, 今はもう, and implicit dorm in second clause.",
       },
       {
@@ -4673,23 +3215,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
           },
-          { text: "けど、今[いま]は もう 寮[りょう]に " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "negative"),
-          },
-        ],
-        notes: "Uses implicit subject, 高校生だった時は, 今はもう, repeats 寮に in second clause, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "高校生[こうこうせい]だった 時[とき]は、寮[りょう]に " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
-          },
           { text: "が、今[いま]は もう 寮[りょう]に " },
           {
             text: "住[す]む",
@@ -4697,7 +3222,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'mu' ending", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with implicit subject, 高校生だった時は, 今はもう, and repeats 寮に in second clause.",
       },
       {
@@ -4708,23 +3232,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
           },
-          { text: "けど、今[いま]は " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "negative"),
-          },
-        ],
-        notes: "Uses explicit 私は, 高校生の時は, 今は, implicit dorm in second clause, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は 高校生[こうこうせい]の 時[とき]は、寮[りょう]に " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
-          },
           { text: "が、今[いま]は " },
           {
             text: "住[す]む",
@@ -4732,7 +3239,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'mu' ending", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with explicit 私は, 高校生の時は, 今は, and implicit dorm in second clause.",
       },
       {
@@ -4743,23 +3249,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
           },
-          { text: "けど、今[いま]は 寮[りょう]に " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "negative"),
-          },
-        ],
-        notes: "Uses explicit 私は, 高校生の時は, 今は, repeats 寮に in second clause, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は 高校生[こうこうせい]の 時[とき]は、寮[りょう]に " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
-          },
           { text: "が、今[いま]は 寮[りょう]に " },
           {
             text: "住[す]む",
@@ -4767,7 +3256,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'mu' ending", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with explicit 私は, 高校生の時は, 今は, and repeats 寮に in second clause.",
       },
       {
@@ -4778,23 +3266,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
           },
-          { text: "けど、今[いま]は もう " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "negative"),
-          },
-        ],
-        notes: "Uses explicit 私は, 高校生の時は, 今はもう, implicit dorm in second clause, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は 高校生[こうこうせい]の 時[とき]は、寮[りょう]に " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
-          },
           { text: "が、今[いま]は もう " },
           {
             text: "住[す]む",
@@ -4802,7 +3273,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'mu' ending", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with explicit 私は, 高校生の時は, 今はもう, and implicit dorm in second clause.",
       },
       {
@@ -4813,23 +3283,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
           },
-          { text: "けど、今[いま]は もう 寮[りょう]に " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "negative"),
-          },
-        ],
-        notes: "Uses explicit 私は, 高校生の時は, 今はもう, repeats 寮に in second clause, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は 高校生[こうこうせい]の 時[とき]は、寮[りょう]に " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
-          },
           { text: "が、今[いま]は もう 寮[りょう]に " },
           {
             text: "住[す]む",
@@ -4837,7 +3290,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'mu' ending", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with explicit 私は, 高校生の時は, 今はもう, and repeats 寮に in second clause.",
       },
       {
@@ -4848,23 +3300,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
           },
-          { text: "けど、今[いま]は " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "negative"),
-          },
-        ],
-        notes: "Uses explicit 私は, 高校生の時, 今は, implicit dorm in second clause, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は 高校生[こうこうせい]の 時[とき]、寮[りょう]に " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
-          },
           { text: "が、今[いま]は " },
           {
             text: "住[す]む",
@@ -4872,7 +3307,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'mu' ending", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with explicit 私は, 高校生の時, 今は, and implicit dorm in second clause.",
       },
       {
@@ -4883,23 +3317,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
           },
-          { text: "けど、今[いま]は 寮[りょう]に " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "negative"),
-          },
-        ],
-        notes: "Uses explicit 私は, 高校生の時, 今は, repeats 寮に in second clause, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は 高校生[こうこうせい]の 時[とき]、寮[りょう]に " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
-          },
           { text: "が、今[いま]は 寮[りょう]に " },
           {
             text: "住[す]む",
@@ -4907,7 +3324,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'mu' ending", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with explicit 私は, 高校生の時, 今は, and repeats 寮に in second clause.",
       },
       {
@@ -4918,23 +3334,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
           },
-          { text: "けど、今[いま]は もう " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "negative"),
-          },
-        ],
-        notes: "Uses explicit 私は, 高校生の時, 今はもう, implicit dorm in second clause, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は 高校生[こうこうせい]の 時[とき]、寮[りょう]に " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
-          },
           { text: "が、今[いま]は もう " },
           {
             text: "住[す]む",
@@ -4942,7 +3341,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'mu' ending", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with explicit 私は, 高校生の時, 今はもう, and implicit dorm in second clause.",
       },
       {
@@ -4953,23 +3351,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
           },
-          { text: "けど、今[いま]は もう 寮[りょう]に " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "negative"),
-          },
-        ],
-        notes: "Uses explicit 私は, 高校生の時, 今はもう, repeats 寮に in second clause, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は 高校生[こうこうせい]の 時[とき]、寮[りょう]に " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
-          },
           { text: "が、今[いま]は もう 寮[りょう]に " },
           {
             text: "住[す]む",
@@ -4977,7 +3358,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'mu' ending", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with explicit 私は, 高校生の時, 今はもう, and repeats 寮に in second clause.",
       },
       {
@@ -4988,23 +3368,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
           },
-          { text: "けど、今[いま]は " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "negative"),
-          },
-        ],
-        notes: "Uses explicit 私は, 高校の時は, 今は, implicit dorm in second clause, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は 高校[こうこう]の 時[とき]は、寮[りょう]に " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
-          },
           { text: "が、今[いま]は " },
           {
             text: "住[す]む",
@@ -5012,7 +3375,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'mu' ending", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with explicit 私は, 高校の時は, 今は, and implicit dorm in second clause.",
       },
       {
@@ -5023,23 +3385,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
           },
-          { text: "けど、今[いま]は 寮[りょう]に " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "negative"),
-          },
-        ],
-        notes: "Uses explicit 私は, 高校の時は, 今は, repeats 寮に in second clause, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は 高校[こうこう]の 時[とき]は、寮[りょう]に " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
-          },
           { text: "が、今[いま]は 寮[りょう]に " },
           {
             text: "住[す]む",
@@ -5047,25 +3392,7 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'mu' ending", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with explicit 私は, 高校の時は, 今は, and repeats 寮に in second clause.",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は 高校[こうこう]の 時[とき]は、寮[りょう]に " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
-          },
-          { text: "けど、今[いま]は もう " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "negative"),
-          },
-        ],
-        notes: "Uses explicit 私は, 高校の時は, 今はもう, implicit dorm in second clause, and けど/ですけど.",
       },
       {
         segments: [
@@ -5082,25 +3409,7 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'mu' ending", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with explicit 私は, 高校の時は, 今はもう, and implicit dorm in second clause.",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は 高校[こうこう]の 時[とき]は、寮[りょう]に " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
-          },
-          { text: "けど、今[いま]は もう 寮[りょう]に " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "negative"),
-          },
-        ],
-        notes: "Uses explicit 私は, 高校の時は, 今はもう, repeats 寮に in second clause, and けど/ですけど.",
       },
       {
         segments: [
@@ -5117,25 +3426,7 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'mu' ending", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with explicit 私は, 高校の時は, 今はもう, and repeats 寮に in second clause.",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は 高校生[こうこうせい]だった 時[とき]は、寮[りょう]に " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
-          },
-          { text: "けど、今[いま]は " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "negative"),
-          },
-        ],
-        notes: "Uses explicit 私は, 高校生だった時は, 今は, implicit dorm in second clause, and けど/ですけど.",
       },
       {
         segments: [
@@ -5152,25 +3443,7 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'mu' ending", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with explicit 私は, 高校生だった時は, 今は, and implicit dorm in second clause.",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は 高校生[こうこうせい]だった 時[とき]は、寮[りょう]に " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
-          },
-          { text: "けど、今[いま]は 寮[りょう]に " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "negative"),
-          },
-        ],
-        notes: "Uses explicit 私は, 高校生だった時は, 今は, repeats 寮に in second clause, and けど/ですけど.",
       },
       {
         segments: [
@@ -5187,25 +3460,7 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'mu' ending", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with explicit 私は, 高校生だった時は, 今は, and repeats 寮に in second clause.",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は 高校生[こうこうせい]だった 時[とき]は、寮[りょう]に " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
-          },
-          { text: "けど、今[いま]は もう " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "negative"),
-          },
-        ],
-        notes: "Uses explicit 私は, 高校生だった時は, 今はもう, implicit dorm in second clause, and けど/ですけど.",
       },
       {
         segments: [
@@ -5222,25 +3477,7 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'mu' ending", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with explicit 私は, 高校生だった時は, 今はもう, and implicit dorm in second clause.",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は 高校生[こうこうせい]だった 時[とき]は、寮[りょう]に " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "positive", "past"),
-          },
-          { text: "けど、今[いま]は もう 寮[りょう]に " },
-          {
-            text: "住[す]む",
-            blank: true,
-            conjugation: tai("Godan verb with 'mu' ending", "negative"),
-          },
-        ],
-        notes: "Uses explicit 私は, 高校生だった時は, 今はもう, repeats 寮に in second clause, and けど/ですけど.",
       },
       {
         segments: [
@@ -5257,7 +3494,6 @@ export const questions: Question[] = [
             conjugation: tai("Godan verb with 'mu' ending", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with explicit 私は, 高校生だった時は, 今はもう, and repeats 寮に in second clause.",
       },
       {
@@ -5472,23 +3708,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Suru verb - compound word", "positive", "past"),
           },
-          { text: "けど、今[いま]は " },
-          {
-            text: "生活[せいかつ]する",
-            blank: true,
-            conjugation: tai("Suru verb - compound word", "negative"),
-          },
-        ],
-        notes: "Uses 寮で生活する with implicit subject, 高校生の時は, 今は, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "高校生[こうこうせい]の 時[とき]は、寮[りょう]で " },
-          {
-            text: "生活[せいかつ]する",
-            blank: true,
-            conjugation: tai("Suru verb - compound word", "positive", "past"),
-          },
           { text: "が、今[いま]は " },
           {
             text: "生活[せいかつ]する",
@@ -5496,7 +3715,6 @@ export const questions: Question[] = [
             conjugation: tai("Suru verb - compound word", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with 寮で生活する, implicit subject, 高校生の時は, and 今は.",
       },
       {
@@ -5507,23 +3725,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Suru verb - compound word", "positive", "past"),
           },
-          { text: "けど、今[いま]は もう " },
-          {
-            text: "生活[せいかつ]する",
-            blank: true,
-            conjugation: tai("Suru verb - compound word", "negative"),
-          },
-        ],
-        notes: "Uses 寮で生活する with implicit subject, 高校生の時は, 今はもう, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "高校生[こうこうせい]の 時[とき]は、寮[りょう]で " },
-          {
-            text: "生活[せいかつ]する",
-            blank: true,
-            conjugation: tai("Suru verb - compound word", "positive", "past"),
-          },
           { text: "が、今[いま]は もう " },
           {
             text: "生活[せいかつ]する",
@@ -5531,7 +3732,6 @@ export const questions: Question[] = [
             conjugation: tai("Suru verb - compound word", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with 寮で生活する, implicit subject, 高校生の時は, and 今はもう.",
       },
       {
@@ -5542,23 +3742,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Suru verb - compound word", "positive", "past"),
           },
-          { text: "けど、今[いま]は " },
-          {
-            text: "生活[せいかつ]する",
-            blank: true,
-            conjugation: tai("Suru verb - compound word", "negative"),
-          },
-        ],
-        notes: "Uses 寮で生活する with implicit subject, 高校生の時, 今は, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "高校生[こうこうせい]の 時[とき]、寮[りょう]で " },
-          {
-            text: "生活[せいかつ]する",
-            blank: true,
-            conjugation: tai("Suru verb - compound word", "positive", "past"),
-          },
           { text: "が、今[いま]は " },
           {
             text: "生活[せいかつ]する",
@@ -5566,7 +3749,6 @@ export const questions: Question[] = [
             conjugation: tai("Suru verb - compound word", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with 寮で生活する, implicit subject, 高校生の時, and 今は.",
       },
       {
@@ -5577,23 +3759,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Suru verb - compound word", "positive", "past"),
           },
-          { text: "けど、今[いま]は もう " },
-          {
-            text: "生活[せいかつ]する",
-            blank: true,
-            conjugation: tai("Suru verb - compound word", "negative"),
-          },
-        ],
-        notes: "Uses 寮で生活する with implicit subject, 高校生の時, 今はもう, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "高校生[こうこうせい]の 時[とき]、寮[りょう]で " },
-          {
-            text: "生活[せいかつ]する",
-            blank: true,
-            conjugation: tai("Suru verb - compound word", "positive", "past"),
-          },
           { text: "が、今[いま]は もう " },
           {
             text: "生活[せいかつ]する",
@@ -5601,7 +3766,6 @@ export const questions: Question[] = [
             conjugation: tai("Suru verb - compound word", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with 寮で生活する, implicit subject, 高校生の時, and 今はもう.",
       },
       {
@@ -5612,23 +3776,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Suru verb - compound word", "positive", "past"),
           },
-          { text: "けど、今[いま]は " },
-          {
-            text: "生活[せいかつ]する",
-            blank: true,
-            conjugation: tai("Suru verb - compound word", "negative"),
-          },
-        ],
-        notes: "Uses 寮で生活する with implicit subject, 高校の時は, 今は, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "高校[こうこう]の 時[とき]は、寮[りょう]で " },
-          {
-            text: "生活[せいかつ]する",
-            blank: true,
-            conjugation: tai("Suru verb - compound word", "positive", "past"),
-          },
           { text: "が、今[いま]は " },
           {
             text: "生活[せいかつ]する",
@@ -5636,7 +3783,6 @@ export const questions: Question[] = [
             conjugation: tai("Suru verb - compound word", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with 寮で生活する, implicit subject, 高校の時は, and 今は.",
       },
       {
@@ -5647,23 +3793,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Suru verb - compound word", "positive", "past"),
           },
-          { text: "けど、今[いま]は もう " },
-          {
-            text: "生活[せいかつ]する",
-            blank: true,
-            conjugation: tai("Suru verb - compound word", "negative"),
-          },
-        ],
-        notes: "Uses 寮で生活する with implicit subject, 高校の時は, 今はもう, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "高校[こうこう]の 時[とき]は、寮[りょう]で " },
-          {
-            text: "生活[せいかつ]する",
-            blank: true,
-            conjugation: tai("Suru verb - compound word", "positive", "past"),
-          },
           { text: "が、今[いま]は もう " },
           {
             text: "生活[せいかつ]する",
@@ -5671,7 +3800,6 @@ export const questions: Question[] = [
             conjugation: tai("Suru verb - compound word", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with 寮で生活する, implicit subject, 高校の時は, and 今はもう.",
       },
       {
@@ -5682,23 +3810,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Suru verb - compound word", "positive", "past"),
           },
-          { text: "けど、今[いま]は " },
-          {
-            text: "生活[せいかつ]する",
-            blank: true,
-            conjugation: tai("Suru verb - compound word", "negative"),
-          },
-        ],
-        notes: "Uses 寮で生活する with explicit 私は, 高校生の時は, 今は, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は 高校生[こうこうせい]の 時[とき]は、寮[りょう]で " },
-          {
-            text: "生活[せいかつ]する",
-            blank: true,
-            conjugation: tai("Suru verb - compound word", "positive", "past"),
-          },
           { text: "が、今[いま]は " },
           {
             text: "生活[せいかつ]する",
@@ -5706,7 +3817,6 @@ export const questions: Question[] = [
             conjugation: tai("Suru verb - compound word", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with 寮で生活する, explicit 私は, 高校生の時は, and 今は.",
       },
       {
@@ -5717,23 +3827,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Suru verb - compound word", "positive", "past"),
           },
-          { text: "けど、今[いま]は もう " },
-          {
-            text: "生活[せいかつ]する",
-            blank: true,
-            conjugation: tai("Suru verb - compound word", "negative"),
-          },
-        ],
-        notes: "Uses 寮で生活する with explicit 私は, 高校生の時は, 今はもう, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は 高校生[こうこうせい]の 時[とき]は、寮[りょう]で " },
-          {
-            text: "生活[せいかつ]する",
-            blank: true,
-            conjugation: tai("Suru verb - compound word", "positive", "past"),
-          },
           { text: "が、今[いま]は もう " },
           {
             text: "生活[せいかつ]する",
@@ -5741,7 +3834,6 @@ export const questions: Question[] = [
             conjugation: tai("Suru verb - compound word", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with 寮で生活する, explicit 私は, 高校生の時は, and 今はもう.",
       },
       {
@@ -5752,23 +3844,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Suru verb - compound word", "positive", "past"),
           },
-          { text: "けど、今[いま]は " },
-          {
-            text: "生活[せいかつ]する",
-            blank: true,
-            conjugation: tai("Suru verb - compound word", "negative"),
-          },
-        ],
-        notes: "Uses 寮で生活する with explicit 私は, 高校生の時, 今は, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は 高校生[こうこうせい]の 時[とき]、寮[りょう]で " },
-          {
-            text: "生活[せいかつ]する",
-            blank: true,
-            conjugation: tai("Suru verb - compound word", "positive", "past"),
-          },
           { text: "が、今[いま]は " },
           {
             text: "生活[せいかつ]する",
@@ -5776,7 +3851,6 @@ export const questions: Question[] = [
             conjugation: tai("Suru verb - compound word", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with 寮で生活する, explicit 私は, 高校生の時, and 今は.",
       },
       {
@@ -5787,23 +3861,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Suru verb - compound word", "positive", "past"),
           },
-          { text: "けど、今[いま]は もう " },
-          {
-            text: "生活[せいかつ]する",
-            blank: true,
-            conjugation: tai("Suru verb - compound word", "negative"),
-          },
-        ],
-        notes: "Uses 寮で生活する with explicit 私は, 高校生の時, 今はもう, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は 高校生[こうこうせい]の 時[とき]、寮[りょう]で " },
-          {
-            text: "生活[せいかつ]する",
-            blank: true,
-            conjugation: tai("Suru verb - compound word", "positive", "past"),
-          },
           { text: "が、今[いま]は もう " },
           {
             text: "生活[せいかつ]する",
@@ -5811,25 +3868,7 @@ export const questions: Question[] = [
             conjugation: tai("Suru verb - compound word", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with 寮で生活する, explicit 私は, 高校生の時, and 今はもう.",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は 高校[こうこう]の 時[とき]は、寮[りょう]で " },
-          {
-            text: "生活[せいかつ]する",
-            blank: true,
-            conjugation: tai("Suru verb - compound word", "positive", "past"),
-          },
-          { text: "けど、今[いま]は " },
-          {
-            text: "生活[せいかつ]する",
-            blank: true,
-            conjugation: tai("Suru verb - compound word", "negative"),
-          },
-        ],
-        notes: "Uses 寮で生活する with explicit 私は, 高校の時は, 今は, and けど/ですけど.",
       },
       {
         segments: [
@@ -5846,25 +3885,7 @@ export const questions: Question[] = [
             conjugation: tai("Suru verb - compound word", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with 寮で生活する, explicit 私は, 高校の時は, and 今は.",
-      },
-      {
-        segments: [
-          { text: "私[わたし]は 高校[こうこう]の 時[とき]は、寮[りょう]で " },
-          {
-            text: "生活[せいかつ]する",
-            blank: true,
-            conjugation: tai("Suru verb - compound word", "positive", "past"),
-          },
-          { text: "けど、今[いま]は もう " },
-          {
-            text: "生活[せいかつ]する",
-            blank: true,
-            conjugation: tai("Suru verb - compound word", "negative"),
-          },
-        ],
-        notes: "Uses 寮で生活する with explicit 私は, 高校の時は, 今はもう, and けど/ですけど.",
       },
       {
         segments: [
@@ -5881,7 +3902,6 @@ export const questions: Question[] = [
             conjugation: tai("Suru verb - compound word", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with 寮で生活する, explicit 私は, 高校の時は, and 今はもう.",
       }
     ],
@@ -6006,23 +4026,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Suru verb - special class", "positive", "past"),
           },
-          { text: "けど、寒[さむ]いところで" },
-          {
-            text: "寝[ね]る",
-            blank: true,
-            conjugation: tai("Ichidan verb", "negative", "past"),
-          },
-        ],
-        notes: "Uses 川のそばでキャンプする and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "川[かわ]のそばで キャンプ" },
-          {
-            text: "する",
-            blank: true,
-            conjugation: tai("Suru verb - special class", "positive", "past"),
-          },
           { text: "が、寒[さむ]いところで" },
           {
             text: "寝[ね]る",
@@ -6030,7 +4033,6 @@ export const questions: Question[] = [
             conjugation: tai("Ichidan verb", "negative", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with 川のそばでキャンプする.",
       },
       {
@@ -6041,23 +4043,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Suru verb - special class", "positive", "past"),
           },
-          { text: "けど、寒[さむ]いところで" },
-          {
-            text: "寝[ね]る",
-            blank: true,
-            conjugation: tai("Ichidan verb", "negative", "past"),
-          },
-        ],
-        notes: "Uses 川の近くでキャンプする and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "川[かわ]の 近[ちか]くで キャンプ" },
-          {
-            text: "する",
-            blank: true,
-            conjugation: tai("Suru verb - special class", "positive", "past"),
-          },
           { text: "が、寒[さむ]いところで" },
           {
             text: "寝[ね]る",
@@ -6065,7 +4050,6 @@ export const questions: Question[] = [
             conjugation: tai("Ichidan verb", "negative", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with 川の近くでキャンプする.",
       },
       {
@@ -6076,23 +4060,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Suru verb - special class", "positive", "past"),
           },
-          { text: "けど、寒[さむ]いところで" },
-          {
-            text: "寝[ね]る",
-            blank: true,
-            conjugation: tai("Ichidan verb", "negative", "past"),
-          },
-        ],
-        notes: "Uses 川でキャンプする and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "川[かわ]で キャンプ" },
-          {
-            text: "する",
-            blank: true,
-            conjugation: tai("Suru verb - special class", "positive", "past"),
-          },
           { text: "が、寒[さむ]いところで" },
           {
             text: "寝[ね]る",
@@ -6100,7 +4067,6 @@ export const questions: Question[] = [
             conjugation: tai("Ichidan verb", "negative", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with 川でキャンプする.",
       },
       {
@@ -6115,27 +4081,6 @@ export const questions: Question[] = [
               "past",
             ),
           },
-          { text: "けど、寒[さむ]いところで" },
-          {
-            text: "寝[ね]る",
-            blank: true,
-            conjugation: tai("Ichidan verb", "negative", "past"),
-          },
-        ],
-        notes: "Uses 川のそばにキャンプに行く and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "川[かわ]のそばに キャンプに" },
-          {
-            text: "行[い]く",
-            blank: true,
-            conjugation: tai(
-              "Godan verb - Iku/Yuku special class",
-              "positive",
-              "past",
-            ),
-          },
           { text: "が、寒[さむ]いところで" },
           {
             text: "寝[ね]る",
@@ -6143,7 +4088,6 @@ export const questions: Question[] = [
             conjugation: tai("Ichidan verb", "negative", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with 川のそばにキャンプに行く.",
       },
       {
@@ -6158,27 +4102,6 @@ export const questions: Question[] = [
               "past",
             ),
           },
-          { text: "けど、寒[さむ]いところで" },
-          {
-            text: "寝[ね]る",
-            blank: true,
-            conjugation: tai("Ichidan verb", "negative", "past"),
-          },
-        ],
-        notes: "Uses 川のそばへキャンプに行く and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "川[かわ]のそばへ キャンプに" },
-          {
-            text: "行[い]く",
-            blank: true,
-            conjugation: tai(
-              "Godan verb - Iku/Yuku special class",
-              "positive",
-              "past",
-            ),
-          },
           { text: "が、寒[さむ]いところで" },
           {
             text: "寝[ね]る",
@@ -6186,7 +4109,6 @@ export const questions: Question[] = [
             conjugation: tai("Ichidan verb", "negative", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with 川のそばへキャンプに行く.",
       },
       {
@@ -6201,27 +4123,6 @@ export const questions: Question[] = [
               "past",
             ),
           },
-          { text: "けど、寒[さむ]いところで" },
-          {
-            text: "寝[ね]る",
-            blank: true,
-            conjugation: tai("Ichidan verb", "negative", "past"),
-          },
-        ],
-        notes: "Uses 川の近くにキャンプに行く and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "川[かわ]の 近[ちか]くに キャンプに" },
-          {
-            text: "行[い]く",
-            blank: true,
-            conjugation: tai(
-              "Godan verb - Iku/Yuku special class",
-              "positive",
-              "past",
-            ),
-          },
           { text: "が、寒[さむ]いところで" },
           {
             text: "寝[ね]る",
@@ -6229,7 +4130,6 @@ export const questions: Question[] = [
             conjugation: tai("Ichidan verb", "negative", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with 川の近くにキャンプに行く.",
       },
       {
@@ -6244,27 +4144,6 @@ export const questions: Question[] = [
               "past",
             ),
           },
-          { text: "けど、寒[さむ]いところで" },
-          {
-            text: "寝[ね]る",
-            blank: true,
-            conjugation: tai("Ichidan verb", "negative", "past"),
-          },
-        ],
-        notes: "Uses 川の近くへキャンプに行く and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "川[かわ]の 近[ちか]くへ キャンプに" },
-          {
-            text: "行[い]く",
-            blank: true,
-            conjugation: tai(
-              "Godan verb - Iku/Yuku special class",
-              "positive",
-              "past",
-            ),
-          },
           { text: "が、寒[さむ]いところで" },
           {
             text: "寝[ね]る",
@@ -6272,7 +4151,6 @@ export const questions: Question[] = [
             conjugation: tai("Ichidan verb", "negative", "past"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with 川の近くへキャンプに行く.",
       }
     ],
@@ -6289,23 +4167,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Godan verb - Iku/Yuku special class"),
           },
-          { text: "けど、早[はや]く " },
-          {
-            text: "起[お]きる",
-            blank: true,
-            conjugation: tai("Ichidan verb", "negative"),
-          },
-        ],
-        notes: "Uses お正月に, 神社に行く, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "お 正月[しょうがつ]に 神社[じんじゃ]に" },
-          {
-            text: "行[い]く",
-            blank: true,
-            conjugation: tai("Godan verb - Iku/Yuku special class"),
-          },
           { text: "が、早[はや]く " },
           {
             text: "起[お]きる",
@@ -6313,7 +4174,6 @@ export const questions: Question[] = [
             conjugation: tai("Ichidan verb", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with お正月に and 神社に行く.",
       },
       {
@@ -6324,23 +4184,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Godan verb - Iku/Yuku special class"),
           },
-          { text: "けど、早[はや]く " },
-          {
-            text: "起[お]きる",
-            blank: true,
-            conjugation: tai("Ichidan verb", "negative"),
-          },
-        ],
-        notes: "Uses お正月に, 神社へ行く, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "お 正月[しょうがつ]に 神社[じんじゃ]へ" },
-          {
-            text: "行[い]く",
-            blank: true,
-            conjugation: tai("Godan verb - Iku/Yuku special class"),
-          },
           { text: "が、早[はや]く " },
           {
             text: "起[お]きる",
@@ -6348,7 +4191,6 @@ export const questions: Question[] = [
             conjugation: tai("Ichidan verb", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with お正月に and 神社へ行く.",
       },
       {
@@ -6359,23 +4201,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Godan verb - Iku/Yuku special class"),
           },
-          { text: "けど、早[はや]く " },
-          {
-            text: "起[お]きる",
-            blank: true,
-            conjugation: tai("Ichidan verb", "negative"),
-          },
-        ],
-        notes: "Uses お正月には, 神社に行く, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "お 正月[しょうがつ]には 神社[じんじゃ]に" },
-          {
-            text: "行[い]く",
-            blank: true,
-            conjugation: tai("Godan verb - Iku/Yuku special class"),
-          },
           { text: "が、早[はや]く " },
           {
             text: "起[お]きる",
@@ -6383,7 +4208,6 @@ export const questions: Question[] = [
             conjugation: tai("Ichidan verb", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with お正月には and 神社に行く.",
       },
       {
@@ -6394,23 +4218,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Godan verb - Iku/Yuku special class"),
           },
-          { text: "けど、早[はや]く " },
-          {
-            text: "起[お]きる",
-            blank: true,
-            conjugation: tai("Ichidan verb", "negative"),
-          },
-        ],
-        notes: "Uses お正月には, 神社へ行く, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "お 正月[しょうがつ]には 神社[じんじゃ]へ" },
-          {
-            text: "行[い]く",
-            blank: true,
-            conjugation: tai("Godan verb - Iku/Yuku special class"),
-          },
           { text: "が、早[はや]く " },
           {
             text: "起[お]きる",
@@ -6418,7 +4225,6 @@ export const questions: Question[] = [
             conjugation: tai("Ichidan verb", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with お正月には and 神社へ行く.",
       },
       {
@@ -6429,23 +4235,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Godan verb - Iku/Yuku special class"),
           },
-          { text: "けど、早[はや]く " },
-          {
-            text: "起[お]きる",
-            blank: true,
-            conjugation: tai("Ichidan verb", "negative"),
-          },
-        ],
-        notes: "Uses 正月に, 神社に行く, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "正月[しょうがつ]に 神社[じんじゃ]に" },
-          {
-            text: "行[い]く",
-            blank: true,
-            conjugation: tai("Godan verb - Iku/Yuku special class"),
-          },
           { text: "が、早[はや]く " },
           {
             text: "起[お]きる",
@@ -6453,7 +4242,6 @@ export const questions: Question[] = [
             conjugation: tai("Ichidan verb", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with 正月に and 神社に行く.",
       },
       {
@@ -6464,23 +4252,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Godan verb - Iku/Yuku special class"),
           },
-          { text: "けど、早[はや]く " },
-          {
-            text: "起[お]きる",
-            blank: true,
-            conjugation: tai("Ichidan verb", "negative"),
-          },
-        ],
-        notes: "Uses 正月に, 神社へ行く, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "正月[しょうがつ]に 神社[じんじゃ]へ" },
-          {
-            text: "行[い]く",
-            blank: true,
-            conjugation: tai("Godan verb - Iku/Yuku special class"),
-          },
           { text: "が、早[はや]く " },
           {
             text: "起[お]きる",
@@ -6488,7 +4259,6 @@ export const questions: Question[] = [
             conjugation: tai("Ichidan verb", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with 正月に and 神社へ行く.",
       },
       {
@@ -6499,23 +4269,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Godan verb - Iku/Yuku special class"),
           },
-          { text: "けど、早[はや]く " },
-          {
-            text: "起[お]きる",
-            blank: true,
-            conjugation: tai("Ichidan verb", "negative"),
-          },
-        ],
-        notes: "Uses 正月には, 神社に行く, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "正月[しょうがつ]には 神社[じんじゃ]に" },
-          {
-            text: "行[い]く",
-            blank: true,
-            conjugation: tai("Godan verb - Iku/Yuku special class"),
-          },
           { text: "が、早[はや]く " },
           {
             text: "起[お]きる",
@@ -6523,7 +4276,6 @@ export const questions: Question[] = [
             conjugation: tai("Ichidan verb", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with 正月には and 神社に行く.",
       },
       {
@@ -6534,23 +4286,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Godan verb - Iku/Yuku special class"),
           },
-          { text: "けど、早[はや]く " },
-          {
-            text: "起[お]きる",
-            blank: true,
-            conjugation: tai("Ichidan verb", "negative"),
-          },
-        ],
-        notes: "Uses 正月には, 神社へ行く, and けど/ですけど.",
-      },
-      {
-        segments: [
-          { text: "正月[しょうがつ]には 神社[じんじゃ]へ" },
-          {
-            text: "行[い]く",
-            blank: true,
-            conjugation: tai("Godan verb - Iku/Yuku special class"),
-          },
           { text: "が、早[はや]く " },
           {
             text: "起[お]きる",
@@ -6558,7 +4293,6 @@ export const questions: Question[] = [
             conjugation: tai("Ichidan verb", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with 正月には and 神社へ行く.",
       },
       {
@@ -6569,23 +4303,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Godan verb - Iku/Yuku special class"),
           },
-          { text: "けど、早[はや]く " },
-          {
-            text: "起[お]きる",
-            blank: true,
-            conjugation: tai("Ichidan verb", "negative"),
-          },
-        ],
-        notes: "Uses お正月に and 初詣に行く.",
-      },
-      {
-        segments: [
-          { text: "お 正月[しょうがつ]に 初詣[はつもうで]に" },
-          {
-            text: "行[い]く",
-            blank: true,
-            conjugation: tai("Godan verb - Iku/Yuku special class"),
-          },
           { text: "が、早[はや]く " },
           {
             text: "起[お]きる",
@@ -6593,7 +4310,6 @@ export const questions: Question[] = [
             conjugation: tai("Ichidan verb", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with お正月に and 初詣に行く.",
       },
       {
@@ -6604,23 +4320,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Godan verb - Iku/Yuku special class"),
           },
-          { text: "けど、早[はや]く " },
-          {
-            text: "起[お]きる",
-            blank: true,
-            conjugation: tai("Ichidan verb", "negative"),
-          },
-        ],
-        notes: "Uses お正月には and 初詣に行く.",
-      },
-      {
-        segments: [
-          { text: "お 正月[しょうがつ]には 初詣[はつもうで]に" },
-          {
-            text: "行[い]く",
-            blank: true,
-            conjugation: tai("Godan verb - Iku/Yuku special class"),
-          },
           { text: "が、早[はや]く " },
           {
             text: "起[お]きる",
@@ -6628,7 +4327,6 @@ export const questions: Question[] = [
             conjugation: tai("Ichidan verb", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with お正月には and 初詣に行く.",
       },
       {
@@ -6639,23 +4337,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Godan verb - Iku/Yuku special class"),
           },
-          { text: "けど、早[はや]く " },
-          {
-            text: "起[お]きる",
-            blank: true,
-            conjugation: tai("Ichidan verb", "negative"),
-          },
-        ],
-        notes: "Uses 正月に and 初詣に行く.",
-      },
-      {
-        segments: [
-          { text: "正月[しょうがつ]に 初詣[はつもうで]に" },
-          {
-            text: "行[い]く",
-            blank: true,
-            conjugation: tai("Godan verb - Iku/Yuku special class"),
-          },
           { text: "が、早[はや]く " },
           {
             text: "起[お]きる",
@@ -6663,7 +4344,6 @@ export const questions: Question[] = [
             conjugation: tai("Ichidan verb", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with 正月に and 初詣に行く.",
       },
       {
@@ -6674,23 +4354,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Godan verb - Iku/Yuku special class"),
           },
-          { text: "けど、早[はや]く " },
-          {
-            text: "起[お]きる",
-            blank: true,
-            conjugation: tai("Ichidan verb", "negative"),
-          },
-        ],
-        notes: "Uses 正月には and 初詣に行く.",
-      },
-      {
-        segments: [
-          { text: "正月[しょうがつ]には 初詣[はつもうで]に" },
-          {
-            text: "行[い]く",
-            blank: true,
-            conjugation: tai("Godan verb - Iku/Yuku special class"),
-          },
           { text: "が、早[はや]く " },
           {
             text: "起[お]きる",
@@ -6698,7 +4361,6 @@ export const questions: Question[] = [
             conjugation: tai("Ichidan verb", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with 正月には and 初詣に行く.",
       },
       {
@@ -6709,23 +4371,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Ichidan verb"),
           },
-          { text: "けど、早[はや]く " },
-          {
-            text: "起[お]きる",
-            blank: true,
-            conjugation: tai("Ichidan verb", "negative"),
-          },
-        ],
-        notes: "Uses お正月に and 神社を訪れる.",
-      },
-      {
-        segments: [
-          { text: "お 正月[しょうがつ]に 神社[じんじゃ]を" },
-          {
-            text: "訪[おとず]れる",
-            blank: true,
-            conjugation: tai("Ichidan verb"),
-          },
           { text: "が、早[はや]く " },
           {
             text: "起[お]きる",
@@ -6733,7 +4378,6 @@ export const questions: Question[] = [
             conjugation: tai("Ichidan verb", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with お正月に and 神社を訪れる.",
       },
       {
@@ -6744,23 +4388,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Ichidan verb"),
           },
-          { text: "けど、早[はや]く " },
-          {
-            text: "起[お]きる",
-            blank: true,
-            conjugation: tai("Ichidan verb", "negative"),
-          },
-        ],
-        notes: "Uses お正月には and 神社を訪れる.",
-      },
-      {
-        segments: [
-          { text: "お 正月[しょうがつ]には 神社[じんじゃ]を" },
-          {
-            text: "訪[おとず]れる",
-            blank: true,
-            conjugation: tai("Ichidan verb"),
-          },
           { text: "が、早[はや]く " },
           {
             text: "起[お]きる",
@@ -6768,7 +4395,6 @@ export const questions: Question[] = [
             conjugation: tai("Ichidan verb", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with お正月には and 神社を訪れる.",
       },
       {
@@ -6779,23 +4405,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Ichidan verb"),
           },
-          { text: "けど、早[はや]く " },
-          {
-            text: "起[お]きる",
-            blank: true,
-            conjugation: tai("Ichidan verb", "negative"),
-          },
-        ],
-        notes: "Uses 正月に and 神社を訪れる.",
-      },
-      {
-        segments: [
-          { text: "正月[しょうがつ]に 神社[じんじゃ]を" },
-          {
-            text: "訪[おとず]れる",
-            blank: true,
-            conjugation: tai("Ichidan verb"),
-          },
           { text: "が、早[はや]く " },
           {
             text: "起[お]きる",
@@ -6803,7 +4412,6 @@ export const questions: Question[] = [
             conjugation: tai("Ichidan verb", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with 正月に and 神社を訪れる.",
       },
       {
@@ -6814,23 +4422,6 @@ export const questions: Question[] = [
             blank: true,
             conjugation: tai("Ichidan verb"),
           },
-          { text: "けど、早[はや]く " },
-          {
-            text: "起[お]きる",
-            blank: true,
-            conjugation: tai("Ichidan verb", "negative"),
-          },
-        ],
-        notes: "Uses 正月には and 神社を訪れる.",
-      },
-      {
-        segments: [
-          { text: "正月[しょうがつ]には 神社[じんじゃ]を" },
-          {
-            text: "訪[おとず]れる",
-            blank: true,
-            conjugation: tai("Ichidan verb"),
-          },
           { text: "が、早[はや]く " },
           {
             text: "起[お]きる",
@@ -6838,7 +4429,6 @@ export const questions: Question[] = [
             conjugation: tai("Ichidan verb", "negative"),
           },
         ],
-        register: "polite",
         notes: "Polite/formal が with 正月には and 神社を訪れる.",
       }
     ],
