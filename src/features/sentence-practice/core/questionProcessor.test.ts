@@ -360,6 +360,62 @@ describe("prepareQuestion", () => {
     expect(stripped).not.toContain("けんじさんはもう家に帰ったのの？")
   })
 
+  it("leaves non-final casual か as か and does not generate explanatory question variants", () => {
+    const question = createQuestion("Have you climbed Mt. Fuji, Kenji?", [
+      {
+        segments: [
+          segment("富士山[ふじさん]に 登[のぼ]ったことがある"),
+          segment("か"),
+          segment("、けんじさん"),
+        ],
+        register: "casual",
+      },
+    ])
+
+    const stripped = prepareQuestion(question).acceptedAnswers.map((a) =>
+      a.plain.replaceAll("\u001f", "").replaceAll(" ", ""),
+    )
+
+    expect(stripped).toContain("富士山に登ったことがあるか、けんじさん")
+    expect(stripped).not.toContain("富士山に登ったことがある？、けんじさん")
+    expect(stripped).not.toContain("富士山に登ったことがあるの？、けんじさん")
+  })
+
+  it("treats final か/か。 as casual questions", () => {
+    const baseSegments = [
+      segment("行[い]く", false, {
+        pos: "Godan verb - Iku/Yuku special class",
+        form: "normal",
+        polarity: "positive",
+        tense: "non-past",
+      }),
+    ]
+    const cases = [
+      { segments: [...baseSegments, segment("か")], expected: ["行く？", "行くの？"] },
+      {
+        segments: [...baseSegments, segment("か"), segment("。")],
+        expected: ["行く？", "行くの？"],
+      },
+      {
+        segments: [...baseSegments, segment("か。")],
+        expected: ["行く？", "行くの？"],
+      },
+    ]
+
+    for (const testCase of cases) {
+      const question = createQuestion("Will you go?", [
+        { segments: testCase.segments, register: "casual" },
+      ])
+      const stripped = prepareQuestion(question).acceptedAnswers.map((a) =>
+        a.plain.replaceAll("\u001f", ""),
+      )
+
+      for (const expected of testCase.expected) {
+        expect(stripped).toContain(expected)
+      }
+    }
+  })
+
   it("register-locked answer coexists with unlocked canonical answer", () => {
     const question = createQuestion("I'll watch a movie", [
       {

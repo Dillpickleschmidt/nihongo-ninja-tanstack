@@ -4,10 +4,9 @@ import { ConjugationRules } from "./ConjugationRules"
 describe("ConjugationRules", () => {
   const rules = new ConjugationRules()
 
-  it("returns special standalone word forms", () => {
+  it("returns context-free special standalone word forms", () => {
     expect(rules.getSpecialWordForm("です", true)).toBe("です")
     expect(rules.getSpecialWordForm("です", false)).toBe("だ")
-    expect(rules.getSpecialWordForm("か", false)).toBe("？")
   })
 
   it("returns register-paired forms for んですが / でしょう / でしょうか", () => {

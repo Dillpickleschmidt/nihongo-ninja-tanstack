@@ -6,7 +6,6 @@ type SpecialWordFunction = (polite: boolean) => string
 export class ConjugationRules {
   private readonly SPECIAL_WORDS: Record<string, SpecialWordFunction> = {
     です: (polite) => (polite ? "です" : "だ"),
-    か: (polite) => (polite ? "か" : "？"),
     たら: () => "ら",
     んですが: (polite) => (polite ? "んですが" : "んだけど"),
     でしょう: (polite) => (polite ? "でしょう" : "だろう"),

@@ -1,5 +1,6 @@
 import type { SentenceSegment } from "../../../../convex/validators"
 import type { ProcessedSegment, RichSegment } from "./types"
+import { isSentenceFinalKa } from "./segmentProcessor"
 import { createRichSegment, SEGMENT_SEPARATOR } from "./textProcessor"
 
 type GrammarExpansionContext = {
@@ -41,14 +42,22 @@ function createCasualExplanatoryQuestionVariant(
   sequence: ProcessedSegment[],
   sourceSegments: SentenceSegment[],
 ): ProcessedSegment[] | undefined {
-  const lastSourceIndex = sourceSegments.length - 1
+  const questionSourceIndex = getQuestionKaSourceIndex(sourceSegments)
+  if (questionSourceIndex === undefined) return undefined
+
   const questionSegmentIndex = sequence.findIndex(
-    (segment) => segment.sourceIndex === lastSourceIndex,
+    (segment) => segment.sourceIndex === questionSourceIndex,
   )
   if (questionSegmentIndex < 0) return undefined
-  if (sequence[questionSegmentIndex].original !== "？") return undefined
+  const questionPunctuation = getQuestionPunctuation(
+    sequence[questionSegmentIndex].original,
+  )
+  if (questionPunctuation === undefined) return undefined
 
-  const predicateSourceIndex = getPredicateSourceIndex(sourceSegments)
+  const predicateSourceIndex = getPredicateSourceIndex(
+    sourceSegments,
+    questionSourceIndex,
+  )
   if (predicateSourceIndex === undefined) return undefined
 
   const predicateSegmentIndex = findLastIndex(
@@ -66,11 +75,12 @@ function createCasualExplanatoryQuestionVariant(
       sourceSegments,
       predicateSegmentIndex,
       questionSegmentIndex,
+      questionPunctuation,
     )
   }
 
   return replaceRange(sequence, questionSegmentIndex, questionSegmentIndex + 1, [
-    createProcessedSegment("の？", sequence[questionSegmentIndex]),
+    createProcessedSegment(`の？${questionPunctuation}`, sequence[questionSegmentIndex]),
   ])
 }
 
@@ -79,8 +89,9 @@ function createCopulaQuestionVariant(
   sourceSegments: SentenceSegment[],
   predicateSegmentIndex: number,
   questionSegmentIndex: number,
+  questionPunctuation: string,
 ): ProcessedSegment[] | undefined {
-  const copulaSourceIndex = sourceSegments.length - 2
+  const copulaSourceIndex = questionSegmentIndexSourceIndex(sourceSegments)
   const copulaSegmentIndex = findLastIndex(
     sequence,
     (segment) => segment.sourceIndex === copulaSourceIndex,
@@ -88,32 +99,54 @@ function createCopulaQuestionVariant(
   if (copulaSegmentIndex < 0) return undefined
 
   const suffix = isIAdjective(sourceSegments[sourceSegments.length - 3])
-    ? "の？"
-    : "なの？"
+    ? `の？${questionPunctuation}`
+    : `なの？${questionPunctuation}`
 
   return replaceRange(sequence, copulaSegmentIndex, questionSegmentIndex + 1, [
     createProcessedSegment(suffix, sequence[copulaSegmentIndex]),
   ])
 }
 
+function getQuestionPunctuation(original: string): string | undefined {
+  return original === "？" ? "" : undefined
+}
+
 function getPredicateSourceIndex(
   sourceSegments: SentenceSegment[],
+  questionSourceIndex: number,
 ): number | undefined {
-  if (isCopulaQuestion(sourceSegments)) return sourceSegments.length - 3
-  if (sourceSegments.length >= 2) return sourceSegments.length - 2
+  if (isCopulaQuestion(sourceSegments)) return questionSourceIndex - 2
+  if (questionSourceIndex >= 1) return questionSourceIndex - 1
   return undefined
 }
 
 function endsWithSourceKa(sourceSegments: SentenceSegment[]): boolean {
-  return sourceSegments.at(-1)?.text === "か"
+  return getQuestionKaSourceIndex(sourceSegments) !== undefined
+}
+
+function getQuestionKaSourceIndex(
+  sourceSegments: SentenceSegment[],
+): number | undefined {
+  const index = sourceSegments.findIndex((_, index) =>
+    isSentenceFinalKa(sourceSegments, index),
+  )
+  return index >= 0 ? index : undefined
 }
 
 function isCopulaQuestion(sourceSegments: SentenceSegment[]): boolean {
+  const questionSourceIndex = getQuestionKaSourceIndex(sourceSegments)
   return (
-    sourceSegments.length >= 3 &&
-    sourceSegments.at(-2)?.text === "です" &&
-    sourceSegments.at(-1)?.text === "か"
+    questionSourceIndex !== undefined &&
+    questionSourceIndex >= 2 &&
+    sourceSegments[questionSourceIndex - 1]?.text === "です"
   )
+}
+
+function questionSegmentIndexSourceIndex(
+  sourceSegments: SentenceSegment[],
+): number {
+  const questionSourceIndex = getQuestionKaSourceIndex(sourceSegments)
+  return (questionSourceIndex ?? sourceSegments.length - 1) - 1
 }
 
 function isIAdjective(segment: SentenceSegment | undefined): boolean {

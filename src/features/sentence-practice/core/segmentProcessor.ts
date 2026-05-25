@@ -41,7 +41,12 @@ export function processSegments(
   const perSegmentOptions: ProcessedSegment[][] = segments.map(
     (segment, sourceIndex) => {
       const isBlank = segment.blank ?? false
-      return conjugateSegment(segment, isPolite).map((text) => ({
+      return conjugateSegmentInContext(
+        segment,
+        isPolite,
+        segments,
+        sourceIndex,
+      ).map((text) => ({
         ...createRichSegment(text, isBlank),
         sourceIndex,
         source: segment,
@@ -49,6 +54,67 @@ export function processSegments(
     },
   )
   return cartesian(perSegmentOptions)
+}
+
+function conjugateSegmentInContext(
+  segment: SentenceSegment,
+  isPolite: boolean,
+  segments: SentenceSegment[],
+  sourceIndex: number,
+): string[] {
+  // Casual final か becomes ？, so drop a following sentence-ending 。.
+  if (!isPolite && followsSentenceFinalKa(segments, sourceIndex)) {
+    return [segment.text.replace(/^\s*。/, "")]
+  }
+
+  if (isKaQuestionSegment(segment)) {
+    if (isPolite) return [segment.text]
+    return [
+      isSentenceFinalKa(segments, sourceIndex)
+        ? replaceTrailingKaWithQuestionMark(segment.text)
+        : segment.text,
+    ]
+  }
+
+  return conjugateSegment(segment, isPolite)
+}
+
+// True when this non-conjugated segment is sentence-final question か:
+// last segment ending in か/か。, ending in か。, or ending in か before next 。.
+export function isSentenceFinalKa(
+  segments: SentenceSegment[],
+  sourceIndex: number,
+): boolean {
+  const segment = segments[sourceIndex]
+  if (!isKaQuestionSegment(segment)) return false
+
+  const text = segment.text.trim()
+  const isLastSegment = sourceIndex === segments.length - 1
+  if (isLastSegment && (text.endsWith("か") || text.endsWith("か。"))) {
+    return true
+  }
+  if (text.endsWith("か。")) return true
+
+  const next = segments[sourceIndex + 1]
+  return text.endsWith("か") && next?.text.trim().startsWith("。") === true
+}
+
+function isKaQuestionSegment(segment: SentenceSegment | undefined): boolean {
+  return !segment?.conjugation && /か。?$/.test(segment?.text.trim() ?? "")
+}
+
+function followsSentenceFinalKa(
+  segments: SentenceSegment[],
+  sourceIndex: number,
+): boolean {
+  return (
+    segments[sourceIndex]?.text.trim().startsWith("。") === true &&
+    isSentenceFinalKa(segments, sourceIndex - 1)
+  )
+}
+
+function replaceTrailingKaWithQuestionMark(text: string): string {
+  return text.replace(/か。?$/, "？")
 }
 
 function cartesian<T>(arrays: T[][]): T[][] {
