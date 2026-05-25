@@ -159,7 +159,11 @@ export function ModuleCategorizedView(props: ModuleCategorizedViewProps) {
                     }
 
                     return (
-                      <Link to={enrichedModule.linkTo} class={baseClasses}>
+                      <Link
+                        to={enrichedModule.linkTo.to}
+                        search={enrichedModule.linkTo.search}
+                        class={baseClasses}
+                      >
                         {content}
                       </Link>
                     )

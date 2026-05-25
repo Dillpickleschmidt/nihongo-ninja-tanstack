@@ -1,3 +1,4 @@
+import type { ModuleLink } from "@/lib/module-links"
 import type { StaticModule } from "./static_modules"
 
 export interface ExternalResource extends Omit<StaticModule, "link"> {
@@ -6,8 +7,8 @@ export interface ExternalResource extends Omit<StaticModule, "link"> {
   difficulty_rating: "easy" | "medium" | "hard"
 }
 
-export function getExternalResourceLink(key: string): string {
-  return `/external-resources/${key}`
+export function getExternalResourceLink(key: string): ModuleLink {
+  return { to: `/external-resources/${key}` }
 }
 
 export const external_resources: Record<string, ExternalResource> = {

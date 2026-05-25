@@ -259,7 +259,8 @@ function KanaQuizActionBar(props: { moduleId: string }) {
 
           <Show when={nextLesson}>
             <Link
-              to={nextLesson!}
+              to={nextLesson!.to}
+              search={nextLesson!.search}
               class="no-underline"
               onClick={() => completeModule(props.moduleId)}
             >

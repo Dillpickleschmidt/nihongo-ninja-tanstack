@@ -2,6 +2,7 @@ import { For, Show, type Component, type JSX } from "solid-js"
 import { Link } from "@tanstack/solid-router"
 import { ChevronRight } from "lucide-solid"
 import { cn } from "@/utils"
+import type { ModuleLink } from "@/lib/module-links"
 
 // ===== TimelineList =====
 
@@ -22,10 +23,7 @@ export function TimelineList<T>(props: TimelineListProps<T>) {
       <For each={props.each}>
         {(item, index) => (
           <li
-            class={cn(
-              "relative",
-              index() !== props.each.length - 1 && "pb-1",
-            )}
+            class={cn("relative", index() !== props.each.length - 1 && "pb-1")}
           >
             {props.children(item, index)}
           </li>
@@ -40,7 +38,7 @@ export function TimelineList<T>(props: TimelineListProps<T>) {
 interface TimelineItemProps {
   title: string
   description?: string
-  linkTo: string
+  linkTo: ModuleLink
   icon?: Component<{ size?: string; class?: string }>
   iconClass?: string
   disabled?: boolean
@@ -105,7 +103,12 @@ export function TimelineItem(props: TimelineItemProps) {
       {content}
     </button>
   ) : (
-    <Link to={props.linkTo} class={baseClasses} style={props.style}>
+    <Link
+      to={props.linkTo.to}
+      search={props.linkTo.search}
+      class={baseClasses}
+      style={props.style}
+    >
       {content}
     </Link>
   )

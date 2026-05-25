@@ -38,10 +38,12 @@ function truncateText(text: string, maxLength: number) {
 
 export function ExternalResourceCard(props: ExternalResourceCardProps) {
   const thumbnailUrl = () => getThumbnailUrl(props.resource.external_url)
+  const link = () => getExternalResourceLink(props.resourceId)
 
   return (
     <SmoothCardLink
-      to={getExternalResourceLink(props.resourceId)}
+      to={link().to}
+      search={link().search}
       width={160}
       height={105}
       cornerRadius={14}

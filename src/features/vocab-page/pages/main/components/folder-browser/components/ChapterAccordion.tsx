@@ -1,5 +1,5 @@
-import { For, createSignal, createEffect, on, onMount } from "solid-js"
-import { getRouteApi } from "@tanstack/solid-router"
+import { For, createSignal, createEffect } from "solid-js"
+import { useLocation } from "@tanstack/solid-router"
 import {
   Accordion,
   AccordionItem,
@@ -22,8 +22,7 @@ export function ChapterAccordion(props: {
   decks: Deck[]
   matchingDeckIds: Set<string> | null
 }) {
-  const vocabRoute = getRouteApi("/_home/vocab/")
-  const search = vocabRoute.useSearch()
+  const location = useLocation()
   const { preferences } = usePreferences()
   const chapters = () => getFolderChildren(props.folders, props.folderId)
 
@@ -33,24 +32,29 @@ export function ChapterAccordion(props: {
     return slug ? `${props.folderId}/${slug}` : null
   }
 
+  const chapterFromUrl = () => location().search.chapter
+
+  const expandedChapterFromSearch = () => {
+    const chapter = chapterFromUrl()
+    return chapter ? [`${props.folderId}/${chapter}`] : []
+  }
+
   const [expandedIds, setExpandedIds] = createSignal<string[]>(
-    activeChapterFolderId() ? [activeChapterFolderId()!] : [],
-  )
-  createEffect(
-    on(
-      () => props.folderId,
-      () => setExpandedIds(activeChapterFolderId() ? [activeChapterFolderId()!] : []),
-    ),
+    expandedChapterFromSearch(),
   )
 
-  onMount(() => {
-    const chapter = search().chapter
-    if (chapter) {
-      // Delay to allow parent mount animations to settle
-      requestAnimationFrame(() => {
-        document.getElementById(chapter)?.scrollIntoView({ behavior: "smooth", block: "start" })
-      })
-    }
+  createEffect(() => {
+    setExpandedIds(expandedChapterFromSearch())
+
+    const chapter = chapterFromUrl()
+    if (!chapter) return
+
+    // Delay to allow parent mount animations to settle.
+    requestAnimationFrame(() => {
+      document
+        .getElementById(chapter)
+        ?.scrollIntoView({ behavior: "smooth", block: "start" })
+    })
   })
 
   const visibleChapters = () => {
@@ -91,7 +95,9 @@ export function ChapterAccordion(props: {
                     </div>
                     <span
                       class={`text-sm font-semibold ${
-                        isActive() ? "text-orange-400" : "text-foreground/70 dark:text-white/70"
+                        isActive()
+                          ? "text-orange-400"
+                          : "text-foreground/70 dark:text-white/70"
                       }`}
                     >
                       {chapter.folderName}
@@ -103,7 +109,10 @@ export function ChapterAccordion(props: {
                   </div>
                 </AccordionTrigger>
                 <AccordionContent>
-                  <DeckTimelineList decks={decks()} isActiveChapter={isActive()} />
+                  <DeckTimelineList
+                    decks={decks()}
+                    defaultExpanded={chapterFromUrl() === slug}
+                  />
                 </AccordionContent>
               </AccordionItem>
             )

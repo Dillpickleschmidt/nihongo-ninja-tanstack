@@ -11,11 +11,13 @@ import {
 import { ModuleDetailGrammar } from "./ModuleDetailGrammar"
 import { ModuleDetailVocabulary } from "./ModuleDetailVocabulary"
 
+import type { ModuleLink } from "@/lib/module-links"
+
 interface ModuleDetailDialogProps {
   pathId: string
   moduleId: string
   moduleName: string
-  linkTo: string
+  linkTo: ModuleLink
   isOpen: boolean
   onOpenChange: (open: boolean) => void
 }

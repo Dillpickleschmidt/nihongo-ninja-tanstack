@@ -38,7 +38,10 @@ import {
   getModuleIcon,
   getModuleIconClasses,
 } from "@/data/utils/module-helpers"
-import { LearningPathProvider, useLearningPath } from "@/features/learn/context/learning-path"
+import {
+  LearningPathProvider,
+  useLearningPath,
+} from "@/features/learn/context/learning-path"
 import { useLocalCompletions } from "@/lib/completions"
 import { cn } from "@/utils"
 import { getInitialAnimationStyles } from "@/utils/animations"
@@ -131,7 +134,12 @@ const navigation: Array<{ label?: string; items: NavigationItem[] }> = [
   {
     label: "Extra",
     items: [
-      { title: "Guides", href: "/guides", icon: GraduationCap, class: "text-primary" },
+      {
+        title: "Guides",
+        href: "/guides",
+        icon: GraduationCap,
+        class: "text-primary",
+      },
       {
         title: "Extension",
         href: "/guides/nihongo-extension",
@@ -164,7 +172,11 @@ export function Sidebar(props: SidebarProps) {
       style={props.animated ? getInitialAnimationStyles("left") : undefined}
     >
       <LearningPathProvider>
-        <SidebarShell tab={tab()} onTabChange={setTab} onSignOut={props.onSignOut}>
+        <SidebarShell
+          tab={tab()}
+          onTabChange={setTab}
+          onSignOut={props.onSignOut}
+        >
           <Show
             when={tab() === "course"}
             fallback={<MenuContent onNavigate={() => {}} />}
@@ -188,7 +200,8 @@ function SidebarShell(props: {
       <div
         class={cn(
           "shrink-0 space-y-3 px-6 pt-6 pb-3",
-          props.tab === "course" && "border-b border-border/70 dark:border-white/10",
+          props.tab === "course" &&
+            "border-b border-border/70 dark:border-white/10",
         )}
       >
         <SidebarBrand />
@@ -211,7 +224,10 @@ function SidebarShell(props: {
 
 function SidebarBrand() {
   return (
-    <Link to="/" class="flex items-center gap-2 text-lg font-bold tracking-tight">
+    <Link
+      to="/"
+      class="flex items-center gap-2 text-lg font-bold tracking-tight"
+    >
       <img
         src="/icons/ninja.png"
         alt="Ninja"
@@ -229,7 +245,10 @@ function SidebarTabs(props: {
   onChange: (value: SidebarTab) => void
 }) {
   return (
-    <Tabs value={props.value} onChange={(value) => props.onChange(value as SidebarTab)}>
+    <Tabs
+      value={props.value}
+      onChange={(value) => props.onChange(value as SidebarTab)}
+    >
       <TabsList class="grid h-8 w-full grid-cols-2 bg-transparent p-0">
         <TabsTrigger
           value="menu"
@@ -309,37 +328,37 @@ function MenuButton(props: {
         "ease-instant-hover-75 w-full justify-start rounded-md pl-6.5 pr-6 py-2.5 hover:bg-dynamic-accent/20",
       )}
     >
-        <Show
-          when={typeof props.item.icon === "string"}
-          fallback={
-            <Dynamic
-              component={props.item.icon as LucideIcon}
-              class={cn(
-                "mx-1 size-3.5 2xl:size-4",
-                props.item.class,
-                props.active && "text-dynamic-accent brightness-150",
-              )}
-            />
-          }
-        >
-          <span
+      <Show
+        when={typeof props.item.icon === "string"}
+        fallback={
+          <Dynamic
+            component={props.item.icon as LucideIcon}
             class={cn(
-              "mx-1 flex size-3.5 items-center justify-center font-japanese text-sm font-medium 2xl:size-4 2xl:text-base",
+              "mx-1 size-3.5 2xl:size-4",
               props.item.class,
               props.active && "text-dynamic-accent brightness-150",
             )}
-          >
-            {props.item.icon as string}
-          </span>
-        </Show>
+          />
+        }
+      >
         <span
           class={cn(
-            "text-[0.78rem] font-medium 2xl:text-[0.85rem]",
+            "mx-1 flex size-3.5 items-center justify-center font-japanese text-sm font-medium 2xl:size-4 2xl:text-base",
+            props.item.class,
             props.active && "text-dynamic-accent brightness-150",
           )}
         >
-          {props.item.title}
+          {props.item.icon as string}
         </span>
+      </Show>
+      <span
+        class={cn(
+          "text-[0.78rem] font-medium 2xl:text-[0.85rem]",
+          props.active && "text-dynamic-accent brightness-150",
+        )}
+      >
+        {props.item.title}
+      </span>
     </Link>
   )
 }
@@ -378,9 +397,25 @@ function CourseOutline() {
     )
   })
 
-  const isActiveModule = (module: LearningPathModule) =>
-    location().pathname === module.linkTo ||
-    location().pathname.startsWith(module.linkTo + "/")
+  const isActiveModule = (module: LearningPathModule) => {
+    const loc = location()
+    const link = module.linkTo
+
+    if (loc.pathname !== link.to && !loc.pathname.startsWith(link.to + "/")) {
+      return false
+    }
+
+    // Query-driven modules should only be active when their search params match.
+    return Object.entries(link.search ?? {}).every(([key, value]) => {
+      if (!(key in loc.search)) return false
+      const actual = loc.search[key as keyof typeof loc.search]
+      return Array.isArray(value)
+        ? Array.isArray(actual) &&
+            value.length === actual.length &&
+            value.every((item, index) => actual[index] === item)
+        : actual === value
+    })
+  }
 
   return (
     <Show when={query.data()} fallback={<CourseOutlineSkeleton />}>
@@ -393,11 +428,7 @@ function CourseOutline() {
             </p>
           }
         >
-          <Accordion
-            multiple
-            value={openChapters()}
-            onChange={setOpenChapters}
-          >
+          <Accordion multiple value={openChapters()} onChange={setOpenChapters}>
             <For each={data().chapters}>
               {(chapter) => (
                 <CourseChapter
@@ -420,7 +451,8 @@ function CourseChapter(props: {
   isActiveModule: (module: LearningPathModule) => boolean
 }) {
   const completedCount = () =>
-    props.chapter.modules.filter((module) => props.isCompleted(module.moduleId)).length
+    props.chapter.modules.filter((module) => props.isCompleted(module.moduleId))
+      .length
 
   return (
     <AccordionItem
@@ -466,10 +498,14 @@ function CourseModuleLink(props: {
   const ModuleIcon = getModuleIcon(props.module.module.module_type)
   const statusIcon = () => {
     if (props.completed) {
-      return <CircleCheckBig class="size-3.5 text-dynamic-accent dark:brightness-125" />
+      return (
+        <CircleCheckBig class="size-3.5 text-dynamic-accent dark:brightness-125" />
+      )
     }
     if (props.active) {
-      return <PlayCircle class="size-3.5 text-dynamic-accent dark:brightness-125" />
+      return (
+        <PlayCircle class="size-3.5 text-dynamic-accent dark:brightness-125" />
+      )
     }
     return <Circle class="size-3 text-muted-foreground/45" />
   }
@@ -500,7 +536,11 @@ function CourseModuleLink(props: {
   )
 
   if (props.module.disabled) return content
-  return <Link to={props.module.linkTo}>{content}</Link>
+  return (
+    <Link to={props.module.linkTo.to} search={props.module.linkTo.search}>
+      {content}
+    </Link>
+  )
 }
 
 function useCourseProgress() {

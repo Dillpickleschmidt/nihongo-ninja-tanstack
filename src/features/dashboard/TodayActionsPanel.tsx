@@ -9,9 +9,10 @@ import {
   getModuleIconClasses,
 } from "@/data/utils/module-helpers"
 import { Skeleton } from "@/components/ui/custom/skeleton"
+import type { ModuleLink } from "@/lib/module-links"
 
 export type NextDashboardModule = {
-  linkTo: string
+  linkTo: ModuleLink
   chapterTitle: string
   module: { title: string; module_type: string }
 }
@@ -73,7 +74,11 @@ function NextUpItem(props: {
       }
     >
       {(mod) => (
-        <Link to={mod().linkTo} class={`${ITEM_INTERACTIVE} min-w-0 flex-1`}>
+        <Link
+          to={mod().linkTo.to}
+          search={mod().linkTo.search}
+          class={`${ITEM_INTERACTIVE} min-w-0 flex-1`}
+        >
           <Overline>Next up</Overline>
           <div class="mt-1.5 flex items-center gap-2">
             <Dynamic
@@ -161,7 +166,9 @@ function ReviewChip(props: {
 }) {
   return (
     <span class="inline-flex items-baseline gap-1">
-      <span class={`font-japanese text-[0.85rem] leading-none ${props.symbolClass}`}>
+      <span
+        class={`font-japanese text-[0.85rem] leading-none ${props.symbolClass}`}
+      >
         {props.symbol}
       </span>
       <span class="text-[0.8rem] font-semibold tabular-nums text-foreground/65 dark:text-white/65">

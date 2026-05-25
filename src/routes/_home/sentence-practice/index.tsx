@@ -7,6 +7,7 @@ import {
   onCleanup,
 } from "solid-js"
 import { createFileRoute } from "@tanstack/solid-router"
+import type { ModuleLink } from "@/lib/module-links"
 import { TextField, TextFieldInput } from "@/components/ui/text-field"
 import {
   Select,
@@ -133,28 +134,27 @@ function SentencePracticeList() {
             onChange={(value) => {
               if (value) setPreferences(buildPathSelectionPreferences(value))
             }}
-              options={availableTextbooks().map((t) => t.id)}
-              placeholder="Select textbook"
-              itemComponent={(props) => (
-                <SelectItem item={props.item}>
-                  {availableTextbooks().find(
-                    (t) => t.id === props.item.rawValue,
-                  )?.name || "Select textbook"}
-                </SelectItem>
-              )}
-            >
-              <SelectTrigger class="bg-background/60 w-[180px] border-border/60 backdrop-blur-sm dark:border-0 dark:bg-background/40">
-                <SelectValue<string>>
-                  {(state) => {
-                    const tb = availableTextbooks().find(
-                      (t) => t.id === state.selectedOption(),
-                    )
-                    return tb?.name || "Select textbook"
-                  }}
-                </SelectValue>
-              </SelectTrigger>
-              <SelectContent class="bg-popover border-border/70 text-popover-foreground dark:bg-background dark:border-card-foreground/70" />
-            </Select>
+            options={availableTextbooks().map((t) => t.id)}
+            placeholder="Select textbook"
+            itemComponent={(props) => (
+              <SelectItem item={props.item}>
+                {availableTextbooks().find((t) => t.id === props.item.rawValue)
+                  ?.name || "Select textbook"}
+              </SelectItem>
+            )}
+          >
+            <SelectTrigger class="bg-background/60 w-[180px] border-border/60 backdrop-blur-sm dark:border-0 dark:bg-background/40">
+              <SelectValue<string>>
+                {(state) => {
+                  const tb = availableTextbooks().find(
+                    (t) => t.id === state.selectedOption(),
+                  )
+                  return tb?.name || "Select textbook"
+                }}
+              </SelectValue>
+            </SelectTrigger>
+            <SelectContent class="bg-popover border-border/70 text-popover-foreground dark:bg-background dark:border-card-foreground/70" />
+          </Select>
         </div>
 
         {/* Header */}
@@ -213,9 +213,7 @@ function SentencePracticeList() {
             <div class="text-muted-foreground py-12 text-center">
               <Search class="mx-auto mb-3 size-10 opacity-50" />
               <p>No results for "{search()}"</p>
-              <p class="mt-1 text-sm opacity-70">
-                Try a different search term
-              </p>
+              <p class="mt-1 text-sm opacity-70">Try a different search term</p>
             </div>
           </Show>
         </Show>
@@ -273,7 +271,7 @@ type EnrichedSentenceModule = {
   id: string
   title: string
   description?: string
-  linkTo: string
+  linkTo: ModuleLink
   chapterSlug?: string
 }
 
@@ -286,7 +284,7 @@ function enrichModule(
     id: mod.id,
     title: mod.title,
     description: mod.instructions || mod.description,
-    linkTo: `/sentence-practice/${strippedId}`,
+    linkTo: { to: `/sentence-practice/${strippedId}` },
     chapterSlug,
   }
 }

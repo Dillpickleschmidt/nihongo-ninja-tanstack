@@ -124,11 +124,13 @@ function KanaPage() {
           </div>
           <div class="hidden sm:flex items-center gap-4 text-xs text-muted-foreground/70 tabular-nums shrink-0 dark:text-white/25">
             <span>
-              <span class="text-muted-foreground dark:text-white/40">156</span>/214 learned
+              <span class="text-muted-foreground dark:text-white/40">156</span>
+              /214 learned
             </span>
             <span class="text-muted-foreground/40 dark:text-white/8">·</span>
             <span>
-              <span class="text-muted-foreground dark:text-white/40">72%</span> mastery
+              <span class="text-muted-foreground dark:text-white/40">72%</span>{" "}
+              mastery
             </span>
           </div>
         </div>
@@ -229,14 +231,17 @@ function KanaPage() {
 // ---------------------------------------------------------------------------
 
 function QuizCard(props: { mod: QuizModule; delay: number }) {
-  const href = () => {
+  const link = () => {
     const dm = dynamic_modules[props.mod.id]
-    return dm ? getModuleLink(dm, props.mod.id) : `/practice/${props.mod.id}`
+    return dm
+      ? getModuleLink(dm, props.mod.id)
+      : { to: `/practice/${props.mod.id}` }
   }
 
   return (
     <Link
-      to={href()}
+      to={link().to}
+      search={link().search}
       class={`group relative block overflow-hidden rounded-xl border border-border/50 bg-card/50 shadow-sm transition-colors hover:border-dynamic-accent/30 hover:bg-card/70 anim-up dark:border-white/6 dark:bg-white/2.5 dark:shadow-none dark:hover:border-dynamic-accent/25 dark:hover:bg-white/4.5 ${props.mod.span ? "md:col-span-2 p-6" : "p-5"}`}
       style={{ "animation-delay": `${props.delay}ms` }}
     >
@@ -249,14 +254,18 @@ function QuizCard(props: { mod: QuizModule; delay: number }) {
           <h3 class="text-lg font-semibold text-foreground/90 transition-colors group-hover:text-dynamic-accent dark:text-white/90">
             {props.mod.label}
           </h3>
-          <p class="text-sm text-muted-foreground mt-0.5 dark:text-white/30">{props.mod.subtitle}</p>
+          <p class="text-sm text-muted-foreground mt-0.5 dark:text-white/30">
+            {props.mod.subtitle}
+          </p>
         </div>
 
         <div class="text-right shrink-0 mt-0.5">
           <span class="text-sm tabular-nums text-muted-foreground dark:text-white/35">
             {props.mod.mastery}%
           </span>
-          <p class="text-[11px] text-muted-foreground/70 dark:text-white/20">last session</p>
+          <p class="text-[11px] text-muted-foreground/70 dark:text-white/20">
+            last session
+          </p>
         </div>
       </div>
 

@@ -6,7 +6,7 @@ import {
   type ExternalResource,
 } from "../external_resources"
 import { chapters } from "../chapters"
-import { getModuleLink } from "../../lib/module-links"
+import { getModuleLink, type ModuleLink } from "../../lib/module-links"
 
 // Unified Module type
 export type Module = StaticModule | DynamicModule | ExternalResource
@@ -20,7 +20,7 @@ export const moduleCatalog: Record<string, Module> = {
 /**
  * Given a moduleId, find the next module in the learning path and return its link.
  */
-export function getNextModuleLink(moduleId: string): string | null {
+export function getNextModuleLink(moduleId: string): ModuleLink | null {
   for (const textbookChapters of Object.values(chapters)) {
     for (const chapter of Object.values(textbookChapters)) {
       const ids = chapter.learning_path_item_ids

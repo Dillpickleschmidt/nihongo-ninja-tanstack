@@ -1,9 +1,4 @@
-import {
-  createEffect,
-  createSignal,
-  onCleanup,
-  onMount,
-} from "solid-js"
+import { createEffect, createSignal, onCleanup, onMount } from "solid-js"
 import {
   createFileRoute,
   Outlet,
@@ -67,7 +62,7 @@ function RouteComponent() {
 
     const currentPath = location().pathname
     const staticModuleEntry = Object.entries(static_modules).find(
-      ([, module]) => module.link === currentPath,
+      ([, module]) => module.link.to === currentPath,
     )
 
     if (staticModuleEntry) {

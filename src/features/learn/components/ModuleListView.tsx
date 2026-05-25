@@ -104,7 +104,12 @@ function ModuleListItem(props: ModuleListItemProps) {
           {content}
         </button>
       ) : (
-        <Link to={linkTo} data-lessons-section class={baseClasses}>
+        <Link
+          to={linkTo.to}
+          search={linkTo.search}
+          data-lessons-section
+          class={baseClasses}
+        >
           {content}
         </Link>
       )}

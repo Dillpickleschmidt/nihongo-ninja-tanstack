@@ -11,7 +11,7 @@ import { removeBackgroundPreferencesForPath } from "../../src/features/backgroun
 import { buildPathSelectionPreferences } from "../../src/features/learning-path/selection"
 import { external_resources } from "../../src/data/external_resources"
 import { moduleCatalog } from "../../src/data/utils/modules"
-import { getModuleLink } from "../../src/lib/module-links"
+import { getModuleLink, type ModuleLink } from "../../src/lib/module-links"
 
 const MODULES_PER_CHAPTER = 30
 
@@ -29,7 +29,7 @@ export type LearningPathModule = {
     module_type: string
     description?: string
   }
-  linkTo: string
+  linkTo: ModuleLink
   disabled: boolean
 }
 
@@ -257,7 +257,7 @@ export async function getResolvedChaptersForPath(
         module_type: "vocab-practice",
         description: deck.deckDescription,
       },
-      linkTo: deckPath,
+      linkTo: { to: deckPath },
       disabled: false,
     })
   }
@@ -306,7 +306,7 @@ export async function getModuleDetail(
   )
 
   if (source.sourceType === "grammar") {
-      const module = moduleCatalog[moduleId]
+    const module = moduleCatalog[moduleId]
     if (!module) {
       console.warn(
         `[LearningPath] Missing grammar module '${moduleId}' for module detail`,
@@ -558,7 +558,7 @@ function resolveLearningPathModuleIds(
         title: `Ch. ${chapterSlug.replace("chapter-", "")} Vocabulary`,
         module_type: "vocab-list",
       },
-      linkTo: `/vocab?chapter=${chapterSlug}`,
+      linkTo: { to: "/vocab", search: { chapter: chapterSlug } },
       disabled: false,
     },
   ]
@@ -586,7 +586,6 @@ function resolveLearningPathModuleIds(
 
   return resolvedModules
 }
-
 
 async function resolveUserPathId(
   ctx: QueryCtx | MutationCtx,

@@ -5,35 +5,55 @@ import {
   getExternalResourceLink,
 } from "@/data/external_resources"
 
-// --- Forward: moduleId → link URL ---
+export type ModuleLink = {
+  to: string
+  search?: Record<string, string | string[] | boolean | number>
+}
+
+// --- Forward: moduleId → route link ---
 
 export function getModuleLink(
-  module: { module_type: string; link?: string },
+  module: { module_type: string; link?: ModuleLink },
   moduleId: string,
-): string {
+): ModuleLink {
   if ("link" in module && module.link) return module.link
   if (moduleId in external_resources) return getExternalResourceLink(moduleId)
   if (module.module_type === "vocab-practice") {
     const chapter = getChapterForModule(moduleId)
-    if (chapter) return `/vocab/${chapter.textbookId}/${chapter.chapterSlug}/${moduleId}`
-    return `/vocab/practice/${moduleId}`
+    if (chapter) {
+      return {
+        to: `/vocab/${chapter.textbookId}/${chapter.chapterSlug}/${moduleId}`,
+      }
+    }
+    return { to: `/vocab/practice/${moduleId}` }
   }
-  if (module.module_type === "sentence-practice")
-    return `/sentence-practice/${moduleId.replace(/^sentence-practice-/, "")}`
-  if (module.module_type === "vocab-test")
-    return `/vocab/quiz/${moduleId.replace(/-quiz$/, "")}`
-  if (module.module_type === "vocab-list") return `/vocab/list/${moduleId}`
-  return `/practice/${moduleId}`
+  if (module.module_type === "sentence-practice") {
+    return {
+      to: `/sentence-practice/${moduleId.replace(/^sentence-practice-/, "")}`,
+    }
+  }
+  if (module.module_type === "vocab-test") {
+    return { to: `/vocab/quiz/${moduleId.replace(/-quiz$/, "")}` }
+  }
+  if (module.module_type === "vocab-list")
+    return { to: `/vocab/list/${moduleId}` }
+  return { to: `/practice/${moduleId}` }
 }
 
 // --- Reverse: URL → moduleId ---
 
-function normalizeLink(link: string): string {
-  const qIndex = link.indexOf("?")
-  if (qIndex === -1) return link
-  const params = new URLSearchParams(link.slice(qIndex + 1))
+function normalizeLink(link: ModuleLink): string {
+  const params = new URLSearchParams()
+  for (const [key, value] of Object.entries(link.search ?? {})) {
+    if (Array.isArray(value)) {
+      for (const item of value) params.append(key, String(item))
+    } else {
+      params.set(key, String(value))
+    }
+  }
   params.sort()
-  return `${link.slice(0, qIndex)}?${params.toString()}`
+  const search = params.toString()
+  return search ? `${link.to}?${search}` : link.to
 }
 
 export const linkToModuleId: Record<string, string> = {}
@@ -41,7 +61,7 @@ for (const [moduleId, mod] of Object.entries(static_modules)) {
   linkToModuleId[normalizeLink(mod.link)] = moduleId
 }
 for (const moduleId of Object.keys(external_resources)) {
-  linkToModuleId[getExternalResourceLink(moduleId)] = moduleId
+  linkToModuleId[normalizeLink(getExternalResourceLink(moduleId))] = moduleId
 }
 
 export function getModuleIdFromUrl(
@@ -55,7 +75,11 @@ export function getModuleIdFromUrl(
       : new URLSearchParams(
           Object.entries(search)
             .filter(([, v]) => v != null)
-            .map(([k, v]) => [k, String(v)]),
+            .flatMap(([k, v]) =>
+              Array.isArray(v)
+                ? v.map((item) => [k, String(item)] as [string, string])
+                : [[k, String(v)] as [string, string]],
+            ),
         )
   params.sort()
   const searchStr = params.toString()

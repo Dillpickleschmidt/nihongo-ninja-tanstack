@@ -1,5 +1,6 @@
 import { createSignal, For, Show } from "solid-js"
 import { Link } from "@tanstack/solid-router"
+import type { ModuleLink } from "@/lib/module-links"
 import { ChevronDown, ChevronRight, PencilLine } from "lucide-solid"
 
 interface TranscriptLine {
@@ -13,7 +14,7 @@ interface ModuleDetailGrammarProps {
   transcriptGroups: TranscriptLine[][]
   moduleId: string
   moduleDescription?: string
-  linkTo: string
+  linkTo: ModuleLink
 }
 
 export function ModuleDetailGrammar(props: ModuleDetailGrammarProps) {
@@ -39,7 +40,8 @@ export function ModuleDetailGrammar(props: ModuleDetailGrammarProps) {
                   </p>
                 </div>
                 <Link
-                  to={props.linkTo}
+                  to={props.linkTo.to}
+                  search={props.linkTo.search}
                   class="flex items-center gap-1.5 shrink-0 rounded-lg bg-amber-500/15 px-3 py-1.5 text-sm font-medium text-amber-300 ring-1 ring-amber-400/25 transition-colors hover:bg-amber-500/25 hover:text-amber-200"
                 >
                   Continue

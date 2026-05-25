@@ -1,5 +1,6 @@
 import { createSignal, For, Show } from "solid-js"
 import { Link } from "@tanstack/solid-router"
+import type { ModuleLink } from "@/lib/module-links"
 import { GraduationCap, ChevronRight } from "lucide-solid"
 import { extractHiragana } from "@/data/utils/text/furigana"
 
@@ -19,7 +20,7 @@ interface VocabItem {
 interface ModuleDetailVocabularyProps {
   transcriptGroups: TranscriptLine[][]
   vocabularyItems: VocabItem[]
-  linkTo: string
+  linkTo: ModuleLink
 }
 
 export function ModuleDetailVocabulary(props: ModuleDetailVocabularyProps) {
@@ -72,7 +73,8 @@ export function ModuleDetailVocabulary(props: ModuleDetailVocabularyProps) {
                   </p>
                 </div>
                 <Link
-                  to={props.linkTo}
+                  to={props.linkTo.to}
+                  search={props.linkTo.search}
                   class="flex items-center gap-1.5 shrink-0 rounded-lg bg-orange-500/15 px-3 py-1.5 text-sm font-medium text-orange-300 ring-1 ring-orange-400/25 transition-colors hover:bg-orange-500/25 hover:text-orange-200"
                 >
                   Continue
