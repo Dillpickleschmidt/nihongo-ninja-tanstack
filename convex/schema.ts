@@ -149,11 +149,16 @@ export default defineSchema({
   imageAssets: defineTable({
     imageId: v.string(),
     ownerUserId: v.string(),
-    storageKey: v.string(),
-    contentType: v.string(),
     sourceWidth: v.number(),
-    objectEtag: v.string(),
     createdAt: v.number(),
+    kind: v.union(
+      v.object({ mediaType: v.literal("image") }),
+      v.object({
+        mediaType: v.literal("gif"),
+        storageKey: v.string(),
+        objectEtag: v.string(),
+      }),
+    ),
   })
     .index("by_imageId", ["imageId"])
     .index("by_owner_createdAt", ["ownerUserId", "createdAt"]),

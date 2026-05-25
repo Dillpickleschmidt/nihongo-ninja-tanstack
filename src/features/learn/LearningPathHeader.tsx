@@ -12,7 +12,7 @@ import {
 import { getChapterDisplayNumber } from "@/data/utils/chapter-helpers"
 import {
   clearChapterBackground,
-  getChapterBackgroundId,
+  getChapterBackgroundSelection,
   type BackgroundTarget,
 } from "@/features/backgrounds/overrides"
 import { BackgroundAssignmentDialog } from "@/features/backgrounds/components/BackgroundAssignmentDialog"
@@ -107,7 +107,7 @@ export function LearningPathHeader() {
   }
 
   const hasChapterBackground = (target: BackgroundTarget) =>
-    !!getChapterBackgroundId(backgroundOverrides(), target)
+    !!getChapterBackgroundSelection(backgroundOverrides(), target)
 
   const resetChapterBackground = (target: BackgroundTarget) => {
     setPreference(

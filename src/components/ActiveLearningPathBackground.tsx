@@ -1,9 +1,10 @@
 import { Show } from "solid-js"
-import { Image as BaseImage } from "@unpic/solid/base"
 import {
   useQuery as useTanstackQuery,
   useQueryClient,
 } from "@tanstack/solid-query"
+import { Image } from "@/components/Image"
+import { imageVariantWidths } from "@/features/images/variants"
 import { FastAverageColor } from "fast-average-color"
 import { backgroundSettingsQueryOptions } from "~/query/query-options"
 import { usePreferences } from "@/lib/preferences"
@@ -39,7 +40,7 @@ export function ActiveLearningPathBackground() {
   const blurValue = () =>
     settings()?.blur !== undefined ? `${settings()?.blur}px` : "16px"
 
-  const { backgroundItem, videoBackground, imageSource } =
+  const { backgroundItem, backgroundSelection, videoBackground } =
     useActiveLearningPathBackground()
   const yOffset = () => backgroundItem().yOffsetDesktop || "0"
   const finalOpacity = () =>
@@ -62,7 +63,7 @@ export function ActiveLearningPathBackground() {
         <Show when={videoBackground()}>
           {(bg) => (
             <video
-              src={bg().videoSrc}
+              src={bg().src}
               class="pointer-events-none fixed inset-0 -z-10 -mt-8"
               style={{
                 "object-fit": "cover",
@@ -84,7 +85,7 @@ export function ActiveLearningPathBackground() {
             />
           )}
         </Show>
-        <Show when={backgroundItem().kind === "image"}>
+        <Show when={backgroundItem().mediaType !== "video"}>
           <div
             class="pointer-events-none fixed inset-0 -z-10 -mt-8 overflow-hidden"
             style={{
@@ -96,24 +97,20 @@ export function ActiveLearningPathBackground() {
               top: yOffset(),
             }}
           >
-            <Show when={imageSource()}>
-              {(s) => (
-                <BaseImage
-                  src={s().src}
-                  transformer={s().transformer}
-                  breakpoints={s().breakpoints}
-                  layout="fullWidth"
-                  unstyled
-                  class={`h-full w-full object-cover ${
-                    backgroundItem().layout === "vertical"
-                      ? "object-top"
-                      : "object-center"
-                  }`}
-                  alt="Background"
-                  onLoad={(e) => extractAndSetColor(e.currentTarget)}
-                />
-              )}
-            </Show>
+            <Image
+              src={backgroundItem().src}
+              widths={
+                backgroundSelection().mediaType === "image"
+                  ? imageVariantWidths(backgroundSelection().sourceWidth)
+                  : undefined
+              }
+              sizes="100vw"
+              alt="Background"
+              class={`h-full w-full object-cover ${
+                backgroundItem().layout === "vertical" ? "object-top" : "object-center"
+              }`}
+              onLoad={(e) => extractAndSetColor(e.currentTarget)}
+            />
           </div>
         </Show>
 

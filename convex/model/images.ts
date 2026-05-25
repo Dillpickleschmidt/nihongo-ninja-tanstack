@@ -3,10 +3,10 @@ import { ConvexError } from "convex/values"
 
 type CreateImageAssetArgs = {
   imageId: string
-  storageKey: string
-  contentType: string
   sourceWidth: number
-  objectEtag: string
+  kind:
+    | { mediaType: "image" }
+    | { mediaType: "gif"; storageKey: string; objectEtag: string }
 }
 
 export async function createImageAsset(
@@ -31,10 +31,8 @@ export async function createImageAsset(
   return await ctx.db.insert("imageAssets", {
     imageId: args.imageId,
     ownerUserId: identity.subject,
-    storageKey: args.storageKey,
-    contentType: args.contentType,
     sourceWidth: args.sourceWidth,
-    objectEtag: args.objectEtag,
+    kind: args.kind,
     createdAt: Date.now(),
   })
 }

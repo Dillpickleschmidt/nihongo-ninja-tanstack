@@ -165,6 +165,12 @@ const conjugationPracticeSettingsValidator = v.object({
   emoji: v.boolean(),
 })
 
+const backgroundSelectionValidator = v.object({
+  id: v.string(),
+  sourceWidth: v.number(),
+  mediaType: v.union(v.literal("image"), v.literal("gif"), v.literal("video")),
+})
+
 const backgroundLockValidator = v.object({
   scope: v.union(v.literal("path"), v.literal("global")),
   pathId: v.string(),
@@ -176,7 +182,7 @@ export const userPreferencesValidator = v.object({
   activeLearningPath: v.string(),
   activeChapter: v.string(),
   backgroundOverrides: v.object({
-    chapters: v.record(v.string(), v.string()),
+    chapters: v.record(v.string(), backgroundSelectionValidator),
     lock: v.optional(backgroundLockValidator),
   }),
   hasCompletedOnboarding: v.boolean(),

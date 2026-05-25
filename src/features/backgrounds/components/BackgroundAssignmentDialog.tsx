@@ -1,9 +1,8 @@
 import { For, Match, Show, Suspense, Switch, createMemo, createSignal, type JSX } from "solid-js"
 import { Check, Lock, Upload } from "lucide-solid"
 import { api } from "convex/_generated/api"
-import { useQuery } from "@tanstack/solid-query"
+import { useConvexQuery } from "@/lib/convex-query"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
-import { convexQuery } from "@/lib/convex-query"
 import { authClient } from "@/lib/auth-client"
 import { cn } from "@/utils"
 import { getChapterDisplayNumber } from "@/data/utils/chapter-helpers"
@@ -18,7 +17,7 @@ import {
   clearBackgroundLock,
   clearChapterBackground,
   getActiveBackgroundLock,
-  getChapterBackgroundId,
+  getChapterBackgroundSelection,
   type BackgroundApplyScope,
   type BackgroundLock,
   type BackgroundTarget,
@@ -56,11 +55,11 @@ export function BackgroundAssignmentDialog(
     ),
   )
 
-  const assignedBackgroundId = () =>
-    getChapterBackgroundId(overrides(), props.target)
+  const assignedBackgroundSelection = () =>
+    getChapterBackgroundSelection(overrides(), props.target)
 
   const highlightId = () =>
-    assignedBackgroundId() ?? resolvedBackground().assignedBackgroundId
+    assignedBackgroundSelection()?.id ?? resolvedBackground().selection.id
 
   const orderedBuiltIns = () => {
     const all = BUILT_IN_BACKGROUND_LIST
@@ -88,12 +87,16 @@ export function BackgroundAssignmentDialog(
 
   const handleUploadClick = () => fileInputRef?.click()
 
-  const selectBackground = (backgroundId: string) => {
+  const selectBackground = (selection: BackgroundPreviewItem) => {
     setPreference(
       "backgroundOverrides",
       applyChapterBackgroundSelection(overrides(), {
         ...props.target,
-        backgroundId,
+        selection: {
+          id: selection.id,
+          sourceWidth: selection.sourceWidth,
+          mediaType: selection.mediaType,
+        },
         scope: activeLock()?.scope ?? applyScope(),
       }),
     )
@@ -146,7 +149,14 @@ export function BackgroundAssignmentDialog(
         throw new Error(message || `Image upload failed (${res.status})`)
       }
       const upload = (await res.json()) as { imageId: string }
-      selectBackground(upload.imageId)
+      selectBackground({
+        id: upload.imageId,
+        mediaType: file.type === "image/gif" ? "gif" : "image",
+        src: `/api/images/private/${encodeURIComponent(upload.imageId)}`,
+        sourceWidth: width,
+        layout: "horizontal",
+        opacity: 0.4,
+      })
       setUploadState({ status: "idle" })
     } catch (err) {
       const message = err instanceof Error ? err.message : "Upload failed."
@@ -212,8 +222,8 @@ export function BackgroundAssignmentDialog(
               <BackgroundUploadsGrid
                 open={props.open}
                 signedIn={isSignedIn()}
-                assignedBackgroundId={assignedBackgroundId()}
-                effectiveBackgroundId={resolvedBackground().assignedBackgroundId}
+                assignedBackgroundId={assignedBackgroundSelection()?.id}
+                effectiveBackgroundId={resolvedBackground().selection.id}
                 onSelect={selectBackground}
               />
             </Suspense>
@@ -228,7 +238,7 @@ export function BackgroundAssignmentDialog(
             <SectionHeader
               label="Built-in"
               trailing={
-                <Show when={assignedBackgroundId()}>
+                <Show when={assignedBackgroundSelection()}>
                   <button
                     type="button"
                     onClick={clearChapter}
@@ -244,8 +254,8 @@ export function BackgroundAssignmentDialog(
                 id: background.id,
                 item: background,
               }))}
-              assignedBackgroundId={assignedBackgroundId()}
-              effectiveBackgroundId={resolvedBackground().assignedBackgroundId}
+              assignedBackgroundId={assignedBackgroundSelection()?.id}
+              effectiveBackgroundId={resolvedBackground().selection.id}
               onSelect={selectBackground}
             />
           </section>
@@ -369,7 +379,8 @@ function UploadsSignedOutState() {
 
 type UploadedBackgroundAsset = {
   imageId: string
-  sourceWidth?: number
+  sourceWidth: number
+  kind: { mediaType: "image" } | { mediaType: "gif" }
 }
 
 function BackgroundUploadsGrid(props: {
@@ -377,14 +388,15 @@ function BackgroundUploadsGrid(props: {
   signedIn: boolean
   assignedBackgroundId?: string
   effectiveBackgroundId?: string
-  onSelect: (backgroundId: string) => void
+  onSelect: (item: BackgroundPreviewItem) => void
 }) {
-  const uploadsQuery = useQuery(() => ({
-    ...convexQuery(api.api.images.listMyImageAssets, {}),
-    enabled: props.open && props.signedIn,
-  }))
+  const uploadsQuery = useConvexQuery(
+    api.api.images.listMyImageAssets,
+    () => ({}),
+    () => ({ enabled: props.open && props.signedIn }),
+  )
 
-  const uploads = () => uploadsQuery.data as UploadedBackgroundAsset[] | undefined
+  const uploads = () => uploadsQuery.data() as UploadedBackgroundAsset[] | undefined
 
   return (
     <Switch>
@@ -402,7 +414,7 @@ function BackgroundUploadsGrid(props: {
           <BackgroundTileGrid
             items={assets().map((asset) => ({
               id: asset.imageId,
-              item: uploadPreviewItem(asset.imageId, asset.sourceWidth),
+              item: uploadPreviewItem(asset.imageId, asset.sourceWidth, asset.kind.mediaType),
             }))}
             assignedBackgroundId={props.assignedBackgroundId}
             effectiveBackgroundId={props.effectiveBackgroundId}
@@ -430,7 +442,7 @@ interface BackgroundTileGridProps {
   items: BackgroundTileItem[]
   assignedBackgroundId?: string
   effectiveBackgroundId?: string
-  onSelect: (backgroundId: string) => void
+  onSelect: (item: BackgroundPreviewItem) => void
 }
 
 type BackgroundTileItem = {
@@ -440,11 +452,13 @@ type BackgroundTileItem = {
 
 function uploadPreviewItem(
   imageId: string,
-  sourceWidth: number | undefined,
+  sourceWidth: number,
+  mediaType: "image" | "gif",
 ): BackgroundPreviewItem {
   return {
-    kind: "image",
     id: imageId,
+    mediaType,
+    src: `/api/images/private/${encodeURIComponent(imageId)}`,
     sourceWidth,
     layout: "horizontal",
     opacity: 0.4,
@@ -463,7 +477,7 @@ function BackgroundTileGrid(props: BackgroundTileGridProps) {
           return (
             <button
               type="button"
-              onClick={() => props.onSelect(item.id)}
+              onClick={() => props.onSelect(item.item)}
               class={cn(
                 "group relative overflow-hidden rounded-xl border bg-white/2 text-left transition-colors",
                 isAssigned()

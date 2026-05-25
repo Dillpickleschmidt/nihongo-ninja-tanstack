@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/solid-router"
+import { Image } from "@/components/Image"
 
 export function Footer() {
   return (
@@ -6,7 +7,7 @@ export function Footer() {
       <div class="mx-auto max-w-7xl px-6">
         <div class="flex flex-col items-center justify-between gap-6 md:flex-row">
           <div class="flex items-center gap-2 text-lg font-bold">
-            <img src="/icons/ninja.png" alt="Ninja" class="size-8 -mb-1.25" />
+            <Image src="/icons/ninja.png" alt="Ninja" width={32} height={32} class="size-8 -mb-1.25" />
             <span class="text-white/70">Nihongo Ninja</span>
           </div>
           <div class="flex items-center gap-6 text-sm text-white/40">

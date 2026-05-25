@@ -1,3 +1,6 @@
+import { GENERATED_IMAGES } from "@/features/images/generated-images"
+import { IMAGE_ID_PREFIX } from "@/features/images/validation"
+import type { BackgroundSelection } from "./background-selection"
 import {
   BUILT_IN_BACKGROUNDS,
   CURATED_CHAPTER_BACKGROUNDS,
@@ -8,7 +11,6 @@ import {
   getChapterBackgroundKey,
   type BackgroundOverrides,
 } from "./overrides"
-import { IMAGE_ID_PREFIX } from "@/features/images/validation"
 
 export type BackgroundSourceScope =
   | "global-lock"
@@ -17,9 +19,11 @@ export type BackgroundSourceScope =
   | "curated"
   | "fallback"
 
-export type UserImageBackground = {
-  kind: "image"
+export type UploadedBackground = {
   id: string
+  mediaType: "image" | "gif"
+  src: string
+  sourceWidth: number
   layout: "vertical" | "horizontal"
   opacity: number
   yOffsetDesktop?: string
@@ -27,10 +31,10 @@ export type UserImageBackground = {
 }
 
 export type ResolvedBackground = {
-  background: BuiltInBackground | UserImageBackground
+  selection: BackgroundSelection
+  background: BuiltInBackground | UploadedBackground
   sourceScope: BackgroundSourceScope
   sourceLabel: string
-  assignedBackgroundId?: string
 }
 
 export function resolveBackground(
@@ -54,12 +58,8 @@ export function resolveBackground(
   }
 
   return (
-    resolveChapterBackground(overrides, pathId, chapterSlug) ?? {
-      background: BUILT_IN_BACKGROUNDS[FALLBACK_BACKGROUND_ID],
-      sourceScope: "fallback",
-      sourceLabel: "Fallback",
-      assignedBackgroundId: FALLBACK_BACKGROUND_ID,
-    }
+    resolveChapterBackground(overrides, pathId, chapterSlug) ??
+    resolveBuiltInBackground(FALLBACK_BACKGROUND_ID, "fallback", "Fallback")
   )
 }
 
@@ -70,44 +70,61 @@ function resolveChapterBackground(
 ): ResolvedBackground | undefined {
   if (!pathId || !chapterSlug) return undefined
 
-  const assignedBackgroundId =
-    overrides.chapters[getChapterBackgroundKey(pathId, chapterSlug)]
-  const assignedBackground = resolveBackgroundId(assignedBackgroundId)
-  if (assignedBackground) {
-    return {
-      background: assignedBackground,
-      sourceScope: "chapter",
-      sourceLabel: "Chapter background",
-      assignedBackgroundId,
-    }
-  }
+  const selection = overrides.chapters[getChapterBackgroundKey(pathId, chapterSlug)]
+  const assignedBackground = resolveSelection(selection, "chapter", "Chapter background")
+  if (assignedBackground) return assignedBackground
 
   const curatedBackgroundId = CURATED_CHAPTER_BACKGROUNDS[pathId]?.[chapterSlug]
-  const curatedBackground = curatedBackgroundId
-    ? BUILT_IN_BACKGROUNDS[curatedBackgroundId]
+  return curatedBackgroundId
+    ? resolveBuiltInBackground(curatedBackgroundId, "curated", "Curated default")
     : undefined
-  if (!curatedBackground) return undefined
+}
 
+function resolveSelection(
+  selection: BackgroundSelection | undefined,
+  sourceScope: BackgroundSourceScope,
+  sourceLabel: string,
+): ResolvedBackground | undefined {
+  if (!selection) return undefined
+  const builtIn = BUILT_IN_BACKGROUNDS[selection.id]
+  if (builtIn) return { selection, background: builtIn, sourceScope, sourceLabel }
+  if (!selection.id.startsWith(IMAGE_ID_PREFIX)) return undefined
   return {
-    background: curatedBackground,
-    sourceScope: "curated",
-    sourceLabel: "Curated default",
-    assignedBackgroundId: curatedBackgroundId,
+    selection,
+    background: {
+      id: selection.id,
+      mediaType: selection.mediaType === "gif" ? "gif" : "image",
+      src: `/api/images/private/${encodeURIComponent(selection.id)}`,
+      sourceWidth: selection.sourceWidth,
+      layout: "horizontal",
+      opacity: 0.4,
+    },
+    sourceScope,
+    sourceLabel,
   }
 }
 
-// Treat unknown, non-upload IDs as stale catalog entries and fall through.
-function resolveBackgroundId(
-  id: string | undefined,
-): BuiltInBackground | UserImageBackground | undefined {
-  if (!id) return undefined
-  const catalogEntry = BUILT_IN_BACKGROUNDS[id]
-  if (catalogEntry) return catalogEntry
-  if (!id.startsWith(IMAGE_ID_PREFIX)) return undefined
+function resolveBuiltInBackground(
+  id: string,
+  sourceScope: BackgroundSourceScope,
+  sourceLabel: string,
+): ResolvedBackground {
+  const background = BUILT_IN_BACKGROUNDS[id] ?? BUILT_IN_BACKGROUNDS[FALLBACK_BACKGROUND_ID]
   return {
-    kind: "image",
-    id,
-    layout: "horizontal",
-    opacity: 0.4,
+    selection: builtInSelection(background),
+    background,
+    sourceScope,
+    sourceLabel,
+  }
+}
+
+function builtInSelection(background: BuiltInBackground): BackgroundSelection {
+  const imageSrc = background.mediaType === "video" ? background.posterSrc : background.src
+  const generated = GENERATED_IMAGES[imageSrc as keyof typeof GENERATED_IMAGES]
+  if (!generated) throw new Error(`Missing generated image metadata for ${imageSrc}`)
+  return {
+    id: background.id,
+    sourceWidth: generated.sourceWidth,
+    mediaType: background.mediaType,
   }
 }

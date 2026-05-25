@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/solid-router"
+import { Image } from "@/components/Image"
 import { queryKeys } from "~/query/query-keys"
 import { FloatingKanji } from "@/features/homepage/components/floating-kanji"
 import { HeroSection } from "@/features/homepage/sections/hero-section"
@@ -54,7 +55,7 @@ function Homepage() {
       <nav class="sticky top-0 z-50 border-b border-white/5 backdrop-blur-xl bg-neutral-950/70">
         <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
           <Link to="/" class="flex items-center gap-2 text-lg font-bold">
-            <img src="/icons/ninja.png" alt="Ninja" class="size-8 -mb-1.25" />
+            <Image src="/icons/ninja.png" alt="Ninja" width={32} height={32} class="size-8 -mb-1.25" />
             <span class="bg-clip-text text-transparent bg-linear-to-r from-white to-white/70">
               Nihongo Ninja
             </span>

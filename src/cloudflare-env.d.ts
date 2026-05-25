@@ -44,6 +44,13 @@ interface ImagesInputTransformer {
   }): ImagesTransformOutput
 }
 
+interface ImagesInfo {
+  width: number
+  height: number
+  format: string
+  fileSize: number
+}
+
 interface ImagesBinding {
   input(
     stream:
@@ -52,6 +59,13 @@ interface ImagesBinding {
       | ArrayBufferView
       | Blob,
   ): ImagesInputTransformer
+  info(
+    stream:
+      | ReadableStream<Uint8Array>
+      | ArrayBuffer
+      | ArrayBufferView
+      | Blob,
+  ): Promise<ImagesInfo>
 }
 
 declare namespace Cloudflare {

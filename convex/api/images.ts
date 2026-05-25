@@ -5,10 +5,15 @@ import * as model from "../model/images"
 export const createImageAsset = mutation({
   args: {
     imageId: v.string(),
-    storageKey: v.string(),
-    contentType: v.string(),
     sourceWidth: v.number(),
-    objectEtag: v.string(),
+    kind: v.union(
+      v.object({ mediaType: v.literal("image") }),
+      v.object({
+        mediaType: v.literal("gif"),
+        storageKey: v.string(),
+        objectEtag: v.string(),
+      }),
+    ),
   },
   handler: (ctx, args) => model.createImageAsset(ctx, args),
 })

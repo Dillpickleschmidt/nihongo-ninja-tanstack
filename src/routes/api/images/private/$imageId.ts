@@ -2,11 +2,11 @@ import { createFileRoute } from "@tanstack/solid-router"
 import { env } from "cloudflare:workers"
 import { api } from "../../../../../convex/_generated/api"
 import { fetchAuthenticatedConvexQuery } from "@/lib/auth-server"
-import { chooseOutputFormat } from "@/features/images/format"
 import {
   imageWidthQuerySchema,
   privateImageRouteParamsSchema,
 } from "@/features/images/validation"
+import { imageVariantWidths, nearestImageVariantWidth } from "@/features/images/variants"
 
 export const Route = createFileRoute("/api/images/private/$imageId")({
   server: {
@@ -24,39 +24,36 @@ export const Route = createFileRoute("/api/images/private/$imageId")({
         )
         if (!asset) return new Response("Not found", { status: 404 })
 
-        const url = new URL(request.url)
-        const { w } = imageWidthQuerySchema.parse({
-          w: url.searchParams.get("w") ?? undefined,
-        })
-        const format = chooseOutputFormat(
-          request.headers.get("accept"),
-          asset.contentType,
-        )
-
-        const object = await env.IMAGE_UPLOADS_BUCKET.get(asset.storageKey)
-        if (!object?.body) {
-          return new Response("Not found", { status: 404 })
-        }
-
-        if (asset.contentType === "image/gif") {
+        if (asset.kind.mediaType === "gif") {
+          const object = await env.IMAGE_UPLOADS_BUCKET.get(asset.kind.storageKey)
+          if (!object?.body) return new Response("Not found", { status: 404 })
           return new Response(object.body, {
             headers: {
-              "Content-Type": asset.contentType,
-              ETag: asset.objectEtag,
+              "Content-Type": "image/gif",
+              ETag: asset.kind.objectEtag,
               "Cache-Control": "private, max-age=31536000, immutable",
             },
           })
         }
 
-        const result = await env.IMAGES
-          .input(object.body)
-          .transform({ width: w, fit: "scale-down" })
-          .output({ format, quality: 80 })
+        const url = new URL(request.url)
+        const { w } = imageWidthQuerySchema.parse({
+          w: url.searchParams.get("w") ?? undefined,
+        })
+        const width = nearestImageVariantWidth(imageVariantWidths(asset.sourceWidth), w)
+        if (!width) return new Response("Not found", { status: 404 })
 
-        return new Response(result.response().body, {
+        const format = request.headers.get("accept")?.includes("image/avif")
+          ? "avif"
+          : "webp"
+        const storageKey = `private/users/${asset.ownerUserId}/images/${asset.imageId}/variants/${width}.${format}`
+        const object = await env.IMAGE_UPLOADS_BUCKET.get(storageKey)
+        if (!object?.body) return new Response("Not found", { status: 404 })
+
+        return new Response(object.body, {
           headers: {
-            "Content-Type": result.contentType(),
-            ETag: asset.objectEtag,
+            "Content-Type": `image/${format}`,
+            ETag: object.httpEtag,
             "Cache-Control": "private, max-age=31536000, immutable",
             Vary: "Accept",
           },

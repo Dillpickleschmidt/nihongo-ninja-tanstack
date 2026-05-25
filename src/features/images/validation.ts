@@ -1,28 +1,19 @@
 import { z } from "zod"
+import { UPLOAD_IMAGE_CONTENT_TYPES } from "./image-constants"
 
 export const IMAGE_ID_PREFIX = "img_"
-
-const ALLOWED_PRIVATE_IMAGE_CONTENT_TYPES = [
-  "image/jpeg",
-  "image/png",
-  "image/webp",
-  "image/avif",
-  "image/gif",
-] as const
 
 const contentTypeSchema = z
   .string()
   .refine(
     (value) =>
-      (ALLOWED_PRIVATE_IMAGE_CONTENT_TYPES as readonly string[]).includes(value),
+      (UPLOAD_IMAGE_CONTENT_TYPES as readonly string[]).includes(value),
     { message: "Unsupported image type." },
   )
 
 const imageIdSchema = z
   .string()
   .startsWith(IMAGE_ID_PREFIX, "Invalid image id.")
-
-export const MAX_PRIVATE_IMAGE_UPLOAD_BYTES = 10 * 1024 * 1024
 
 export const uploadImageHeadersSchema = z.object({
   contentType: contentTypeSchema,

@@ -1,5 +1,7 @@
+import type { BackgroundSelection } from "./background-selection"
+
 export type BackgroundOverrides = {
-  chapters: Record<string, string>
+  chapters: Record<string, BackgroundSelection>
   lock?: BackgroundLock
 }
 
@@ -19,7 +21,7 @@ export function getChapterBackgroundKey(pathId: string, chapterSlug: string) {
   return `${pathId}:${chapterSlug}`
 }
 
-export function getChapterBackgroundId(
+export function getChapterBackgroundSelection(
   overrides: BackgroundOverrides,
   target: BackgroundTarget,
 ) {
@@ -47,14 +49,14 @@ export function getActiveBackgroundLock(
 export function applyChapterBackgroundSelection(
   overrides: BackgroundOverrides,
   assignment: BackgroundTarget & {
-    backgroundId: string
+    selection: BackgroundSelection
     scope: BackgroundApplyScope
   },
 ): BackgroundOverrides {
   const chapters = {
     ...overrides.chapters,
     [getChapterBackgroundKey(assignment.pathId, assignment.chapterSlug)]:
-      assignment.backgroundId,
+      assignment.selection,
   }
 
   return applyBackgroundScope({ ...overrides, chapters }, assignment)

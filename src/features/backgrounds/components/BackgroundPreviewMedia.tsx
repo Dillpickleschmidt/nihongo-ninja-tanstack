@@ -1,13 +1,9 @@
-import { Show } from "solid-js"
-import { Image as BaseImage } from "@unpic/solid/base"
+import { Image } from "@/components/Image"
+import { imageVariantWidths } from "@/features/images/variants"
 import type { BuiltInBackground } from "../catalog"
-import type { UserImageBackground } from "../resolveBackground"
-import { usePrivateImageSource } from "@/features/images/usePrivateImageSource"
-import { buildPublicUnpicSource } from "@/features/images/transformer"
+import type { UploadedBackground } from "../resolveBackground"
 
-export type BackgroundPreviewItem = BuiltInBackground | (UserImageBackground & {
-  sourceWidth?: number
-})
+export type BackgroundPreviewItem = BuiltInBackground | UploadedBackground
 
 interface BackgroundPreviewMediaProps {
   item: BackgroundPreviewItem
@@ -17,35 +13,22 @@ interface BackgroundPreviewMediaProps {
 }
 
 export function BackgroundPreviewMedia(props: BackgroundPreviewMediaProps) {
-  const uploadSource = usePrivateImageSource(
-    () => ("src" in props.item ? undefined : props.item.id),
-    () => ({ layout: "fixed", width: props.width }),
-    () => ("src" in props.item ? undefined : props.item.sourceWidth),
-  )
-  const source = () =>
-    "src" in props.item
-      ? buildPublicUnpicSource({
-          src: props.item.src,
-          sourceWidth: props.item.sourceWidth,
-          layout: { layout: "fixed", width: props.width },
-        })
-      : uploadSource()
+  const src = () =>
+    props.item.mediaType === "video" ? props.item.posterSrc : props.item.src
+  const widths = () =>
+    props.item.mediaType === "gif"
+      ? undefined
+      : imageVariantWidths(props.item.sourceWidth)
 
   return (
-    <Show when={source()}>
-      {(s) => (
-        <BaseImage
-          src={s().src}
-          transformer={s().transformer}
-          breakpoints={s().breakpoints}
-          layout="fixed"
-          width={props.width}
-          height={props.height ?? props.width}
-          unstyled
-          alt="Background preview"
-          class={props.class}
-        />
-      )}
-    </Show>
+    <Image
+      src={src()}
+      widths={widths()}
+      sizes={`${props.width}px`}
+      width={props.width}
+      height={props.height ?? props.width}
+      alt="Background preview"
+      class={props.class}
+    />
   )
 }

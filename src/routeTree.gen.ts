@@ -110,7 +110,6 @@ import { Route as HomeGuidesSrsRouteImport } from './routes/_home/guides/srs'
 import { Route as HomeGuidesComparisonRouteImport } from './routes/_home/guides/comparison'
 import { Route as HomeExternalResourcesResourceRouteImport } from './routes/_home/external-resources/$resource'
 import { Route as HomeImportBuiltinIndexRouteImport } from './routes/_home/import/builtin/index'
-import { Route as ApiImagesPublicSplatRouteImport } from './routes/api/images/public/$'
 import { Route as ApiImagesPrivateImageIdRouteImport } from './routes/api/images/private/$imageId'
 import { Route as HomeVocabQuizKatakanaRouteImport } from './routes/_home/vocab/quiz/katakana'
 import { Route as HomeVocabQuizHiraganaRouteImport } from './routes/_home/vocab/quiz/hiragana'
@@ -674,11 +673,6 @@ const HomeImportBuiltinIndexRoute = HomeImportBuiltinIndexRouteImport.update({
   path: '/import/builtin/',
   getParentRoute: () => HomeRoute,
 } as any)
-const ApiImagesPublicSplatRoute = ApiImagesPublicSplatRouteImport.update({
-  id: '/api/images/public/$',
-  path: '/api/images/public/$',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ApiImagesPrivateImageIdRoute = ApiImagesPrivateImageIdRouteImport.update({
   id: '/api/images/private/$imageId',
   path: '/api/images/private/$imageId',
@@ -849,7 +843,6 @@ export interface FileRoutesByFullPath {
   '/vocab/quiz/hiragana': typeof HomeVocabQuizHiraganaRoute
   '/vocab/quiz/katakana': typeof HomeVocabQuizKatakanaRoute
   '/api/images/private/$imageId': typeof ApiImagesPrivateImageIdRoute
-  '/api/images/public/$': typeof ApiImagesPublicSplatRoute
   '/import/builtin/': typeof HomeImportBuiltinIndexRoute
   '/vocab/deck/$deckId/edit': typeof HomeVocabDeckDeckIdEditRoute
 }
@@ -961,7 +954,6 @@ export interface FileRoutesByTo {
   '/vocab/quiz/hiragana': typeof HomeVocabQuizHiraganaRoute
   '/vocab/quiz/katakana': typeof HomeVocabQuizKatakanaRoute
   '/api/images/private/$imageId': typeof ApiImagesPrivateImageIdRoute
-  '/api/images/public/$': typeof ApiImagesPublicSplatRoute
   '/import/builtin': typeof HomeImportBuiltinIndexRoute
   '/vocab/deck/$deckId/edit': typeof HomeVocabDeckDeckIdEditRoute
 }
@@ -1077,7 +1069,6 @@ export interface FileRoutesById {
   '/_home/vocab/quiz/hiragana': typeof HomeVocabQuizHiraganaRoute
   '/_home/vocab/quiz/katakana': typeof HomeVocabQuizKatakanaRoute
   '/api/images/private/$imageId': typeof ApiImagesPrivateImageIdRoute
-  '/api/images/public/$': typeof ApiImagesPublicSplatRoute
   '/_home/import/builtin/': typeof HomeImportBuiltinIndexRoute
   '/_home/vocab/deck/$deckId/edit': typeof HomeVocabDeckDeckIdEditRoute
 }
@@ -1193,7 +1184,6 @@ export interface FileRouteTypes {
     | '/vocab/quiz/hiragana'
     | '/vocab/quiz/katakana'
     | '/api/images/private/$imageId'
-    | '/api/images/public/$'
     | '/import/builtin/'
     | '/vocab/deck/$deckId/edit'
   fileRoutesByTo: FileRoutesByTo
@@ -1305,7 +1295,6 @@ export interface FileRouteTypes {
     | '/vocab/quiz/hiragana'
     | '/vocab/quiz/katakana'
     | '/api/images/private/$imageId'
-    | '/api/images/public/$'
     | '/import/builtin'
     | '/vocab/deck/$deckId/edit'
   id:
@@ -1420,7 +1409,6 @@ export interface FileRouteTypes {
     | '/_home/vocab/quiz/hiragana'
     | '/_home/vocab/quiz/katakana'
     | '/api/images/private/$imageId'
-    | '/api/images/public/$'
     | '/_home/import/builtin/'
     | '/_home/vocab/deck/$deckId/edit'
   fileRoutesById: FileRoutesById
@@ -1436,7 +1424,6 @@ export interface RootRouteChildren {
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiImagesUploadRoute: typeof ApiImagesUploadRoute
   ApiImagesPrivateImageIdRoute: typeof ApiImagesPrivateImageIdRoute
-  ApiImagesPublicSplatRoute: typeof ApiImagesPublicSplatRoute
 }
 
 declare module '@tanstack/solid-router' {
@@ -2148,13 +2135,6 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof HomeImportBuiltinIndexRouteImport
       parentRoute: typeof HomeRoute
     }
-    '/api/images/public/$': {
-      id: '/api/images/public/$'
-      path: '/api/images/public/$'
-      fullPath: '/api/images/public/$'
-      preLoaderRoute: typeof ApiImagesPublicSplatRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/api/images/private/$imageId': {
       id: '/api/images/private/$imageId'
       path: '/api/images/private/$imageId'
@@ -2513,7 +2493,6 @@ const rootRouteChildren: RootRouteChildren = {
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiImagesUploadRoute: ApiImagesUploadRoute,
   ApiImagesPrivateImageIdRoute: ApiImagesPrivateImageIdRoute,
-  ApiImagesPublicSplatRoute: ApiImagesPublicSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
