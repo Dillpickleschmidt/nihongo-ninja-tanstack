@@ -416,6 +416,76 @@ describe("prepareQuestion", () => {
     }
   })
 
+  it("normalizes が、/けど、 connector register", () => {
+    const question = createQuestion("I was tired, but I went", [
+      {
+        segments: [
+          segment("疲[つか]れる", false, {
+            pos: "Ichidan verb",
+            form: "normal",
+            polarity: "positive",
+            tense: "past",
+          }),
+          segment("が"),
+          segment("、行[い]く", false, {
+            pos: "Godan verb - Iku/Yuku special class",
+            form: "normal",
+            polarity: "positive",
+            tense: "past",
+          }),
+        ],
+      },
+      {
+        segments: [
+          segment("疲[つか]れる", false, {
+            pos: "Ichidan verb",
+            form: "normal",
+            polarity: "positive",
+            tense: "past",
+          }),
+          segment("けど、"),
+          segment("行[い]く", false, {
+            pos: "Godan verb - Iku/Yuku special class",
+            form: "normal",
+            polarity: "positive",
+            tense: "past",
+          }),
+        ],
+      },
+    ])
+
+    const stripped = prepareQuestion(question).acceptedAnswers.map((a) =>
+      a.plain.replaceAll("\u001f", ""),
+    )
+
+    expect(stripped).toContain("疲れましたが、行きました")
+    expect(stripped).toContain("疲れたけど、行った")
+    expect(stripped).not.toContain("疲れましたけど、行きました")
+    expect(stripped).not.toContain("疲れたが、行った")
+  })
+
+  it("does not replace が when it is not followed by a comma", () => {
+    const question = createQuestion("I have money", [
+      {
+        segments: [
+          segment("お 金[かね]が ある", false, {
+            pos: "Godan verb with 'ru' ending (irregular verb)",
+            form: "normal",
+            polarity: "positive",
+            tense: "non-past",
+          }),
+        ],
+      },
+    ])
+
+    const stripped = prepareQuestion(question).acceptedAnswers.map((a) =>
+      a.plain.replaceAll("\u001f", ""),
+    )
+
+    expect(stripped).toContain("お金があります")
+    expect(stripped).toContain("お金がある")
+  })
+
   it("register-locked answer coexists with unlocked canonical answer", () => {
     const question = createQuestion("I'll watch a movie", [
       {

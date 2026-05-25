@@ -71,9 +71,26 @@ function conjugateSegmentInContext(
     if (isPolite) return [segment.text]
     return [
       isSentenceFinalKa(segments, sourceIndex)
-        ? replaceTrailingKaWithQuestionMark(segment.text)
+        ? segment.text.replace(/か。?$/, "？")
         : segment.text,
     ]
+  }
+
+  // Normalize contrastive connector register only when followed by 、.
+  if (!segment.conjugation) {
+    const text = segment.text
+    const trimmed = text.trim()
+    const nextStartsWithComma = segments[sourceIndex + 1]?.text
+      .trim()
+      .startsWith("、")
+    const [source, target] = isPolite ? ["けど", "が"] : ["が", "けど"]
+
+    if (trimmed.endsWith(`${source}、`)) {
+      return [text.replace(new RegExp(`${source}(、\\s*)$`), `${target}$1`)]
+    }
+    if (trimmed.endsWith(source) && nextStartsWithComma) {
+      return [text.replace(new RegExp(`${source}$`), target)]
+    }
   }
 
   return conjugateSegment(segment, isPolite)
@@ -111,10 +128,6 @@ function followsSentenceFinalKa(
     segments[sourceIndex]?.text.trim().startsWith("。") === true &&
     isSentenceFinalKa(segments, sourceIndex - 1)
   )
-}
-
-function replaceTrailingKaWithQuestionMark(text: string): string {
-  return text.replace(/か。?$/, "？")
 }
 
 function cartesian<T>(arrays: T[][]): T[][] {
