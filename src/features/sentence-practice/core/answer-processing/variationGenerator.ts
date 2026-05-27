@@ -325,6 +325,7 @@ const HONORIFIC_SWAP_PROTECTED_FORMS = [
   "赤[あか]ちゃん",
   "皆[みな]さん",
   "ちゃんと",
+  "たくさん",
 ]
 
 function isInHonorificSwapProtectedForm(

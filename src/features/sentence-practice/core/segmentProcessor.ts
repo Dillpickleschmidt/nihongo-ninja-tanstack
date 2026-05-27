@@ -80,6 +80,7 @@ function conjugateSegmentInContext(
   if (!segment.conjugation) {
     const text = segment.text
     const trimmed = text.trim()
+
     const nextStartsWithComma = segments[sourceIndex + 1]?.text
       .trim()
       .startsWith("、")
