@@ -329,6 +329,30 @@ describe("prepareQuestion", () => {
     expect(iAdjectiveAnswers).not.toContain("楽しいなの？")
   })
 
+  it("does not generate explanatory variants for negative metadata questions", () => {
+    const question = createQuestion("Won't you come?", [
+      {
+        segments: [
+          segment("来[く]る", false, {
+            pos: "Kuru verb - special class",
+            form: "normal",
+            polarity: "negative",
+            tense: "non-past",
+          }),
+          segment("か"),
+        ],
+        register: "casual",
+      },
+    ])
+
+    const stripped = prepareQuestion(question).acceptedAnswers.map((a) =>
+      a.plain.replaceAll("\u001f", ""),
+    )
+
+    expect(stripped).toContain("来ない？")
+    expect(stripped).not.toContain("来ないの？")
+  })
+
   it("does not generate explanatory variants for どうですか", () => {
     const question = createQuestion("How is it?", [
       {
@@ -464,7 +488,59 @@ describe("prepareQuestion", () => {
     expect(stripped).not.toContain("疲れたが、行った")
   })
 
-  it("does not replace が when it is not followed by a comma", () => {
+  it("expands split んです forms before connector punctuation", () => {
+    const question = createQuestion("Actually, I borrowed it, but...", [
+      {
+        segments: [
+          segment("借[か]りた"),
+          segment("ん"),
+          segment("です"),
+          segment("が"),
+          segment("..."),
+        ],
+      },
+    ])
+
+    const stripped = prepareQuestion(question).acceptedAnswers.map((a) =>
+      a.plain.replaceAll("\u001f", ""),
+    )
+
+    expect(stripped).toContain("借りたんですが...")
+    expect(stripped).toContain("借りたのですが...")
+    expect(stripped).toContain("借りたんですけど...")
+    expect(stripped).toContain("借りたんだけど...")
+    expect(stripped).not.toContain("借りたんだが...")
+    expect(stripped).not.toContain("借りたのですけど...")
+  })
+
+  it("normalizes apology register variants except before が", () => {
+    const question = createQuestion("Sorry, I can't go", [
+      {
+        segments: [
+          segment("すみません、"),
+          segment("行[い]けない"),
+          segment("ん"),
+          segment("です"),
+        ],
+      },
+      {
+        segments: [segment("すみません"), segment("が、行[い]けません")],
+      },
+    ])
+
+    const stripped = prepareQuestion(question).acceptedAnswers.map((a) =>
+      a.plain.replaceAll("\u001f", ""),
+    )
+
+    expect(stripped).toContain("すみません、行けないんです")
+    expect(stripped).toContain("すいません、行けないんです")
+    expect(stripped).toContain("ごめん、行けないんだ")
+    expect(stripped).toContain("すみませんが、行けません")
+    expect(stripped).not.toContain("ごめんが、行けません")
+    expect(stripped).not.toContain("すいませんが、行けません")
+  })
+
+  it("does not replace が when it is not followed by connector punctuation", () => {
     const question = createQuestion("I have money", [
       {
         segments: [

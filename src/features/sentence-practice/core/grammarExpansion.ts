@@ -67,6 +67,7 @@ function createCasualExplanatoryQuestionVariant(
   if (predicateSegmentIndex < 0) return undefined
 
   const predicateSegment = sequence[predicateSegmentIndex]
+  if (isNegativeConjugatedSegment(predicateSegment.source)) return undefined
   if (shouldSkipPredicate(predicateSegment)) return undefined
 
   if (isCopulaQuestion(sourceSegments)) {
@@ -151,6 +152,10 @@ function questionSegmentIndexSourceIndex(
 
 function isIAdjective(segment: SentenceSegment | undefined): boolean {
   return segment?.conjugation?.pos === "I-adjective"
+}
+
+function isNegativeConjugatedSegment(segment: SentenceSegment | undefined): boolean {
+  return segment?.conjugation?.polarity === "negative"
 }
 
 function shouldSkipPredicate(segment: ProcessedSegment): boolean {
