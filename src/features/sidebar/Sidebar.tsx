@@ -7,8 +7,9 @@ import {
   type JSX,
 } from "solid-js"
 import { Dynamic } from "solid-js/web"
-import { Link, useLocation } from "@tanstack/solid-router"
+import { Link, useLocation, useNavigate } from "@tanstack/solid-router"
 import {
+  ArrowLeft,
   BookOpen,
   Circle,
   CircleCheckBig,
@@ -207,6 +208,7 @@ function SidebarShell(props: {
         <SidebarBrand />
         <SidebarTabs value={props.tab} onChange={props.onTabChange} />
         <Show when={props.tab === "course"}>
+          <CourseBackButton />
           <CourseSummary />
         </Show>
       </div>
@@ -360,6 +362,30 @@ function MenuButton(props: {
         {props.item.title}
       </span>
     </Link>
+  )
+}
+
+function CourseBackButton() {
+  const navigate = useNavigate()
+
+  const goBack = () => {
+    if (window.history.length > 1) {
+      window.history.back()
+      return
+    }
+
+    navigate({ to: "/dashboard" })
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={goBack}
+      class="flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground dark:text-white/30 dark:hover:text-white/60"
+    >
+      <ArrowLeft class="size-3.5" />
+      Back
+    </button>
   )
 }
 
